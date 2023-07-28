@@ -98,7 +98,7 @@ def print_battle_results(victory):
 
 
 def get_race_discovery_message(ally_name: str, race_name: str, race_icon: str):
-    title = f"\n✨ You have discovered a new race! ✨"
+    title = f"\n✨ You have discovered a new species! ✨"
     sub_title = f"\n{race_icon} {term.yellow}{term.bold}{race_name}{term.normal}"
     sub_title += f"\n\n{ally_name} has joined your army. Read and discover more about "
     sub_title += (
