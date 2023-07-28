@@ -39,7 +39,7 @@ def play():
 
 
 def show_undiscovered_prompt():
-    option, _ = pick(["Go Back"], "You have not discovered this race yet.")
+    option, _ = pick(["Go Back"], "You have not discovered this species yet.")
 
     if option == "Go Back":
         return
