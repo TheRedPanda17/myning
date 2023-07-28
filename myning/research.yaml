@@ -1,0 +1,71 @@
+species_discovery:
+  name: Discover Species
+  descriptions:
+    - Increase the likelihood of discovering a new species (10%)
+    - Increase the likelihood of discovering a new species (20%)
+    - Increase the likelihood of discovering a new species (30%)
+    - Increase the likelihood of discovering a new species (40%)
+    - Increase the likelihood of discovering a new species (50%)
+    - Increase the likelihood of discovering a new species (60%)
+    - Increase the likelihood of discovering a new species (70%)
+    - Increase the likelihood of discovering a new species (80%)
+    - Increase the likelihood of discovering a new species (90%)
+    - Increase the likelihood of discovering a new species (100%)
+  values:
+    - 10
+    - 20
+    - 30
+    - 40
+    - 50
+    - 60
+    - 70
+    - 80
+    - 90
+    - 100
+  costs:
+    - 2
+    - 5
+    - 10
+    - 25
+    - 50
+    - 80
+    - 150
+    - 200
+    - 325
+    - 500
+species_rarity:
+  name: Increase Companion Rarity
+  descriptions:
+    - Increase the likelihood of recruiting more rare species
+    - Increase the likelihood of recruiting more rare species
+    - Increase the likelihood of recruiting more rare species
+    - Increase the likelihood of recruiting more rare species
+    - Increase the likelihood of recruiting more rare species
+    - Increase the likelihood of recruiting more rare species
+    - Increase the likelihood of recruiting more rare species
+    - Increase the likelihood of recruiting more rare species
+    - Increase the likelihood of recruiting more rare species
+    - Increase the likelihood of recruiting more rare species
+    - Increase the likelihood of recruiting more rare species
+  values:
+    - 10
+    - 20
+    - 30
+    - 40
+    - 50
+    - 60
+    - 70
+    - 80
+    - 90
+    - 100
+  costs:
+    - 10
+    - 25
+    - 50
+    - 80
+    - 150
+    - 200
+    - 325
+    - 500
+    - 850
+    - 1200

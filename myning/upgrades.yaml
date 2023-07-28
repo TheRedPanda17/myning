@@ -1,0 +1,170 @@
+sell_minerals:
+  name: Sell Minerals
+  descriptions:
+    - Store option to sell all of your minerals (30% tax)
+    - Store option to sell all of your minerals (20% tax)
+    - Store option to sell all of your minerals (10% tax)
+    - Store option to sell all of your minerals (no tax)
+  values:
+    - 30
+    - 20
+    - 10
+    - 0
+  costs:
+    - 50
+    - 500
+    - 2000
+    - 5000
+
+inventory_hints:
+  name: Armory Hints
+  descriptions:
+    - Show which slots of your army's equipment have better equipment available
+  values:
+    - 1
+  costs:
+    - 100
+
+sell_everything:
+  name: Sell Everything
+  descriptions:
+    - Store option to instantly sell all of your items (30% tax)
+    - Store option to instantly sell all of your items (20% tax)
+    - Store option to instantly sell all of your items (10% tax)
+    - Store option to instantly sell all of your items (no tax)
+  values:
+    - 30
+    - 20
+    - 10
+    - 0
+  costs:
+    - 250
+    - 1000
+    - 3000
+    - 6000
+
+insta_heal:
+  name: Insta-heal
+  descriptions:
+    - Instantly heal your army when you visit the healer (3g * army size)
+    - Instantly heal your army when you visit the healer (2g * army size)
+    - Instantly heal your army when you visit the healer (1g * army size)
+    - Instantly heal your army when you visit the healer (free)
+  values:
+    - 3
+    - 2
+    - 1
+    - 0
+  costs:
+    - 500
+    - 1000
+    - 2000
+    - 3000
+
+sell_almost_everything:
+  name: Sell Almost Everything
+  descriptions:
+    - Store option to instantly sell all but the top 3 items (30% tax)
+    - Store option to instantly sell all but the top 3 items (20% tax)
+    - Store option to instantly sell all but the top 3 items (10% tax)
+    - Store option to instantly sell all but the top 3 items (no tax)
+  values:
+    - 30
+    - 20
+    - 10
+    - 0
+  costs:
+    - 750
+    - 1500
+    - 5000
+    - 7500
+
+store_hints:
+  name: Store Hints
+  descriptions:
+    - The store will show you which items are better than your EQUIPPED items.
+  values:
+    - 1
+  costs:
+    - 1000
+
+advanced_store_hints:
+  name: Advanced Store Hints
+  descriptions:
+    - The store will show you which items are better than anything you own.
+  values:
+    - 1
+  costs:
+    - 1500
+
+armory_hints:
+  name: Armory Hints
+  descriptions:
+    - Show which members of your army can be equipped with better items
+  values:
+    - 1
+  costs:
+    - 2000
+
+auto_exp:
+  name: Auto-Exp
+  descriptions:
+    - Automatically apply experience to your army
+  values:
+    - 1
+  costs:
+    - 3000
+
+auto_equip:
+  name: Auto-Equip
+  descriptions:
+    - Get the option in the armory to automatically equip your best items.
+  values:
+    - 1
+  costs:
+    - 5000
+
+next_plant_button:
+  name: Next Plant Button
+  descriptions:
+    - Automatically select the next plant in the garden to be harvested
+  values:
+    - 1
+  costs:
+    - 10000
+
+harvest_row:
+  name: Harvest Next Row
+  descriptions:
+    - Harvest a whole row of your garden at once
+  values:
+    - 1
+  costs:
+    - 25000
+
+plant_row:
+  name: Plant Row
+  descriptions:
+    - Plant a whole row of your garden at once
+  values:
+    - 1
+  costs:
+    - 50000
+
+buy_all_garden:
+  name: Buy Everything - Garden Store
+  descriptions:
+    - Buy all the seeds available in the garden store at once.
+  values:
+    - 1
+  costs:
+    - 15000
+
+buy_full_set:
+  name: Buy a Full Set of Blademaster Gear - Blacksmith
+  descriptions:
+    - Buy all the blademaster gear in the blacksmith at once.
+  values:
+    - 1
+  costs:
+    - 100000

@@ -1,0 +1,95 @@
+- name: Research Facility
+  description: Research new upgrades with research points
+  date: 07-10-23
+
+- name: Added More Endgame Content
+  description: Added the ability to buy all Blademaster gear and also fixed bug with buy all garden seeds
+  date: 02-18-23
+
+- name: Added Settings Page
+  description: Now you can disable minigames
+  date: 11-29-22
+
+- name: Added Journal, Race Discovery
+  description: MAKE SURE YOU RUN `make migrate id=1` BEFORE PLAYING
+  date: 11-28-22
+
+- name: Added Combat Mini-game
+  description: Receive bonus damage by winning the combat mini-game!
+  date: 11-18-22
+
+- name: Added Graveyard
+  description: Revive fallen comrades or send them into the afterlife. The choice is yours!
+  date: 11-14-22
+
+- name: Added Garden Fast Buying
+  description: Added an upgrade to fast-buy all items in the garden seed store. Balanced mines more
+  date: 7-15-22
+
+- name: Added the Canyon
+  description: Added the canyon mine and made some tweaks to other mines
+  date: 7-05-22
+
+- name: Added garden upgrades
+  description: '"Harvest Row" and "Next Plant Button" Upgrades added. Plant prices reduced'
+  date: 5-31-22
+
+- name: Added meteor crater
+  description: new mine available!
+  date: 5-31-22
+
+- name: Store and blacksmith updates
+  description: Made stores work with columns, updated blacksmith prices, small maintenance fixes.
+  date: 5-30-22
+
+- name: Race icons added
+  description: Characters now have icons for their race
+  date: 5-28-22
+
+- name: Resource Mines
+  description: The new mine type is here - Resource Mines! Mine without fear of companion death or losing a battle. Updated the formula for the blacksmith upgrade. Fallen companion gear is returned. UI changes
+  date: 5-24-22
+
+- name: Blacksmith Shop!
+  description: Players now have access to the blacksmith shop!
+  date: 5-24-22
+
+- name: Mine Completion Balancing
+  description: Some quick tweaks with the mine completion criteria.
+  date: 5-23-22
+
+- name: Clear Mines (BIG UPDATE)
+  description: Mines can now be beat and offer unlocks of different parts of the game. Other small bug fixes as well
+  date: 5-22-22
+
+- name: Exp Bug Fixes and Mine Icons
+  description: Added icons for mine types and attributes. Fixed negative exp on combat minerals
+  date: 5-20-22
+
+- name: Added trip summary to mining page and ally deaths
+  description: You can now see how long is left on the trip, how many battles  you have won, and how many minerals you have mined. Allies can  also die now
+  date: 5-19-22
+
+- name: Added army health bar and upgrades
+  description: Larger armies now print a combined health bar.  "Sell Everything" and "Sell Minerals" are now upgrades
+  date: 5-19-22
+
+- name: Update army printing
+  description: Larger armies now print in multiple columns
+  date: 5-19-22
+
+- name: Auto equip bugfix
+  description: Fixed a bug where empty slots were not auto-equipped
+  date: 5-19-22
+
+- name: Simplified changelog
+  description: Made the changelog process simpler
+  date: 5-18-22
+
+- name: Added changelog parsing
+  description: Updates will now print information on the update
+  date: 05-18-22
+
+- name: Added Changelog
+  description:
+  date: 05-18-22

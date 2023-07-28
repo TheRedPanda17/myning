@@ -1,0 +1,1240 @@
+Aasimar:
+  first:
+    - Dyrk
+    - Vincent
+    - Tavon
+    - Remora
+    - Fenton
+    - Ningyan
+    - Dodd
+    - Nilus
+    - Daylen
+    - Kasaki
+    - Dungarth
+    - Cale
+    - Sevenson
+    - Arando
+    - Jeras
+    - Tamond
+    - Norris
+    - Krynt
+    - Sachil
+    - Bram
+    - Tura
+    - Hallan
+    - Gryphero
+    - Hagar
+    - Talfen
+    - Senor Peregrino
+    - Himberly
+    - Manantha
+    - Kevinish
+    - Macualley
+  last:
+    - Falck
+    - Van Devries
+    - Arkalis
+    - Wilxes
+    - Kreel
+    - Sell
+    - Seratolva
+    - Hindergrass
+    - Towerfall
+    - Cuttlescar
+    - Shanks
+    - Caskajaro
+    - Shattermast
+    - Stavenger
+    - Zethergyll
+    - Pyncion
+    - Voortham
+    - Carnavon
+    - Gullscream
+    - Revenmar
+    - Donoghan
+    - Fryft
+    - Grantham
+    - Welfer
+    - Ereghast
+    - Umbermoor
+    - Stormchapel
+    - Lynchfield
+    - Kulkin
+Bugbear:
+  first:
+    - Khuuhrukehul
+    - Maglatrueret
+    - Maglaretoret
+    - Gratru
+    - Magloret
+    - Garuret
+    - Khurguuret
+    - Baroret
+    - Gregek
+    - Ekegluhul
+    - Hrugguhul
+    - Garagek
+    - Uyaarigek
+    - Skigitru
+    - Ekhankaret
+    - Luurgegek
+    - Barry
+  last:
+    - Maglehul
+    - magluuhulegek
+    - Iggeglaaret
+    - khurguvar
+    - garahul
+    - Hrihuluuvar
+    - Hruutruatru
+    - Kuruhuluret
+    - Gruuretugek
+    - luurgetru
+    - Egrim
+    - Garitruegek
+    - Gnukaask
+    - Gragek
+    - luurgivaratru
+    - Hretru
+    - Bluejeans
+Dragonborn:
+  first:
+    - Sufana
+    - Axaran
+    - Nevek
+    - Fayal
+    - Vrumadi
+    - Grax
+    - Sunan
+    - Sarax
+    - Myrka
+    - Djemidor
+    - Armek
+    - Khagra
+    - Sirivistra
+    - Ravaran
+    - Kalas
+    - Mar
+    - Szuran
+    - Tajan
+    - Sarram
+    - Belaxarim
+    - Tamara
+    - Tenahn
+    - Shirren
+    - Siangar
+    - Savaxis
+    - Inzul
+    - Toxal
+    - Xafiq
+    - Iojad
+    - Leytra
+    - Zarkhil
+    - Lejek
+    - Vantajar
+    - Smaug
+  last:
+    - Anafus
+    - Naraxa
+    - Keven
+    - Layaf
+    - Idamurv
+    - Xarg
+    - Nanus
+    - Xaras
+    - Akrym
+    - Rodimejd
+    - Kemra
+    - Argahk
+    - Artsiviris
+    - Naravar
+    - Salak
+    - Ram
+    - Naruzs
+    - Najat
+    - Marras
+    - Miraxaleb
+    - Aramat
+    - Nhanet
+    - Nerrihs
+    - Ragnais
+    - Sixavas
+    - Luzni
+    - Laxot
+    - Qifax
+    - Dajoi
+    - Artyel
+    - Lihkraz
+    - Kejel
+    - Rajatnav
+Dwarf:
+  first:
+    - Erag
+    - Darkuel
+    - Ferrek
+    - Baelnar
+    - Rogath
+    - Rozag
+    - Grenenzel
+    - Glint
+    - Dyrnar
+    - Morak
+    - Zebel
+    - Dolmen
+    - Lokara
+    - Bariken
+    - Agaro
+    - Vronwe
+    - Krag
+    - Melgar
+    - Krim
+    - Auxlan
+    - Swargar
+    - Vistrum
+    - Thurlfara
+    - Ezegan
+    - Haeltar
+    - Balfam
+    - Brovatum
+    - Sakerlum
+    - Bafroid
+    - Fokarlug
+    - Dotgroc
+    - Yulumlir
+    - Brubeg
+    - Huzzaem
+    - Kuvroud
+    - Thrarmun
+    - Gimli
+  last:
+    - Markolak
+    - Drakantal
+    - Rockharvest
+    - Garkalan
+    - Ramcrown
+    - Evermead
+    - Grimtor
+    - Deepmiddens
+    - Zarkanan
+    - Copperhearth
+    - Barrelhelm
+    - Silvertarn
+    - Irongull
+    - Ambershard
+    - Warhood
+    - Ashbrand
+    - Coinarm
+    - Underbraids
+    - Fieryhide
+    - Merrymail
+    - Barbedcloak
+    - Merrybrand
+    - Oakbringer
+    - Stormbelly
+Elf:
+  first:
+    - Bvachan
+    - Aryllan
+    - Lyfalia
+    - Kaelthorn
+    - Lorak
+    - Veyas
+    - Alathar
+    - Ayrthwil
+    - Arromar
+    - Alarcion
+    - Oleran
+    - Irva
+    - Atalya
+    - Tevior
+    - Rylef
+    - Gaerlan
+    - Zereni
+    - Savian
+    - Carydion
+    - Ronefel
+    - Iafalior
+    - Seylas
+    - Lorifir
+    - Morian
+    - Leodor
+    - Bellas
+    - Jhaan
+    - Onvyr
+    - Elion
+    - Ailen
+    - Almer
+    - Niossae
+    - Beldroth
+    - Kuskyn
+    - Felaern
+    - J'areth
+  last:
+    - Sunshadow
+    - Graytrails
+    - Autumnloft
+    - Balefrost
+    - Stormwolf
+    - Woodenhawk
+    - Summergale
+    - Briarfell
+    - Evenwind
+    - Mooncairn
+    - Gilven
+    - Ulazana
+    - Olophyra
+    - Yllaphyra
+    - Dorroris
+    - Phitoris
+    - Aracan
+    - Aedan
+    - Zylvalur
+    - Trajeon
+Firbolg:
+  first:
+    - Borel
+    - Venefiq
+    - Farlien
+    - Zereni
+    - Alarcion
+    - Ronefel
+    - Lyfalia
+    - Leodor
+    - Velene
+    - Thirya
+    - Bvachan
+    - Kaelthorn
+    - Veyas
+    - Ferel
+    - Arromar
+    - Carydion
+    - Aryllan
+    - Lorak
+    - Savian
+    - Seylas
+    - Leliar
+    - Rylef
+    - Ayrthwil
+    - Ariandar
+    - Oleran
+    - Irva
+  last:
+    - Woodenhawk
+    - Stormwolf
+    - Graytrails
+    - Summergale
+    - Sunshadow
+    - Evenwind
+    - Autumnloft
+    - Mooncairn
+    - Riverwall
+    - Balefrost
+    - Briarfell
+    - Greenpeace
+    - Ferngully
+    - Feralwood
+    - Feralstone
+    - Feralthorn
+Gnome:
+  first:
+    - Sindri
+    - Roywyn
+    - Jebeddo
+    - Roondar
+    - Breena
+    - Gerbo
+    - Orla
+    - Alvyn
+    - Gimble
+    - Dimble
+    - Alston
+    - Fonkin
+    - Kellen
+    - Burgell
+    - Loopmottin
+    - Waywocket
+    - Donella
+    - Brocc
+    - Lorilla
+    - Frug
+    - Tana
+    - Seebo
+    - Lilli
+    - Boddnock
+    - Lord
+  last:
+    - Beren
+    - Garrick
+    - Murnig
+    - Daergel
+    - Raulnor
+    - Scheppen
+    - Nackle
+    - Timbers
+    - Folkor
+    - Ningel
+    - Turen
+Goblin:
+  first:
+    - Rulurm
+    - Propilda
+    - Gulk
+    - Vrak
+    - Grofelm
+    - Flih
+    - Cryrm
+    - Kligraag
+    - Buing
+    - Piosb
+    - Wak
+    - Gaq
+    - Gieg
+    - Clogeaz
+    - Wytolme
+    - Keag
+    - Zralias
+    - Dodrag
+    - Poop
+  last:
+    - Mrulur
+    - Adliporp
+    - Klug
+    - Karv
+    - Mleforg
+    - Hilf
+    - Mryrc
+    - Gaargilk
+    - Gniub
+    - Bsoip
+    - Kaw
+    - Qag
+    - Geig
+    - Zaegolc
+    - Emlotyw
+    - Gaek
+    - Sailarz
+    - Gardod
+Goliath:
+  first:
+    - Lo-Kag
+    - Vaunea
+    - Manneo
+    - Gauthak
+    - Maveith
+    - Uthal
+    - Thotham
+    - Pethani
+    - Ilikan
+    - Paavu
+    - Orilo
+    - Thalai
+    - Gae-Al
+    - Nalla
+    - Vimak
+    - Eglath
+    - Waffles
+  last:
+    - Flintfinder Katho-Olavi
+    - Fearless Anakalathai
+    - Twice-Orphaned Gathakanathi
+    - Wordpainter Kolae-Gileana
+    - Twistlimb Elanithino
+    - Skywatcher Kolae-Gileana
+    - Twice-Orphaned Kolae-Gileana
+    - Horncarver Thunukalathi
+    - Twice-Orphaned Anakalathai
+    - Dawncaller Elanithino
+    - Fearless Kalagiano
+    - Steadyhand Thunukalathi
+    - Horncarver Kalagiano
+    - Skywatcher Anakalathai
+    - Keeneye Vaimei-laga
+    - Skywatcher Elanithino
+    - Lonehunter Elanithino
+    - Threadtwister Thuliaga
+    - Steadyhand Katho-Olavi
+    - Dawncaller Thunukalathi
+    - Skywatcher Vaimei-laga
+    - Bearkiller Elanithino
+    - Steadyhand Thuliaga
+    - Wordpainter Anakalathai
+    - Flintfinder Vaimei-laga
+    - Lonehunter Katho-Olavi
+    - Flintfinder Ogolakanu
+    - Keeneye Gathakanathi
+    - Dawncaller Thuliaga
+    - Steadyhand Elanithino
+    - Wordpainter Elanithino
+    - Keeneye Kolae-Gileana
+    - Flintfinder Kalagiano
+    - Lonehunter Kalagiano
+    - Skywatcher Thuliaga
+    - Twice-Orphaned Katho-Olavi
+    - Bearkiller Kalagiano
+    - Keeneye Thuliaga
+    - Twistlimb Katho-Olavi
+    - Wordpainter Thunukalathi
+    - Skywatcher Thunukalathi
+    - Horncarver Gathakanathi
+    - Rootsmasher Elanithino
+    - Horncarver Katho-Olavi
+Half-Elf:
+  first:
+    - Vencia
+    - Remora
+    - Saidi
+    - Lorifir
+    - Gryphero
+    - Thirya
+    - Tegan
+    - Navaren
+    - Arando
+    - Leodor
+    - Arromar
+    - Nilus
+    - Taran
+    - Krynt
+    - Eandro
+    - Tylsa
+    - Dodd
+    - Lyfalia
+    - Velene
+    - Brey
+    - Bvachan
+    - Dalkon
+    - Lavant
+    - Sachil
+    - Rylef
+    - Zereni
+    - Dungarth
+    - Venefiq
+    - Ferel
+    - Xandrilla
+    - Borel
+    - Dyrk
+    - Alarcion
+    - Cale
+    - Jeras
+    - Tamond
+    - Craigery
+    - Jamantha
+    - Timberly
+    - Caleb
+  last:
+    - Woodenhawk
+    - Umbermoor
+    - Shanks
+    - Lynchfield
+    - Targana
+    - Goldrudder
+    - Gullscream
+    - Graylock
+    - Leerstrom
+    - Hindergrass
+    - Carnavon
+    - Sell
+    - Arkalis
+    - Strong
+    - Sunshadow
+    - Van Gandt
+    - Coyle
+    - Ereghast
+    - Webb
+    - Ratley
+    - Pyncion
+    - Coldshore
+    - Stavenger
+    - Faringray
+    - Dalicarlia
+    - Van Devries
+    - Blackstrand
+    - Shaulfer
+    - Netheridge
+    - Armanci
+    - Varcona
+    - Welfer
+    - Caskajaro
+    - Cuttlescar
+    - Riverwall
+    - Robinson
+Half-Orc:
+  first:
+    - Neega
+    - Shautha
+    - Ovak
+    - Myev
+    - Thokk
+    - Henk
+    - Emen
+    - Gell
+    - Ownka
+    - Volen
+    - Kansif
+    - Sutha
+    - Dench
+    - Baggi
+    - Ront
+    - Feng
+    - Engong
+    - Mhurren
+    - Keth
+    - Holg
+    - Vola
+    - Keith
+  last:
+    - Ageen
+    - Ahtuahs
+    - Kavo
+    - Veym
+    - Kkoht
+    - Kneh
+    - Neme
+    - Lleg
+    - Aknwo
+    - Nelov
+    - Fisnak
+    - Ahtus
+    - Hcned
+    - Iggab
+    - Tnor
+    - Gnef
+    - Gnogne
+    - Nerruhm
+    - Htek
+    - Gloh
+    - Alov
+Halfling:
+  first:
+    - Arthan
+    - Carvin
+    - Caliope
+    - Titch
+    - Tarfen
+    - Ziza
+    - Snakebait
+    - Keffen
+    - Tuck
+    - Kylem
+    - Quarrel
+    - Gedi
+    - Rabbit
+    - Rilkin
+    - Ernest
+    - Vil
+    - Emily
+    - Kynt
+    - Piper
+    - Vzani
+    - Teg
+    - Vexia
+    - Cullen
+    - Neff
+    - Rixi
+    - Tilly
+    - Whim
+    - Bilbo
+    - Frodo
+    - Gollum
+    - Samwise
+  last:
+    - Battlestone
+    - Tricker
+    - Skiprock
+    - Silverfin
+    - Raftmite
+    - Puddle
+    - Tanglestrand
+    - Willowrush
+    - Daggersharp
+    - Hollowpot
+    - Deepstrider
+    - Yellowcrane
+    - Angler
+    - Blackwater
+    - Baggins
+    - Boffin
+    - Brandywine
+    - Gamgee
+Hobgoblin:
+  first:
+    - Fiklem
+    - Pevrad
+    - Selba
+    - Kether
+    - Nurgem
+    - Ruklet
+    - Tevli
+    - Raygam
+    - Druglut
+    - Fovlen
+    - Cusus
+    - Donko
+    - Zayze
+    - Eltet
+    - Hedeng
+    - Pekhang
+    - Zodug
+    - Censi
+    - Avtag
+    - Filbror
+    - Drorir
+    - Hurgrim
+    - Fellak
+    - Heather
+  last:
+    - Melkif
+    - Darvep
+    - Ables
+    - Rehtek
+    - Megrun
+    - Telkur
+    - Ilvet
+    - Magyar
+    - Tulgurd
+    - Nelvof
+    - Susuc
+    - Oknod
+    - Ezyaz
+    - Tetle
+    - Gnedeh
+    - Gnahkep
+    - Gudoz
+    - Isnec
+    - Gatva
+    - Rorblif
+    - Rirord
+    - Mirgruh
+    - Kallef
+    - Smith
+Human:
+  first:
+    - Lavant
+    - Tanika
+    - Taran
+    - Nerle
+    - Feck
+    - Dyrk
+    - Norris
+    - Mirabel
+    - Tura
+    - Talfen
+    - Jeras
+    - Sachil
+    - Ningyan
+    - Nilus
+    - Dalkon
+    - Lorelei
+    - Remora
+    - Malfier
+    - Tamond
+    - Hagar
+    - Sevenson
+    - Brey
+    - Krynt
+    - Fenton
+    - Bram
+    - Dungarth
+    - Daylen
+    - Semil
+    - Meklan
+    - Arando
+    - Rosalyn
+    - Carter
+    - Hartley
+    - Sinclair
+    - Cedric
+    - Abbot
+    - Edgar
+    - Barnabus
+    - Gideon
+    - Wilfred
+    - Pierre
+    - Josh
+    - Valtteri
+    - Lewis
+    - Lando
+    - Charles
+  last:
+    - Blackstrand
+    - Silvergraft
+    - Dunhall
+    - Stormchapel
+    - Targana
+    - Dalicarlia
+    - Strong
+    - Varcona
+    - Falck
+    - Donoghan
+    - Voortham
+    - Brightwater
+    - Fallenbridge
+    - Kreel
+    - Coyle
+    - Kroft
+    - Cuttlescar
+    - Zethergyll
+    - Netheridge
+    - Arkalis
+    - Iscalon
+    - Cresthill
+    - Fryft
+    - Zatchet
+    - Sell
+    - Van Gandt
+    - Fletcher
+    - Seratolva
+    - Armanci
+    - Bilger
+    - Shattermast
+    - Faringray
+    - Hindergrass
+    - Coldshore
+    - Carnavon
+    - Moonridge
+    - Chalker
+    - Cherrier
+    - Faulkner
+    - Parson
+    - Stringer
+    - Abbot
+    - Fletcher
+    - Thatcher
+    - Palmer
+    - Singer
+    - Wren
+    - Hamilton
+    - Leclerc
+    - Bottas
+    - Norris
+Kenku:
+  first:
+    - Goateth
+    - Chomper
+    - Mouser
+    - Burner
+    - Sneezer
+    - Cruncher
+    - Painted
+    - Mallet
+    - Steel
+    - Net
+    - Wolfen
+    - Sail
+    - Horser
+    - Crackler
+    - Ratter
+    - Jangler
+    - Harvey
+  last:
+    - Baa
+    - Repmohc
+    - Squeak
+    - Renrub
+    - Rezeens
+    - Rehcnurc
+    - Stroke
+    - Drop
+    - Crash
+    - Cast
+    - Growl
+    - Flick
+    - Resroh
+    - Relkcarc
+    - Yelp
+    - Relgnaj
+    - Birdman
+Kobold:
+  first:
+    - Qukkolnilk
+    - Opzanog
+    - Kik
+    - Ghelp
+    - Ghimzezri
+    - Zigmink
+    - Dhas
+    - Genrealp
+    - Tasru
+    - Rhis
+    - Nalzulp
+    - Nikka
+    - Massi
+    - Gahra
+    - Mugla
+    - Arkoob
+    - Nola
+    - Ziddalk
+    - Vozlokro
+    - Grekrilk
+    - Zurk
+    - Radhakmi
+    - Suznik
+    - Vilnork
+    - Litreskrik
+    - Talsa
+    - Qrurmumkon
+    - Eamzaprin
+    - Methusalah
+  last:
+    - Klinlokkuq
+    - Gonazpo
+    - Kik
+    - Plehg
+    - Irzezmihg
+    - Knimgiz
+    - Sahd
+    - Plaerneg
+    - Ursat
+    - Sihr
+    - Pluzlan
+    - Akkin
+    - Issam
+    - Arhag
+    - Algum
+    - Bookra
+    - Alon
+    - Kladdiz
+    - Orkolzov
+    - Klirkerg
+    - Kruz
+    - Imkahdar
+    - Kinzus
+    - Kronliv
+    - Kirksertil
+    - Aslat
+    - Nokmumrurq
+    - Nirpazmae
+Lizardfolk:
+  first:
+    - Korth
+    - Irhtos
+    - Jhank
+    - Othokent
+    - Thurkear
+    - Usk
+    - Kethend
+    - Vargach
+    - Litrix
+    - Sauriv
+    - Kothar
+    - Vyth
+    - Throden
+    - Darastrix
+    - Valignat
+    - Kepesk
+    - Kosj
+    - Verthica
+    - Aryte
+    - Baeshra
+    - Billy Bob
+  last:
+    - Sounds Dangerous
+    - Sounds Secretive
+    - Sounds of Hammer
+    - Sounds Smart
+    - Sounds of Night
+    - Sounds of Iron
+    - Sounds of Gems
+    - Sounds of Battle
+    - Sounds of Armor
+    - Sounds Perceptive
+    - Sounds Dvil
+    - Sounds of Steel
+    - Sounds of the Many
+    - Sounds of Dragons
+    - Sounds of the Burning
+    - Sounds of the Storm
+    - Sounds Small
+    - Sounds of the Mountain
+    - Sounds of War
+    - Sounds of Animals
+    - Sounds of Farts
+Orc:
+  first:
+    - Keth
+    - Henk
+    - Neega
+    - Gell
+    - Ovak
+    - Ownka
+    - Holg
+    - Ront
+    - Baggi
+    - Thokk
+    - Shump
+    - Engong
+    - Feng
+    - Shautha
+    - Yevelda
+    - Krusk
+    - Kansif
+    - Dench
+    - Myev
+    - Vola
+    - Mhurren
+    - Volen
+    - Sutha
+    - Emen
+    - Komarod
+    - Zalthu
+    - Xuk
+    - Umragig
+    - Xurukk
+    - Zonagh
+    - Kurdan
+    - Xothkug
+    - Tandagh
+    - Kog
+    - Brad
+  last:
+    - Htek
+    - Kneh
+    - Ageen
+    - Lleg
+    - Kavo
+    - Aknwo
+    - Gloh
+    - Tnor
+    - Iggab
+    - Kkoht
+    - Pmuhs
+    - Gnogne
+    - Gnef
+    - Ahtuahs
+    - Adlevey
+    - Ksurk
+    - Fisnak
+    - Hcned
+    - Veym
+    - Alov
+    - Nerruhm
+    - Nelov
+    - Ahtus
+    - Neme
+    - Tilge
+    - Apaugh
+    - Vabugbu
+    - Xuk
+    - Shuzug
+    - Podagog
+    - Karrhig
+    - Wanug
+    - Varfu
+    - Marfu
+Tabaxi:
+  first:
+    - Skirt
+    - Lef-Handed
+    - Smoking
+    - Jade
+    - Five
+    - Cloud
+    - Seven
+    - Buttons
+    - Patches
+    - Samantha
+    - Lace
+    - Mr. Buttons
+    - Bramblepelt
+  last:
+    - of Snakes in Snoring Mountain
+    - Hummingbird Flying Bright Cliffs
+    - Mirror by Distant Rain
+    - of Snakes in Mountain Tree
+    - Shoe Green Rock Mountain Tree
+    - Mirror by Snoring Mountain
+    - of Snakes in Rumbling River
+    - Shoe Green Rock Rumbling River
+    - Timber Trees Bright Cliffs
+    - on the Mountaintop Storm Cloud Snoring Mountain
+    - Thundercloud Boom Boom Mountain Tree
+    - Shoe Green Rock Distant Rain
+    - on the Mountaintop Storm Cloud Rumbling River
+    - Hummingbird Flying Mountain Tree
+    - on the Mountaintop Storm Cloud Mountain Tree
+    - Thundercloud Boom Boom Rumbling River
+    - Mirror by Mountain Tree
+    - on the Mountaintop Storm Cloud Bright Cliffs
+    - Mirror by Bright Cliffs
+    - Hummingbird Flying Snoring Mountain
+    - Timber Trees Rumbling River
+    - Thundercloud Boom Boom Distant Rain
+    - on the Mountaintop Storm Cloud Distant Rain
+Tiefling:
+  first:
+    - Velavia
+    - Kazimir
+    - Nericia
+    - Domitia
+    - Severian
+    - Precious
+    - Decimeth
+    - Kalaradian
+    - Machem
+    - Corynax
+    - Suffer
+    - Sejanus
+    - Chorum
+    - Ankhus
+    - Levatra
+    - Excellence
+    - Daelius
+    - Marchion
+    - Cataclysmia
+    - Malfias
+    - Archidius
+    - Namazeus
+    - Maetheus
+    - Incirion
+    - Prismeus
+    - Zevon
+    - Lachira
+    - Demedor
+    - Dynachus
+    - Zethaya
+    - Vaius
+    - Halius
+    - Heleph
+    - Tenerife
+    - Rain
+  last:
+    - Tryphon
+    - Sarzan
+    - Shadowhorn
+    - Paradas
+    - Szereban
+    - Trevethor
+    - Meluzan
+    - Romazi
+    - Carnago
+    - Torzalan
+    - Iscitan
+    - Vadu
+    - Vrago
+    - Amarzian
+    - Serechor
+    - Trelenus
+    - Menetrian
+    - Domarien
+Triton:
+  first:
+    - Aryn
+    - Delnis
+    - Vlaryn
+    - Duthyn
+    - Vodos
+    - Otanyn
+    - Belthyn
+    - Wolyn
+    - Corus
+    - Keros
+    - Nalos
+    - Jhimas
+    - Shalryn
+    - Feloren
+    - Ariel
+    - Finn
+    - Spongebob
+  last:
+    - Vuuvaxath
+    - Ahlorsath
+    - Pumanath
+    - Finn
+    - McMerman
+    - Salmon
+    - Herring
+    - Tuna
+    - Lobster
+    - Shrimp
+    - Squid
+    - Octopus
+    - Crab
+    - Squarepants
+Yuan-Ti Pureblood:
+  first:
+    - Rza
+    - Raekwon
+    - Cappadonna
+    - Gza
+    - Shakur
+    - Jayz
+    - Nas
+    - Dre
+    - Rakim
+  last:
+    - Cobra Bite
+    - Viper Fang
+    - Asp Venom
+    - Boa Constriction
+    - Copperhead Bite
+    - Rattle Venom
+    - Asp Venom
+    - Boa Bite
+    - Cobra Hood
+    - Cobra Strike
+    - Viper Strike
+    - Viper Venom
+Alien:
+  first:
+    - Jerry
+    - Tix'al
+    - Gal
+    - Egzoix
+    - Draacits
+    - Dil'eal
+    - Dhavu
+    - Zolta
+    - Dromhods
+    - Raescaik
+    - Drizeax
+    - Ik'ads
+    - Vaik
+    - Thrits
+    - Xurkril
+    - Rimen
+    - Imhuth
+    - Deiliell
+    - Qeemhik
+    - Mututs
+    - Itens
+    - Stakvuins
+    - Vuknuin
+    - Nocens
+    - Zurqruts
+    - Beltoit
+    - Ophuds
+    - Eltor
+    - Hankrath
+    - Yaargek
+    - Horcoir
+    - Bart
+  last:
+    - Tix'al
+    - Gal
+    - Egzoix
+    - Draacits
+    - Dil'eal
+    - Dhavu
+    - Zolta
+    - Dromhods
+    - Raescaik
+    - Drizeax
+    - Ik'ads
+    - Vaik
+    - Thrits
+    - Xurkril
+    - Rimen
+    - Imhuth
+    - Deiliell
+    - Qeemhik
+    - Mututs
+    - Itens
+    - Stakvuins
+    - Vuknuin
+    - Nocens
+    - Zurqruts
+    - Beltoit
+    - Ophuds
+    - Eltor
+    - Hankrath
+    - Yaargek
+    - Horcoir

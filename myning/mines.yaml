@@ -1,0 +1,467 @@
+Hole in the ground:
+  type: regular
+  min_player_level: 1
+  cost: 0
+  enemies:
+    - 1
+    - 1
+  character_levels:
+    - 1
+    - 1
+  max_enemy_items: 2
+  max_item_level: 2
+  max_enemy_item_level: 2
+  odds:
+    - action: combat
+      chance: 28
+    - action: equipment
+      chance: 2
+    - action: mineral
+      chance: 60
+    - action: recruit
+      chance: 0
+    - action: lose_ally
+      chance: 0
+  win_criteria:
+    kills: 10
+    minutes: 15
+    minerals: 30
+
+Small pit:
+  type: regular
+  min_player_level: 3
+  cost: 25
+  enemies:
+    - 2
+    - 3
+  character_levels:
+    - 2
+    - 3
+  max_enemy_items: 2
+  max_item_level: 4
+  max_enemy_item_level: 6
+  odds:
+    - action: combat
+      chance: 23
+    - action: equipment
+      chance: 2
+    - action: mineral
+      chance: 65
+    - action: recruit
+      chance: 0
+    - action: lose_ally
+      chance: 0
+  win_criteria:
+    kills: 50
+    minutes: 45
+    minerals: 120
+
+Trench:
+  type: regular
+  min_player_level: 5
+  cost: 150
+  enemies:
+    - 2
+    - 4
+  character_levels:
+    - 4
+    - 6
+  max_enemy_items: 3
+  max_item_level: 7
+  max_enemy_item_level: 11
+  odds:
+    - action: combat
+      chance: 22
+    - action: equipment
+      chance: 4
+    - action: mineral
+      chance: 65
+    - action: recruit
+      chance: 0.3
+    - action: lose_ally
+      chance: 0.25
+  win_criteria:
+    kills: 250
+    minutes: 120
+    minerals: 200
+  companion_rarity: 1 # First place we can get companions. All are human
+
+Tin mine:
+  type: resource
+  resource: Tin Nugget
+  min_player_level: 7
+  cost: 300
+  enemies:
+    - 1
+    - 1
+  character_levels:
+    - 5
+    - 8
+  max_enemy_items: 2
+  max_item_level: 7
+  max_enemy_item_level: 7
+  odds:
+    - action: combat
+      chance: 0.25
+    - action: equipment
+      chance: 0.25
+    - action: mineral
+      chance: 96
+    - action: recruit
+      chance: 0.01
+    - action: lose_ally
+      chance: 0
+
+Large pit:
+  type: regular
+  min_player_level: 9
+  cost: 500
+  enemies:
+    - 2
+    - 5
+  character_levels:
+    - 7
+    - 10
+  max_enemy_items: 3
+  max_item_level: 9
+  max_enemy_item_level: 14
+  odds:
+    - action: combat
+      chance: 22.5
+    - action: equipment
+      chance: 5
+    - action: mineral
+      chance: 65
+    - action: recruit
+      chance: 0.5
+    - action: lose_ally
+      chance: 0.41
+  win_criteria:
+    kills: 300
+    minutes: 200
+    minerals: 380
+  companion_rarity: 1 # Still just humans
+
+Training Ground:
+  type: combat
+  exp_boost: -0.40
+  min_player_level: 10
+  cost: 750
+  enemies:
+    - 1
+    - -1
+  character_levels:
+    - 2
+    - 8
+  max_enemy_items: 3
+  max_item_level: 5
+  max_enemy_item_level: 7
+  odds:
+    - action: combat
+      chance: 100
+    - action: equipment
+      chance: 0
+    - action: mineral
+      chance: 0
+    - action: recruit
+      chance: 0
+    - action: lose_ally
+      chance: 0
+
+Cave:
+  type: regular
+  exp_boost: 0.05
+  min_player_level: 12
+  cost: 1000
+  enemies:
+    - 4
+    - 8
+  character_levels:
+    - 9
+    - 12
+  max_enemy_items: 4
+  max_item_level: 12
+  max_enemy_item_level: 18
+  odds:
+    - action: combat
+      chance: 20
+    - action: equipment
+      chance: 6
+    - action: mineral
+      chance: 65
+    - action: recruit
+      chance: 0.6
+    - action: lose_ally
+      chance: 0.52
+  win_criteria:
+    kills: 1000
+    minutes: 400
+    minerals: 1200
+  companion_rarity: 2
+
+Coal mine:
+  type: resource
+  resource: Coal Deposit
+  min_player_level: 13
+  cost: 2000
+  enemies:
+    - 1
+    - 1
+  character_levels:
+    - 11
+    - 13
+  max_enemy_items: 2
+  max_item_level: 11
+  max_enemy_item_level: 11
+  odds:
+    - action: combat
+      chance: 0.5
+    - action: equipment
+      chance: 0.5
+    - action: mineral
+      chance: 95
+    - action: recruit
+      chance: 0.01
+    - action: lose_ally
+      chance: 0
+
+Cavern:
+  type: regular
+  exp_boost: 0.10
+  min_player_level: 14
+  cost: 2500
+  enemies:
+    - 7
+    - 12
+  character_levels:
+    - 11
+    - 16
+  max_enemy_items: 5
+  max_item_level: 14
+  max_enemy_item_level: 21
+  odds:
+    - action: combat
+      chance: 19
+    - action: equipment
+      chance: 6
+    - action: mineral
+      chance: 66
+    - action: recruit
+      chance: 0.7
+    - action: lose_ally
+      chance: 0.64
+  win_criteria:
+    kills: 1600
+    minutes: 1000
+    minerals: 2100
+  companion_rarity: 3
+
+Battle Ground:
+  type: combat
+  exp_boost: -0.35
+  min_player_level: 14
+  cost: 5000
+  enemies:
+    - 1
+    - -1
+  character_levels:
+    - 5
+    - 11
+  max_enemy_items: 5
+  max_item_level: 10
+  max_enemy_item_level: 13
+  odds:
+    - action: combat
+      chance: 99.75
+    - action: equipment
+      chance: 0
+    - action: mineral
+      chance: 0
+    - action: recruit
+      chance: 0.25
+    - action: lose_ally
+      chance: 0.2
+
+Death Valley:
+  type: regular
+  exp_boost: 0.40
+  min_player_level: 14
+  cost: 6000
+  enemies:
+    - 5
+    - 9
+  character_levels:
+    - 10
+    - 13
+  max_enemy_items: 6
+  max_item_level: 20
+  max_enemy_item_level: 20
+  odds:
+    - action: combat
+      chance: 20
+    - action: equipment
+      chance: 6
+    - action: mineral
+      chance: 65
+    - action: recruit
+      chance: 0.6
+    - action: lose_ally
+      chance: 5
+  win_criteria:
+    kills: 2000
+    minutes: 800
+    minerals: 1900
+  companion_rarity: 2
+
+Cave System:
+  type: regular
+  exp_boost: 0.20
+  min_player_level: 16
+  cost: 7500
+  enemies:
+    - 11
+    - 16
+  character_levels:
+    - 15
+    - 19
+  max_enemy_items: 6
+  max_item_level: 17
+  max_enemy_item_level: 27
+  odds:
+    - action: combat
+      chance: 17
+    - action: equipment
+      chance: 8
+    - action: mineral
+      chance: 66
+    - action: recruit
+      chance: 0.75
+    - action: lose_ally
+      chance: 0.75
+  win_criteria:
+    kills: 3000
+    minutes: 1200
+    minerals: 2800
+  companion_rarity: 4
+
+Gold mine:
+  type: resource
+  resource: Gold Nugget
+  min_player_level: 17
+  cost: 10000
+  enemies:
+    - 1
+    - 1
+  character_levels:
+    - 15
+    - 17
+  max_enemy_items: 4
+  max_item_level: 16
+  max_enemy_item_level: 14
+  odds:
+    - action: combat
+      chance: 0.5
+    - action: equipment
+      chance: 0.5
+    - action: mineral
+      chance: 95
+    - action: recruit
+      chance: 0.01
+    - action: lose_ally
+      chance: 0
+
+Meteor Crater:
+  type: regular
+  exp_boost: 0.23
+  min_player_level: 18
+  cost: 12000
+  enemies:
+    - 15
+    - 23
+  character_levels:
+    - 18
+    - 22
+  max_enemy_items: 6
+  max_item_level: 20
+  max_enemy_item_level: 31
+  enemy_item_scale: 1.25
+  odds:
+    - action: combat
+      chance: 15
+    - action: equipment
+      chance: 8
+    - action: mineral
+      chance: 67
+    - action: recruit
+      chance: 0.79
+    - action: lose_ally
+      chance: 0.8
+  win_criteria:
+    kills: 6000
+    minutes: 1500
+    minerals: 3600
+  companion_rarity: 4
+
+Canyon:
+  type: regular
+  exp_boost: 0.27
+  min_player_level: 22
+  cost: 25000
+  enemies:
+    - 22
+    - 31
+  character_levels:
+    - 21
+    - 25
+  max_enemy_items: 6
+  max_item_level: 23
+  max_enemy_item_level: 38
+  enemy_item_scale: 1.75
+  odds:
+    - action: combat
+      chance: 17
+    - action: equipment
+      chance: 9
+    - action: mineral
+      chance: 64
+    - action: recruit
+      chance: 0.72
+    - action: lose_ally
+      chance: 0.74
+  win_criteria:
+    kills: 10000
+    minutes: 1800
+    minerals: 6200
+  companion_rarity: 5
+
+Chasm:
+  type: regular
+  exp_boost: 0.30
+  min_player_level: 23
+  cost: 50000
+  enemies:
+    - 41
+    - 80
+  character_levels:
+    - 25
+    - 29
+  max_enemy_items: 6
+  max_item_level: 26
+  max_enemy_item_level: 45
+  enemy_item_scale: 2.5
+  odds:
+    - action: combat
+      chance: 18
+    - action: equipment
+      chance: 8
+    - action: mineral
+      chance: 65
+    - action: recruit
+      chance: 0.8
+    - action: lose_ally
+      chance: 0.85
+  win_criteria:
+    kills: 15000
+    minutes: 2400
+    minerals: 8000
+  companion_rarity: 6

@@ -1,0 +1,411 @@
+Human:
+  icon: 👨🏾‍🌾
+  health_mod: 10
+  strength: 2
+  defense: 2
+  critical_chance: 2
+  dodge_chance: 2
+  name: Human
+  intro: Hello,
+  description: Humans are renowned for their diversity and ambition,
+    and although they lack specialization, they can excel
+    in many areas.
+  alignment: Neutral Good
+  size: medium
+  rarity_tier: 1
+Dwarf:
+  icon: 🧔🏻‍♂️
+  health_mod: 12
+  strength: 5
+  defense: 3
+  critical_chance: 0
+  dodge_chance: 0
+  name: Dwarf
+  intro: Hark!
+  description: Dwarves, sometimes called the Stout Folk and Deep
+    Folk, are a natural humanoid race common throughout
+    the world. Dwarves are a short, tough, tradition-abiding
+    folk known for their strong martial traditions and
+    beautiful craftsmanship.
+  alignment: Neutral Good
+  size: small
+  rarity_tier: 2
+Elf:
+  icon: 🧝🏻‍♀️
+  health_mod: 9
+  strength: 1
+  defense: 1
+  critical_chance: 4
+  dodge_chance: 4
+  name: Elf
+  intro: What's the Dilly?
+  description: Elves are a long-lived race found most commonly in
+    forests, shrublands, and other wildernesses. From
+    time to time the elves have organized strong nations
+    in some cases adopting even a nomadic lifestyle. They
+    have pointy ears and are androgynous, with a large
+    number of variants of their appearance.
+  alignment: Neutral Good
+  size: medium
+  rarity_tier: 2
+Goblin:
+  icon: 🧑🏼‍🎤
+  health_mod: 8
+  strength: 1
+  defense: 1
+  critical_chance: 4
+  dodge_chance: 4
+  name: Goblin
+  intro: Yargha!
+  description: Goblins are a race of small and numerous goblinoids
+    common through the world, often living in underground
+    caverns near the surface known as lairs. The race
+    is often, though not always, dominated by other
+    goblinoids, most commonly hobgoblins. Goblins may
+    have, in fact, been initially created by this
+    related race to serve as scouts and infiltrators.
+  alignment: Chaotic Evil
+  size: small
+  rarity_tier: 2
+Halfling:
+  icon: 🧑🏽‍🍳
+  health_mod: 7
+  strength: 1
+  defense: 1
+  critical_chance: 2
+  dodge_chance: 7
+  name: Halfling
+  intro: Holla!
+  description: Halflings, also known as Hin, or the "quick folk"
+    amongst themselves, or the "sly folk" or "good folk"
+    by other races are humanoid creatures similar in
+    shape to humans. The term "halfling" was derived
+    from the fact that they are around half of the size
+    of humans, but otherwise very similar in appearance.
+  alignment: Lawful Good
+  size: small
+  rarity_tier: 2
+Orc:
+  icon: 🧟‍♀️
+  health_mod: 12
+  strength: 5
+  defense: 3
+  critical_chance: 1
+  dodge_chance: 0
+  name: Orc
+  intro: Yo!
+  description: Orc bad. But not all time. Me good right now?
+  alignment: Neutral Evil
+  size: medium
+  rarity_tier: 2
+Gnome:
+  icon: 👨🏾‍🎨
+  health_mod: 8
+  strength: 1
+  defense: 1
+  critical_chance: 3
+  dodge_chance: 6
+  name: Gnome
+  intro: Aye, well met.
+  description: Gnomes, or the Forgotten Folk as they are sometimes
+    known, are small humanoids known for their eccentric
+    sense of humor, inquisitiveness, and engineering
+    prowess. Having had few overt influences on the world's
+    history but many small and unseen ones, gnomes are
+    often overlooked by the powers that be, despite their
+    craftiness and affinity for illusion magic. Gnomes
+    are present in nearly every human city and most
+    caravan-stop villages where other cultures and
+    non-human races are at least tolerated.
+  alignment: Chaotic Good
+  size: small
+  rarity_tier: 2
+Half-Elf:
+  icon: 🧝🏽
+  health_mod: 10
+  strength: 2
+  defense: 2
+  critical_chance: 3
+  dodge_chance: 3
+  name: Half-Elf
+  intro: What's good?
+  description: Half-elves are humanoids born through the union of
+    an elf and a human. Whether a half-elf was raised
+    by their human parent or their elven parent, they
+    often feel isolated and alone. Because they take
+    around twenty years to reach adulthood, they mature
+    quickly when raised by elves (who think they look
+    like humans), making them feel like an outsider in
+    either place.
+  alignment: Neutral Good
+  size: medium
+  rarity_tier: 3
+Half-Orc:
+  icon: 🧑🏿‍🎤
+  health_mod: 12
+  strength: 5
+  defense: 2
+  critical_chance: 1
+  dodge_chance: 1
+  name: Half-Orc
+  intro: How goes it?
+  description: Half-orcs are humanoids born of both human and orc ancestry by
+    a multitude of means. Having the combined physical
+    power of their orcish ancestors with the agility of
+    their human ones, half-orcs are formidable
+    individuals. Though they are often shunned in both
+    human and orcish society for different reasons,
+    half-orcs have proven themselves from time to
+    time as worthy heroes and dangerous villains.
+  alignment: True Neutral
+  size: medium
+  rarity_tier: 3
+Bugbear:
+  icon: 🐷
+  health_mod: 14
+  strength: 6
+  defense: 2
+  critical_chance: 0
+  dodge_chance: 0
+  name: Bugbear
+  intro: How's it hanging?
+  description: Bugbears are a massive humanoid race
+    distantly related to, but larger and stronger than, goblins
+    and hobgoblins.
+  alignment: Chaotic Evil
+  size: large
+  rarity_tier: 3
+Hobgoblin:
+  icon: 👹
+  health_mod: 10
+  strength: 4
+  defense: 0
+  critical_chance: 6
+  dodge_chance: 0
+  name: Hobgoblin
+  intro: Sup, b?
+  description: Hobgoblins are larger, stronger, smarter, and more
+    menacing forms of goblinoids than goblins, but not
+    as powerful as bugbears.
+  alignment: Lawful Evil
+  size: medium
+  rarity_tier: 3
+Lizardfolk:
+  icon: 🐸
+  health_mod: 10
+  strength: 2
+  defense: 1
+  critical_chance: 5
+  dodge_chance: 2
+  name: Lizardfolk
+  intro: Good. Long. day.
+  description: Lizardfolk possess an alien and inscrutable mindset,
+    their desires and thoughts driven by a different set
+    of basic principles than those of warm-blooded
+    creatures. Their dismal swamp homes might lie
+    hundreds of miles from the nearest human settlement,
+    but the gap between their way of thinking and that of
+    the smooth-skins is far greater.
+  alignment: True Neutral
+  size: medium
+  rarity_tier: 3
+Goliath:
+  icon: 👳🏻‍♀️
+  health_mod: 16
+  strength: 6
+  defense: 2
+  critical_chance: 0
+  dodge_chance: 0
+  name: Goliath
+  intro: Tiny one, how are you?!
+  description: Goliaths are massive. They average between seven to
+    eight feet tall, making them even taller than
+    dragonborn and half-orcs. Goliaths have noticeably
+    bony or prominent supraorbital ridges above their
+    eyes. Goliath eyes are often a bright blue or green
+    and sometimes glow a little. Goliath skin is often
+    gray or brown and is extremely tough (often compared
+    to stone).
+  alignment: Lawful Good
+  size: large
+  rarity_tier: 4
+Dragonborn:
+  icon: 🐲
+  health_mod: 11
+  strength: 2
+  defense: 2
+  critical_chance: 5
+  dodge_chance: 2
+  name: Dragonborn
+  intro: Fortuitous greetings traveler,
+  description: Dragonborn resemble in many ways what their name suggests... a humanoid dragon.
+  alignment: True Neutral
+  size: medium
+  rarity_tier: 4
+Tiefling:
+  icon: 🧚
+  health_mod: 10
+  strength: 2
+  defense: 2
+  critical_chance: 4
+  dodge_chance: 3
+  name: Tiefling
+  intro: Upon you I bestow long days and pleasant nights,
+  description: All tieflings possess large thick horns of various
+    styles on their heads, prehensile tails approximately
+    4 to 5 feet in length, sharply pointed teeth, and
+    their eyes are solid orbs of red, black, white,
+    silver, or gold. They also have wings.
+  alignment: Neutral Evil
+  size: medium
+  rarity_tier: 4
+Triton:
+  icon: 🧜‍♂️
+  health_mod: 12
+  strength: 4
+  defense: 3
+  critical_chance: 1
+  dodge_chance: 1
+  name: Triton
+  intro: Greetings, land lover!
+  description: Tritons, or commonly referred to as merfolk resemble
+    aquatic elves in their upper half, but their lower
+    halves are more fish-like, with scaly legs and webbed
+    feet. They favor tridents over other weapons.
+  alignment: True Neutral
+  size: medium
+  rarity_tier: 4
+Firbolg:
+  icon: 🦊
+  health_mod: 15
+  strength: 7
+  defense: 2
+  critical_chance: 1
+  dodge_chance: 0
+  name: Firbolg
+  intro: What's crackin?
+  description: Firbolgs are a reclusive race of giant-kin who
+    preferred to avoid contact with other sentient races.
+    They are both the most intelligent and the most
+    powerful of the giant-kin."""
+  size: small
+  alignment: True Neutral
+  rarity_tier: 5
+Kenku:
+  icon: 🐧
+  health_mod: 9
+  strength: 1
+  defense: 3
+  critical_chance: 5
+  dodge_chance: 4
+  name: Kenku
+  intro: Kaaaaaa!, err, excuse me,
+  description: Kenku are a race of flightless avian humanoids. They
+    tend to be selfish and secretive in nature and were
+    often engaged in plots to acquire wealth and power.
+    They operate in small gangs and often lived in large
+    cities where they work as spies, assassins, or
+    thieves.
+  alignment: Chaotic Neutral
+  size: medium
+  rarity_tier: 5
+Kobold:
+  icon: 🧙🏿‍♀️
+  health_mod: 7
+  strength: 0
+  defense: 0
+  critical_chance: 7
+  dodge_chance: 7
+  name: Kobold
+  intro: Cheers, new master!
+  description: Kobolds are aggressive, insular, yet industrious
+    small humanoid creatures. They are noted for their
+    skill at building traps and preparing ambushes, and
+    mining. They are distantly related to dragons and
+    are often found serving as their minions.
+  alignment: Lawful Evil
+  size: small
+  rarity_tier: 5
+Tabaxi:
+  icon: 🦁
+  health_mod: 10
+  strength: 2
+  defense: 2
+  critical_chance: 4
+  dodge_chance: 5
+  name: Tabaxi
+  intro: GRRRRRReetings...
+  description: A tabaxi resembles a lithe, graceful, athletic human
+    with a leopard or jaguar-like head and a tail.
+    Instead of skin, they have beautiful spotted fur
+    pelts that ranged in color from light yellow to
+    brownish red. They have sharp teeth and retractable
+    claws, which are their primary weapons in combat.
+  alignment: True Neutral
+  size: medium
+  rarity_tier: 6
+Yuan-Ti Pureblood:
+  icon: 🧔🏼‍♂️
+  health_mod: 9
+  strength: 2
+  defense: 2
+  critical_chance: 5
+  dodge_chance: 5
+  name: Yuan-Ti Pureblood
+  intro: Tidings, warm-blood...
+  description: Though snake-like, Purebloods appear mostly human,
+    with minor reptilian features, such as slitted eyes,
+    a forked tongue, or patches of scales on their skin.
+    They serve as diplomats and infiltrators, pretending
+    to be human.
+  alignment: Chaotic Evil
+  size: medium
+  rarity_tier: 6
+Aasimar:
+  icon: 🧖🏼
+  health_mod: 10
+  strength: 3
+  defense: 3
+  critical_chance: 6
+  dodge_chance: 2
+  name: Aasimar
+  intro: Howzit
+  description: Aasimar are human-based planetouched, native
+    outsiders that have in their blood some good,
+    otherworldly characteristics. They are often, but
+    not always, descended from celestials and other
+    creatures of pure good alignment.
+  alignment: Lawful Good
+  size: Medium
+  rarity_tier: 7
+Unicorn:
+  icon: 🦄
+  health_mod: 12
+  strength: 3
+  defense: 3
+  critical_chance: 1
+  dodge_chance: 6
+  name: Unicorn
+  intro: Why hath thy called upon me?
+  description:
+    Unicorns are wild and magical woodland creatures, symbols of purity and grace,
+    which could be captured only by a virgin.Its horn has the power to render poisoned water potable
+    and to heal sickness.
+  alignment: Chaotic Neutral
+  size: medium
+  rarity_tier: 7
+Alien:
+  icon: 👽
+  health_mod: 10
+  strength: 2
+  defense: 2
+  critical_chance: 4
+  dodge_chance: 1
+  name: Alien
+  intro: What?
+  description: Not much is known about these strange
+    creatures other than that they will attack anybody on sight.
+  alignment: Chaotic Evil
+  size: small
+  is_enemy: true
+  rarity_tier: 0

@@ -1,0 +1,164 @@
+modifiers:
+  - Crumbling
+  - Pathetic
+  - Pitiful
+  - Poor
+  - Miserable
+  - Feeble
+  - Frail
+  - Flimsy
+  - Wobbly
+  - Shaky
+  - Unsteady
+  - Ol'
+  - Dirty
+  - Dusty
+  - Little
+  - Moderate
+  - Average
+  - Regular
+  - Orginary
+  - Standard
+  - Competent
+  - Sturdy
+  - Effective
+  - Strong
+  - Reinforced
+  - Formidable
+  - Stout
+  - Robust
+  - Hearty
+  - Powerful
+  - Mighty
+  - Vigorous
+  - Stalwart
+  - Unbreakable
+  - Deadly
+  - Tremendous
+  - Unstoppable
+  - Enchanted
+  - Invincible
+  - Epic
+  - Unbeatable
+  - Angelic
+  - Dominant
+  - All-powerful
+  - Divine
+
+sizes:
+  - Microscopic
+  - Teensy-weensy
+  - Miniscule
+  - Pygmy
+  - Tiny
+  - Petite
+  - Small
+  - Little
+  - Smaller Than Average
+  - Average
+  - Common
+  - Slightly Large
+  - Sizable
+  - Ample
+  - Big
+  - Large
+  - Goodly-sized
+  - Massive
+  - Jumbo
+  - Gigantic
+  - Titanic
+  - Epic
+  - Monstrous
+  - Gargantuan
+  - Mega-sized
+  - Titan
+  - Mammoth
+  - Colossal
+  - Vast
+  - Behemoth
+  - Big Boi
+
+minerals:
+  - Copper Nugget
+  - Tin Nugget
+  - Iron Nugget
+  - Coal Deposit
+  - Silver Nugget
+  - Gold Nugget
+  - Platinum Nugget
+  - Diamond
+  - Ruby
+  - Blue Garnet
+  - Black Opal
+  - Red Diamond
+  - Jadeite Deposit
+
+weapon:
+  - Pickaxe
+  - Sword
+  - Spear
+  - Hand Ax
+  - Longbow
+  - Shortbow
+  - Crossbow
+  - Dagger
+  - Shortsword
+  - Longsword
+  - Pike
+  - Halbard
+  - Handgun
+  - Bazooka
+  - Flamethrower
+  - Shotgun
+  - Bb-Gun
+
+helmet:
+  - Mining Helmet
+  - Baseball Cap
+  - Bike Helmet
+  - Motorcycle Helmet
+  - Fez
+  - Hockey Mask
+  - Fedora
+  - Flat Bill
+  - Earmuffs
+
+shirt:
+  - T-Shirt
+  - Plate Armor
+  - Chain Armor
+  - Leather Jacket
+  - Jean Jacket
+  - Goalie Shirt
+  - Studded Armor
+  - Tank Top
+  - Hoodie
+  - Biker Jacket
+
+pants:
+  - Jeans
+  - Plate Legs
+  - Leather Pants
+  - Hockey Pants
+  - Khakis
+  - Basketball Shorts
+  - Jorts
+  - Zip-offs
+  - Slacks
+  - yoga Pants
+  - Tutu
+
+shoes:
+  - Jordans
+  - Jandles
+  - Crocs
+  - Flip Flops
+  - Leather Boots
+  - Sneakers
+  - Vans
+  - Hide Boots
+  - Studded Boots
+  - Plated Boots
+  - Toms
+  - Sperry's
+  - Boat Shoes
