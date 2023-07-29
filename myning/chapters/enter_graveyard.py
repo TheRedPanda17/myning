@@ -81,7 +81,6 @@ def revive(player: Player, ally: Character):
         FileManager.multi_save(player, ally)
 
 
-@cache
 def soul_cost(ghost_count: int) -> int:
     return int(ghost_count * 1.1)
 
