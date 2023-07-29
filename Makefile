@@ -28,10 +28,10 @@ lint: isort black
 	@true
 
 isort:
-	isort . --check --diff; 
+	isort . --check --diff
 
 black:
-	black . --check;
+	black . --check
 
 migrate:
 	python migrate.py $(id)
