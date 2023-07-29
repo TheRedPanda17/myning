@@ -1,8 +1,8 @@
 from myning.chapters.enter_graveyard import soul_cost
 from myning.objects.player import Player
+from myning.utils.file_manager import FileManager
 from myning.utils.ui import get_soul_string
 from myning.utils.utils import fibonacci
-from myning.utils.file_manager import FileManager
 
 
 def run():
