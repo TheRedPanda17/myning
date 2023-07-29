@@ -40,16 +40,17 @@ def get_random_array_item(arr: ListType[T]) -> T:
 
 @cache
 def fibonacci(n: int) -> int:
-    if n == 1:
-        return 0
-    elif n == 2:
-        return 1
-    elif n == 3:
-        return 3
-    elif n == 4:
-        return 5
-    else:
-        return fibonacci(n - 1) + fibonacci(n - 2)
+    match n:
+        case 1:
+            return 0
+        case 2:
+            return 1
+        case 3:
+            return 3
+        case 4:
+            return 5
+        case _:
+            return fibonacci(n - 1) + fibonacci(n - 2)
 
 
 @cache

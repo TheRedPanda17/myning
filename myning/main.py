@@ -1,3 +1,4 @@
+from myning.migrations.migrate import check_for_migrations
 from myning.objects.game import Game
 from myning.objects.player import Player
 from myning.objects.settings import Settings
@@ -8,6 +9,7 @@ from myning.utils.git_interactions import check_for_updates
 
 def main():
     check_for_updates()
+    check_for_migrations()
 
     FileManager.setup()
     Player.initialize()
