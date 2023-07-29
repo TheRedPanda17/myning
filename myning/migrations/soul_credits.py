@@ -21,9 +21,13 @@ def run():
     print(f"\nNew cost is {get_soul_string(new_cost)}.")
 
     returned = spent_credits - new_cost
-    print(f"\nYou've been returned {get_soul_string(returned)}.")
-
-    player.soul_credits += returned
-    FileManager.save(player)
+    if returned > 0:
+        print(f"\nYou've been returned {get_soul_string(returned)}.")
+        player.soul_credits += returned
+        FileManager.save(player)
+    elif returned == 0:
+        print(f"\nYou broke even!")
+    else:
+        print("You actually came out ahead before, so we'll give you a pass.")
 
     print("\nHave fun myning!")
