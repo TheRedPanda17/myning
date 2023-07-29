@@ -22,5 +22,4 @@ def mock_random_array_item():
 def mock_save_file():
     """Mock save_file to return a mock file"""
     with patch("myning.utils.file_manager.FileManager.save") as mock_save_file:
-
         yield mock_save_file

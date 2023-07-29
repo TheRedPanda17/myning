@@ -4,12 +4,25 @@ from blessed import Terminal
 
 from myning.objects.object import Object
 from myning.objects.plant import Plant
+from myning.objects.singleton import Singleton
 from myning.utils.file_manager import FileManager, Subfolders
 
 term = Terminal()
 
 
-class Garden(Object):
+class Garden(Object, metaclass=Singleton):
+    @classmethod
+    def initialize(cls):
+        garden = FileManager.load(Garden, cls.file_name)
+        if not garden:
+            garden = cls()
+        cls._instance = garden
+
+    @classmethod
+    @property
+    def file_name(cls):
+        return "garden"
+
     def __init__(
         self,
         level: int = 1,

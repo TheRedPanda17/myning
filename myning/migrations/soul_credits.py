@@ -1,8 +1,8 @@
 from myning.chapters.enter_graveyard import soul_cost
 from myning.objects.player import Player
+from myning.utils.file_manager import FileManager
 from myning.utils.ui import get_soul_string
 from myning.utils.utils import fibonacci
-from myning.utils.file_manager import FileManager
 
 
 def run():
@@ -28,6 +28,6 @@ def run():
     elif returned == 0:
         print(f"\nYou broke even!")
     else:
-        print("You actually came out ahead before, so we'll give you a pass.")
+        print("\nYou actually came out ahead before, so we'll give you a pass.")
 
     print("\nHave fun myning!")

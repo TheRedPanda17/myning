@@ -27,5 +27,11 @@ restart:
 lint: isort black
 	@true
 
+isort:
+	isort . --check --diff
+
+black:
+	black . --check
+
 migrate:
 	python migrate.py $(id)

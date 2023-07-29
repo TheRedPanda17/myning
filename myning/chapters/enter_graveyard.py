@@ -1,5 +1,3 @@
-from functools import cache
-
 from myning.objects.character import Character
 from myning.objects.player import Player
 from myning.utils.file_manager import FileManager
