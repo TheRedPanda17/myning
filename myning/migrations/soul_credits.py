@@ -28,6 +28,6 @@ def run():
     elif returned == 0:
         print(f"\nYou broke even!")
     else:
-        print("You actually came out ahead before, so we'll give you a pass.")
+        print("\nYou actually came out ahead before, so we'll give you a pass.")
 
     print("\nHave fun myning!")
