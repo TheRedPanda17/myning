@@ -12,8 +12,7 @@ from myning.utils.ui import columnate, get_gold_string, get_water_string
 
 
 def play():
-    player = Player()
-    garden = player.garden
+    player, garden = Player(), Garden()
 
     def get_seeds():
         return [generate_plant(garden.level) for _ in range(1, max(garden.level, 5))]
@@ -40,7 +39,7 @@ def play():
                 seeds.remove(seed)
                 player.inventory.add_item(seed)
                 FileManager.save(seed)
-            FileManager.save(player)
+            FileManager.multi_save(player, garden)
 
         elif option == "Upgrade Garden" and upgrade_garden(garden.level, player):
             garden.level_up()
@@ -107,7 +106,7 @@ def manage_garden(garden: Garden):
                     garden.harvest_plant(row, column)
                     player.inventory.add_item(plant)
                     FileManager.save(plant)
-            FileManager.save(player)
+            FileManager.multi_save(player, garden)
             continue
         if option == "Plant Next Row":
             row = garden.next_empty_row
@@ -172,7 +171,7 @@ def plant_seed(garden: Garden, row: int, column: int, index=None):
     plant.sow()
     garden.add_plant(plant, row, column)
     player.inventory.remove_item(plant)
-    FileManager.multi_save(player, plant)
+    FileManager.multi_save(player, plant, garden)
 
 
 def manage_plant(garden: Garden, row: int, column: int):
@@ -213,7 +212,7 @@ def manage_plant(garden: Garden, row: int, column: int):
             return
         garden.uproot_plant(row, column)
 
-    FileManager.multi_save(player, plant)
+    FileManager.multi_save(player, plant, garden)
 
 
 def garden_cost(level):

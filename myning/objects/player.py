@@ -5,7 +5,6 @@ from blessed.terminal import Terminal
 from myning.config import MINES, RACES, RESEARCH, UPGRADES
 from myning.objects.army import Army
 from myning.objects.character import Character, CharacterRaces
-from myning.objects.garden import Garden
 from myning.objects.inventory import Inventory
 from myning.objects.item import ItemType
 from myning.objects.macguffin import Macguffin
@@ -49,7 +48,6 @@ class Player(Character, metaclass=Singleton):
             player.mines_completed = []
             player.blacksmith_level = 1
             player.macguffin = Macguffin()
-            player.garden = Garden()
             player.research_facility = ResearchFacility()
             player.research = []
             player.soul_credits = 0
@@ -98,7 +96,6 @@ class Player(Character, metaclass=Singleton):
         self.health = self.max_health
         self.equipment.clear()
         self.soul_credits = 0
-        self.garden = Garden()
         self.research_facility = ResearchFacility()
         self.discovered_races = [RACES[CharacterRaces.HUMAN.value]]
         self.total_trips = 0
@@ -225,7 +222,6 @@ class Player(Character, metaclass=Singleton):
             },
             "blacksmith_level": self.blacksmith_level,
             "macguffin": self.macguffin.to_dict(),
-            "garden": self.garden.to_dict(),
             "research_facility": self.research_facility.to_dict(),
             "soul_credits": self.soul_credits,
             "discovered_races": [race.name for race in self.discovered_races],
@@ -267,7 +263,6 @@ class Player(Character, metaclass=Singleton):
         }
         player.blacksmith_level = attrs.get("blacksmith_level") or 1
         player.macguffin = Macguffin.from_dict(attrs.get("macguffin"))
-        player.garden = Garden.from_dict(attrs.get("garden"))
         player.research_facility = ResearchFacility.from_dict(attrs.get("research_facility"))
         player.soul_credits = int(attrs.get("soul_credits") or 0)
         player.discovered_races = [
