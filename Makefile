@@ -1,5 +1,3 @@
-include Maker.Makefile
-
 play:
 	@./run.sh
 

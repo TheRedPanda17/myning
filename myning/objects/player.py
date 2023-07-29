@@ -55,6 +55,7 @@ class Player(Character, metaclass=Singleton):
             player.soul_credits = 0
             player.discovered_races = [RACES[CharacterRaces.HUMAN.value]]
             player.total_trips = 0
+            player.completed_migrations = [1]
         cls._instance = player
 
     @property
@@ -102,6 +103,7 @@ class Player(Character, metaclass=Singleton):
         self.discovered_races = [RACES[CharacterRaces.HUMAN.value]]
         self.total_trips = 0
         self.research_points = 0
+        self.completed_migrations = [1]
 
     def add_ally(self, ally: Character):
         self._allies.append(ally)
@@ -228,6 +230,7 @@ class Player(Character, metaclass=Singleton):
             "soul_credits": self.soul_credits,
             "discovered_races": [race.name for race in self.discovered_races],
             "total_trips": self.total_trips,
+            "completed_migrations": self.completed_migrations,
         }
 
     @classmethod
@@ -272,7 +275,8 @@ class Player(Character, metaclass=Singleton):
             for race_name in attrs.get("discovered_races", [CharacterRaces.HUMAN.value])
         ]
         player.total_trips = attrs.get("total_trips") or 0
-        player.total_trips = attrs.get("research_points") or 0
+        player.research_points = attrs.get("research_points") or 0
+        player.completed_migrations = attrs.get("completed_migrations") or [1]
         return player
 
     def _update_dashboard_settings(self, key):

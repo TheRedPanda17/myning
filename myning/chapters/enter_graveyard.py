@@ -1,11 +1,10 @@
-from math import sqrt
+from functools import cache
 
 from myning.objects.character import Character
 from myning.objects.player import Player
 from myning.utils.file_manager import FileManager
 from myning.utils.io import confirm, pick
 from myning.utils.ui import columnate, get_gold_string, get_soul_string
-from myning.utils.utils import fibonacci
 
 
 def play():
@@ -82,8 +81,9 @@ def revive(player: Player, ally: Character):
         FileManager.multi_save(player, ally)
 
 
-def soul_cost(ghost_count: int):
-    return int(fibonacci(ghost_count + 1))
+@cache
+def soul_cost(ghost_count: int) -> int:
+    return int(ghost_count * 1.1)
 
 
 def gold_cost(ally: Character):
