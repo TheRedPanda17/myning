@@ -1,10 +1,8 @@
 import sys
 
-from myning.migrations import race_pokedex, soul_credits
+from myning.migrations import MIGRATIONS
 from myning.objects.player import Player
 from myning.utils.file_manager import FileManager
-
-migrations = {1: race_pokedex, 2: soul_credits}
 
 
 def migrate(id: int):
@@ -22,10 +20,10 @@ def migrate(id: int):
     if id in player.completed_migrations:
         sys.exit(f"You already ran migration {id}")
 
-    if id not in migrations.keys():
+    if id not in MIGRATIONS.keys():
         sys.exit(f"{id} is not a valid migration id")
 
-    migrations[id].run()
+    MIGRATIONS[id].run()
     player = Player()
     player.completed_migrations.append(id)
     FileManager.save(player)
