@@ -3,6 +3,7 @@ import random
 from myning.config import RACES, RESEARCH
 from myning.objects.character import CharacterRaces
 from myning.objects.player import Player
+from myning.objects.research_facility import ResearchFacility
 from myning.utils.utils import get_random_array_item
 
 RACE_TIERS = [
@@ -39,9 +40,10 @@ RACE_WEIGHTS = [150, 75, 40, 20, 10, 7, 4]
 
 def get_recruit_race(highest_rarity: int):
     player = Player()
+    facility = ResearchFacility()
     tiers = list(range(1, highest_rarity + 1))
     race_weights = RACE_WEIGHTS[:highest_rarity]
-    if player.has_research("species_rarity"):
+    if facility.has_research("species_rarity"):
         race_weights = [
             weight + RESEARCH["species_rarity"].player_value + (i * 3)
             for i, weight in enumerate(race_weights)
@@ -50,7 +52,7 @@ def get_recruit_race(highest_rarity: int):
     rarity = random.choices(tiers, weights=race_weights)[0]
 
     tier = RACE_TIERS[rarity - 1]
-    if player.has_research("species_discovery"):
+    if facility.has_research("species_discovery"):
         individual_weights = []
         for race in tier:
             if RACES[race] in player.discovered_races:
