@@ -5,8 +5,6 @@ from myning.utils.file_manager import FileManager
 
 
 def run():
-    Garden.initialize()
-
     with open(".data/player.json") as f:
         data = json.load(f)
         garden = Garden.from_dict(data["garden"])

@@ -1,5 +1,6 @@
 from myning.config import RESEARCH
 from myning.objects.player import Player
+from myning.objects.research_facility import ResearchFacility
 from myning.utils.file_manager import FileManager
 from myning.utils.io import pick
 from myning.utils.ui import columnate, get_research_string
@@ -7,9 +8,8 @@ from myning.utils.ui import columnate, get_research_string
 
 def play():
     while True:
-        player = Player()
-        facility = player.research_facility
-        player.research_facility.check_in()
+        facility = ResearchFacility()
+        facility.check_in()
         title = f"Level {facility.level} Research ({get_research_string(facility.points)})"
         options = [
             "Assign Researchers",
@@ -35,7 +35,7 @@ def play():
 def assign_researchers():
     while True:
         player = Player()
-        facility = player.research_facility
+        facility = ResearchFacility()
 
         title = f"Choose companions to start researching ({get_research_string(facility.points_per_hour)} / hr)"
         options = player.army.abbreviated
@@ -55,13 +55,13 @@ def assign_researchers():
             facility.add_researcher(character)
             player.move_ally_out(character)
 
-            FileManager.save(player)
+            FileManager.multi_save(player, facility)
 
 
 def fire_researchers():
     while True:
         player = Player()
-        facility = player.research_facility
+        facility = ResearchFacility()
 
         title = f"Choose companions to stop researching ({get_research_string(facility.points_per_hour)} / hr)"
         options = facility.army.abbreviated
@@ -75,13 +75,12 @@ def fire_researchers():
             facility.remover_researcher(character)
             player.add_ally(character)
 
-            FileManager.save(player)
+            FileManager.multi_save(player, facility)
 
 
 def purchase_research():
     while True:
-        player = Player()
-        facility = player.research_facility
+        facility = ResearchFacility()
 
         available_research = [research for research in RESEARCH.values() if not research.max_level]
 
@@ -97,15 +96,14 @@ def purchase_research():
         if research.cost < facility.points:
             facility.purchase(research.cost)
             research.level += 1
-            if research.id not in [u.id for u in player.research]:
-                player.research.append(research)
-            FileManager.save(player)
+            if research.id not in [u.id for u in facility.research]:
+                facility.research.append(research)
+            FileManager.save(facility)
 
 
 def upgrade_facility():
     while True:
-        player = Player()
-        facility = player.research_facility
+        facility = ResearchFacility()
 
         _, index = pick(
             [f"Upgrade to level {facility.level + 1}", "Maybe Later"],
@@ -122,3 +120,4 @@ def upgrade_facility():
             return
         facility.purchase(facility.upgrade_cost)
         facility.level_up()
+        FileManager.save(facility)

@@ -5,7 +5,11 @@ from typing import Callable
 
 from blessed import Terminal
 
-from myning.objects.player import Player
+from myning.config import MINES
+from myning.objects.player import Player, get_title_string
+from myning.objects.research_facility import ResearchFacility
+from myning.utils.ui import columnate, get_gold_string, get_research_string, get_soul_string
+from myning.utils.ui_consts import Icons
 
 term = Terminal()
 
@@ -37,6 +41,70 @@ def input(msg="", **kwargs):
     return builtins.input(f"  {msg}", **kwargs)
 
 
+def get_dashboard(key=None):
+    player = Player()
+    research_facility = ResearchFacility()
+    if key:
+        player._update_dashboard_settings(key)
+
+    hide_army = player.dashboard_settings["a"]
+    hide_equipment = player.dashboard_settings["e"]
+    hide_inventory = player.dashboard_settings["i"]
+
+    lines = [
+        get_title_string("Your Army", "a"),
+        "" if hide_army else str(player.army) + "\n",
+    ]
+
+    if len(player.army) == 1:
+        lines.append(get_title_string("Equipment", "e"))
+        if not hide_equipment:
+            lines.append(str(player.equipment))
+        lines.append("")
+
+    lines.append(get_title_string("Inventory", "i"))
+    lines.append("" if hide_inventory else str(player.inventory) + "\n")
+
+    currencies = [[term.bold("Gold"), Icons.GOLD.value, get_gold_string(player.gold)]]
+
+    if MINES["Large pit"] in player.mines_completed:
+        currencies.append(
+            [
+                term.bold("Soul credits"),
+                Icons.GRAVEYARD.value,
+                get_soul_string(player.soul_credits),
+            ]
+        )
+
+    if MINES["Cavern"] in player.mines_completed:
+        research_facility.check_in()
+        currencies.append(
+            [
+                term.bold("Research points"),
+                Icons.RESEARCH_FACILITY.value,
+                get_research_string(research_facility.points),
+            ]
+        )
+
+    if player.macguffin.exp_boost > 1 or player.macguffin.mineral_boost > 1:
+        currencies.append(
+            [
+                term.bold("Macguffin"),
+                Icons.MINERAL.value,
+                f"{term.bold_gold(player.macguffin.store_percentage)} mineral value boost",
+            ]
+        )
+        currencies.append(
+            [
+                "",
+                Icons.XP.value,
+                f"{term.bold_magenta(player.macguffin.exp_percentage)} xp boost",
+            ]
+        )
+
+    return "\n".join(lines + columnate(currencies))
+
+
 def get_int_input(
     prompt: str,
     min_value: int = 0,
@@ -44,8 +112,7 @@ def get_int_input(
     dashboard: Callable[..., str] | None = None,
 ):
     if not dashboard:
-        player = Player()
-        dashboard = player.get_dashboard
+        dashboard = get_dashboard
 
     def print_header():
         print(term.clear)
@@ -85,7 +152,7 @@ def pick(
 
     if not dashboard:
         player = Player()
-        dashboard = player.get_dashboard
+        dashboard = get_dashboard
         dashboard_keys = [key for key in player.dashboard_settings]
 
     def print_header(key=None):

@@ -10,11 +10,8 @@ from myning.objects.item import ItemType
 from myning.objects.macguffin import Macguffin
 from myning.objects.mine import Mine
 from myning.objects.mine_stats import MineStats
-from myning.objects.research_facility import ResearchFacility
 from myning.objects.singleton import Singleton
 from myning.utils.file_manager import FileManager
-from myning.utils.ui import columnate, get_gold_string, get_research_string, get_soul_string
-from myning.utils.ui_consts import Icons
 
 term = Terminal()
 
@@ -48,8 +45,6 @@ class Player(Character, metaclass=Singleton):
             player.mines_completed = []
             player.blacksmith_level = 1
             player.macguffin = Macguffin()
-            player.research_facility = ResearchFacility()
-            player.research = []
             player.soul_credits = 0
             player.discovered_races = [RACES[CharacterRaces.HUMAN.value]]
             player.total_trips = 0
@@ -71,9 +66,6 @@ class Player(Character, metaclass=Singleton):
     def has_upgrade(self, upgrade_id):
         return upgrade_id in [upgrade.id for upgrade in self.upgrades]
 
-    def has_research(self, research_id):
-        return research_id in [research.id for research in self.research]
-
     @property
     def alive(self):
         return any(member.health > 0 for member in self.army)
@@ -87,7 +79,6 @@ class Player(Character, metaclass=Singleton):
         self.exp_available = 0
         self.mines_available: list[Mine] = [MINES["Hole in the ground"]]
         self.upgrades = []
-        self.research = []
         self.mine_progressions = {}
         self.mines_completed = []
         self.blacksmith_level = 1
@@ -96,10 +87,8 @@ class Player(Character, metaclass=Singleton):
         self.health = self.max_health
         self.equipment.clear()
         self.soul_credits = 0
-        self.research_facility = ResearchFacility()
         self.discovered_races = [RACES[CharacterRaces.HUMAN.value]]
         self.total_trips = 0
-        self.research_points = 0
         self.completed_migrations = [1]
 
     def add_ally(self, ally: Character):
@@ -214,15 +203,11 @@ class Player(Character, metaclass=Singleton):
             "mines_available": [mine.name for mine in self.mines_available],
             "mines_completed": [mine.name for mine in self.mines_completed],
             "upgrades": [{"id": upgrade.id, "level": upgrade.level} for upgrade in self.upgrades],
-            "research": [
-                {"id": research.id, "level": research.level} for research in self.research
-            ],
             "mine_progressions": {
                 name: progress.to_dict() for name, progress in self.mine_progressions.items()
             },
             "blacksmith_level": self.blacksmith_level,
             "macguffin": self.macguffin.to_dict(),
-            "research_facility": self.research_facility.to_dict(),
             "soul_credits": self.soul_credits,
             "discovered_races": [race.name for race in self.discovered_races],
             "total_trips": self.total_trips,
@@ -251,92 +236,23 @@ class Player(Character, metaclass=Singleton):
             level = upgrade["level"] if isinstance(upgrade, dict) else 1
             player.upgrades.append(UPGRADES[id])
             player.upgrades[-1].level = level
-        player.research = []
-        for research in attrs.get("research") or []:
-            id = research["id"] if isinstance(research, dict) else research
-            level = research["level"] if isinstance(research, dict) else 1
-            player.research.append(RESEARCH[id])
-            player.research[-1].level = level
         player.mine_progressions = {
             name: MineStats.from_dict(progress)
             for name, progress in attrs["mine_progressions"].items()
         }
         player.blacksmith_level = attrs.get("blacksmith_level") or 1
         player.macguffin = Macguffin.from_dict(attrs.get("macguffin"))
-        player.research_facility = ResearchFacility.from_dict(attrs.get("research_facility"))
         player.soul_credits = int(attrs.get("soul_credits") or 0)
         player.discovered_races = [
             RACES[race_name]
             for race_name in attrs.get("discovered_races", [CharacterRaces.HUMAN.value])
         ]
         player.total_trips = attrs.get("total_trips") or 0
-        player.research_points = attrs.get("research_points") or 0
         player.completed_migrations = attrs.get("completed_migrations") or [1]
         return player
 
     def _update_dashboard_settings(self, key):
         self.dashboard_settings[key] = not self.dashboard_settings[key]
-
-    def get_dashboard(self, key=None):
-        if key:
-            self._update_dashboard_settings(key)
-
-        hide_army = self.dashboard_settings["a"]
-        hide_equipment = self.dashboard_settings["e"]
-        hide_inventory = self.dashboard_settings["i"]
-
-        lines = [
-            get_title_string("Your Army", "a"),
-            "" if hide_army else str(self.army) + "\n",
-        ]
-
-        if len(self.army) == 1:
-            lines.append(get_title_string("Equipment", "e"))
-            if not hide_equipment:
-                lines.append(str(self.equipment))
-            lines.append("")
-
-        lines.append(get_title_string("Inventory", "i"))
-        lines.append("" if hide_inventory else str(self.inventory) + "\n")
-
-        currencies = [[term.bold("Gold"), Icons.GOLD.value, get_gold_string(self.gold)]]
-
-        if MINES["Large pit"] in self.mines_completed:
-            currencies.append(
-                [
-                    term.bold("Soul credits"),
-                    Icons.GRAVEYARD.value,
-                    get_soul_string(self.soul_credits),
-                ]
-            )
-
-        if MINES["Cavern"] in self.mines_completed:
-            self.research_facility.check_in()
-            currencies.append(
-                [
-                    term.bold("Research points"),
-                    Icons.RESEARCH_FACILITY.value,
-                    get_research_string(self.research_facility.points),
-                ]
-            )
-
-        if self.macguffin.exp_boost > 1 or self.macguffin.mineral_boost > 1:
-            currencies.append(
-                [
-                    term.bold("Macguffin"),
-                    Icons.MINERAL.value,
-                    f"{term.bold_gold(self.macguffin.store_percentage)} mineral value boost",
-                ]
-            )
-            currencies.append(
-                [
-                    "",
-                    Icons.XP.value,
-                    f"{term.bold_magenta(self.macguffin.exp_percentage)} xp boost",
-                ]
-            )
-
-        return "\n".join(lines + columnate(currencies))
 
 
 def get_title_string(title: str, toggle_key):
