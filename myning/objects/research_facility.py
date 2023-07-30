@@ -1,30 +1,48 @@
 from datetime import datetime
 
 from blessed import Terminal
+from myning.config import RESEARCH
 
 from myning.objects.army import Army
 from myning.objects.character import Character
 from myning.objects.object import Object
+from myning.objects.singleton import Singleton
+from myning.objects.upgrade import Upgrade
 from myning.utils import utils
+from myning.utils.file_manager import FileManager
 
 term = Terminal()
 
 
-class ResearchFacility(Object):
+class ResearchFacility(Object, metaclass=Singleton):
+    @classmethod
+    def initialize(cls):
+        facility = FileManager.load(ResearchFacility, cls.file_name)
+        if not facility:
+            facility = cls()
+        cls._instance = facility
+
     def __init__(
         self,
         level: int = 1,
         points: int = 0,
         last_research_tick: datetime = None,
         researchers: list[Character] = None,
+        research: list[Upgrade] = None,
     ):
         self.level = level
         self._points = points
         self.last_research_tick = last_research_tick
-        self._researchers = researchers if researchers else []
+        self._researchers = researchers or []
+        self._research = research or []
 
         if len(self._researchers) > level:
             raise Exception("Too many researchers for this level")
+
+    @classmethod
+    @property
+    def file_name(cls):
+        return "research_facility"
 
     @property
     def army(self):
@@ -34,6 +52,10 @@ class ResearchFacility(Object):
     def points(self):
         return round(self._points, 2)
 
+    @property
+    def research(self):
+        return self._research
+
     def to_dict(self):
         return {
             "level": self.level,
@@ -42,19 +64,31 @@ class ResearchFacility(Object):
             if self.last_research_tick
             else None,
             "researchers": [ally.to_dict() for ally in self._researchers],
+            "research": [
+                {"id": research.id, "level": research.level} for research in self._research
+            ],
         }
 
     @classmethod
-    def from_dict(cls, dict: dict):
-        if not dict:
+    def from_dict(cls, data: dict):
+        if not data:
             return ResearchFacility(1)
+
+        researched = []
+        for research in data.get("research") or []:
+            id = research["id"] if isinstance(research, dict) else research
+            level = research["level"] if isinstance(research, dict) else 1
+            researched.append(RESEARCH[id])
+            researched[-1].level = level
+
         return ResearchFacility(
-            dict["level"],
-            dict["points"],
-            datetime.strptime(dict["last_research_tick"], "%Y-%m-%dT%H:%M:%S.%f")
-            if dict.get("last_research_tick")
+            data["level"],
+            data["points"],
+            datetime.strptime(data["last_research_tick"], "%Y-%m-%dT%H:%M:%S.%f")
+            if data.get("last_research_tick")
             else None,
-            [Character.from_dict(ally) for ally in dict["researchers"]],
+            [Character.from_dict(ally) for ally in data["researchers"]],
+            researched,
         )
 
     @property
@@ -105,3 +139,6 @@ class ResearchFacility(Object):
     def purchase(self, cost):
         if cost > 0:
             self._points -= cost
+
+    def has_research(self, research_id):
+        return research_id in [research.id for research in self._research]

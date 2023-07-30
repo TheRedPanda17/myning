@@ -5,6 +5,7 @@ from blessed import Terminal
 from myning.chapters.enter_blacksmith import smith_cost
 from myning.config import EXP_COST
 from myning.objects.player import Player
+from myning.objects.research_facility import ResearchFacility
 from myning.objects.settings import Settings
 from myning.objects.singleton import Singleton
 from myning.utils.file_manager import FileManager
@@ -79,6 +80,7 @@ def play():
 
 def get_total_value() -> int:
     player = Player()
+    facility = ResearchFacility()
 
     item_value = sum(item.value for item in player.inventory.items)
     army_value = sum(member.value for member in player.army)
@@ -90,9 +92,7 @@ def get_total_value() -> int:
         mine.win_value * math.pow(mine.cost, 1 / 3) for mine in player.mines_completed
     )
     research = sum(sum(cost for cost in u.costs[: u.level]) for u in player.research) * 5
-    research_facility = (
-        sum(smith_cost(level) for level in range(1, player.research_facility.level + 1)) * 5
-    )
+    research_facility = sum(smith_cost(level) for level in range(1, facility.level + 1)) * 5
 
     return (
         item_value
