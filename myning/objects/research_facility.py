@@ -1,8 +1,8 @@
 from datetime import datetime
 
 from blessed import Terminal
-from myning.config import RESEARCH
 
+from myning.config import RESEARCH
 from myning.objects.army import Army
 from myning.objects.character import Character
 from myning.objects.object import Object

@@ -1,6 +1,6 @@
 import json
-from myning.objects.research_facility import ResearchFacility
 
+from myning.objects.research_facility import ResearchFacility
 from myning.utils.file_manager import FileManager
 
 

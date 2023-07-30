@@ -4,8 +4,8 @@ import textwrap
 from typing import Callable
 
 from blessed import Terminal
-from myning.config import MINES
 
+from myning.config import MINES
 from myning.objects.player import Player, get_title_string
 from myning.objects.research_facility import ResearchFacility
 from myning.utils.ui import columnate, get_gold_string, get_research_string, get_soul_string
