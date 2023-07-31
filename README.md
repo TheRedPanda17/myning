@@ -2,7 +2,30 @@
 
 ## Prerequisits
 
-Install pyenv, virtualenv, and pip
+Install Brew:
+
+```bash
+/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+```
+
+Add Brew to your path.
+
+```bash
+echo 'eval $(/opt/homebrew/bin/brew shellenv)' >> ~/.zshrc
+```
+
+Use Brew to install pyenv and virtualenv:
+
+```bash
+brew install pyenv pyenv-virtualenv
+```
+
+Add pyenv and virtualenv to your `~/.zshrc`
+
+```bash
+echo 'eval $(pyenv init -)' >> ~/.zshrc
+eval 'eval $(pyenv virtualenv-init -)' >> ~/.zshrc
+```
 
 ## Play the Game
 
