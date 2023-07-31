@@ -91,7 +91,7 @@ def get_total_value() -> int:
     beaten_mines = sum(
         mine.win_value * math.pow(mine.cost, 1 / 3) for mine in player.mines_completed
     )
-    research = sum(sum(cost for cost in u.costs[: u.level]) for u in player.research) * 5
+    research = sum(sum(cost for cost in u.costs[: u.level]) for u in facility.research) * 5
     research_facility = sum(smith_cost(level) for level in range(1, facility.level + 1)) * 5
 
     return (
