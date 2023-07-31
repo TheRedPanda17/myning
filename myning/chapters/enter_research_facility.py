@@ -18,7 +18,12 @@ def play():
             "Upgrade Facility",
             "Go Back",
         ]
-        option, index = pick(options, title)
+        option, index = pick(
+            options,
+            title,
+            sub_title=f"{len(facility._researchers)}/{facility.level} researchers assigned\n"
+            f"{round(facility.points_per_hour, 2)} research points / hr",
+        )
 
         if option == "Go Back":
             return
