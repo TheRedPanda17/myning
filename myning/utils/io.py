@@ -15,7 +15,7 @@ term = Terminal()
 
 RESERVED_EXIT_PHRASES = (
     "back",
-    "bummer",
+    "bummer!",
     "bummer",
     "exit",
     "go back",
