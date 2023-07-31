@@ -284,7 +284,7 @@ Battle Ground:
 
 Death Valley:
   type: regular
-  exp_boost: 0.40
+  exp_boost: 0.20
   min_player_level: 14
   cost: 6000
   enemies:
@@ -294,7 +294,7 @@ Death Valley:
     - 10
     - 13
   max_enemy_items: 6
-  max_item_level: 20
+  max_item_level: 15
   max_enemy_item_level: 20
   odds:
     - action: combat
@@ -304,9 +304,9 @@ Death Valley:
     - action: mineral
       chance: 65
     - action: recruit
-      chance: 0.6
+      chance: 0
     - action: lose_ally
-      chance: 5
+      chance: 3
   win_criteria:
     kills: 2000
     minutes: 800
