@@ -1,9 +1,14 @@
+import os
+
 from myning.migrations import MIGRATIONS
 from myning.objects.player import Player
 from myning.utils.file_manager import FileManager
 
 
 def check_for_migrations():
+    if not os.path.exists(".data"):
+        return
+
     Player.initialize()
     player = Player()
 
