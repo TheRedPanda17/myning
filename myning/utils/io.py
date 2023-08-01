@@ -8,6 +8,7 @@ from blessed import Terminal
 from myning.config import MINES
 from myning.objects.player import Player, get_title_string
 from myning.objects.research_facility import ResearchFacility
+from myning.objects.settings import Settings
 from myning.utils.ui import columnate, get_gold_string, get_research_string, get_soul_string
 from myning.utils.ui_consts import Icons
 
@@ -43,6 +44,7 @@ def input(msg="", **kwargs):
 
 def get_dashboard(key=None):
     player = Player()
+    compact = Settings().compact_mode
     research_facility = ResearchFacility()
     if key:
         player._update_dashboard_settings(key)
@@ -51,19 +53,24 @@ def get_dashboard(key=None):
     hide_equipment = player.dashboard_settings["e"]
     hide_inventory = player.dashboard_settings["i"]
 
-    lines = [
-        get_title_string("Your Army", "a"),
-        "" if hide_army else str(player.army) + "\n",
-    ]
+    lines = []
+    if compact:
+        lines += player.army.summary_str.split("\n")
+        lines += " "
+    else:
+        lines = [
+            get_title_string("Your Army", "a"),
+            "" if hide_army else str(player.army) + "\n",
+        ]
 
-    if len(player.army) == 1:
-        lines.append(get_title_string("Equipment", "e"))
-        if not hide_equipment:
-            lines.append(str(player.equipment))
-        lines.append("")
+        if len(player.army) == 1:
+            lines.append(get_title_string("Equipment", "e"))
+            if not hide_equipment:
+                lines.append(str(player.equipment))
+            lines.append("")
 
-    lines.append(get_title_string("Inventory", "i"))
-    lines.append("" if hide_inventory else str(player.inventory) + "\n")
+        lines.append(get_title_string("Inventory", "i"))
+        lines.append("" if hide_inventory else str(player.inventory) + "\n")
 
     currencies = [[term.bold("Gold"), Icons.GOLD.value, get_gold_string(player.gold)]]
 

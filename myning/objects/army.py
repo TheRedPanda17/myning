@@ -36,8 +36,49 @@ class Army(UserList[Character]):
         )
 
     @property
-    def defeated(self):
+    def character_icon(self) -> str:
+        if len(self) == 0:
+            return "💀"
+
+        race_counts = {}
+        for member in self:
+            race_counts[member.race] = race_counts.get(member.race, 0) + 1
+
+        icon, max = "", 0
+        for race, count in race_counts.items():
+            if count > max:
+                icon = race.icon
+                max = count
+
+        return icon
+
+    @property
+    def current_health(self) -> int:
+        return sum(member.health for member in self)
+
+    @property
+    def total_health(self) -> int:
+        return sum(member.max_health for member in self)
+
+    @property
+    def defeated(self) -> int:
         return not any(member.health > 0 for member in self)
+
+    @property
+    def total_damage(self) -> int:
+        return sum(member.stats["damage"] for member in self)
+
+    @property
+    def total_armor(self) -> int:
+        return sum(member.stats["armor"] for member in self)
+
+    @property
+    def summary_str(self) -> str:
+        return (
+            f"{self.character_icon} {len(self)} "
+            f"{get_health_bar(self.current_health, self.total_health, 30)}"
+            f" {Icons.DAMAGE} {self.total_damage} {Icons.ARMOR} {self.total_armor}"
+        )
 
     def __str__(self):
         if not self:
@@ -70,15 +111,7 @@ class Army(UserList[Character]):
                 for member in column:
                     s += member
 
-            health, total_health = 0, 0
-            for member in self:
-                total_health += member.max_health
-                health += member.health
-
-            total_armour = sum(member.stats["armor"] for member in self)
-            total_damage = sum(member.stats["damage"] for member in self)
-
-            s += f"\n\n {get_health_bar(health, total_health, 30)} {Icons.DAMAGE} {total_damage} {Icons.ARMOR} {total_armour}"
+            s += f"\n\n{self.summary_str}"
             return s
 
         return "\n".join(
