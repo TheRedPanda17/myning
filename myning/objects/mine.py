@@ -40,7 +40,7 @@ class Mine(Object):
         self.win_criteria: MineStats = None
         self.player_progress: MineStats = None
         self.resource = None
-        self.companion_rarity = 1
+        self.companion_rarity = 0
 
     @property
     def file_name(self):
@@ -73,7 +73,7 @@ class Mine(Object):
             MineStats.from_dict(dict["win_criteria"]) if "win_criteria" in dict else None
         )
         mine.resource = dict["resource"] if "resource" in dict else None
-        mine.companion_rarity = dict.get("companion_rarity", 1)
+        mine.companion_rarity = dict.get("companion_rarity", 0)
         return mine
 
     def to_dict(self) -> dict:
