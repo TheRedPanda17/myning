@@ -2,40 +2,46 @@
 
 ## Prerequisits
 
-Install Brew:
+Install Homebrew:
 
 ```bash
 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
 ```
 
-Add Brew to your path.
+Add `brew` to your path:
 
 ```bash
 echo 'eval $(/opt/homebrew/bin/brew shellenv)' >> ~/.zshrc
 ```
 
-Use Brew to install pyenv and virtualenv:
+Install pyenv and virtualenv:
 
 ```bash
 brew install pyenv pyenv-virtualenv
 ```
 
-Add pyenv and virtualenv to your `~/.zshrc`
+Initialize pyenv in your shell:
 
 ```bash
 echo 'eval $(pyenv init -)' >> ~/.zshrc
-eval 'eval $(pyenv virtualenv-init -)' >> ~/.zshrc
+echo 'eval $(pyenv virtualenv-init -)' >> ~/.zshrc
+```
+
+Reload your environment (or just restart your terminal):
+
+```bash
+exec zsh
 ```
 
 ## Play the Game
 
-Set up the environment
+Set up the environment:
 
 ```bash
 make venv
 ```
 
-Play the game
+Play the game:
 
 ```bash
 make play
