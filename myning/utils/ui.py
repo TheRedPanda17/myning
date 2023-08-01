@@ -36,7 +36,7 @@ def get_exp_string(exp: int):
 
 
 def get_health_bar(health: int, max_health: int, bar_count: int = 11):
-    health_fraction = health / max_health
+    health_fraction = health / max_health if max_health else 0
     green_count = math.ceil(health_fraction * bar_count)
     health_fraction_str = f"{health}/{max_health}".center(bar_count)
 

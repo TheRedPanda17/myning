@@ -68,12 +68,33 @@ def add_exp(member: Character):
         )
         return
 
-    exp = get_int_input(
-        f"How much of your {get_exp_string(player.exp_available)} would you like to give {member.name} ({member.exp_str})?",
+    xp_for_level = fibonacci(member.level + 1)
+    xp_for_level -= member.experience
+
+    if player.has_upgrade("level_up_barracks"):
+        option, i = pick(
+            [f"Level {member.name} Up", "Add xp Manually", "Go Back"],
+            "How would you like to add xp?",
+        )
+        if option == "Go Back":
+            return
+        if i == 0:
+            if xp_for_level > player.exp_available:
+                pick(["Bummer!"], f"You don't have enough xp to level {member.name} up.")
+                return
+
+            player.remove_available_exp(xp_for_level)
+            member.add_experience(xp_for_level, display=False)
+            return
+
+    input_text = f"How much of your {get_exp_string(player.exp_available)} would you like to give {member.name} ({member.exp_str})?"
+    xp = get_int_input(
+        input_text,
+        subtitle=f"{xp_for_level} xp until level {member.level + 1}",
         max_value=player.exp_available,
     )
-    player.remove_available_exp(exp)
-    member.add_experience(exp, display=False)
+    player.remove_available_exp(xp)
+    member.add_experience(xp, display=False)
 
 
 def auto_add_exp():

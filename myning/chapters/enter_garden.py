@@ -116,8 +116,10 @@ def manage_garden(garden: Garden):
 
             for column in range(garden.level):
                 plant = garden.get_plant(row, column)
-                if not plant:
+                if not plant and player.seeds:
                     plant_seed(garden, row, column, 0)
+
+            continue
 
         if index == 0 or index == garden.level + 1:
             pick(["Bummer!"], "Please select a valid row of plants")

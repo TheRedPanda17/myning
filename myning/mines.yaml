@@ -144,7 +144,7 @@ Large pit:
 
 Training Ground:
   type: combat
-  exp_boost: -0.40
+  exp_boost: 0.05
   min_player_level: 10
   cost: 750
   enemies:
@@ -258,7 +258,7 @@ Cavern:
 
 Battle Ground:
   type: combat
-  exp_boost: -0.35
+  exp_boost: 0.09
   min_player_level: 14
   cost: 5000
   enemies:
@@ -278,9 +278,9 @@ Battle Ground:
     - action: mineral
       chance: 0
     - action: recruit
-      chance: 0.25
+      chance: 0.05
     - action: lose_ally
-      chance: 0.2
+      chance: 0
 
 Death Valley:
   type: regular
@@ -340,7 +340,7 @@ Cave System:
       chance: 0.75
   win_criteria:
     kills: 3000
-    minutes: 1200
+    minutes: 1000
     minerals: 2800
   companion_rarity: 4
 
@@ -398,7 +398,7 @@ Meteor Crater:
       chance: 0.8
   win_criteria:
     kills: 6000
-    minutes: 1500
+    minutes: 1400
     minerals: 3600
   companion_rarity: 4
 
@@ -430,7 +430,7 @@ Canyon:
       chance: 0.74
   win_criteria:
     kills: 10000
-    minutes: 1800
+    minutes: 1600
     minerals: 6200
   companion_rarity: 5
 
@@ -462,6 +462,6 @@ Chasm:
       chance: 0.85
   win_criteria:
     kills: 15000
-    minutes: 2400
+    minutes: 2100
     minerals: 8000
   companion_rarity: 6
