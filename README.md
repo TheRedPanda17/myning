@@ -1,5 +1,10 @@
 # Welcome to Myning
 
+Myning is an idle game designed to be played in your terminal.
+Mine for ore, battle enemies, manage your garden, upgrade your gear, and so much more!
+
+![image of myning gameplay](https://github.com/TheRedPanda17/myning/blob/main/images/myning.png?raw=true)
+
 ## Prerequisits
 
 Install Homebrew:
