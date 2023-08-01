@@ -30,6 +30,7 @@ def play():
             exp_boost = round((value / 500000) + player.macguffin.exp_boost, 2)
             mineral_boost = round((value / 500000) + player.macguffin.mineral_boost, 2)
             journal = player.discovered_races
+            migrations = player.completed_migrations
             option, _ = pick(
                 ["Yes", "No"],
                 "Are you sure you want to erase ALL progress and go back in time?",
@@ -52,6 +53,7 @@ def play():
             player.macguffin.exp_boost = exp_boost
             player.macguffin.mineral_boost = mineral_boost
             player.discovered_races = journal
+            player.completed_migrations = migrations
             FileManager.save(player)
 
             Settings.initialize()
