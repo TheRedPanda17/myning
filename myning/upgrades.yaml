@@ -115,6 +115,15 @@ auto_exp:
   costs:
     - 3000
 
+level_up_barracks:
+  name: Level Up Option
+  descriptions:
+    - Add a level up option in the barracks
+  values:
+    - 1
+  costs:
+    - 20000
+
 auto_equip:
   name: Auto-Equip
   descriptions:

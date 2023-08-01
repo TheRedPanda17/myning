@@ -107,6 +107,7 @@ def get_dashboard(key=None):
 
 def get_int_input(
     prompt: str,
+    subtitle: str = None,
     min_value: int = 0,
     max_value: int = None,
     dashboard: Callable[..., str] | None = None,
@@ -119,6 +120,8 @@ def get_int_input(
         print(dashboard())
         print()
         print(term.bold(prompt))
+        if subtitle:
+            print(term.snow4(subtitle))
 
     while True:
         with term.fullscreen():
