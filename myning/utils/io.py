@@ -133,8 +133,28 @@ def get_int_input(
     while True:
         with term.fullscreen():
             print_header()
+            builtins.print(end="  ", flush=True)
+            with term.cbreak():
+                input_str = ""
+                while True:
+                    key = term.inkey()
+                    if key.is_sequence:
+                        if key.name == "KEY_ENTER":
+                            break
+                        elif key.name == "KEY_ESCAPE":
+                            return
+                        elif key.name == "KEY_BACKSPACE":
+                            if input_str:
+                                input_str = input_str[:-1]
+                                builtins.print("\b \b", end="", flush=True)
+                    elif key == "q":
+                        return
+                    elif key.isdigit():
+                        input_str += key
+                        builtins.print(key, end="", flush=True)
+
             try:
-                value = int(input())
+                value = int(input_str)
             except ValueError:
                 prompt = "Please enter a valid number."
                 continue

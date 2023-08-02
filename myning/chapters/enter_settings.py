@@ -22,8 +22,14 @@ def play():
             return
 
         if "Column Height" in option:
-            value = get_int_input("What would you like to change the army column height to?", 5, 25)
-            settings.set_army_columns(value)
+            value = get_int_input(
+                "What would you like to change the army column height to?",
+                f"Current: {settings.army_columns}",
+                5,
+                25,
+            )
+            if value:
+                settings.set_army_columns(value)
 
         if "Disable Mini-Games" in option:
             settings.toggle_mini_games()

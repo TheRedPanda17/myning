@@ -3,7 +3,7 @@ import math
 from blessed import Terminal
 
 from myning.chapters.enter_blacksmith import smith_cost
-from myning.config import EXP_COST
+from myning.config import XP_COST
 from myning.objects.player import Player
 from myning.objects.research_facility import ResearchFacility
 from myning.objects.settings import Settings
@@ -86,7 +86,7 @@ def get_total_value() -> int:
 
     item_value = sum(item.value for item in player.inventory.items)
     army_value = sum(member.value for member in player.army)
-    exp_value = player.exp_available * EXP_COST
+    exp_value = player.exp_available * XP_COST
     upgrades_value = sum(sum(cost for cost in u.costs[: u.level]) for u in player.upgrades)
     blacksmith_cost = sum(smith_cost(level) for level in range(1, player.blacksmith_level + 1))
     unlocked_mines = sum(mine.cost for mine in player.mines_available)
