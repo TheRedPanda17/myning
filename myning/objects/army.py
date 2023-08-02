@@ -36,23 +36,6 @@ class Army(UserList[Character]):
         )
 
     @property
-    def character_icon(self) -> str:
-        if len(self) == 0:
-            return "💀"
-
-        race_counts = {}
-        for member in self:
-            race_counts[member.race] = race_counts.get(member.race, 0) + 1
-
-        icon, max = "", 0
-        for race, count in race_counts.items():
-            if count > max:
-                icon = race.icon
-                max = count
-
-        return icon
-
-    @property
     def current_health(self) -> int:
         return sum(member.health for member in self)
 
@@ -74,11 +57,23 @@ class Army(UserList[Character]):
 
     @property
     def summary_str(self) -> str:
+        return f"{self.icons_str}\n\n{self.stats_summary}"
+
+    @property
+    def stats_summary(self) -> str:
         return (
-            f"{self.character_icon} {len(self)} "
             f"{get_health_bar(self.current_health, self.total_health, 30)}"
             f" {Icons.DAMAGE} {self.total_damage} {Icons.ARMOR} {self.total_armor}"
         )
+
+    @property
+    def icons_str(self) -> str:
+        s = ""
+        for i, member in enumerate(self):
+            if i != 0:
+                s += "\n" if i % 10 == 0 else " "
+            s += str(member.icon)
+        return s
 
     def __str__(self):
         if not self:
@@ -111,7 +106,7 @@ class Army(UserList[Character]):
                 for member in column:
                     s += member
 
-            s += f"\n\n{self.summary_str}"
+            s += f"\n\n{self.stats_summary}"
             return s
 
         return "\n".join(
