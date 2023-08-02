@@ -118,7 +118,7 @@ class Player(Character, metaclass=Singleton):
         self.remove_fallen_ally(ally)
         self._allies.append(ally)
 
-    def add_available_exp(self, exp):
+    def add_exp(self, exp):
         if len(self.army) > 1:
             self.exp_available += int(exp * 1 / 2 * len(self.army) * self.macguffin.exp_boost)
         else:
