@@ -1,6 +1,6 @@
 from typing import Optional
 
-from myning.config import EXP_COST
+from myning.config import XP_COST
 from myning.objects.army import Army
 from myning.objects.character import Character
 from myning.objects.player import Player
@@ -42,8 +42,7 @@ def play():
             if member:
                 player.fire_ally(member)
         elif option == "Buy Exp":
-            if (exp := buy_exp(player)) is not None:
-                player.add_exp(exp)
+            buy_exp(player)
         elif option == "Auto-Add Exp":
             auto_add_exp()
         else:
@@ -93,8 +92,9 @@ def add_exp(member: Character):
         subtitle=f"{xp_for_level} xp until level {member.level + 1}",
         max_value=player.exp_available,
     )
-    player.remove_available_exp(xp)
-    member.add_experience(xp, display=False)
+    if xp:
+        player.remove_available_exp(xp)
+        member.add_experience(xp, display=False)
 
 
 def auto_add_exp():
@@ -204,11 +204,10 @@ def entity_cost(army_size: int):
     return int(50 * multiplier)
 
 
-def buy_exp(player: Player) -> Optional[int]:
-    exp = get_int_input(
-        f"How much exp would you like to buy for your allies? ({EXP_COST}g/exp)",
-        max_value=int(player.gold / EXP_COST),
+def buy_exp(player: Player):
+    xp = get_int_input(
+        f"How much xp would you like to buy for your allies? ({XP_COST}g/xp)",
+        max_value=int(player.gold / XP_COST),
     )
-    if player.pay(exp * EXP_COST):
-        return exp
-    return None
+    if xp and player.pay(xp * XP_COST):
+        player.exp_available += xp

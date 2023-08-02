@@ -124,10 +124,6 @@ class Player(Character, metaclass=Singleton):
         else:
             self.add_experience(int(exp * self.macguffin.exp_boost))
 
-    def add_exp(self, exp):
-        if exp and exp > 0:
-            self.exp_available += exp
-
     def incr_trip(self):
         self.total_trips += 1
 

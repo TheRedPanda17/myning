@@ -4,7 +4,7 @@ from myning.objects.mine import Mine
 from myning.objects.race import Race
 from myning.objects.upgrade import Upgrade, UpgradeType
 
-EXP_COST = 2
+XP_COST = 2
 
 
 with open("myning/config.yaml", "r") as f:
