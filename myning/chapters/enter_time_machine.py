@@ -15,19 +15,20 @@ term = Terminal()
 
 
 def play():
+    player = Player()
+
+    value = get_total_value()
+    xp_boost = get_boost(player.macguffin.exp_boost, value)
+    mineral_boost = get_boost(player.macguffin.mineral_boost, value)
+
     while True:
         option, _ = pick(
             ["View Potential Macguffin", "Go Back in Time", "About", "Go Back"],
             "What would you like to do?",
         )
-        player = Player()
 
         if option == "Go Back":
             return
-
-        value = get_total_value()
-        xp_boost = get_boost(player.macguffin.exp_boost, value)
-        mineral_boost = get_boost(player.macguffin.mineral_boost, value)
 
         if option == "Go Back in Time":
             journal = player.discovered_races
