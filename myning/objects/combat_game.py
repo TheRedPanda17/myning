@@ -117,7 +117,8 @@ class CombatGame:
         return chars
 
     def __str__(self) -> str:
-        s = "╔" + "═" * (8 * len(self.block_keys) + 5) + "╗\n"
+        s = "Try to hit the arrows!\n\n"
+        s += "╔" + "═" * (8 * len(self.block_keys) + 5) + "╗\n"
         for col in range(self.height):
             r = "║"
             for key in self.block_keys:
