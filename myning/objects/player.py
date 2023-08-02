@@ -2,7 +2,7 @@ from typing import List, Optional
 
 from blessed.terminal import Terminal
 
-from myning.config import MINES, RACES, RESEARCH, UPGRADES
+from myning.config import MINES, RACES, UPGRADES
 from myning.objects.army import Army
 from myning.objects.character import Character, CharacterRaces
 from myning.objects.inventory import Inventory
