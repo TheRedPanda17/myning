@@ -13,6 +13,12 @@ term = Terminal()
 def play():
     player = Player()
 
+    # This ensures new players have the new migrations. Preferably, we'd loop
+    # through the MIGRATIONS, but we have a circular dependency if we do,
+    # so this is the hack right now.
+    player.completed_migrations = [1, 2, 3, 4]
+    FileManager.save(player)
+
     print(term.bold(f"\nWelcome to Myning, {player.name}!\n"))
     narrate(
         "Today is your first day as a minor miner (as opposed to a major electrician). The days are long down in the shafts, and dangers abound. The company that hired you, MMMC (Minor Miners Mining Company), has provided a guide for you.",
