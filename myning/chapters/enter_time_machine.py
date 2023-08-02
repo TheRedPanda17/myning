@@ -17,7 +17,7 @@ term = Terminal()
 def play():
     while True:
         option, _ = pick(
-            ["Go Back in Time", "View Potential Macguffin", "About", "Go Back"],
+            ["View Potential Macguffin", "Go Back in Time", "About", "Go Back"],
             "What would you like to do?",
         )
         player = Player()
@@ -25,10 +25,11 @@ def play():
         if option == "Go Back":
             return
 
+        value = get_total_value()
+        xp_boost = get_boost(player.macguffin.exp_boost, value)
+        mineral_boost = get_boost(player.macguffin.mineral_boost, value)
+
         if option == "Go Back in Time":
-            value = get_total_value()
-            xp_boost = get_boost(player.macguffin.exp_boost, value)
-            mineral_boost = get_boost(player.macguffin.mineral_boost, value)
             journal = player.discovered_races
             migrations = player.completed_migrations
             option, _ = pick(
@@ -64,10 +65,10 @@ def play():
 
         if option == "View Potential Macguffin":
             value = get_total_value()
-            xp_boost = round(get_boost(player.macguffin.exp_boost, value) * 100, 2)
-            mineral_boost = round(get_boost(player.macguffin.mineral_boost, value) * 100, 2)
-            boost_str = f"Potential xp boost: {term.magenta(str(xp_boost) + '%')}"
-            boost_str += f"\nPotential mineral value boost: {term.gold(str(mineral_boost) + '%')}"
+            xp_boost_str = str(xp_boost * 100) + "%"
+            mineral_boost_str = str(mineral_boost * 100) + "%"
+            boost_str = f"Potential xp boost: {term.magenta(xp_boost_str)}"
+            boost_str += f"\nPotential mineral value boost: {term.gold(mineral_boost_str)}"
             pick(["Cool cool cool"], boost_str)
 
         if option == "About":
