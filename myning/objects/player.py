@@ -89,6 +89,7 @@ class Player(Character, metaclass=Singleton):
         self.soul_credits = 0
         self.discovered_races = [RACES[CharacterRaces.HUMAN.value]]
         self.total_trips = 0
+        self.macguffin = Macguffin()
         self.completed_migrations = [1]
 
     def add_ally(self, ally: Character):
