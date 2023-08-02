@@ -12,11 +12,16 @@ class Settings(Object, metaclass=Singleton):
         cls._instance = trip
 
     def __init__(
-        self, army_columns=15, mini_games_disabled=False, hard_combat_disabled=True
+        self,
+        army_columns=15,
+        mini_games_disabled=False,
+        hard_combat_disabled=True,
+        compact_mode=False,
     ) -> None:
         self.army_columns = army_columns
         self.mini_games_disabled = mini_games_disabled
         self.hard_combat_disabled = hard_combat_disabled
+        self.compact_mode = compact_mode
 
     @classmethod
     def from_dict(cls, attrs: dict):
@@ -27,6 +32,7 @@ class Settings(Object, metaclass=Singleton):
             "army_columns": self.army_columns,
             "mini_games_disabled": self.mini_games_disabled,
             "hard_combat_disabled": self.hard_combat_disabled,
+            "compact_mode": self.compact_mode,
         }
 
     @classmethod
@@ -44,6 +50,9 @@ class Settings(Object, metaclass=Singleton):
     def toggle_hard_combat(self):
         self.hard_combat_disabled = not self.hard_combat_disabled
 
+    def toggle_compact_mode(self):
+        self.compact_mode = not self.compact_mode
+
     @property
     def mini_games_status(self) -> str:
         return "disabled" if self.mini_games_disabled else "enabled"
@@ -51,3 +60,7 @@ class Settings(Object, metaclass=Singleton):
     @property
     def hard_combat_status(self) -> str:
         return "normal" if self.hard_combat_disabled else "hard"
+
+    @property
+    def compact_status(self) -> str:
+        return "enabled" if self.compact_mode else "disabled"

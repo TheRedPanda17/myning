@@ -12,6 +12,7 @@ def play():
                 "Adjust Army Column Height",
                 f"Enable/Disable Mini-Games ({settings.mini_games_status})",
                 f"Combat Mode ({settings.hard_combat_status})",
+                f"Compact Mode ({settings.compact_status})",
                 "Exit",
             ],
             "What settings would you like to adjust?",
@@ -31,5 +32,9 @@ def play():
         if "Combat Mode" in option:
             settings.toggle_hard_combat()
             pick(["Done."], f"Combat Mode is now set to difficulty: {settings.hard_combat_status}")
+
+        if "Compact Mode" in option:
+            settings.toggle_compact_mode()
+            pick(["Done."], f"Compact Mode is now {settings.compact_status}")
 
         FileManager.save(settings)

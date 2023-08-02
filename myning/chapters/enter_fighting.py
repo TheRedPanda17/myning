@@ -26,13 +26,14 @@ DISABLED_INTERVAL = 1 / 2
 
 
 def play(allies: Army, enemies: Army):
+    compact = Settings().compact_mode
     round = 1
     enemies = Army(list(filter(lambda x: x.health > 0, enemies)))
     allies = Army(list(filter(lambda x: x.health > 0, allies)))
 
     while True:
         TabTitle.change_tab_subactivity(_get_battle_status(len(allies), len(enemies)))
-        static_menu = _armies_str(allies, enemies)
+        static_menu = _armies_str(allies, enemies, compact)
         static_menu += f"\n\n{term.bold}Round {round}{term.normal}"
         print(term.clear, end="")
         print(static_menu)
@@ -75,11 +76,12 @@ def play(allies: Army, enemies: Army):
                     allies.remove(target)
 
         print(term.clear, end="")
-        print(_armies_str(allies, enemies))
+        print(_armies_str(allies, enemies, compact))
         print(f"\n{term.bold}Round Results{term.normal} ({bonus_string(bonus)})\n")
 
         print(_round_summary_str(damage_done, damage_taken))
-        print("\n".join(columnate(battle_log)))
+        if not compact:
+            print("\n".join(columnate(battle_log)))
 
         victory = _get_victory(allies, enemies)
         if victory is not None:
@@ -121,8 +123,13 @@ def _do_damage(attacker: Character, defender: Character, bonus=1):
     return damage, dodge, crit
 
 
-def _armies_str(army1: Army, army2: Army) -> str:
-    return f"\n{term.bold('Your Army')}\n{army1}\n\n{term.bold('Enemy Army')}\n{army2}"
+def _armies_str(army1: Army, army2: Army, compact=False) -> str:
+    s = f"\n{term.bold('Your Army')}\n"
+    if compact:
+        s += f"{army1.summary_str}\n\n{term.bold('Enemy Army')}\n{army2.summary_str}"
+    else:
+        s += f"{army1}\n\n{term.bold('Enemy Army')}\n{army2}"
+    return s
 
 
 def _round_summary_str(damage_done: int, health_lost: int):

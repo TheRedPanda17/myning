@@ -36,8 +36,44 @@ class Army(UserList[Character]):
         )
 
     @property
-    def defeated(self):
+    def current_health(self) -> int:
+        return sum(member.health for member in self)
+
+    @property
+    def total_health(self) -> int:
+        return sum(member.max_health for member in self)
+
+    @property
+    def defeated(self) -> int:
         return not any(member.health > 0 for member in self)
+
+    @property
+    def total_damage(self) -> int:
+        return sum(member.stats["damage"] for member in self)
+
+    @property
+    def total_armor(self) -> int:
+        return sum(member.stats["armor"] for member in self)
+
+    @property
+    def summary_str(self) -> str:
+        return f"{self.icons_str}\n\n{self.stats_summary}"
+
+    @property
+    def stats_summary(self) -> str:
+        return (
+            f"{get_health_bar(self.current_health, self.total_health, 30)}"
+            f" {Icons.DAMAGE} {self.total_damage} {Icons.ARMOR} {self.total_armor}"
+        )
+
+    @property
+    def icons_str(self) -> str:
+        s = ""
+        for i, member in enumerate(self):
+            if i != 0:
+                s += "\n" if i % 10 == 0 else " "
+            s += str(member.icon)
+        return s
 
     def __str__(self):
         if not self:
@@ -70,15 +106,7 @@ class Army(UserList[Character]):
                 for member in column:
                     s += member
 
-            health, total_health = 0, 0
-            for member in self:
-                total_health += member.max_health
-                health += member.health
-
-            total_armour = sum(member.stats["armor"] for member in self)
-            total_damage = sum(member.stats["damage"] for member in self)
-
-            s += f"\n\n {get_health_bar(health, total_health, 30)} {Icons.DAMAGE} {total_damage} {Icons.ARMOR} {total_armour}"
+            s += f"\n\n{self.stats_summary}"
             return s
 
         return "\n".join(
