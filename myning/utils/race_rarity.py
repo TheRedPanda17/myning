@@ -38,7 +38,7 @@ RACE_TIERS = [
 RACE_WEIGHTS = [150, 75, 40, 20, 10, 7, 4]
 
 
-def get_recruit_race(highest_rarity: int):
+def get_recruit_species(highest_rarity: int):
     player = Player()
     facility = ResearchFacility()
     tiers = list(range(1, highest_rarity + 1))

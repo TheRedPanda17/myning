@@ -4,15 +4,16 @@ import random
 from blessed import Terminal
 
 from myning.chapters import enter_combat, enter_mining
-from myning.config import MINES
+from myning.config import MINES, RACES
 from myning.objects.mine import Mine, MineType
 from myning.objects.player import Player
+from myning.objects.race import Race
 from myning.objects.trip import LOST_RATIO, Trip
 from myning.utils.file_manager import FileManager
 from myning.utils.generators import generate_character, generate_equipment
 from myning.utils.io import pick
 from myning.utils.output import get_race_discovery_message, print_entity_speech
-from myning.utils.race_rarity import get_recruit_race
+from myning.utils.race_rarity import RACE_TIERS, get_recruit_species
 from myning.utils.string_generation import generate_death_action
 from myning.utils.tab_title import TabTitle
 from myning.utils.ui import columnate
@@ -32,10 +33,15 @@ def play():
         if not mine:
             return
         trip.mine = mine
-        message = f"How long would you like to mine in {mine.icon} {term.blue(mine.name)}?"
-        subtitle = mine.death_chance_str
+        subtitle = ""
         if mine.win_criteria:
-            subtitle += "\n\n" + term.snow4(mine.progress)
+            subtitle += "\n" + term.snow4(mine.progress)
+        subtitle += "\nRisk of Demise:   " + mine.death_chance_str
+        if mine.companion_rarity:
+            subtitle += "\nDiscoverable:     "
+            subtitle += "".join(unlock_species_emojies(available_species(mine)))
+
+        message = f"How long would you like to mine in {mine.icon} {term.blue(mine.name)}?"
         if t := get_idle_time(player.level, message, subtitle):
             break
 
@@ -118,8 +124,8 @@ def recruit_ally():
     levels = trip.mine.character_levels
     levels = [max(1, math.ceil(level * 0.75)) for level in levels]
 
-    race = get_recruit_race(trip.mine.companion_rarity)
-    ally = generate_character(levels, race=race)
+    species = get_recruit_species(trip.mine.companion_rarity)
+    ally = generate_character(levels, race=species)
 
     print_entity_speech(
         ally,
@@ -239,3 +245,28 @@ def check_progress():
                 f"You have completed a mining trip in {mine.icon} {term.blue(mine.name)}",
                 sub_title="\n" + mine.progress,
             )
+
+
+def available_species(mine: Mine) -> list[Race]:
+    if not mine.companion_rarity:
+        return []
+
+    species = []
+    for i in range(0, mine.companion_rarity):
+        tier = RACE_TIERS[i]
+        for s in tier:
+            species.append(RACES[s])
+
+    return species
+
+
+def unlock_species_emojies(species: list[Race]) -> list[str]:
+    player = Player()
+    emojis = []
+    for spec in species:
+        if spec in player.discovered_races:
+            emojis.append(spec.icon)
+        else:
+            emojis.append("❓")
+
+    return emojis
