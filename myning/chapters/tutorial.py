@@ -73,10 +73,7 @@ def play():
 
     print_entity_speech(player, "Thanks.")
 
-    print_entity_speech(
-        j_rod,
-        "You'll need to see as well, I suppose.",
-    )
+    print_entity_speech(j_rod, "You'll need to see as well, I suppose.")
 
     helmet = Item(
         name="Basic Mining Helmet",
@@ -117,9 +114,13 @@ def play():
     input()
     enter_armory.play()
 
+    print_entity_speech(j_rod, "Now we can go mining!")
     print_entity_speech(
         j_rod,
-        "Now we can go mining!",
+        "There will be some minigames to help you mine or battle better, "
+        "but you can ignore them without penalty if you want to be AFK. "
+        "Or you can disable them entirely in the settings after you finish "
+        "up this here tutorial",
     )
     enter_mine.play()
 
