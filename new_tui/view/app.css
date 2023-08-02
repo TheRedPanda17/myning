@@ -1,0 +1,45 @@
+Body {
+  height: 1fr;
+  layout: horizontal;
+}
+
+.container,
+ScrollableContainer {
+  border: round dodgerblue;
+  border-subtitle-align: left;
+  padding: 0 1;
+}
+
+.container:focus,
+ScrollableContainer:focus {
+  border: round lime;
+}
+
+ScrollableContainer > Static {
+  width: auto;
+}
+
+ChapterWidget {
+  width: 3fr;
+}
+
+SideContainer {
+  width: 1fr;
+  min-width: 48;
+}
+
+OptionList {
+  margin: 1 0;
+  padding: 0;
+  background: black 0%;
+  border: none;
+}
+
+OptionList:focus {
+  border: none;
+}
+
+OptionList > .option-list--option-highlighted {
+  background: dodgerblue;
+  /* color: dodgerblue; */
+}

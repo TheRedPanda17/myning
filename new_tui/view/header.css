@@ -1,0 +1,19 @@
+Header {
+  grid-size: 3;
+  height: 3;
+  layout: grid;
+}
+
+#header-icon {
+  content-align: left middle;
+}
+
+#header-title {
+  content-align: center middle;
+  color: gold;
+  text-style: bold;
+}
+
+HeaderClock {
+  content-align: right middle;
+}
