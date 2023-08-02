@@ -210,4 +210,4 @@ def buy_exp(player: Player):
         max_value=int(player.gold / XP_COST),
     )
     if xp and player.pay(xp * XP_COST):
-        player.exp_available += xp
+        player.add_available_xp(xp)

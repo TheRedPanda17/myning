@@ -118,11 +118,14 @@ class Player(Character, metaclass=Singleton):
         self.remove_fallen_ally(ally)
         self._allies.append(ally)
 
-    def add_exp(self, exp):
+    def add_xp(self, exp):
         if len(self.army) > 1:
             self.exp_available += int(exp * 1 / 2 * len(self.army) * self.macguffin.exp_boost)
         else:
             self.add_experience(int(exp * self.macguffin.exp_boost))
+
+    def add_available_xp(self, xp: int):
+        self.exp_available += xp
 
     def incr_trip(self):
         self.total_trips += 1

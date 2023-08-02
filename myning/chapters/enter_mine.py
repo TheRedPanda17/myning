@@ -207,7 +207,7 @@ def add_trip_to_player():
             )
             pick(["Awesome!"], message=message, sub_title=subtitle)
 
-    player.add_exp(trip.experience_gained)
+    player.add_xp(trip.experience_gained)
     player.incr_trip()
     if trip.mine.type == MineType.COMBAT:
         print("The goods collected on the trip were donated to the training facility.")
