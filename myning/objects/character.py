@@ -4,7 +4,7 @@ from enum import Enum
 
 from blessed import Terminal
 
-from myning.config import XP_COST, RACES
+from myning.config import RACES, XP_COST
 from myning.objects.equipment import Equipment
 from myning.objects.object import Object
 from myning.objects.race import Race

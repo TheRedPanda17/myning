@@ -15,26 +15,28 @@ term = Terminal()
 
 
 def play():
+    player = Player()
+
+    value = get_total_value()
+    xp_boost = get_boost(player.macguffin.exp_boost, value)
+    mineral_boost = get_boost(player.macguffin.mineral_boost, value)
+
     while True:
         option, _ = pick(
-            ["Go Back in Time", "View Current Macguffin", "About", "Go Back"],
+            ["View Potential Macguffin", "Go Back in Time", "About", "Go Back"],
             "What would you like to do?",
         )
-        player = Player()
 
         if option == "Go Back":
             return
 
         if option == "Go Back in Time":
-            value = get_total_value()
-            exp_boost = round((value / 500000) + player.macguffin.exp_boost, 2)
-            mineral_boost = round((value / 500000) + player.macguffin.mineral_boost, 2)
             journal = player.discovered_races
             migrations = player.completed_migrations
             option, _ = pick(
                 ["Yes", "No"],
                 "Are you sure you want to erase ALL progress and go back in time?",
-                sub_title=f"You'll lose all your progress and gain a {int(exp_boost*100)}% xp boost \nand a {int(mineral_boost*100)}% mineral value boost.",
+                sub_title=f"You'll lose all your progress and gain a {int(xp_boost*100)}% xp boost \nand a {int(mineral_boost*100)}% mineral value boost.",
             )
             settings = Settings()
 
@@ -50,7 +52,7 @@ def play():
 
             Player.initialize(player_name)
             player = Player()
-            player.macguffin.exp_boost = exp_boost
+            player.macguffin.exp_boost = xp_boost
             player.macguffin.mineral_boost = mineral_boost
             player.discovered_races = journal
             player.completed_migrations = migrations
@@ -62,11 +64,13 @@ def play():
             # Janky, but this will exit to the run.sh loop which will reboot the game. Basically purges the memory of the game.
             exit(123)
 
-        if option == "View Current Macguffin":
-            pick(
-                ["Cool cool cool"],
-                f"XP boost: {player.macguffin.exp_percentage} Mineral value boost: {player.macguffin.store_percentage}",
-            )
+        if option == "View Potential Macguffin":
+            value = get_total_value()
+            xp_boost_str = str(xp_boost * 100) + "%"
+            mineral_boost_str = str(mineral_boost * 100) + "%"
+            boost_str = f"Potential xp boost: {term.magenta(xp_boost_str)}"
+            boost_str += f"\nPotential mineral value boost: {term.gold(mineral_boost_str)}"
+            pick(["Cool cool cool"], boost_str)
 
         if option == "About":
             pick(
@@ -78,6 +82,10 @@ def play():
                 "Journal unlocks will not be lost.",
             )
             continue
+
+
+def get_boost(current_boost: int, game_value: int) -> int:
+    return round((game_value / 500000) + current_boost, 2)
 
 
 def get_total_value() -> int:
