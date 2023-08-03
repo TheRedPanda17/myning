@@ -10,6 +10,7 @@ def play():
     while True:
         facility = ResearchFacility()
         facility.check_in()
+        FileManager.save(facility)
         title = f"Level {facility.level} Research ({get_research_string(facility.points)})"
         options = [
             "Assign Researchers",

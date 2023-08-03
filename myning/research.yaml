@@ -69,3 +69,39 @@ species_rarity:
     - 500
     - 850
     - 1200
+
+speed_up_time:
+  name: Speed up Time
+  descriptions:
+    - Increase how quickly time passes in a mine (10%)
+    - Increase how quickly time passes in a mine (20%)
+    - Increase how quickly time passes in a mine (30%)
+    - Increase how quickly time passes in a mine (40%)
+    - Increase how quickly time passes in a mine (50%)
+    - Increase how quickly time passes in a mine (60%)
+    - Increase how quickly time passes in a mine (70%)
+    - Increase how quickly time passes in a mine (80%)
+    - Increase how quickly time passes in a mine (90%)
+    - Increase how quickly time passes in a mine (100%)
+  values:
+    - 10
+    - 20
+    - 30
+    - 40
+    - 50
+    - 60
+    - 70
+    - 80
+    - 90
+    - 100
+  costs:
+    - 50
+    - 125
+    - 250
+    - 400
+    - 750
+    - 1000
+    - 1625
+    - 2500
+    - 4250
+    - 6000
