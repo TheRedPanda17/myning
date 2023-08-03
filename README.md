@@ -5,7 +5,7 @@ Mine for ore, battle enemies, manage your garden, upgrade your gear, and so much
 
 ![image of myning gameplay](https://github.com/TheRedPanda17/myning/blob/main/images/myning.png?raw=true)
 
-## Prerequisits
+## Prerequisites
 
 Install Homebrew:
 
