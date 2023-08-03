@@ -10,7 +10,7 @@
   description: Now you can disable minigames
   date: 11-29-22
 
-- name: Added Journal, Race Discovery
+- name: Added Journal, Species Discovery
   description: MAKE SURE YOU RUN `make migrate id=1` BEFORE PLAYING
   date: 11-28-22
 
@@ -42,8 +42,8 @@
   description: Made stores work with columns, updated blacksmith prices, small maintenance fixes.
   date: 5-30-22
 
-- name: Race icons added
-  description: Characters now have icons for their race
+- name: Species icons added
+  description: Characters now have icons for their species
   date: 5-28-22
 
 - name: Resource Mines

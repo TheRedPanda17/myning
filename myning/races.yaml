@@ -23,7 +23,7 @@ Dwarf:
   name: Dwarf
   intro: Hark!
   description: Dwarves, sometimes called the Stout Folk and Deep
-    Folk, are a natural humanoid race common throughout
+    Folk, are a natural humanoid species common throughout
     the world. Dwarves are a short, tough, tradition-abiding
     folk known for their strong martial traditions and
     beautiful craftsmanship.
@@ -39,7 +39,7 @@ Elf:
   dodge_chance: 4
   name: Elf
   intro: What's the Dilly?
-  description: Elves are a long-lived race found most commonly in
+  description: Elves are a long-lived species found most commonly in
     forests, shrublands, and other wildernesses. From
     time to time the elves have organized strong nations
     in some cases adopting even a nomadic lifestyle. They
@@ -57,13 +57,13 @@ Goblin:
   dodge_chance: 4
   name: Goblin
   intro: Yargha!
-  description: Goblins are a race of small and numerous goblinoids
+  description: Goblins are a species of small and numerous goblinoids
     common through the world, often living in underground
-    caverns near the surface known as lairs. The race
+    caverns near the surface known as lairs. The species
     is often, though not always, dominated by other
     goblinoids, most commonly hobgoblins. Goblins may
     have, in fact, been initially created by this
-    related race to serve as scouts and infiltrators.
+    related species to serve as scouts and infiltrators.
   alignment: Chaotic Evil
   size: small
   rarity_tier: 2
@@ -78,7 +78,7 @@ Halfling:
   intro: Holla!
   description: Halflings, also known as Hin, or the "quick folk"
     amongst themselves, or the "sly folk" or "good folk"
-    by other races are humanoid creatures similar in
+    by other species are humanoid creatures similar in
     shape to humans. The term "halfling" was derived
     from the fact that they are around half of the size
     of humans, but otherwise very similar in appearance.
@@ -116,7 +116,7 @@ Gnome:
     craftiness and affinity for illusion magic. Gnomes
     are present in nearly every human city and most
     caravan-stop villages where other cultures and
-    non-human races are at least tolerated.
+    non-human species are at least tolerated.
   alignment: Chaotic Good
   size: small
   rarity_tier: 2
@@ -169,7 +169,7 @@ Bugbear:
   dodge_chance: 0
   name: Bugbear
   intro: How's it hanging?
-  description: Bugbears are a massive humanoid race
+  description: Bugbears are a massive humanoid species
     distantly related to, but larger and stronger than, goblins
     and hobgoblins.
   alignment: Chaotic Evil
@@ -284,8 +284,8 @@ Firbolg:
   dodge_chance: 0
   name: Firbolg
   intro: What's crackin?
-  description: Firbolgs are a reclusive race of giant-kin who
-    preferred to avoid contact with other sentient races.
+  description: Firbolgs are a reclusive species of giant-kin who
+    preferred to avoid contact with other sentient species.
     They are both the most intelligent and the most
     powerful of the giant-kin."""
   size: small
@@ -300,7 +300,7 @@ Kenku:
   dodge_chance: 4
   name: Kenku
   intro: Kaaaaaa!, err, excuse me,
-  description: Kenku are a race of flightless avian humanoids. They
+  description: Kenku are a species of flightless avian humanoids. They
     tend to be selfish and secretive in nature and were
     often engaged in plots to acquire wealth and power.
     They operate in small gangs and often lived in large

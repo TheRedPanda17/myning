@@ -29,7 +29,7 @@ def play():
             ]
         )
 
-        option, index = pick([*options, "Go Back"], "Select a Race to learn about them.")
+        option, index = pick([*options, "Go Back"], "Select a Species to learn about them.")
         if option == "Go Back":
             return
         elif race_list[index] not in player.discovered_races:
