@@ -66,8 +66,8 @@ def play():
 
         if option == "View Potential Macguffin":
             value = get_total_value()
-            xp_boost_str = str(round(xp_boost * 100, 2)) + "%"
-            mineral_boost_str = str(round(mineral_boost * 100, 2)) + "%"
+            xp_boost_str = f"{round(xp_boost * 100, 2)}%"
+            mineral_boost_str = f"{round(mineral_boost * 100, 2)}%"
             boost_str = f"Potential xp boost: {term.magenta(xp_boost_str)}"
             boost_str += f"\nPotential mineral value boost: {term.gold(mineral_boost_str)}"
             pick(["Cool cool cool"], boost_str)
