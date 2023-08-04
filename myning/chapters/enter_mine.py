@@ -4,10 +4,11 @@ import random
 from blessed import Terminal
 
 from myning.chapters import enter_combat, enter_mining
-from myning.config import MINES, RACES
+from myning.config import MINES, RACES, RESEARCH
 from myning.objects.mine import Mine, MineType
 from myning.objects.player import Player
 from myning.objects.race import Race
+from myning.objects.research_facility import ResearchFacility
 from myning.objects.trip import LOST_RATIO, Trip
 from myning.utils.file_manager import FileManager
 from myning.utils.generators import generate_character, generate_equipment
@@ -226,8 +227,12 @@ def add_trip_to_player():
 def check_progress():
     player = Player()
     trip = Trip()
+    research_facility = ResearchFacility()
 
     progress = trip.mine.player_progress
+    if research_facility.has_research("speed_up_time"):
+        increase = RESEARCH["speed_up_time"].player_value + 100
+        trip.total_seconds = int(increase / 100 * trip.total_seconds)
 
     progress.minutes += trip.total_seconds / 60.0
     progress.kills += trip.enemies_defeated
