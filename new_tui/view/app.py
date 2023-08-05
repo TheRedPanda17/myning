@@ -44,6 +44,10 @@ class MyningGame(Screen):
             "j": "down",
             "k": "up",
             "l": "right",
+            "d": "pagedown",
+            "u": "pageup",
+            "g": "home",
+            "upper_g": "end",
         }
         _key = aliases.get(key.name, key.name)
         if binding := focused._bindings.keys.get(_key):

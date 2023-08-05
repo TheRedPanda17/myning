@@ -1,3 +1,5 @@
+import string
+
 from rich.text import Text
 from textual.app import events
 from textual.containers import ScrollableContainer
@@ -6,6 +8,9 @@ from textual.widgets import OptionList, Static
 
 from myning.objects.player import Player
 from new_tui.chapters import PickArgs, town
+from new_tui.view.army import ArmyContents
+from new_tui.view.currency import CurrencyWidget
+from new_tui.view.inventory import InventoryContents, InventoryWidget
 
 player = Player()
 
@@ -21,6 +26,15 @@ class Question(Static):
         return Text.from_markup(content)
 
 
+RESERVED_HOTKEYS = {
+    "d",
+    "j",
+    "k",
+    "q",
+    "u",
+}
+
+
 class ChapterWidget(ScrollableContainer):
     can_focus = True
 
@@ -29,6 +43,7 @@ class ChapterWidget(ScrollableContainer):
         self.option_list = OptionList()
         self.option_list.can_focus = False
         self.handlers = []
+        self.hotkeys: dict[str, int] = {}
         super().__init__()
 
     def compose(self):
@@ -46,14 +61,17 @@ class ChapterWidget(ScrollableContainer):
         aliases = {
             "j": "down",
             "k": "up",
+            "d": "page_down",
+            "u": "page_up",
         }
-        # print([option.prompt for option in self.option_list._options])
         _key = aliases.get(key.name, key.name)
 
         if _key == "q":
             if self.question.message == town.enter().message:
                 return  # Prevent exiting with q in main menu
             self.select(-1)
+        elif _key in self.hotkeys:
+            self.select(self.hotkeys[_key])
         elif _key.isdigit():
             self.option_list.highlighted = int(_key) - 1
         elif binding := self.option_list._bindings.keys.get(_key):
@@ -65,15 +83,38 @@ class ChapterWidget(ScrollableContainer):
         self.update_dashboard()
 
     def update_dashboard(self):
-        self.app.query_one("ArmyContents").update_army()
-        self.app.query_one("CurrencyWidget").refresh()
-        self.app.query_one("InventoryContents").update_inventory()
+        self.app.query_one("ArmyContents", ArmyContents).update_army()
+        self.app.query_one("CurrencyWidget", CurrencyWidget).refresh()
+        self.app.query_one("InventoryContents", InventoryContents).update_inventory()
+        self.app.query_one("InventoryWidget", InventoryWidget).update_border()
 
     def pick(self, args: PickArgs):
         self.question.message = args.message
         self.question.subtitle = args.subtitle or ""
         self.option_list.clear_options()
-        self.option_list.add_options([option[0] for option in args.options])
+        self.hotkeys = {}
+        options = []
+        for i, option in enumerate(args.options):
+            label = option[0]
+            if (
+                not isinstance(label, Text)
+                and i != len(args.options) - 1
+                and (
+                    hotkey := next(
+                        (
+                            char
+                            for char in label
+                            if char.lower() in string.ascii_lowercase
+                            and char.lower() not in RESERVED_HOTKEYS | set(self.hotkeys.keys())
+                        ),
+                        None,
+                    )
+                )
+            ):
+                self.hotkeys[hotkey.lower()] = i
+                label = label.replace(hotkey, f"[underline]{hotkey}[/]", 1)
+            options.append(label)
+        self.option_list.add_options(options)
         self.option_list.highlighted = 0
         self.handlers = [option[1] for option in args.options]
 

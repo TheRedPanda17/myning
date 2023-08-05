@@ -1,6 +1,4 @@
 from rich.table import Table
-from textual.reactive import Reactive
-from textual.widget import Widget
 from textual.widgets import Static
 
 from myning.config import MINES
