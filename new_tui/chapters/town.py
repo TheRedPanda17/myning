@@ -2,7 +2,7 @@ import functools
 
 from myning.config import MINES
 from myning.objects.menu_item import MenuItem
-from new_tui.chapters import Handler, store
+from new_tui.chapters import PickArgs, store
 
 CHAPTERS = [
     MenuItem("Mine"),
@@ -28,17 +28,20 @@ CHAPTERS = [
 #     return [icon, name]
 
 
-def handle_unimplemented(location: str) -> Handler:
-    return f"Sorry, {location} has not been implemented yet.", [("Bummer!", enter)]
-
-
-def enter() -> Handler:
-    return (
-        "Where would you like to go next?",
-        [
+def enter():
+    return PickArgs(
+        message="Where would you like to go next?",
+        options=[
             (str(chapter), store.enter)
             if chapter.name == "Store"
             else (str(chapter), functools.partial(handle_unimplemented, chapter.name))
             for chapter in CHAPTERS
         ],
+    )
+
+
+def handle_unimplemented(location: str):
+    return PickArgs(
+        message=f"Sorry, {location} has not been implemented yet.",
+        options=[("Bummer!", enter)],
     )

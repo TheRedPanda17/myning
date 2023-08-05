@@ -1,19 +1,21 @@
-from typing import Callable
-
 from rich.text import Text
 from textual.app import events
 from textual.containers import ScrollableContainer
 from textual.reactive import Reactive
 from textual.widgets import OptionList, Static
 
-from new_tui.chapters import Handler, town
+from new_tui.chapters import PickArgs, town
 
 
 class Question(Static):
     message = Reactive("")
+    subtitle = Reactive("")
 
     def render(self):
-        return Text.from_markup(self.message)
+        content = f"[bold]{self.message}[/]"
+        if self.subtitle:
+            content += f"\n[grey53]{self.subtitle}[/]"
+        return Text.from_markup(content)
 
 
 class ChapterWidget(ScrollableContainer):
@@ -31,8 +33,9 @@ class ChapterWidget(ScrollableContainer):
 
     def on_mount(self):
         self.border_title = "Town"
-        message, options = town.enter()
-        self.pick(message, options)
+        self.pick(town.enter())
+        self.select(1)
+        self.select(0)
 
     async def on_key(self, key: events.Key):
         aliases = {
@@ -52,17 +55,17 @@ class ChapterWidget(ScrollableContainer):
     def on_option_list_option_selected(self, option: OptionList.OptionSelected):
         self.select(option.option_index)
 
-    def pick(self, message: str, options: list[tuple[str, Callable[..., Handler]]]):
-        self.question.message = message
+    def pick(self, args: PickArgs):
+        self.question.message = args.message
+        self.question.subtitle = args.subtitle
         self.option_list.clear_options()
-        self.option_list.add_options([option[0] for option in options])
+        self.option_list.add_options([option[0] for option in args.options])
         self.option_list.highlighted = 0
-        self.handlers = [option[1] for option in options]
+        self.handlers = [option[1] for option in args.options]
 
     def select(self, option_index: int):
         handler = self.handlers[option_index]
         module = handler.__module__.rpartition(".")[-1]
         if module != "functools":
             self.border_title = module.replace("_", " ").title()
-        message, options = handler()
-        self.pick(message, options)
+        self.pick(handler())

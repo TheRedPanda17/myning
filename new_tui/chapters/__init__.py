@@ -1,3 +1,14 @@
-from typing import Callable
+from dataclasses import dataclass
+from functools import partial
+from typing import Callable, Optional
 
-Handler = tuple[str, list[tuple[str, Callable[..., "Handler"]]]]
+
+@dataclass
+class PickArgs:
+    message: str
+    options: list["Option"]
+    subtitle: Optional[str] = None
+
+
+Handler = Callable[..., PickArgs]
+Option = tuple[str, Handler]

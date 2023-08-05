@@ -28,10 +28,6 @@ SideContainer {
   min-width: 48;
 }
 
-Question {
-  text-style: bold;
-}
-
 OptionList {
   background: black 0%;
   border: none;
