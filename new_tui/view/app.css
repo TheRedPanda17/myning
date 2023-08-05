@@ -7,7 +7,9 @@ Body {
 ScrollableContainer {
   border: round dodgerblue;
   border-subtitle-align: left;
-  padding: 0 1;
+  border-subtitle-style: bold;
+  border-title-style: bold;
+  padding: 0 0 0 1;
 }
 
 .container:focus,

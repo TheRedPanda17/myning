@@ -4,7 +4,10 @@ from textual.containers import ScrollableContainer
 from textual.reactive import Reactive
 from textual.widgets import OptionList, Static
 
+from myning.objects.player import Player
 from new_tui.chapters import PickArgs, town
+
+player = Player()
 
 
 class Question(Static):
@@ -25,6 +28,7 @@ class ChapterWidget(ScrollableContainer):
         self.question = Question()
         self.option_list = OptionList()
         self.option_list.can_focus = False
+        self.handlers = []
         super().__init__()
 
     def compose(self):
@@ -32,17 +36,18 @@ class ChapterWidget(ScrollableContainer):
         yield self.option_list
 
     def on_mount(self):
+        self.update_dashboard()
         self.border_title = "Town"
         self.pick(town.enter())
-        # For developing, select options by 0-based index to skip to the screen
+        # For dev, select options by 0-based index to skip to the screen
         # self.select(1)
-        # self.select(0)
 
     async def on_key(self, key: events.Key):
         aliases = {
             "j": "down",
             "k": "up",
         }
+        # print([option.prompt for option in self.option_list._options])
         _key = aliases.get(key.name, key.name)
 
         if _key == "q":
@@ -57,6 +62,12 @@ class ChapterWidget(ScrollableContainer):
 
     def on_option_list_option_selected(self, option: OptionList.OptionSelected):
         self.select(option.option_index)
+        self.update_dashboard()
+
+    def update_dashboard(self):
+        self.app.query_one("ArmyContents").update_army()
+        self.app.query_one("CurrencyWidget").refresh()
+        self.app.query_one("InventoryContents").update_inventory()
 
     def pick(self, args: PickArgs):
         self.question.message = args.message

@@ -3,6 +3,7 @@ import random
 from typing import List, Optional
 
 from blessed.terminal import Terminal
+from textual.reactive import reactive
 
 from myning.config import MINES, SPECIES, UPGRADES, XP_COST
 from myning.objects.army import Army

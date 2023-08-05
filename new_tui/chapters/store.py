@@ -1,13 +1,13 @@
 from functools import partial
-from itertools import zip_longest
 
-from rich.text import Text
 
-from myning.objects.item import Item
+from myning.objects.item import Item, ItemType
 from myning.objects.player import Player
 from myning.objects.store import Store
-from myning.utils.ui_consts import Icons
 from new_tui.chapters import PickArgs, town
+from new_tui.formatter import Formatter, columnate
+
+MARKDOWN_RATIO = 1 / 2
 
 player = Player()
 
@@ -27,16 +27,9 @@ def enter(store: Store | None = None):
 
 
 def pick_buy(store: Store):
-    rows = columnate(
-        [[*item.tui_arr, f"([gold1]{item.value}g[/])"] for item in store.inventory.items]
-    )
-    options = [
-        (
-            row,
-            partial(confirm_buy, store, item),
-        )
-        for row, item in zip(rows, store.inventory.items)
-    ]
+    items = store.inventory.items
+    rows = columnate([[*item.tui_arr, f"({Formatter.gold(item.value)})"] for item in items])
+    options = [(row, partial(confirm_buy, store, item)) for row, item in zip(rows, items)]
     return PickArgs(
         message="What would you like to buy?",
         options=[
@@ -48,7 +41,7 @@ def pick_buy(store: Store):
 
 def confirm_buy(store: Store, item: Item):
     return PickArgs(
-        message=f"Are you sure you want to buy {item.icon} [{item.tui_color}]{item.name}[/] for [gold1]{item.value}g[/]?",
+        message=f"Are you sure you want to buy {item.tui_str} for {Formatter.gold(item.value)}?",
         options=[
             ("Yes", partial(buy, store, item)),
             ("No", partial(pick_buy, store)),
@@ -57,18 +50,30 @@ def confirm_buy(store: Store, item: Item):
 
 
 def buy(store: Store, item: Item):
-    print(f"bought {item.name}")
+    if player.gold < item.value:
+        return PickArgs(
+            message="Not enough gold!",
+            options=[("Bummer!", partial(pick_buy, store))],
+        )
+    player.gold -= item.value
+    player.inventory.add_item(item)
+    store.inventory.remove_item(item)
     return enter(store)
 
 
+def sell_price(item: Item):
+    multipler = player.macguffin.mineral_boost if item.type == ItemType.MINERAL else MARKDOWN_RATIO
+    return int(item.value * multipler) or 1
+
+
 def pick_sell(store: Store):
+    items = player.inventory.items
+    rows = columnate([[*item.tui_arr, f"({Formatter.gold(sell_price(item))})"] for item in items])
+    options = [(row, partial(confirm_sell, store, item)) for row, item in zip(rows, items)]
     return PickArgs(
         message="What would you like to sell?",
         options=[
-            *(
-                (item.tui_str, partial(confirm_sell, store, item))
-                for item in player.inventory.items
-            ),
+            *options,
             ("Go Back", partial(enter, store)),
         ],
     )
@@ -76,7 +81,7 @@ def pick_sell(store: Store):
 
 def confirm_sell(store: Store, item: Item):
     return PickArgs(
-        message=f"Are you sure you want to sell {item.icon} [{item.tui_color}]{item.name}[/] for [gold1]{item.value}g[/]?",
+        message=f"Are you sure you want to sell {item.tui_str} for {Formatter.gold(sell_price(item))}?",
         options=[
             ("Yes", partial(sell, store, item)),
             ("No", partial(enter, store)),
@@ -85,25 +90,7 @@ def confirm_sell(store: Store, item: Item):
 
 
 def sell(store: Store, item: Item):
-    print(f"sold {item.name}")
+    player.gold += sell_price(item)
+    player.inventory.remove_item(item)
+    store.inventory.add_item(item)
     return enter(store)
-
-
-def columnate(items: list[list[str]], *, sep=" ") -> list[Text]:
-    widths = []
-    for col in zip_longest(*items):
-        max_width = 0
-        for cell in col:
-            width = 1 if isinstance(cell, Icons) else len(Text.from_markup(cell))
-            if width > max_width:
-                max_width = width
-        widths.append(max_width)
-    rows = []
-    for row in items:
-        texts = []
-        for item, width in zip(row, widths):
-            text = Text.from_markup(item)
-            text.truncate(width + 1, pad=True)
-            texts.append(text)
-        rows.append(Text(sep).join(texts))
-    return rows

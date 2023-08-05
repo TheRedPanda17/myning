@@ -1,5 +1,9 @@
+from rich.table import Table
 from textual.app import App
-from textual.widgets import OptionList
+from textual.containers import ScrollableContainer
+from textual.reactive import Reactive
+from textual.widget import Widget
+from textual.widgets import OptionList, Static
 from myning.objects.player import Player
 from myning.objects.research_facility import ResearchFacility
 
@@ -11,22 +15,30 @@ def main():
     from new_tui.view.app import MyningApp
 
     MyningApp().run()
-    print("Game saved. Thank you for playing Myning!")
+    # print("Game saved. Thank you for playing Myning!")
+    print("Game was not saved because we are still in dev. Thank you for playing Myning!")
 
 
+# items = ["a"]
+
+
+# class Content(Widget):
+#     def render(self):
+#         table = Table.grid()
+#         for i in items:
+#             table.add_row(i)
+#         # self.update(table)
+#         return table
+#
+#
 # class TestApp(App):
-#     CSS = """
-#     OptionList {
-#         height: 1fr
-#     }
-#     """
-#
-#     def __init__(self):
-#         self.option_list = OptionList(*[str(x) for x in range(100)])
-#         super().__init__()
-#
 #     def compose(self):
-#         yield self.option_list
+#         yield Content()
+#
+#     def on_key(self):
+#         items.append("a")
+#         table = self.query_one("Content")
+#         table.refresh()
 
 
 if __name__ == "__main__":

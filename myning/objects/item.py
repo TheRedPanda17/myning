@@ -157,7 +157,10 @@ class Item(Object):
 
     @property
     def tui_str(self):
-        return f"{self.icon} {self.name} [bold {self.tui_color}]{self.value}[/]"
+        s = f"{self.icon} [{self.tui_color}]{self.name}[/]"
+        if self.type not in (ItemType.MINERAL, ItemType.PLANT):
+            s += f" ([{self.tui_color}]{self.main_affect}[/])"
+        return s
 
     def print_details(self):
         s = stat_string("Name", self.name)
