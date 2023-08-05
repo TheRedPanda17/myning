@@ -149,7 +149,11 @@ class Item(Object):
 
     @property
     def tui_arr(self):
-        return [self.icon, self.name, f"[bold {self.tui_color}]{self.value}[/]"]
+        return [
+            self.icon,
+            self.name,
+            f"[bold {self.tui_color}]{self.main_affect}[/]",
+        ]
 
     @property
     def tui_str(self):

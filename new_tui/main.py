@@ -11,20 +11,23 @@ def main():
     from new_tui.view.app import MyningApp
 
     MyningApp().run()
+    print("Game saved. Thank you for playing Myning!")
 
 
-class TestApp(App):
-    CSS="""
-    OptionList {
-        height: 1fr
-    }
-    """
-    def __init__(self):
-        self.option_list = OptionList(*[str(x) for x in range(100)])
-        super().__init__()
+# class TestApp(App):
+#     CSS = """
+#     OptionList {
+#         height: 1fr
+#     }
+#     """
+#
+#     def __init__(self):
+#         self.option_list = OptionList(*[str(x) for x in range(100)])
+#         super().__init__()
+#
+#     def compose(self):
+#         yield self.option_list
 
-    def compose(self):
-        yield self.option_list
 
 if __name__ == "__main__":
     main()

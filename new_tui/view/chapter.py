@@ -34,8 +34,9 @@ class ChapterWidget(ScrollableContainer):
     def on_mount(self):
         self.border_title = "Town"
         self.pick(town.enter())
-        self.select(1)
-        self.select(0)
+        # For developing, select options by 0-based index to skip to the screen
+        # self.select(1)
+        # self.select(0)
 
     async def on_key(self, key: events.Key):
         aliases = {
@@ -45,6 +46,8 @@ class ChapterWidget(ScrollableContainer):
         _key = aliases.get(key.name, key.name)
 
         if _key == "q":
+            if self.question.message == town.enter().message:
+                return  # Prevent exiting with q in main menu
             self.select(-1)
         elif _key.isdigit():
             self.option_list.highlighted = int(_key) - 1
@@ -57,7 +60,7 @@ class ChapterWidget(ScrollableContainer):
 
     def pick(self, args: PickArgs):
         self.question.message = args.message
-        self.question.subtitle = args.subtitle
+        self.question.subtitle = args.subtitle or ""
         self.option_list.clear_options()
         self.option_list.add_options([option[0] for option in args.options])
         self.option_list.highlighted = 0
@@ -68,4 +71,7 @@ class ChapterWidget(ScrollableContainer):
         module = handler.__module__.rpartition(".")[-1]
         if module != "functools":
             self.border_title = module.replace("_", " ").title()
-        self.pick(handler())
+        args = handler()
+        if args.message == "__exit__":
+            self.app.exit()
+        self.pick(args)

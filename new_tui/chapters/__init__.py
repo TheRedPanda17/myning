@@ -1,6 +1,7 @@
 from dataclasses import dataclass
-from functools import partial
 from typing import Callable, Optional
+
+from rich.text import Text
 
 
 @dataclass
@@ -11,4 +12,4 @@ class PickArgs:
 
 
 Handler = Callable[..., PickArgs]
-Option = tuple[str, Handler]
+Option = tuple[str | Text, Handler]

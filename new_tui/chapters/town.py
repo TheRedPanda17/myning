@@ -1,7 +1,10 @@
-import functools
+from functools import partial
+
+from textual import message
 
 from myning.config import MINES
 from myning.objects.menu_item import MenuItem
+from myning.utils.ui_consts import Icons
 from new_tui.chapters import PickArgs, store
 
 CHAPTERS = [
@@ -22,19 +25,29 @@ CHAPTERS = [
 ]
 
 
-# def str_arr(self):
-#     icon = f"{self.emoji} " if self.unlocked else Icons.LOCKED
-#     name = self.name if self.unlocked else term.snow4(self.name)
-#     return [icon, name]
+def chapter_option(menu_item: MenuItem):
+    icon = f"{menu_item.emoji} " if menu_item.unlocked else Icons.LOCKED
+    name = menu_item.name if menu_item.unlocked else f"[grey53]{menu_item.name}[/]"
+    return f"{icon} {name}"
+
+
+def exit():
+    return PickArgs(message="__exit__", options=[])
+
+
+implemented_chapters = {
+    "Store": store.enter,
+    "Exit": exit,
+}
 
 
 def enter():
     return PickArgs(
         message="Where would you like to go next?",
         options=[
-            (str(chapter), store.enter)
-            if chapter.name == "Store"
-            else (str(chapter), functools.partial(handle_unimplemented, chapter.name))
+            (chapter_option(chapter), implemented_chapters[chapter.name])
+            if implemented_chapters.get(chapter.name)
+            else (str(chapter), partial(handle_unimplemented, chapter.name))
             for chapter in CHAPTERS
         ],
     )
