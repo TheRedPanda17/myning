@@ -97,11 +97,11 @@ def print_battle_results(victory):
     )
 
 
-def get_race_discovery_message(ally_name: str, race_name: str, race_icon: str):
+def get_species_discovery_message(ally_name: str, species_name: str, species_icon: str):
     title = f"\n✨ You have discovered a new species! ✨"
-    sub_title = f"\n{race_icon} {term.yellow}{term.bold}{race_name}{term.normal}"
+    sub_title = f"\n{species_icon} {term.yellow}{term.bold}{species_name}{term.normal}"
     sub_title += f"\n\n{ally_name} has joined your army. Read and discover more about "
     sub_title += (
-        f"{race_icon} {race_name}(s) in your {term.bold}{term.underline}journal{term.normal}."
+        f"{species_icon} {species_name}(s) in your {term.bold}{term.underline}journal{term.normal}."
     )
     return title, sub_title

@@ -1,7 +1,7 @@
 import yaml
 
 from myning.objects.mine import Mine
-from myning.objects.race import Race
+from myning.objects.species import Species
 from myning.objects.upgrade import Upgrade, UpgradeType
 
 XP_COST = 2
@@ -28,12 +28,12 @@ with open("myning/upgrades.yaml", "r") as f:
 with open("myning/names.yaml", "r") as f:
     NAMES = yaml.load(f, Loader=yaml.FullLoader)
 
-with open("myning/races.yaml", "r") as f:
-    RACES = yaml.load(f, Loader=yaml.FullLoader)
-    for id, race in RACES.items():
-        RACES[id] = Race.from_dict(race)
+with open("myning/species.yaml", "r") as f:
+    SPECIES = yaml.load(f, Loader=yaml.FullLoader)
+    for id, species in SPECIES.items():
+        SPECIES[id] = Species.from_dict(species)
     # Required for data stability and fixing the typo
-    RACES["Yuan-TiPureblood"] = RACES["Yuan-Ti Pureblood"]
+    SPECIES["Yuan-TiPureblood"] = SPECIES["Yuan-Ti Pureblood"]
 
 with open("myning/research.yaml", "r") as f:
     RESEARCH = yaml.load(f, Loader=yaml.FullLoader)
