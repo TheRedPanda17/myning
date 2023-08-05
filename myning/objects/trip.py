@@ -35,7 +35,7 @@ class Trip(Object, metaclass=Singleton):
         self.seconds_left = 0
         self.experience_gained = 0
         self.total_seconds = 0
-        self.races_discovered = 0
+        self.species_discovered = 0
         self.mine: Mine = None
 
     def add_item(self, item: Item):

@@ -12,7 +12,7 @@ class TestArmy:
     def test_healing_army_members_heal_to_their_max_health(self, mock_random_array_item):
         """Test that army members are healed to their max health"""
         militia = []
-        for species in Character.companion_races:
+        for species in Character.companion_species:
             mock_random_array_item.return_value = species
             char = generate_character(level_range=[1, 2])
             militia.append(char)

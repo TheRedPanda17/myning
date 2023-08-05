@@ -5,7 +5,7 @@ from myning.objects.object import Object
 term = Terminal()
 
 
-class Race(Object):
+class Species(Object):
     SKILL_GAPS = {
         "strength": [0, 1, 2, 4, 6],
         "defense": [0, 1, 2, 3, 5],
@@ -57,12 +57,12 @@ class Race(Object):
 
     def get_skill_adj(self, skill: str) -> str:
         level = self.__getattribute__(skill)
-        gaps = Race.SKILL_GAPS[skill]
+        gaps = Species.SKILL_GAPS[skill]
         for index, gap_level in enumerate(gaps):
             if level <= gap_level:
-                return Race.ADJECTIVES[index]
+                return Species.ADJECTIVES[index]
 
-        return Race.ADJECTIVES[-1]
+        return Species.ADJECTIVES[-1]
 
     def get_skill_str(self, skill: str):
         title = skill.capitalize().replace("_", " ")
