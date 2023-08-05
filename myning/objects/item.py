@@ -105,6 +105,20 @@ class Item(Object):
                 return term.normal
 
     @property
+    def tui_color(self):
+        match self.type:
+            case ItemType.MINERAL:
+                return "gold1"
+            case ItemType.WEAPON:
+                return "red1"
+            case ItemType.HELMET | ItemType.SHIRT | ItemType.PANTS | ItemType.SHOES:
+                return "dodger_blue1"
+            case ItemType.PLANT:
+                return "green1"
+            case _:
+                return ""
+
+    @property
     def icon(self):
         match self.type:
             case ItemType.MINERAL:
@@ -132,6 +146,14 @@ class Item(Object):
             self.name,
             f"{self.color}{self.main_affect}{term.normal}",
         ]
+
+    @property
+    def tui_arr(self):
+        return [self.icon, self.name, f"[bold {self.tui_color}]{self.value}[/]"]
+
+    @property
+    def tui_str(self):
+        return f"{self.icon} {self.name} [bold {self.tui_color}]{self.value}[/]"
 
     def print_details(self):
         s = stat_string("Name", self.name)

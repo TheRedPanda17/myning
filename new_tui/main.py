@@ -1,3 +1,5 @@
+from textual.app import App
+from textual.widgets import OptionList
 from myning.objects.player import Player
 from myning.objects.research_facility import ResearchFacility
 
@@ -11,5 +13,19 @@ def main():
     MyningApp().run()
 
 
+class TestApp(App):
+    CSS="""
+    OptionList {
+        height: 1fr
+    }
+    """
+    def __init__(self):
+        self.option_list = OptionList(*[str(x) for x in range(100)])
+        super().__init__()
+
+    def compose(self):
+        yield self.option_list
+
 if __name__ == "__main__":
     main()
+    # TestApp().run()

@@ -13,9 +13,6 @@ research_facility = ResearchFacility()
 class CurrencyWidget(Static):
     DEFAULT_CLASSES = "container"
 
-    def on_mount(self):
-        self.border_title = "Currency"
-
     def render(self):
         table = Table.grid(padding=(0, 1, 0, 0))
         table.add_row("[bold]Gold[/]", Icons.GOLD, f"[bold gold1]{player.gold}[/]")
@@ -47,3 +44,6 @@ class CurrencyWidget(Static):
             )
 
         return table
+
+    def on_mount(self):
+        self.border_title = "Currency"

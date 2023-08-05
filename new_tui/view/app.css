@@ -28,11 +28,16 @@ SideContainer {
   min-width: 48;
 }
 
+Question {
+  text-style: bold;
+}
+
 OptionList {
-  margin: 1 0;
-  padding: 0;
   background: black 0%;
   border: none;
+  margin: 1 0;
+  max-height: 75%;
+  padding: 0;
 }
 
 OptionList:focus {
@@ -40,6 +45,5 @@ OptionList:focus {
 }
 
 OptionList > .option-list--option-highlighted {
-  background: dodgerblue;
-  /* color: dodgerblue; */
+  background: $primary-lighten-1;
 }

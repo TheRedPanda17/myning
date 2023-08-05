@@ -25,16 +25,6 @@ def get_health_bar(health: int, max_health: int, bar_count: int = 11):
 class ArmyWidget(ScrollableContainer):
     can_focus = True
 
-    def on_mount(self):
-        self.border_title = "Army"
-        self.border_subtitle = (
-            f"{len(player.army):2} members "
-            f"❤️  [bold green]{player.army.current_health}[/]/"
-            f"[bold green]{player.army.total_health}[/] "
-            f"{Icons.DAMAGE} [bold red1]{player.army.total_damage}[/] "
-            f"{Icons.ARMOR} [bold dodger_blue1]{player.army.total_armor}[/]"
-        )
-
     def compose(self):
         table = Table(box=None, padding=(0, 1, 0, 0))
         table.add_column("", width=2, no_wrap=True, overflow=None)
@@ -59,6 +49,16 @@ class ArmyWidget(ScrollableContainer):
                 "🪦" if member.is_ghost else " ",
             )
         yield Static(table)
+
+    def on_mount(self):
+        self.border_title = "Army"
+        self.border_subtitle = (
+            f"{len(player.army):2} members "
+            f"❤️  [bold green]{player.army.current_health}[/]/"
+            f"[bold green]{player.army.total_health}[/] "
+            f"{Icons.DAMAGE} [bold red1]{player.army.total_damage}[/] "
+            f"{Icons.ARMOR} [bold dodger_blue1]{player.army.total_armor}[/]"
+        )
 
     def on_click(self):
         self.focus()

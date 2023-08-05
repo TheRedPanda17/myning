@@ -4,11 +4,11 @@ from textual.widgets import Static
 
 
 class HeaderClock(Static):
-    def on_mount(self, _) -> None:
-        self.set_interval(0.01, callback=self.refresh)
-
     def render(self):
         return datetime.now().strftime("%X")
+
+    def on_mount(self, _) -> None:
+        self.set_interval(0.01, callback=self.refresh)
 
 
 class Header(Static):

@@ -1,35 +1,68 @@
+from typing import Callable
+
+from rich.text import Text
 from textual.app import events
-from textual.binding import Binding
 from textual.containers import ScrollableContainer
-from textual.events import Event
 from textual.reactive import Reactive
 from textual.widgets import OptionList, Static
 
-from myning.utils.ui_consts import Icons
+from new_tui.chapters import Handler, town
 
-CHAPTERS = [
-    (f"{Icons.UNKNOWN} Tutorial", "Tutorial"),
-    (f"{Icons.PICKAXE} Mine", "Mine"),
-    (f"{Icons.STORE} Store", "Store"),
-]
+
+class Question(Static):
+    message = Reactive("")
+
+    def render(self):
+        return Text.from_markup(self.message)
 
 
 class ChapterWidget(ScrollableContainer):
-    content = Reactive("[bold]Where would you like to go next?[/]")
     can_focus = True
 
+    def __init__(self):
+        self.question = Question()
+        self.option_list = OptionList()
+        self.option_list.can_focus = False
+        super().__init__()
+
     def compose(self):
-        yield Static(self.content)
-        option_list = OptionList(*[x[0] for x in CHAPTERS])
-        option_list.can_focus = False
-        yield option_list
+        yield self.question
+        yield self.option_list
+
+    def on_mount(self):
+        self.border_title = "Town"
+        message, options = town.enter()
+        self.pick(message, options)
 
     async def on_key(self, key: events.Key):
-        option_list: OptionList = self.query_one("OptionList")
-        binding = option_list._bindings.keys.get(key.name)
-        if binding:
-            await option_list.run_action(binding.action)
+        aliases = {
+            "j": "down",
+            "k": "up",
+        }
+        _key = aliases.get(key.name, key.name)
+
+        if _key == "q":
+            self.select(-1)
+        elif _key.isdigit():
+            self.option_list.highlighted = int(_key) - 1
+        elif binding := self.option_list._bindings.keys.get(_key):
+            await self.option_list.run_action(binding.action)
+            key.stop()
 
     def on_option_list_option_selected(self, option: OptionList.OptionSelected):
-        print(option.option.prompt)
-        print(option.option_index)
+        self.select(option.option_index)
+
+    def pick(self, message: str, options: list[tuple[str, Callable[..., Handler]]]):
+        self.question.message = message
+        self.option_list.clear_options()
+        self.option_list.add_options([option[0] for option in options])
+        self.option_list.highlighted = 0
+        self.handlers = [option[1] for option in options]
+
+    def select(self, option_index: int):
+        handler = self.handlers[option_index]
+        module = handler.__module__.rpartition(".")[-1]
+        if module != "functools":
+            self.border_title = module.replace("_", " ").title()
+        message, options = handler()
+        self.pick(message, options)
