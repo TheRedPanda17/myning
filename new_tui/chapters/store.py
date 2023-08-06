@@ -13,11 +13,6 @@ MARKDOWN_RATIO = 1 / 2
 player = Player()
 
 
-def sell_price(item: Item):
-    multipler = player.macguffin.mineral_boost if item.type == ItemType.MINERAL else MARKDOWN_RATIO
-    return int(item.value * multipler) or 1
-
-
 class Store:
     def __init__(self):
         self.level = player.level
@@ -41,7 +36,15 @@ class Store:
 
     def pick_buy(self):
         items = self.inventory.items
-        rows = columnate([[*item.tui_arr, f"({Formatter.gold(item.value)})"] for item in items])
+        item_arrs = []
+        for item in items:
+            item_arr = [*item.tui_arr, f"({Formatter.gold(item.value)})"]
+            if player.has_upgrade("advanced_store_hints") and is_best_item(item):
+                item_arr.append("🔥")
+            elif player.has_upgrade("store_hints") and is_useful_item(item):
+                item_arr.append("✨")
+            item_arrs.append(item_arr)
+        rows = columnate(item_arrs)
         options = [(row, partial(self.confirm_buy, item)) for row, item in zip(rows, items)]
         return PickArgs(
             message="What would you like to buy?",
@@ -159,3 +162,35 @@ class Store:
             player.inventory.remove_item(item)
             self.inventory.add_item(item)
         return self.enter()
+
+
+def sell_price(item: Item):
+    multipler = player.macguffin.mineral_boost if item.type == ItemType.MINERAL else MARKDOWN_RATIO
+    return int(item.value * multipler) or 1
+
+
+def is_useful_item(item: Item):
+    if item.type == ItemType.MINERAL or item.type == ItemType.PLANT:
+        return False
+
+    for character in player.army:
+        equipped = character.equipment.get_slot_item(item.type)
+        if equipped is None or item.main_affect > equipped.main_affect:
+            return True
+
+    return False
+
+
+def is_best_item(item: Item):
+    if item.type == ItemType.MINERAL or item.type == ItemType.PLANT:
+        return False
+
+    best = player.inventory.get_best_in_slot(item.type)
+    for character in player.army:
+        equipped = character.equipment.get_slot_item(item.type)
+        if equipped is None:
+            continue
+        if best is None or equipped.main_affect > best.main_affect:
+            best = equipped
+
+    return best is None or item.main_affect > best.main_affect
