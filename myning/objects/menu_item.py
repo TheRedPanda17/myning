@@ -6,6 +6,7 @@ from myning import chapters
 from myning.objects.mine import Mine
 from myning.objects.player import Player
 from myning.utils.ui_consts import Icons
+from new_tui.formatter import Formatter
 
 term = Terminal()
 
@@ -18,21 +19,25 @@ class MenuItem:
     ):
         self.name = name
         self.action = getattr(chapters, f"enter_{self.lower_name()}").play
-        self.emoji = getattr(Icons, self.upper_name())
+        self.icon = getattr(Icons, self.upper_name())
         self.prerequisites = prerequisites
-
-    @property
-    def __str__(self):
-        return f""
 
     @property
     def unlocked(self):
         return set(self.prerequisites).issubset(set(Player().mines_completed))
 
+    @property
     def str_arr(self):
-        icon = f"{self.emoji} " if self.unlocked else Icons.LOCKED
+        icon = f"{self.icon} " if self.unlocked else Icons.LOCKED
         name = self.name if self.unlocked else term.snow4(self.name)
         return [icon, name]
+
+    @property
+    def tui_arr(self):
+        return [
+            self.icon if self.unlocked else Icons.LOCKED,
+            self.name if self.unlocked else Formatter.locked(self.name)
+        ]
 
     @property
     def required_mines_str(self):
@@ -48,4 +53,4 @@ class MenuItem:
         return self.action()
 
     def __str__(self) -> str:
-        return " ".join(self.str_arr())
+        return " ".join(self.str_arr)

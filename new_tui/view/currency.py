@@ -49,3 +49,5 @@ class CurrencyWidget(Static):
 
     def on_mount(self):
         self.border_title = "Currency"
+        self.set_interval(1, research_facility.check_in)
+        self.set_interval(1, self.refresh)

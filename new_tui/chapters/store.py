@@ -1,4 +1,4 @@
-from functools import partial
+from functools import cache, partial
 
 from myning.config import UPGRADES
 from myning.objects.inventory import Inventory
@@ -59,7 +59,7 @@ class Store:
             message=f"Are you sure you want to buy {item.tui_str} for {Formatter.gold(item.value)}?",
             options=[
                 ("Yes", partial(self.buy, item)),
-                ("No", partial(self.pick_buy)),
+                ("No", self.pick_buy),
             ],
         )
 
@@ -67,7 +67,7 @@ class Store:
         if player.gold < item.value:
             return PickArgs(
                 message="Not enough gold!",
-                options=[("Bummer!", partial(self.pick_buy))],
+                options=[("Bummer!", self.pick_buy)],
             )
         player.gold -= item.value
         player.inventory.add_item(item)
@@ -131,7 +131,7 @@ class Store:
             message=f"Are you sure you want to sell {item.tui_str} for {Formatter.gold(sell_price(item))}?",
             options=[
                 ("Yes", partial(self.sell, item)),
-                ("No", self.enter),
+                ("No", self.pick_sell),
             ],
         )
 
@@ -170,7 +170,7 @@ def sell_price(item: Item):
 
 
 def is_useful_item(item: Item):
-    if item.type == ItemType.MINERAL or item.type == ItemType.PLANT:
+    if item.type in (ItemType.MINERAL, ItemType.PLANT):
         return False
 
     for character in player.army:
@@ -182,7 +182,7 @@ def is_useful_item(item: Item):
 
 
 def is_best_item(item: Item):
-    if item.type == ItemType.MINERAL or item.type == ItemType.PLANT:
+    if item.type in (ItemType.MINERAL, ItemType.PLANT):
         return False
 
     best = player.inventory.get_best_in_slot(item.type)

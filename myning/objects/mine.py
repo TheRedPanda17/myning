@@ -1,17 +1,14 @@
 from enum import Enum
 
 from blessed import Terminal
+from rich.progress_bar import ProgressBar
+from rich.text import Text
 
 from myning.objects.mine_stats import MineStats
 from myning.objects.object import Object
-from myning.utils.ui import (
-    columnate,
-    get_gold_string,
-    get_level_string,
-    get_locked_str,
-    get_progress_bar,
-)
+from myning.utils.ui import columnate, get_gold_string, get_level_string, get_locked_str
 from myning.utils.ui_consts import Icons
+from new_tui.formatter import Colors, Formatter
 
 
 class MineType(str, Enum):
@@ -124,18 +121,18 @@ class Mine(Object):
         )
 
     @property
-    def progress_bar(self) -> str:
+    def progress_bar(self):
         current = (
             min(self.player_progress.minerals, self.win_criteria.minerals)
             + min(self.player_progress.kills, self.win_criteria.kills)
             + min(self.player_progress.minerals, self.win_criteria.minutes)
         )
-        return get_progress_bar(current, self.win_criteria.total_items, bar_count=20)
+        return ProgressBar(total=self.win_criteria.total_items, completed=current, width=20)
 
     @property
     def progress(self):
         def _remaining_str(current: int, total: int):
-            return f"{int(current)}/{total}" if current < total else "Complete"
+            return f"{current}/{total}" if current < total else "Complete"
 
         return "\n".join(
             columnate(
@@ -185,6 +182,19 @@ class Mine(Object):
                 return str.format(msg=term.red("very high"))
 
     @property
+    def death_chance_tui_str(self):
+        odds = self.get_action_odds("lose_ally")
+        chances = {
+            -1: "[green1]none[/]",
+            0: "[green_yellow]low[/]",
+            0.5: "[yellow1]medium[/]",
+            0.7: "[orange1]high[/]",
+            1: "[red1]very high[/]",
+        }
+        closest_key_floor = max(c for c in chances if c < odds)
+        return chances[closest_key_floor]
+
+    @property
     def str_arr(self):
         arr = [f"{self.icon}", self.name, self.death_chance_str]
         if self.win_criteria:
@@ -193,6 +203,10 @@ class Mine(Object):
             arr.append("")
 
         return arr
+
+    @property
+    def tui_arr(self):
+        return [self.icon, self.name, Icons.DEATH, self.death_chance_tui_str]
 
     def get_unlock_str_arr(self, unlocked: bool):
         if unlocked:
@@ -215,3 +229,24 @@ class Mine(Object):
             ]
 
         return arr
+
+    def get_unlock_tui_arr(self, player_level: int):
+        if player_level < self.min_player_level:
+            return [
+                self.icon,
+                Formatter.locked(f"{Icons.LOCKED} {self.name} "),
+                Formatter.locked(f"{self.cost}g"),
+                Formatter.locked(f"{Icons.LEVEL} {self.min_player_level} "),
+                Formatter.locked(f"{int(self.exp_boost * 100):2}% xp") if self.exp_boost else "",
+                Icons.DEATH,
+                Formatter.locked(Text.from_markup(self.death_chance_tui_str).plain),
+            ]
+        return [
+            self.icon,
+            self.name,
+            Formatter.gold(self.cost),
+            Formatter.level(self.min_player_level),
+            f"[{Colors.XP}]{int(self.exp_boost*100):2}% xp[/]" if self.exp_boost else "",
+            Icons.DEATH,
+            self.death_chance_tui_str,
+        ]

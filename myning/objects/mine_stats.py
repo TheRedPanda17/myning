@@ -2,7 +2,7 @@ from myning.objects.object import Object
 
 
 class MineStats(Object):
-    def __init__(self, minutes: int, kills: int, minerals: int):
+    def __init__(self, minutes: float, kills: int, minerals: int):
         self.minutes = minutes
         self.kills = kills
         self.minerals = minerals

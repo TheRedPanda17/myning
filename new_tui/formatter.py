@@ -1,3 +1,4 @@
+from enum import Enum
 from itertools import zip_longest
 
 from rich.text import Text
@@ -7,10 +8,10 @@ from myning.utils.ui_consts import Icons
 
 def columnate(items: list[list[str]], *, sep=" ") -> list[Text]:
     widths = []
-    for col in zip_longest(*items):
+    for col in zip_longest(*items, fillvalue=""):
         max_width = 0
         for cell in col:
-            width = 1 if isinstance(cell, Icons) else len(Text.from_markup(cell))
+            width = 2 if isinstance(cell, Icons) else len(Text.from_markup(cell))
             if width > max_width:
                 max_width = width
         widths.append(max_width)
@@ -19,16 +20,17 @@ def columnate(items: list[list[str]], *, sep=" ") -> list[Text]:
         texts = []
         for item, width in zip(row, widths):
             text = Text.from_markup(item)
-            text.truncate(width + 1, pad=True)
+            text.truncate(width, pad=True)
             texts.append(text)
         rows.append(Text(sep).join(texts))
     return rows
 
 
-class Colors:
+class Colors(str, Enum):
     ARMOR = "dodger_blue1"
     GOLD = "gold1"
     LEVEL = "cyan1"
+    LOCKED = "grey53"
     PLANT = "green1"
     RESEARCH_POINTS = "deep_pink3"
     SOUL_CREDITS = "slate_blue3"
@@ -50,5 +52,13 @@ class Formatter:
         return f"[{Colors.RESEARCH_POINTS}]{research_points} research points[/]"
 
     @staticmethod
+    def level(lvl: int):
+        return f"[{Colors.LEVEL}]lvl {lvl}[/]"
+
+    @staticmethod
     def xp(xp: int):
         return f"[{Colors.XP}]{xp} xp[/]"
+
+    @staticmethod
+    def locked(s: str):
+        return f"[{Colors.LOCKED}]{s}[/]"
