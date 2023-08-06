@@ -30,6 +30,10 @@ SideContainer {
   min-width: 48;
 }
 
+/* TODO fix width */
+/* Question { */
+/* } */
+
 OptionList {
   background: black 0%;
   border: none;

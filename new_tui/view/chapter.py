@@ -76,7 +76,6 @@ class ChapterWidget(ScrollableContainer):
             self.option_list.highlighted = int(_key) - 1
         elif binding := self.option_list._bindings.keys.get(_key):
             await self.option_list.run_action(binding.action)
-            key.stop()
 
     def on_option_list_option_selected(self, option: OptionList.OptionSelected):
         self.select(option.option_index)

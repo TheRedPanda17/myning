@@ -15,7 +15,7 @@ class InventoryContents(Static):
         table.add_column(justify="right")
         for item in player.inventory.items:
             table.add_row(*item.tui_arr)
-        self.update(table)
+        self.update(table if player.inventory.items else "")
 
 
 class InventoryWidget(ScrollableContainer):
@@ -26,7 +26,6 @@ class InventoryWidget(ScrollableContainer):
 
     def on_click(self):
         self.focus()
-        self._scroll_update(self.virtual_size)
 
     def update_border(self):
         self.border_title = "Inventory"
