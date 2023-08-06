@@ -1,5 +1,5 @@
 Human:
-  icon: 👨🏾‍🌾
+  icon: 🙎
   health_mod: 10
   strength: 2
   defense: 2
@@ -14,7 +14,7 @@ Human:
   size: medium
   rarity_tier: 1
 Dwarf:
-  icon: 🧔🏻‍♂️
+  icon: 🧙
   health_mod: 12
   strength: 5
   defense: 3
@@ -31,7 +31,7 @@ Dwarf:
   size: small
   rarity_tier: 2
 Elf:
-  icon: 🧝🏻‍♀️
+  icon: 🧝
   health_mod: 9
   strength: 1
   defense: 1
@@ -49,7 +49,7 @@ Elf:
   size: medium
   rarity_tier: 2
 Goblin:
-  icon: 🧑🏼‍🎤
+  icon: 👺
   health_mod: 8
   strength: 1
   defense: 1
@@ -68,7 +68,7 @@ Goblin:
   size: small
   rarity_tier: 2
 Halfling:
-  icon: 🧑🏽‍🍳
+  icon: 🥷
   health_mod: 7
   strength: 1
   defense: 1
@@ -86,7 +86,7 @@ Halfling:
   size: small
   rarity_tier: 2
 Orc:
-  icon: 🧟‍♀️
+  icon: 🧟
   health_mod: 12
   strength: 5
   defense: 3
@@ -99,7 +99,7 @@ Orc:
   size: medium
   rarity_tier: 2
 Gnome:
-  icon: 👨🏾‍🎨
+  icon: 🎅
   health_mod: 8
   strength: 1
   defense: 1
@@ -121,7 +121,7 @@ Gnome:
   size: small
   rarity_tier: 2
 Half-Elf:
-  icon: 🧝🏽
+  icon: 🦹
   health_mod: 10
   strength: 2
   defense: 2
@@ -141,7 +141,7 @@ Half-Elf:
   size: medium
   rarity_tier: 3
 Half-Orc:
-  icon: 🧑🏿‍🎤
+  icon: 🧛
   health_mod: 12
   strength: 5
   defense: 2
@@ -161,7 +161,7 @@ Half-Orc:
   size: medium
   rarity_tier: 3
 Bugbear:
-  icon: 🐷
+  icon: 🐻
   health_mod: 14
   strength: 6
   defense: 2
@@ -210,7 +210,7 @@ Lizardfolk:
   size: medium
   rarity_tier: 3
 Goliath:
-  icon: 👳🏻‍♀️
+  icon: 🗿
   health_mod: 16
   strength: 6
   defense: 2
@@ -260,7 +260,7 @@ Tiefling:
   size: medium
   rarity_tier: 4
 Triton:
-  icon: 🧜‍♂️
+  icon: 🧜
   health_mod: 12
   strength: 4
   defense: 3
@@ -310,7 +310,7 @@ Kenku:
   size: medium
   rarity_tier: 5
 Kobold:
-  icon: 🧙🏿‍♀️
+  icon: 🤡
   health_mod: 7
   strength: 0
   defense: 0
@@ -345,7 +345,7 @@ Tabaxi:
   size: medium
   rarity_tier: 6
 Yuan-Ti Pureblood:
-  icon: 🧔🏼‍♂️
+  icon: 🐍
   health_mod: 9
   strength: 2
   defense: 2
@@ -362,7 +362,7 @@ Yuan-Ti Pureblood:
   size: medium
   rarity_tier: 6
 Aasimar:
-  icon: 🧖🏼
+  icon: 🧖
   health_mod: 10
   strength: 3
   defense: 3
