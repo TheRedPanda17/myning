@@ -1,6 +1,7 @@
 black
 isort
 pdbpp
+pip-tools
 pytest
 pytest-cov
-pip-tools
+textual-dev
