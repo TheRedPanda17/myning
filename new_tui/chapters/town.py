@@ -35,13 +35,12 @@ def exit():
     return PickArgs(message="__exit__", options=[])
 
 
-implemented_chapters = {
-    "Store": store.enter,
-    "Exit": exit,
-}
-
-
 def enter():
+    implemented_chapters = {
+        "Store": store.Store().enter,
+        "Exit": exit,
+    }
+
     return PickArgs(
         message="Where would you like to go next?",
         options=[
