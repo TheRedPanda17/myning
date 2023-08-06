@@ -21,6 +21,10 @@ ScrollableContainer > Static {
   width: auto;
 }
 
+ScrollableContainer > Question {
+  width: 1fr;
+}
+
 ChapterWidget {
   width: 3fr;
 }
@@ -29,10 +33,6 @@ SideContainer {
   width: 1fr;
   min-width: 48;
 }
-
-/* TODO fix width */
-/* Question { */
-/* } */
 
 OptionList {
   background: black 0%;

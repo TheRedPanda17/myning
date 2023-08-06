@@ -11,7 +11,7 @@ class InventoryContents(Static):
     def update_inventory(self):
         table = Table.grid(padding=(0, 1, 0, 0))
         table.add_column()
-        table.add_column(no_wrap=True)
+        table.add_column(max_width=36, no_wrap=True)
         table.add_column(justify="right")
         for item in player.inventory.items:
             table.add_row(*item.tui_arr)

@@ -40,7 +40,7 @@ class ChapterWidget(ScrollableContainer):
 
     def __init__(self):
         self.question = Question()
-        self.option_list = OptionList()
+        self.option_list = OptionList(wrap=False)
         self.option_list.can_focus = False
         self.handlers = []
         self.hotkeys: dict[str, int] = {}
