@@ -4,6 +4,7 @@ Body {
 }
 
 .container,
+Container,
 ScrollableContainer {
   border: round dodgerblue;
   border-subtitle-align: left;
@@ -24,6 +25,8 @@ ScrollableContainer > Static {
 ScrollableContainer > Question {
   width: 1fr;
 }
+
+/* MyningScreen */
 
 ChapterWidget {
   width: 3fr;
@@ -48,4 +51,24 @@ OptionList:focus {
 
 OptionList > .option-list--option-highlighted {
   background: $primary-lighten-1;
+}
+
+/* MineScreen */
+
+Container {
+  height: auto;
+  layout: horizontal;
+}
+
+Container > Static {
+  width: auto;
+  margin: 0 1 0 0;
+}
+
+ProgressBar {
+  width: 1fr;
+}
+
+Bar {
+  width: 1fr;
 }

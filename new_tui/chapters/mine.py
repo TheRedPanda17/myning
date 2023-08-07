@@ -1,5 +1,6 @@
 from functools import partial
 from itertools import zip_longest
+from typing import TYPE_CHECKING
 
 from rich.style import Style
 from rich.table import Table
@@ -12,8 +13,12 @@ from myning.objects.trip import Trip
 from myning.utils.file_manager import FileManager
 from myning.utils.race_rarity import RACE_TIERS
 from myning.utils.ui_consts import Icons
-from new_tui.chapters import Option, PickArgs, town
+from new_tui.chapters import DynamicArgs, Option, PickArgs, town
 from new_tui.formatter import Colors, columnate
+from new_tui.view.mine import MineScreen
+
+if TYPE_CHECKING:
+    from new_tui.view.chapter import ChapterWidget
 
 player = Player()
 trip = Trip()
@@ -65,7 +70,7 @@ def pick_time(mine: Mine):
         player.level * 4,
         player.level * 8,
     ]
-    options: list[Option] = [(f"{m} minutes", partial(start_mining, mine, m)) for m in minutes]
+    options: list[Option] = [(f"{m} minutes", partial(play, mine, m)) for m in minutes]
     options.append(("Go Back", enter))
     subtitle = Table.grid(padding=(0, 1, 0, 0))
     subtitle.add_column(style=Style(color=Colors.LOCKED))
@@ -83,7 +88,7 @@ def pick_time(mine: Mine):
         )
         subtitle.add_row(
             "Minutes Survived:",
-            remaining_str(int(mine.player_progress.minutes), mine.win_criteria.minutes),
+            remaining_str(int(mine.player_progress.minutes), int(mine.win_criteria.minutes)),
         )
     subtitle.add_row("Risk of Demise:", f"{Icons.DEATH} {mine.death_chance_tui_str}")
     if mine.companion_rarity:
@@ -95,12 +100,13 @@ def pick_time(mine: Mine):
     )
 
 
-def start_mining(mine: Mine, minutes: int):
-    # trip.start_trip(minutes * 60)
-    return PickArgs(
-        message=f"You are going to mine in {mine.name} for {minutes} minutes",
-        options=[("Cool", enter)],
-    )
+def play(mine: Mine, minutes: int):
+    def callback(chapter: "ChapterWidget"):
+        chapter.app.push_screen(MineScreen(), chapter.pick(town.enter()))
+
+    trip.mine = mine
+    trip.start_trip(minutes * 60)
+    return DynamicArgs(callback=callback)
 
 
 def pick_unlock_mine():
@@ -146,19 +152,11 @@ def available_species(mine: Mine) -> list[Race]:
     if not mine.companion_rarity:
         return []
     species = []
-    for i in range(0, mine.companion_rarity):
+    for i in range(mine.companion_rarity):
         tier = RACE_TIERS[i]
-        for s in tier:
-            species.append(RACES[s])
+        species.extend(RACES[s] for s in tier)
     return species
 
 
 def unlock_species_emojies(species: list[Race]) -> list[str]:
-    player = Player()
-    emojis = []
-    for spec in species:
-        if spec in player.discovered_races:
-            emojis.append(spec.icon[0])
-        else:
-            emojis.append("❓")
-    return emojis
+    return [s.icon if s in player.discovered_races else "❓" for s in species]

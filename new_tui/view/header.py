@@ -1,5 +1,6 @@
 from datetime import datetime
 
+from textual.containers import Container, Grid
 from textual.widgets import Static
 
 
@@ -8,7 +9,7 @@ class HeaderClock(Static):
         return datetime.now().strftime("%X")
 
     def on_mount(self, _) -> None:
-        self.set_interval(0.01, callback=self.refresh)
+        self.set_interval(0.01, self.refresh)
 
 
 class Header(Static):

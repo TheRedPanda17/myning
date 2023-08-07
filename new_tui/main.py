@@ -21,7 +21,6 @@ def main():
 
     MyningApp().run()
     # print("Game saved. Thank you for playing Myning!")
-    print("Game was not saved because we are still in dev. Thank you for playing Myning!")
 
 
 if __name__ == "__main__":

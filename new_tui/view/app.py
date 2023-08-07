@@ -1,8 +1,11 @@
-from textual.app import App, events
+from textual import events
+from textual.app import App
 from textual.binding import Binding
+from textual.containers import Container
 from textual.screen import Screen
 from textual.widgets import Footer, Static
 
+from new_tui.utilities import throttle
 from new_tui.view.army import ArmyWidget
 from new_tui.view.chapter import ChapterWidget
 from new_tui.view.currency import CurrencyWidget
@@ -23,7 +26,7 @@ class Body(Static):
         yield SideContainer()
 
 
-class MyningGame(Screen):
+class MyningScreen(Screen):
     BINDINGS = [
         Binding("ctrl+c", "quit", "Quit", priority=True),
         Binding("tab", "focus_next", "Focus Next"),
@@ -50,7 +53,7 @@ class MyningGame(Screen):
             "upper_g": "end",
         }
         _key = aliases.get(key.name, key.name)
-        if binding := focused._bindings.keys.get(_key):
+        if binding := focused._bindings.keys.get(_key):  # pylint: disable=protected-access
             await focused.run_action(binding.action)
 
 
@@ -59,7 +62,8 @@ class MyningApp(App):
         "app.css",
         "header.css",
     ]
+    SCREENS = {"myning": MyningScreen(name="myning")}
     TITLE = "Myning"
 
     def on_mount(self):
-        self.push_screen(MyningGame())
+        self.push_screen("myning")

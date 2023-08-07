@@ -1,5 +1,6 @@
 from blessed import Terminal
 
+from rich.table import Table
 from myning.config import MINES
 from myning.objects.character import Character
 from myning.objects.item import Item, ItemType
@@ -147,6 +148,14 @@ class Trip(Object, metaclass=Singleton):
         minerals = f"{Icons.MINERAL} {len(self.minerals_mined)}"
 
         return f"{mine}: {time_left} {battles} {enemies} {minerals}"
+
+    @property
+    def tui_summary(self):
+        table = Table.grid(padding=(0, 1, 0, 0))
+        table.add_row(Icons.VICTORY, "Battles won:", str(self.battles_won))
+        table.add_row(Icons.SWORD, "Enemies defeated:", str(self.enemies_defeated))
+        table.add_row(Icons.MINERAL, "Minerals mined:", str(len(self.minerals_mined)))
+        return table
 
     def __str__(self):
         title = term.bold("\nYour Mining Trip\n")

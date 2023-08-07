@@ -176,3 +176,11 @@ class Item(Object):
 
     def get_new_text(self):
         return f"New {self.type} added: {term.bold}{self.color}{self.name}{term.normal}"
+
+    @property
+    def tui_new_text(self):
+        return (
+            f"New {self.type} added: "
+            f"{self.icon} [{self.tui_color}]{self.name}[/] "
+            f"([{self.tui_color}]{self.main_affect}[/])"
+        )

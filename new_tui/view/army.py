@@ -3,7 +3,6 @@ import math
 from rich.table import Table
 from rich.text import Text
 from textual.containers import ScrollableContainer
-from textual.widget import Widget
 from textual.widgets import Static
 
 from myning.objects.player import Player
@@ -26,7 +25,7 @@ def get_health_bar(health: int, max_health: int, bar_count: int = 11):
 class ArmyContents(Static):
     def update_army(self):
         table = Table(box=None, padding=(0, 1, 0, 0))
-        table.add_column("", width=2, no_wrap=True, overflow=None)
+        table.add_column("", width=2, no_wrap=True, overflow="ignore")
         table.add_column(Text("Name", justify="left"))
         table.add_column(Text("Health", justify="center"))
         table.add_column(Text(Icons.DAMAGE, justify="center"), justify="right")

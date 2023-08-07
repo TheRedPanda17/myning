@@ -44,7 +44,7 @@ class Icons(str, Enum):
     SOUL_CREDITS = "🪙"
     STATS = "📈"
     STORE = "💰"
-    SWORD = "🗡"
+    SWORD = "🗡 "
     TIME = "⏳"
     TIME_MACHINE = "⏳"
     UNKNOWN = "❓"
