@@ -28,7 +28,7 @@ def enter():
     implemented_chapters = {
         "Mine": mine.enter,
         "Store": store.Store().enter,
-        "Exit": lambda: ExitArgs(),
+        "Exit": lambda: ExitArgs(), # pylint: disable=unnecessary-lambda
     }
     rows = columnate([chapter.tui_arr for chapter in CHAPTERS])
     handlers = [

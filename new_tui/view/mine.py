@@ -2,24 +2,15 @@ import math
 import random
 from typing import Callable
 
-from rich.table import Table
 from textual import events
 from textual.containers import Container, ScrollableContainer
 from textual.screen import Screen
 from textual.widgets import ProgressBar, Static
-from myning.config import CONFIG
-from myning.objects.army import Army
-from myning.objects.item import Item
 
 from myning.objects.player import Player
 from myning.objects.trip import Trip
 from myning.utils.file_manager import FileManager
-from myning.utils.generators import (
-    generate_character,
-    generate_enemy_army,
-    generate_equipment,
-    generate_mineral,
-)
+from myning.utils.generators import generate_character, generate_enemy_army, generate_equipment
 from myning.utils.race_rarity import get_recruit_species
 from myning.utils.utils import get_random_array_item
 from new_tui.actions import (
@@ -49,10 +40,7 @@ def time_str(seconds: int):  # sourcery skip: assign-if-exp, reintroduce-else
 
 class Content(Static):
     def print(self, content):
-        table = Table.grid()
-        table.add_column(overflow="fold")
-        table.add_row(content)
-        self.update(table)
+        self.update(content)
 
 
 class TimeRemaining(Static):
@@ -65,6 +53,7 @@ class TimeRemaining(Static):
 
 class MineScreen(Screen):
     def __init__(self) -> None:
+        self.content_container = ScrollableContainer()
         self.content = Content()
         self.progress = ProgressBar(total=trip.total_seconds, show_eta=False)
         self.actions: dict[str, Callable[..., Action]] = {
@@ -79,8 +68,8 @@ class MineScreen(Screen):
 
     def compose(self):
         yield Header()
-        with ScrollableContainer() as c:
-            c.border_title = f"{trip.mine.icon} {trip.mine.name}"
+        with self.content_container:
+            self.content_container.border_title = f"{trip.mine.icon} {trip.mine.name}"
             yield self.content
         with Container() as c:
             c.border_title = "Trip Summary"
@@ -108,28 +97,33 @@ class MineScreen(Screen):
 
     @throttle(1)
     def skip(self):
-        print(f"Skipped {self.action.duration} seconds")
+        border = self.content_container.styles.border
+
+        def reset_border():
+            self.content_container.styles.border = border
+
+        self.content_container.styles.border = ("round", "lime")
+        self.set_timer(0.5, reset_border)
         trip.seconds_left -= self.action.duration
         self.action = self.next_action
+        self.update_progress()
+        self.content.print(self.action.content)
 
     def tick(self):
         self.update_progress()
         self.content.print(self.action.content)
-
         self.action.tick()
         if self.action.duration <= 0:
             self.action = self.next_action
 
         trip.tick_passed(1)
-        if trip.seconds_left < 0:
+        if trip.seconds_left < 0 or not player.alive:
             self.exit()
 
     @property
     def next_action(self):
-        if isinstance(self.action, MineAction):
-            return self.mineral()
-        if isinstance(self.action, CombatAction) and self.action.enemy_army:
-            return CombatAction(5, self.action.enemy_army)
+        if action := self.action.next:
+            return action
 
         odds = trip.mine.odds.copy()
         if not player.allies:
@@ -140,50 +134,24 @@ class MineScreen(Screen):
         return self.actions[selected_action]()
 
     def combat(self):
-        mine = trip.mine
-        army = player.army
-        if mine.enemies[1] < 0:
-            mine.enemies[1] = len(army) + mine.enemies[1]
+        if enemy_count_range := trip.mine.enemies[1] < 0:
+            enemy_count_range = len(player.army) + enemy_count_range
         enemy_army = generate_enemy_army(
-            mine.character_levels,
-            mine.enemies,
-            mine.max_enemy_items,
-            mine.max_enemy_item_level,
-            mine.enemy_item_scale,
+            trip.mine.character_levels,
+            trip.mine.enemies,
+            trip.mine.max_enemy_items,
+            trip.mine.max_enemy_item_level,
+            trip.mine.enemy_item_scale,
         )
-        # enemy_count = len(enemy_army)
-
-        # victory, ticks_passed = enter_fighting.play(army, enemy_army)
-
-        # print_battle_results(victory)
-
-        # if victory:
-        #     rewards = generate_reward(mine.max_item_level, enemy_count)
-        #     FileManager.multi_save(*rewards)
-        #     [trip.add_item(reward) for reward in rewards]
-        #     [slow_print(reward.get_new_text()) for reward in rewards]
-
-        # enemy_survivors = Army(list(filter(lambda x: x.health > 0, enemy_army)))
-        # trip.add_battle(enemy_count - len(enemy_survivors), victory)
         FileManager.save(trip)
-        return CombatAction(5, enemy_army)
+        return CombatAction(enemy_army)
 
     def mine(self):
-        duration = random.randint(0, int(CONFIG["tick_length"] + trip.seconds_left / 60)) + 5
-        return MineAction(duration)
-
-    def mineral(self):
-        mineral = generate_mineral(trip.mine.max_item_level, trip.mine.resource)
-        return self.item(mineral)
+        return MineAction()
 
     def equipment(self):
         equipment = generate_equipment(trip.mine.max_item_level)
-        return self.item(equipment)
-
-    def item(self, item: Item):
-        trip.add_item(item)
-        FileManager.multi_save(item, trip)
-        return ItemAction(item)
+        return ItemAction(equipment)
 
     def recruit(self):
         levels = trip.mine.character_levels
