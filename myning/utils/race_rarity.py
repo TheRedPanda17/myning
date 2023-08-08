@@ -38,6 +38,31 @@ RACE_TIERS = [
 RACE_WEIGHTS = [150, 75, 40, 20, 10, 7, 4]
 
 
+def _recruit_in_tier(tier: list[CharacterRaces]) -> CharacterRaces:
+    if len(tier) == 0:
+        raise ValueError("Empty tier")
+    player = Player()
+    facility = ResearchFacility()
+    undiscovered = [RACES[race_index] for race_index in tier
+                    if RACES[race_index] not in player.discovered_races]
+    undiscovered_probability = len(undiscovered) / len(tier)
+    percent_increase = 0
+    if facility.has_research("species_discovery"):
+        percent_increase = RESEARCH["species_discovery"].player_value / 100
+    undiscovered_probability += undiscovered_probability * percent_increase
+    discovered_probability = 1 - undiscovered_probability
+    undiscovered_weight = undiscovered_probability / len(undiscovered)
+    discovered_weight = discovered_probability / (len(tier) - len(undiscovered))
+    weights = []
+    for race in tier:
+        if RACES[race] in player.discovered_races:
+            weights.append(discovered_weight)
+        else:
+            weights.append(undiscovered_weight)
+    race_index = random.choices(tier, weights=weights)[0]
+    return RACES[race_index]
+
+
 def get_recruit_species(highest_rarity: int):
     player = Player()
     facility = ResearchFacility()
@@ -52,17 +77,4 @@ def get_recruit_species(highest_rarity: int):
     rarity = random.choices(tiers, weights=race_weights)[0]
 
     tier = RACE_TIERS[rarity - 1]
-    if facility.has_research("species_discovery"):
-        individual_weights = []
-        for race in tier:
-            if RACES[race] in player.discovered_races:
-                chance = 100 - RESEARCH["species_discovery"].player_value
-                individual_weights.append(chance)
-            else:
-                individual_weights.append(100)
-        if sum(individual_weights) == 0:
-            individual_weights = [1 for _ in individual_weights]
-        race = random.choices(tier, weights=individual_weights)[0]
-    else:
-        race = get_random_array_item(tier)
-    return RACES[race]
+    return _recruit_in_tier(tier)
