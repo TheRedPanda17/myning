@@ -60,6 +60,8 @@ def get_recruit_species(highest_rarity: int):
                 individual_weights.append(chance)
             else:
                 individual_weights.append(100)
+        if sum(individual_weights) == 0:
+            individual_weights = [1 for _ in individual_weights]
         race = random.choices(tier, weights=individual_weights)[0]
     else:
         race = get_random_array_item(tier)
