@@ -152,7 +152,7 @@ class Item(Object):
         return [
             self.icon,
             self.name,
-            f"[bold {self.tui_color}]{self.main_affect}[/]",
+            f"[{self.tui_color}]{self.main_affect:2}[/]",
         ]
 
     @property

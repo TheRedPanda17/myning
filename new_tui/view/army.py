@@ -8,6 +8,7 @@ from textual.widgets import Static
 from myning.objects.player import Player
 from myning.utils import utils
 from myning.utils.ui_consts import Icons
+from new_tui.formatter import Colors
 
 player = Player()
 
@@ -59,10 +60,10 @@ class ArmyWidget(ScrollableContainer):
         self.border_title = "Army"
         self.border_subtitle = (
             f"{len(player.army):2} members "
-            f"❤️  [green]{player.army.current_health}[/]/"
-            f"[green]{player.army.total_health}[/] "
-            f"{Icons.DAMAGE} [red1]{player.army.total_damage}[/] "
-            f"{Icons.ARMOR} [bold dodger_blue1]{player.army.total_armor}[/]"
+            f"❤️  [green1]{player.army.current_health}[/]/"
+            f"[green1]{player.army.total_health}[/] "
+            f"{Icons.DAMAGE} [{Colors.WEAPON}]{player.army.total_damage}[/] "
+            f"{Icons.ARMOR} [{Colors.ARMOR}]{player.army.total_armor}[/]"
         )
 
     def on_click(self):

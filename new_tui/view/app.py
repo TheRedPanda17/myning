@@ -1,7 +1,7 @@
 from textual import events
 from textual.app import App
 from textual.binding import Binding
-from textual.containers import Container
+from textual.containers import Container, ScrollableContainer
 from textual.screen import Screen
 from textual.widgets import Footer, Static
 
@@ -47,8 +47,8 @@ class MyningScreen(Screen):
             "j": "down",
             "k": "up",
             "l": "right",
-            "d": "pagedown",
-            "u": "pageup",
+            "ctrl_d": "pagedown",
+            "ctrl_u": "pageup",
             "g": "home",
             "upper_g": "end",
         }

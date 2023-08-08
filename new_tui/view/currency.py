@@ -16,7 +16,7 @@ class CurrencyWidget(Static):
 
     def render(self):
         table = Table.grid(padding=(0, 1, 0, 0))
-        table.add_column(style="bold")
+        table.add_column()
         table.add_row("Gold", Icons.GOLD, Formatter.gold(player.gold))
 
         if MINES["Large pit"] in player.mines_completed:

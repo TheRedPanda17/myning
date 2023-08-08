@@ -14,7 +14,7 @@ from new_tui.formatter import Colors
 from new_tui.utilities import throttle
 from new_tui.view.army import ArmyContents
 from new_tui.view.currency import CurrencyWidget
-from new_tui.view.inventory import InventoryContents, InventoryWidget
+from new_tui.view.inventory import InventoryWidget
 
 player = Player()
 
@@ -65,6 +65,8 @@ class ChapterWidget(ScrollableContainer):
         aliases = {
             "j": "down",
             "k": "up",
+            "ctrl_d": "pagedown",
+            "ctrl_u": "pageup",
         }
         _key = aliases.get(key.name, key.name)
 
@@ -89,8 +91,7 @@ class ChapterWidget(ScrollableContainer):
         if self.app.screen.name == "myning":
             self.app.query_one("ArmyContents", ArmyContents).update_army()
             self.app.query_one("CurrencyWidget", CurrencyWidget).refresh()
-            self.app.query_one("InventoryContents", InventoryContents).update_inventory()
-            self.app.query_one("InventoryWidget", InventoryWidget).update_border()
+            self.app.query_one("InventoryWidget", InventoryWidget).update()
 
     def pick(self, args: PickArgs):
         self.update_dashboard()

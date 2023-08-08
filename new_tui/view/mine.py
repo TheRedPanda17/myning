@@ -79,14 +79,14 @@ class MineScreen(Screen):
 
     def compose(self):
         yield Header()
-        with ScrollableContainer() as container:
-            container.border_title = f"{trip.mine.icon} {trip.mine.name}"
+        with ScrollableContainer() as c:
+            c.border_title = f"{trip.mine.icon} {trip.mine.name}"
             yield self.content
-        with Container() as container:
-            container.border_title = "Trip Summary"
+        with Container() as c:
+            c.border_title = "Trip Summary"
             yield Static(trip.tui_summary)
-        with Container() as container:
-            container.border_title = "Trip Progress"
+        with Container() as c:
+            c.border_title = "Trip Progress"
             yield TimeRemaining()
             yield self.progress
 
