@@ -43,8 +43,9 @@ def _recruit_in_tier(tier: list[CharacterRaces]) -> CharacterRaces:
         raise ValueError("Empty tier")
     player = Player()
     facility = ResearchFacility()
-    undiscovered = [RACES[race_index] for race_index in tier
-                    if RACES[race_index] not in player.discovered_races]
+    undiscovered = [
+        RACES[race_index] for race_index in tier if RACES[race_index] not in player.discovered_races
+    ]
     undiscovered_probability = len(undiscovered) / len(tier)
     percent_increase = 0
     if facility.has_research("species_discovery"):
@@ -64,7 +65,6 @@ def _recruit_in_tier(tier: list[CharacterRaces]) -> CharacterRaces:
 
 
 def get_recruit_species(highest_rarity: int):
-    player = Player()
     facility = ResearchFacility()
     tiers = list(range(1, highest_rarity + 1))
     race_weights = RACE_WEIGHTS[:highest_rarity]
