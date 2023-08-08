@@ -46,14 +46,19 @@ def _recruit_in_tier(tier: list[CharacterRaces]) -> CharacterRaces:
     undiscovered = [
         RACES[race_index] for race_index in tier if RACES[race_index] not in player.discovered_races
     ]
-    undiscovered_probability = len(undiscovered) / len(tier)
-    percent_increase = 0
-    if facility.has_research("species_discovery"):
-        percent_increase = RESEARCH["species_discovery"].player_value / 100
-    undiscovered_probability += undiscovered_probability * percent_increase
-    discovered_probability = 1 - undiscovered_probability
-    undiscovered_weight = undiscovered_probability / len(undiscovered)
-    discovered_weight = discovered_probability / (len(tier) - len(undiscovered))
+    discovered_weight = 1 / len(tier)
+    undiscovered_weight = 0
+    if len(undiscovered) > 0:
+        undiscovered_probability = len(undiscovered) / len(tier)
+        percent_increase = 0
+        if facility.has_research("species_discovery"):
+            percent_increase = RESEARCH["species_discovery"].player_value / 100
+        undiscovered_probability += undiscovered_probability * percent_increase
+        discovered_probability = 1 - undiscovered_probability
+        undiscovered_weight = undiscovered_probability / len(undiscovered)
+        discovered_count = len(tier) - len(undiscovered)
+        if discovered_count > 0:
+            discovered_weight = discovered_probability / discovered_count
     weights = []
     for race in tier:
         if RACES[race] in player.discovered_races:
