@@ -10,9 +10,7 @@ def run():
         if "macguffin" in data:
             mac_data = data["macguffin"]
 
-            potential = mac_data["exp_boost"] / 5
-            if potential < 1:
-                potential = 1
+            potential = 1 + mac_data["exp_boost"] / 5
 
             mac_data["research_boost"] = potential
             mac_data["soul_credit_boost"] = potential
