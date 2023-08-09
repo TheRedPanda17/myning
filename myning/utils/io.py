@@ -95,7 +95,7 @@ def get_dashboard(key=None):
                 get_research_string(research_facility.points),
             ]
         )
-    if macguffin.exp_boost > 1:
+    if macguffin.xp_boost > 1:
         currencies.append(
             [
                 term.bold("Macguffin"),
@@ -107,7 +107,7 @@ def get_dashboard(key=None):
             [
                 "",
                 Icons.XP.value,
-                f"{term.bold_magenta(macguffin.exp_percentage)} xp boost",
+                f"{term.bold_magenta(macguffin.xp_percentage)} xp boost",
             ]
         )
     if macguffin.research_boost > 1:

@@ -20,7 +20,7 @@ def play():
     macguffin = Macguffin()
 
     value = get_total_value()
-    standard_boost = get_standard_boost(macguffin.exp_boost, value)
+    standard_boost = get_standard_boost(macguffin.xp_boost, value)
     small_boost = get_smaller_boost(macguffin.research_boost, value)
 
     while True:
@@ -58,7 +58,7 @@ def play():
             player.completed_migrations = migrations
             FileManager.save(player)
 
-            macguffin.exp_boost = standard_boost
+            macguffin.xp_boost = standard_boost
             macguffin.mineral_boost = standard_boost
             macguffin.research_boost = small_boost
             macguffin.soul_credit_boost = small_boost

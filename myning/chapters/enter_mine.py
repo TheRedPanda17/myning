@@ -217,10 +217,10 @@ def add_trip_to_player():
             pick(["Awesome!"], message=message, sub_title=subtitle)
 
     if len(player.army) > 1:
-        xp = int(trip.experience_gained * 1 / 2 * len(player.army) * macguffin.exp_boost)
+        xp = int(trip.experience_gained * 1 / 2 * len(player.army) * macguffin.xp_boost)
         player.add_available_xp(xp)
     else:
-        player.add_experience(int(trip.experience_gained * macguffin.exp_boost))
+        player.add_experience(int(trip.experience_gained * macguffin.xp_boost))
 
     player.incr_trip()
     if trip.mine.type == MineType.COMBAT:
