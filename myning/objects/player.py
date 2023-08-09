@@ -122,8 +122,9 @@ class Player(Character, metaclass=Singleton):
     def incr_trip(self):
         self.total_trips += 1
 
-    def add_soul_credit(self):
-        self.soul_credits += 1
+    def add_soul_credits(self, credits):
+        if credits > 0:
+            self.soul_credits += credits
 
     def remove_soul_credits(self, credits):
         if credits > 0:
@@ -231,10 +232,10 @@ class Player(Character, metaclass=Singleton):
             for name, progress in attrs["mine_progressions"].items()
         }
         player.blacksmith_level = attrs.get("blacksmith_level") or 1
-        player.soul_credits = int(attrs.get("soul_credits") or 0)
-        player.discovered_species = [
-            SPECIES[species_name]
-            for species_name in attrs.get("discovered_races", [CharacterSpecies.HUMAN.value])
+        player.soul_credits = attrs.get("soul_credits") or 0
+        player.discovered_races = [
+            SPECIES[race_name]
+            for race_name in attrs.get("discovered_races", [CharacterSpecies.HUMAN.value])
         ]
         player.total_trips = attrs.get("total_trips") or 0
         player.completed_migrations = attrs.get("completed_migrations") or [1]

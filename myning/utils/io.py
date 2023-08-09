@@ -87,7 +87,7 @@ def get_dashboard(key=None):
         )
 
     if MINES["Cavern"] in player.mines_completed:
-        research_facility.check_in()
+        research_facility.check_in(macguffin.research_boost)
         currencies.append(
             [
                 term.bold("Research points"),

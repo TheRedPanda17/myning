@@ -1,4 +1,5 @@
 from myning.config import RESEARCH
+from myning.objects.macguffin import Macguffin
 from myning.objects.player import Player
 from myning.objects.research_facility import ResearchFacility
 from myning.utils.file_manager import FileManager
@@ -7,9 +8,10 @@ from myning.utils.ui import columnate, get_research_string
 
 
 def play():
+    macguffin = Macguffin()
     while True:
         facility = ResearchFacility()
-        facility.check_in()
+        facility.check_in(macguffin.research_boost)
         FileManager.save(facility)
         title = f"Level {facility.level} Research ({get_research_string(facility.points)})"
         options = [
