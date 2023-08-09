@@ -1,6 +1,6 @@
 from myning.chapters import visit_store
-from myning.objects.player import Player
 from myning.objects.macguffin import Macguffin
+from myning.objects.player import Player
 from myning.objects.store import Store
 from myning.utils.file_manager import FileManager
 from myning.utils.io import pick
