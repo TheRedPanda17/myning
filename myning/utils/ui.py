@@ -19,11 +19,11 @@ def get_level_string(level: int):
     return term.cyan(f"lvl {level}")
 
 
-def get_soul_string(count: int):
-    return term.blue(f"{count} soul credits")
+def get_soul_string(count: float):
+    return term.blue(f"{round(count, 2)} soul credits")
 
 
-def get_research_string(points: int):
+def get_research_string(points: float):
     return term.violetred1(f"{round(points, 2)} research points")
 
 

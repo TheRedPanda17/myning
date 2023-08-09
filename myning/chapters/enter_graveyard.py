@@ -1,4 +1,5 @@
 from myning.objects.character import Character
+from myning.objects.macguffin import Macguffin
 from myning.objects.player import Player
 from myning.utils.file_manager import FileManager
 from myning.utils.io import confirm, pick
@@ -47,12 +48,13 @@ def play():
 
 
 def lay_to_rest(player: Player, ally: Character):
+    macguffin = Macguffin()
     confirmation = confirm(
-        message=f"Send {ally.name} to the afterlife and gain {get_soul_string(1)} for letting their soul rest?"
+        message=f"Send {ally.icon} {ally.name} to the afterlife and gain {get_soul_string(macguffin.soul_credit_boost)} for letting their soul rest?"
     )
 
     if confirmation:
-        player.add_soul_credit()
+        player.add_soul_credits(macguffin.soul_credit_boost)
         player.remove_fallen_ally(ally)
         FileManager.save(player)
 

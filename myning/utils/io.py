@@ -6,6 +6,7 @@ from typing import Callable
 from blessed import Terminal
 
 from myning.config import MINES
+from myning.objects.macguffin import Macguffin
 from myning.objects.player import Player, get_title_string
 from myning.objects.research_facility import ResearchFacility
 from myning.objects.settings import Settings
@@ -46,6 +47,8 @@ def get_dashboard(key=None):
     player = Player()
     compact = Settings().compact_mode
     research_facility = ResearchFacility()
+    macguffin = Macguffin()
+
     if key:
         player._update_dashboard_settings(key)
 
@@ -78,34 +81,55 @@ def get_dashboard(key=None):
         currencies.append(
             [
                 term.bold("Soul credits"),
-                Icons.GRAVEYARD.value,
+                Icons.SOUL_CREDITS.value,
                 get_soul_string(player.soul_credits),
             ]
         )
 
     if MINES["Cavern"] in player.mines_completed:
-        research_facility.check_in()
+        research_facility.check_in(macguffin.research_boost)
         currencies.append(
             [
                 term.bold("Research points"),
-                Icons.RESEARCH_FACILITY.value,
+                Icons.RESEARCH_POINTS.value,
                 get_research_string(research_facility.points),
             ]
         )
-
-    if player.macguffin.exp_boost > 1 or player.macguffin.mineral_boost > 1:
+    if macguffin.xp_boost > 1:
         currencies.append(
             [
                 term.bold("Macguffin"),
                 Icons.MINERAL.value,
-                f"{term.bold_gold(player.macguffin.store_percentage)} mineral value boost",
+                f"{term.bold_gold(macguffin.mineral_percentage)} mineral value boost",
             ]
         )
         currencies.append(
             [
                 "",
                 Icons.XP.value,
-                f"{term.bold_magenta(player.macguffin.exp_percentage)} xp boost",
+                f"{term.bold_magenta(macguffin.xp_percentage)} xp boost",
+            ]
+        )
+    if macguffin.research_boost > 1:
+        currencies.append(
+            [
+                "",
+                Icons.GRAVEYARD.value,
+                f"{term.blue(macguffin.soul_credit_percentage)} soul credit boost",
+            ]
+        )
+        currencies.append(
+            [
+                "",
+                Icons.RESEARCH_FACILITY.value,
+                f"{term.violetred1(macguffin.research_percentage)} research boost",
+            ]
+        )
+        currencies.append(
+            [
+                "",
+                Icons.PLANT.value,
+                f"{term.green(macguffin.plant_percentage)} plant value boost",
             ]
         )
 

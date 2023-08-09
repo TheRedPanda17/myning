@@ -52,7 +52,7 @@ def play():
             fully_recovered = False
             while not fully_recovered:
                 with term.fullscreen(), term.hidden_cursor():
-                    print("\nRecovering... (press enter to speed up)\n")
+                    print("\nRecovering... (press ↩ to speed up)\n")
                     print(army)
                     wait = random.randint(0, int(CONFIG["tick_length"] / 3))
                     _, _ = timed_input(timeout=wait)
