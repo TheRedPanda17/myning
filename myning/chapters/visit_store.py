@@ -122,7 +122,7 @@ def sell(
             )
 
         item_to_sell = items[index]
-        price = get_sell_price(item_to_sell, mineral_bonus)
+        price = get_sell_price(item_to_sell, mineral_bonus, plant_bonus)
         if confirm(
             f"Are you sure you want to sell your {item_to_sell.name} for {get_gold_string(price)}?",
         ):

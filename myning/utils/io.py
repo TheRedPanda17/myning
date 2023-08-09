@@ -91,7 +91,7 @@ def get_dashboard(key=None):
         currencies.append(
             [
                 term.bold("Research points"),
-                Icons.RESEARCH_FACILITY.value,
+                Icons.RESEARCH_POINTS.value,
                 get_research_string(research_facility.points),
             ]
         )
@@ -121,7 +121,7 @@ def get_dashboard(key=None):
         currencies.append(
             [
                 "",
-                Icons.RESEARCH_POINTS.value,
+                Icons.RESEARCH_FACILITY.value,
                 f"{term.violetred1(macguffin.research_percentage)} research boost",
             ]
         )

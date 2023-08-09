@@ -76,8 +76,8 @@ def play():
             standard_boost_str = f"{round(standard_boost * 100, 2)}%"
             small_boost_str = f"{round(small_boost * 100, 2)}%"
 
-            boost_str = f"Potential xp boost: {term.magenta(standard_boost_str)}"
-            boost_str += f"\nPotential mineral value boost: {term.gold(standard_boost_str)}"
+            boost_str = f"\nPotential mineral value boost: {term.gold(standard_boost_str)}"
+            boost_str += f"Potential xp boost: {term.magenta(standard_boost_str)}"
             boost_str += f"\nPotential research value boost: {term.violetred1(small_boost_str)}"
             boost_str += f"\nPotential soul credit boost: {term.blue(small_boost_str)}"
             boost_str += f"\nPotential plant value boost: {term.green(small_boost_str)}"
@@ -88,9 +88,9 @@ def play():
                 ["I understand"],
                 "Going Back in Time",
                 sub_title="When you go back in time, you will gain a macguffin which \n"
-                "will provide an xp and mineral value boost. Unfortunately, \n"
-                "you'll lose everything else you have (including upgrades).\n"
-                "Journal unlocks will not be lost.",
+                "will provide an xp, mineral value, soul credit, research, and plant \n"
+                "value boost. Unfortunately, you'll lose everything else you have \n"
+                "(including upgrades). Journal unlocks will not be lost.",
             )
             continue
 
