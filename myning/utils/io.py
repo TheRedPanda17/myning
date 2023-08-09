@@ -110,6 +110,7 @@ def get_dashboard(key=None):
                 f"{term.bold_magenta(macguffin.exp_percentage)} xp boost",
             ]
         )
+    if macguffin.research_boost > 1:
         currencies.append(
             [
                 "",
