@@ -40,7 +40,7 @@ def get_random_array_item(arr: ListType[T]) -> T:
 
 def boosted_random_choice(
     arr: list[T], selector: Callable[[T], bool], percent_boost: float = 0.0
-) -> Optional[T]:
+) -> T | None:
     if not arr:
         return None
     selected_indexes = [i for i, v in enumerate(arr) if selector(v)]
