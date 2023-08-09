@@ -79,7 +79,8 @@ def sell(
     has_sell_minerals: bool,
     has_sell_almost_everything: bool,
     has_sell_everything: bool,
-    bonus_ratio: int = 1,
+    mineral_bonus: int = 1,
+    plant_bonus: int = 1,
 ):
     item_to_sell, price = None, None
 
@@ -88,7 +89,7 @@ def sell(
             [
                 [
                     *item.str_arr,
-                    f"({get_gold_string(get_sell_price(item, bonus_ratio))})",
+                    f"({get_gold_string(get_sell_price(item, mineral_bonus, plant_bonus))})",
                 ]
                 for item in items
             ]
@@ -108,16 +109,20 @@ def sell(
             break
         elif option == "Sell Minerals":
             non_tax = 1 - (UPGRADES["sell_minerals"].player_value / 100)
-            return mass_sell(items, ItemType.MINERAL, bonus_ratio * non_tax)
+            return mass_sell(
+                items, ItemType.MINERAL, mineral_bonus * non_tax, plant_bonus * non_tax
+            )
         elif option == "Sell Almost Everything":
             non_tax = 1 - (UPGRADES["sell_almost_everything"].player_value / 100)
-            return sell_almost_everything(items, bonus_ratio * non_tax)
+            return sell_almost_everything(items, mineral_bonus * non_tax, plant_bonus * non_tax)
         elif option == "Sell Everything":
             non_tax = 1 - (UPGRADES["sell_everything"].player_value / 100)
-            return mass_sell(items, bonus_ratio=bonus_ratio * non_tax)
+            return mass_sell(
+                items, bonus_ratio=mineral_bonus * non_tax, plant_bonus=plant_bonus * non_tax
+            )
 
         item_to_sell = items[index]
-        price = get_sell_price(item_to_sell, bonus_ratio)
+        price = get_sell_price(item_to_sell, mineral_bonus)
         if confirm(
             f"Are you sure you want to sell your {item_to_sell.name} for {get_gold_string(price)}?",
         ):
@@ -126,7 +131,12 @@ def sell(
     return [item_to_sell] if item_to_sell else None, price
 
 
-def mass_sell(items: list[Item], item_type: ItemType | None = None, bonus_ratio: int = 1):
+def mass_sell(
+    items: list[Item],
+    item_type: ItemType | None = None,
+    bonus_ratio: int = 1,
+    plant_bonus: int = 1,
+):
     is_selling_everything = item_type is None
     items_plural = f"{is_selling_everything and 'item' or item_type}s"
 
@@ -137,7 +147,7 @@ def mass_sell(items: list[Item], item_type: ItemType | None = None, bonus_ratio:
         pick(["You caught me."], f"Nice try. You don't have any {items_plural} to sell.")
         return None, None
 
-    price = int(sum(get_sell_price(item, bonus_ratio) for item in items))
+    price = int(sum(get_sell_price(item, bonus_ratio, plant_bonus) for item in items))
     if not confirm(
         f"Are you sure you want to sell all of your {items_plural} for {get_gold_string(price)}?",
     ):
@@ -146,11 +156,11 @@ def mass_sell(items: list[Item], item_type: ItemType | None = None, bonus_ratio:
     return items, price
 
 
-def sell_almost_everything(items: list[Item], bonus_ratio: int = 1):
+def sell_almost_everything(items: list[Item], bonus_ratio: int = 1, plant_bonus: int = 1):
     items = groupby(items, key=lambda i: i.type)
     items = [i for _, type_items in items for i in sorted(type_items, key=lambda ti: ti.value)[:-3]]
 
-    price = int(sum(get_sell_price(item, bonus_ratio) for item in items)) or 1
+    price = int(sum(get_sell_price(item, bonus_ratio, plant_bonus) for item in items)) or 1
     if not confirm(
         f"Are you sure you want to sell all but your top 3 items in each category for {get_gold_string(price)}?",
     ):
@@ -159,8 +169,13 @@ def sell_almost_everything(items: list[Item], bonus_ratio: int = 1):
     return items, price
 
 
-def get_sell_price(item: Item, bonus_ratio: int = 1):
-    markdown = bonus_ratio if item.type == ItemType.MINERAL else MARKDOWN_RATIO
+def get_sell_price(item: Item, mineral_bonus: int = 1, plant_bonus: int = 1):
+    markdown = MARKDOWN_RATIO
+    if item.type == ItemType.MINERAL:
+        markdown = mineral_bonus
+    elif item.type == ItemType.PLANT:
+        markdown = plant_bonus
+
     price = int(item.value * markdown) or 1
     return price
 

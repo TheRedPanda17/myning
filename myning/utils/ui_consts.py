@@ -35,6 +35,7 @@ class Icons(str, Enum):
     MINERAL = "🪨"
     PANTS = "👖"
     PICKAXE = "⛏ "
+    PLANT = "🌱"
     RESEARCH_FACILITY = "🔬"
     RESEARCH_POINTS = "🧪"
     RESOURCE = "💎"

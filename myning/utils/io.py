@@ -125,6 +125,13 @@ def get_dashboard(key=None):
                 f"{term.violetred1(macguffin.research_percentage)} research boost",
             ]
         )
+        currencies.append(
+            [
+                "",
+                Icons.PLANT.value,
+                f"{term.green(macguffin.plant_percentage)} plant value boost",
+            ]
+        )
 
     return "\n".join(lines + columnate(currencies))
 

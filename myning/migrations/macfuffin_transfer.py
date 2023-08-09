@@ -16,6 +16,7 @@ def run():
 
             mac_data["research_boost"] = potential
             mac_data["soul_credit_boost"] = potential
+            mac_data["plant_boost"] = potential
             macguffin = Macguffin.from_dict(mac_data)
         else:
             macguffin = Macguffin()

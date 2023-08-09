@@ -38,7 +38,8 @@ def play():
             option, _ = pick(
                 ["Yes", "No"],
                 "Are you sure you want to erase ALL progress and go back in time?",
-                sub_title=f"You'll lose all your progress and gain a {int(standard_boost*100)}% xp and mineral value boost \nand a {int(small_boost*100)}% research and soul credit boost.",
+                sub_title=f"You'll lose all your progress and gain a {int(standard_boost*100)}% xp and mineral value boost"
+                + "\nand a {int(small_boost*100)}% research, soul credit boost, and plant value.",
             )
             settings = Settings()
 
@@ -62,6 +63,7 @@ def play():
             macguffin.mineral_boost = standard_boost
             macguffin.research_boost = small_boost
             macguffin.soul_credit_boost = small_boost
+            macguffin.plant_boost = small_boost
 
             Settings.initialize()
             FileManager.save(settings)
@@ -78,6 +80,7 @@ def play():
             boost_str += f"\nPotential mineral value boost: {term.gold(standard_boost_str)}"
             boost_str += f"\nPotential research value boost: {term.violetred1(small_boost_str)}"
             boost_str += f"\nPotential soul credit boost: {term.blue(small_boost_str)}"
+            boost_str += f"\nPotential plant value boost: {term.green(small_boost_str)}"
             pick(["Cool cool cool"], boost_str)
 
         if option == "About":
