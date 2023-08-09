@@ -1,6 +1,8 @@
-from myning.utils.utils import fibonacci, fibonacci_sum, boosted_random_choice
-import pytest
 import random
+
+import pytest
+
+from myning.utils.utils import boosted_random_choice, fibonacci, fibonacci_sum
 
 
 def test_fibonacci():

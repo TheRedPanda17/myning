@@ -2,7 +2,7 @@ import random
 from collections import UserList
 from datetime import datetime
 from functools import cache
-from typing import TypeVar, Callable, Optional
+from typing import Callable, Optional, TypeVar
 
 T = TypeVar("T")
 ListType = list[T] | UserList[T]

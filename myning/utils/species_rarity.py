@@ -1,13 +1,12 @@
 import random
+from typing import Optional
 
 from myning.config import RESEARCH, SPECIES
 from myning.objects.character import CharacterSpecies
 from myning.objects.player import Player
 from myning.objects.research_facility import ResearchFacility
-from myning.utils.utils import get_random_array_item, boosted_random_choice
 from myning.objects.species import Species
-
-from typing import Optional
+from myning.utils.utils import boosted_random_choice, get_random_array_item
 
 SPECIES_TIERS = [
     [CharacterSpecies.HUMAN],
