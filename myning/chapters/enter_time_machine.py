@@ -41,7 +41,7 @@ def play():
                 ["Yes", "No"],
                 "Are you sure you want to erase ALL progress and go back in time?",
                 sub_title=f"You'll lose all your progress and gain a {int(standard_boost*100)}% xp and mineral value boost"
-                + "\nand a {int(small_boost*100)}% research, soul credit boost, and plant value.",
+                + f"\nand a {int(small_boost*100)}% research, soul credit boost, and plant value.",
             )
             settings = Settings()
 
