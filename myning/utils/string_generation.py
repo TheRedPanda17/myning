@@ -1,5 +1,5 @@
 from myning.config import NAMES, STRINGS
-from myning.objects.character import CharacterRaces
+from myning.objects.character import CharacterSpecies
 from myning.utils.utils import get_random_array_item, get_random_array_item_and_index
 
 creature_types = [
@@ -153,7 +153,7 @@ def generate_name(type):
 def generate_description(type):
     size = get_random_array_item(STRINGS["sizes"]).lower()
     adjective = get_random_array_item(STRINGS["modifiers"]).lower()
-    if type == CharacterRaces.ALIEN.value:
+    if type == CharacterSpecies.ALIEN.value:
         type = f"{get_random_array_item(creature_types).lower()}-like creature"
     return f"a {size}, {adjective}, {type}"
 

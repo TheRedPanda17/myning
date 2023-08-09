@@ -126,7 +126,9 @@ def auto_add_exp():
 
 def hire_muscle(player: Player) -> Optional[Character]:
     entities = [
-        generate_character([1, 1], max_items=1, race=get_random_array_item(player.discovered_races))
+        generate_character(
+            [1, 1], max_items=1, species=get_random_array_item(player.discovered_species)
+        )
         for _ in range(20)
     ]
     entities.sort(key=lambda e: e.name)

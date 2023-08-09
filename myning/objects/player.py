@@ -2,9 +2,9 @@ from typing import List, Optional
 
 from blessed.terminal import Terminal
 
-from myning.config import MINES, RACES, UPGRADES
+from myning.config import MINES, SPECIES, UPGRADES
 from myning.objects.army import Army
-from myning.objects.character import Character, CharacterRaces
+from myning.objects.character import Character, CharacterSpecies
 from myning.objects.inventory import Inventory
 from myning.objects.item import ItemType
 from myning.objects.macguffin import Macguffin
@@ -46,7 +46,7 @@ class Player(Character, metaclass=Singleton):
             player.blacksmith_level = 1
             player.macguffin = Macguffin()
             player.soul_credits = 0
-            player.discovered_races = [RACES[CharacterRaces.HUMAN.value]]
+            player.discovered_species = [SPECIES[CharacterSpecies.HUMAN.value]]
             player.total_trips = 0
             player.completed_migrations = [1]
         cls._instance = player
@@ -87,7 +87,7 @@ class Player(Character, metaclass=Singleton):
         self.health = self.max_health
         self.equipment.clear()
         self.soul_credits = 0
-        self.discovered_races = [RACES[CharacterRaces.HUMAN.value]]
+        self.discovered_species = [SPECIES[CharacterSpecies.HUMAN.value]]
         self.total_trips = 0
         self.macguffin = Macguffin()
         self.completed_migrations = [1]
@@ -209,7 +209,7 @@ class Player(Character, metaclass=Singleton):
             "blacksmith_level": self.blacksmith_level,
             "macguffin": self.macguffin.to_dict(),
             "soul_credits": self.soul_credits,
-            "discovered_races": [race.name for race in self.discovered_races],
+            "discovered_races": [species.name for species in self.discovered_species],
             "total_trips": self.total_trips,
             "completed_migrations": self.completed_migrations,
         }
@@ -243,9 +243,9 @@ class Player(Character, metaclass=Singleton):
         player.blacksmith_level = attrs.get("blacksmith_level") or 1
         player.macguffin = Macguffin.from_dict(attrs.get("macguffin"))
         player.soul_credits = int(attrs.get("soul_credits") or 0)
-        player.discovered_races = [
-            RACES[race_name]
-            for race_name in attrs.get("discovered_races", [CharacterRaces.HUMAN.value])
+        player.discovered_species = [
+            SPECIES[species_name]
+            for species_name in attrs.get("discovered_races", [CharacterSpecies.HUMAN.value])
         ]
         player.total_trips = attrs.get("total_trips") or 0
         player.completed_migrations = attrs.get("completed_migrations") or [1]

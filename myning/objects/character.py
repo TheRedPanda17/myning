@@ -4,10 +4,10 @@ from enum import Enum
 
 from blessed import Terminal
 
-from myning.config import RACES, XP_COST
+from myning.config import SPECIES, XP_COST
 from myning.objects.equipment import Equipment
 from myning.objects.object import Object
-from myning.objects.race import Race
+from myning.objects.species import Species
 from myning.utils import utils
 from myning.utils.file_manager import FileManager
 from myning.utils.output import print_level_up
@@ -22,7 +22,7 @@ CRIT_DIVISOR = 5
 DODGE_DIVISOR = 5
 
 
-class CharacterRaces(str, Enum):
+class CharacterSpecies(str, Enum):
     AASIMAR = "Aasimar"
     ALIEN = "Alien"
     BUGBEAR = "Bugbear"
@@ -58,7 +58,7 @@ class Character(Object):
         description=None,
         level: int = 1,
         is_enemy=False,
-        race: Race = RACES[CharacterRaces.HUMAN.value],
+        species: Species = SPECIES[CharacterSpecies.HUMAN.value],
     ):
         self.name = name
         self.description = description or name
@@ -67,17 +67,17 @@ class Character(Object):
         self.is_ghost = False
         self.equipment = Equipment()
         self.experience = 0
-        self.race: Race = race
+        self.species: Species = species
         self.health = self.max_health
         self.id = f"{self.name} - {get_random_int(10 ** 13)}"
 
     @property
     def health_mod(self):
-        return self.race.health_mod
+        return self.species.health_mod
 
     @property
     def intros(self):
-        return [self.race.intro, "Hello", "Howdy"]
+        return [self.species.intro, "Hello", "Howdy"]
 
     @property
     def max_health(self):
@@ -91,13 +91,13 @@ class Character(Object):
         }
 
     @property
-    def _race_bonus(self):
+    def _species_bonus(self):
         return {
-            "damage": self.race.strength * self.level / STRENGTH_DIVISOR,
-            "armor": self.race.defense * self.level / DEF_DIVISOR,
-            "critical_chance": self.race.critical_chance * self.level / CRIT_DIVISOR,
-            "dodge_chance": self.race.dodge_chance * self.level / DODGE_DIVISOR,
-            "health_mod": self.race.health_mod,
+            "damage": self.species.strength * self.level / STRENGTH_DIVISOR,
+            "armor": self.species.defense * self.level / DEF_DIVISOR,
+            "critical_chance": self.species.critical_chance * self.level / CRIT_DIVISOR,
+            "dodge_chance": self.species.dodge_chance * self.level / DODGE_DIVISOR,
+            "health_mod": self.species.health_mod,
         }
 
     @property
@@ -106,15 +106,15 @@ class Character(Object):
             "damage": int(
                 self.equipment.stats["damage"]
                 + self._level_stats["damage"]
-                + self._race_bonus["damage"]
+                + self._species_bonus["damage"]
             ),
             "armor": int(
                 self.equipment.stats["armor"]
                 + self._level_stats["armor"]
-                + self._race_bonus["armor"]
+                + self._species_bonus["armor"]
             ),
-            "critical_chance": int(self._race_bonus["critical_chance"]),
-            "dodge_chance": int(self._race_bonus["dodge_chance"]),
+            "critical_chance": int(self._species_bonus["critical_chance"]),
+            "dodge_chance": int(self._species_bonus["dodge_chance"]),
         }
 
     @property
@@ -152,7 +152,7 @@ class Character(Object):
             "equipment": self.equipment.to_dict(),
             "experience": self.experience,
             "health": self.health,
-            "race": self.race.name,
+            "race": self.species.name,
             "id": self.id,
             "is_ghost": self.is_ghost,
         }
@@ -165,7 +165,7 @@ class Character(Object):
             dict["level"],
             dict["is_enemy"],
         )
-        entity.race = RACES[dict.get("race") or CharacterRaces.HUMAN.value]
+        entity.species = SPECIES[dict.get("race") or CharacterSpecies.HUMAN.value]
         entity.equipment = Equipment.from_dict(dict["equipment"])
         entity.experience = dict["experience"]
         entity.health = dict["health"]
@@ -208,29 +208,29 @@ class Character(Object):
 
     @classmethod
     @property
-    def companion_races(cls) -> list:
+    def companion_species(cls) -> list:
         return [
-            CharacterRaces.DWARF,
-            CharacterRaces.HUMAN,
-            CharacterRaces.ELF,
-            CharacterRaces.ORC,
-            CharacterRaces.AASIMAR,
-            CharacterRaces.HALF_ELF,
-            CharacterRaces.HALF_ORC,
-            CharacterRaces.HALFLING,
-            CharacterRaces.KENKU,
-            CharacterRaces.LIZARDFOLK,
-            CharacterRaces.KOBOLD,
-            CharacterRaces.TABAXI,
-            CharacterRaces.YUAN_TI_PUREBLOOD,
-            CharacterRaces.HOBGOBLIN,
-            CharacterRaces.TRITON,
-            CharacterRaces.GOLIATH,
-            CharacterRaces.GOBLIN,
-            CharacterRaces.TIEFLING,
-            CharacterRaces.BUGBEAR,
-            CharacterRaces.FIRBOLG,
-            CharacterRaces.GNOME,
+            CharacterSpecies.DWARF,
+            CharacterSpecies.HUMAN,
+            CharacterSpecies.ELF,
+            CharacterSpecies.ORC,
+            CharacterSpecies.AASIMAR,
+            CharacterSpecies.HALF_ELF,
+            CharacterSpecies.HALF_ORC,
+            CharacterSpecies.HALFLING,
+            CharacterSpecies.KENKU,
+            CharacterSpecies.LIZARDFOLK,
+            CharacterSpecies.KOBOLD,
+            CharacterSpecies.TABAXI,
+            CharacterSpecies.YUAN_TI_PUREBLOOD,
+            CharacterSpecies.HOBGOBLIN,
+            CharacterSpecies.TRITON,
+            CharacterSpecies.GOLIATH,
+            CharacterSpecies.GOBLIN,
+            CharacterSpecies.TIEFLING,
+            CharacterSpecies.BUGBEAR,
+            CharacterSpecies.FIRBOLG,
+            CharacterSpecies.GNOME,
         ]
 
     @property
@@ -253,7 +253,7 @@ class Character(Object):
 
     @property
     def icon(self):
-        return RaceEmoji(f"{self.race.icon}")
+        return SpeciesEmoji(f"{self.species.icon}")
 
     @property
     def health_str(self):
@@ -290,7 +290,7 @@ class Character(Object):
         return int(composite * 0.2) if composite > 0 else 1
 
 
-class RaceEmoji:
+class SpeciesEmoji:
     def __init__(self, symbol: str) -> None:
         self.symbol = symbol
 

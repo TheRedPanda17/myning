@@ -4,17 +4,17 @@ import random
 from blessed import Terminal
 
 from myning.chapters import enter_combat, enter_mining
-from myning.config import MINES, RACES, RESEARCH
+from myning.config import MINES, RESEARCH, SPECIES
 from myning.objects.mine import Mine, MineType
 from myning.objects.player import Player
-from myning.objects.race import Race
 from myning.objects.research_facility import ResearchFacility
+from myning.objects.species import Species
 from myning.objects.trip import LOST_RATIO, Trip
 from myning.utils.file_manager import FileManager
 from myning.utils.generators import generate_character, generate_equipment
 from myning.utils.io import pick
-from myning.utils.output import get_race_discovery_message, print_entity_speech
-from myning.utils.race_rarity import RACE_TIERS, get_recruit_species
+from myning.utils.output import get_species_discovery_message, print_entity_speech
+from myning.utils.species_rarity import SPECIES_TIERS, get_recruit_species
 from myning.utils.string_generation import generate_death_action
 from myning.utils.tab_title import TabTitle
 from myning.utils.ui import columnate
@@ -126,7 +126,7 @@ def recruit_ally():
     levels = [max(1, math.ceil(level * 0.75)) for level in levels]
 
     species = get_recruit_species(trip.mine.companion_rarity)
-    ally = generate_character(levels, race=species)
+    ally = generate_character(levels, species=species)
 
     print_entity_speech(
         ally,
@@ -207,10 +207,10 @@ def add_trip_to_player():
 
     for ally in trip.allies_gained:
         player.add_ally(ally)
-        if ally.race not in player.discovered_races:
-            player.discovered_races.append(ally.race)
-            message, subtitle = get_race_discovery_message(
-                ally.name, ally.race.name, ally.race.icon
+        if ally.species not in player.discovered_species:
+            player.discovered_species.append(ally.species)
+            message, subtitle = get_species_discovery_message(
+                ally.name, ally.species.name, ally.species.icon
             )
             pick(["Awesome!"], message=message, sub_title=subtitle)
 
@@ -252,24 +252,24 @@ def check_progress():
             )
 
 
-def available_species(mine: Mine) -> list[Race]:
+def available_species(mine: Mine) -> list[Species]:
     if not mine.companion_rarity:
         return []
 
     species = []
     for i in range(0, mine.companion_rarity):
-        tier = RACE_TIERS[i]
+        tier = SPECIES_TIERS[i]
         for s in tier:
-            species.append(RACES[s])
+            species.append(SPECIES[s])
 
     return species
 
 
-def unlock_species_emojies(species: list[Race]) -> list[str]:
+def unlock_species_emojies(species: list[Species]) -> list[str]:
     player = Player()
     emojis = []
     for spec in species:
-        if spec in player.discovered_races:
+        if spec in player.discovered_species:
             emojis.append(spec.icon)
         else:
             emojis.append("❓")

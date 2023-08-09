@@ -31,7 +31,7 @@ def play():
             return
 
         if option == "Go Back in Time":
-            journal = player.discovered_races
+            journal = player.discovered_species
             migrations = player.completed_migrations
             option, _ = pick(
                 ["Yes", "No"],
@@ -54,7 +54,7 @@ def play():
             player = Player()
             player.macguffin.exp_boost = xp_boost
             player.macguffin.mineral_boost = mineral_boost
-            player.discovered_races = journal
+            player.discovered_species = journal
             player.completed_migrations = migrations
             FileManager.save(player)
 

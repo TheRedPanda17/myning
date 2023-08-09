@@ -1,9 +1,9 @@
 import math
 import random
 
-from myning.config import RACES, STRINGS
+from myning.config import SPECIES, STRINGS
 from myning.objects.army import Army
-from myning.objects.character import Character, CharacterRaces
+from myning.objects.character import Character, CharacterSpecies
 from myning.objects.equipment import EQUIPMENT_TYPES
 from myning.objects.item import Item, ItemType
 from myning.objects.plant import PLANT_TYPES, Plant
@@ -16,19 +16,19 @@ from myning.utils.utils import (
 
 
 def generate_character(
-    level_range, race=None, is_enemy=False, max_items=0, max_item_level=0, item_scale=1
+    level_range, species=None, is_enemy=False, max_items=0, max_item_level=0, item_scale=1
 ):
-    if race is None:
+    if species is None:
         if is_enemy:
-            race = RACES[CharacterRaces.ALIEN.value]
+            species = SPECIES[CharacterSpecies.ALIEN.value]
         else:
-            race = RACES[get_random_array_item(Character.companion_races).value]
+            species = SPECIES[get_random_array_item(Character.companion_species).value]
 
-    name = string_generation.generate_name(race.name)
-    description = string_generation.generate_description(race.name)
+    name = string_generation.generate_name(species.name)
+    description = string_generation.generate_description(species.name)
 
     level = get_random_int(*level_range)
-    character = Character(name, description, level, is_enemy, race)
+    character = Character(name, description, level, is_enemy, species)
 
     if max_items:
         item_level = max_item_level if max_item_level else level
