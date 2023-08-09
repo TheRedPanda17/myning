@@ -4,7 +4,7 @@ import random
 from blessed import Terminal
 
 from myning.chapters import enter_combat, enter_mining
-from myning.config import MINES, SPECIES, RESEARCH
+from myning.config import MINES, RESEARCH, SPECIES
 from myning.objects.macguffin import Macguffin
 from myning.objects.mine import Mine, MineType
 from myning.objects.player import Player

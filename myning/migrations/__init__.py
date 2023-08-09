@@ -1,4 +1,4 @@
-from . import garden_transfer, macfuffin_transfer, species_pokedex, research_transfer, soul_credits
+from . import garden_transfer, macfuffin_transfer, research_transfer, soul_credits, species_pokedex
 
 MIGRATIONS = {
     1: species_pokedex,
