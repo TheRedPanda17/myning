@@ -39,4 +39,4 @@ def test_boosted_random_choice(arr, boost_percent, expected_percent):
         if choice < 3:
             boosted_count += 1
     percent_boosted = boosted_count / total
-    assert expected_percent - 0.01 < percent_boosted < expected_percent + 0.01
+    assert abs(percent_boosted - expected_percent) < 0.01
