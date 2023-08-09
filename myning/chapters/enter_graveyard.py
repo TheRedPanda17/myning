@@ -50,7 +50,7 @@ def play():
 def lay_to_rest(player: Player, ally: Character):
     macguffin = Macguffin()
     confirmation = confirm(
-        message=f"Send {ally.name} to the afterlife and gain {get_soul_string(macguffin.soul_credit_boost)} for letting their soul rest?"
+        message=f"Send {ally.icon} {ally.name} to the afterlife and gain {get_soul_string(macguffin.soul_credit_boost)} for letting their soul rest?"
     )
 
     if confirmation:

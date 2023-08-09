@@ -81,7 +81,7 @@ def get_dashboard(key=None):
         currencies.append(
             [
                 term.bold("Soul credits"),
-                Icons.CREDIT.value,
+                Icons.SOUL_CREDITS.value,
                 get_soul_string(player.soul_credits),
             ]
         )
@@ -121,7 +121,7 @@ def get_dashboard(key=None):
         currencies.append(
             [
                 "",
-                Icons.RESEARCH_FACILITY.value,
+                Icons.RESEARCH_POINTS.value,
                 f"{term.violetred1(macguffin.research_percentage)} research boost",
             ]
         )
