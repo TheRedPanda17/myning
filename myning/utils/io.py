@@ -81,7 +81,7 @@ def get_dashboard(key=None):
         currencies.append(
             [
                 term.bold("Soul credits"),
-                Icons.GRAVEYARD.value,
+                Icons.CREDIT.value,
                 get_soul_string(player.soul_credits),
             ]
         )
@@ -95,13 +95,12 @@ def get_dashboard(key=None):
                 get_research_string(research_facility.points),
             ]
         )
-
-    if macguffin.exp_boost > 1 or macguffin.mineral_boost > 1:
+    if macguffin.exp_boost > 1:
         currencies.append(
             [
                 term.bold("Macguffin"),
                 Icons.MINERAL.value,
-                f"{term.bold_gold(macguffin.store_percentage)} mineral value boost",
+                f"{term.bold_gold(macguffin.research_percentage)} mineral value boost",
             ]
         )
         currencies.append(
@@ -109,6 +108,20 @@ def get_dashboard(key=None):
                 "",
                 Icons.XP.value,
                 f"{term.bold_magenta(macguffin.exp_percentage)} xp boost",
+            ]
+        )
+        currencies.append(
+            [
+                "",
+                Icons.GRAVEYARD.value,
+                f"{term.blue(macguffin.soul_credit_percentage)} soul credit boost",
+            ]
+        )
+        currencies.append(
+            [
+                "",
+                Icons.RESEARCH_FACILITY.value,
+                f"{term.violetred1(macguffin.research_percentage)} research boost",
             ]
         )
 

@@ -21,7 +21,7 @@ def play():
 
     value = get_total_value()
     standard_boost = get_standard_boost(macguffin.exp_boost, value)
-    small_boost = get_smaller_boost(macguffin.mineral_boost, value)
+    small_boost = get_smaller_boost(macguffin.research_boost, value)
 
     while True:
         option, _ = pick(
@@ -38,7 +38,7 @@ def play():
             option, _ = pick(
                 ["Yes", "No"],
                 "Are you sure you want to erase ALL progress and go back in time?",
-                sub_title=f"You'll lose all your progress and gain a {int(small_boost*100)}% xp and mineral value boost \nand a {int(standard_boost*100)}% research and soul credit boost.",
+                sub_title=f"You'll lose all your progress and gain a {int(standard_boost*100)}% xp and mineral value boost \nand a {int(small_boost*100)}% research and soul credit boost.",
             )
             settings = Settings()
 
@@ -93,11 +93,12 @@ def play():
 
 
 def get_standard_boost(current_boost: int, game_value: int) -> int:
-    return round((game_value / 500000) + current_boost, 2)
+    return round((game_value / 500_000) + current_boost, 2)
 
 
 def get_smaller_boost(current_boost: int, game_value: int) -> int:
-    return round((game_value / 2500000) + current_boost, 2)
+    bonus = (game_value / 2_500_000) + current_boost
+    return round(max(bonus, 1), 2)
 
 
 def get_total_value() -> int:

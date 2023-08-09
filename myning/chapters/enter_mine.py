@@ -4,7 +4,8 @@ import random
 from blessed import Terminal
 
 from myning.chapters import enter_combat, enter_mining
-from myning.config import MINES, RESEARCH, SPECIES
+from myning.config import MINES, SPECIES, RESEARCH
+from myning.objects.macguffin import Macguffin
 from myning.objects.mine import Mine, MineType
 from myning.objects.player import Player
 from myning.objects.research_facility import ResearchFacility
@@ -198,6 +199,7 @@ def unlock_mines():
 def add_trip_to_player():
     player = Player()
     trip = Trip()
+    macguffin = Macguffin()
 
     if player.army.defeated:
         print(
@@ -214,7 +216,12 @@ def add_trip_to_player():
             )
             pick(["Awesome!"], message=message, sub_title=subtitle)
 
-    player.add_xp(trip.experience_gained)
+    if len(player.army) > 1:
+        xp = int(trip.experience_gained * 1 / 2 * len(player.army) * macguffin.exp_boost)
+        player.add_available_xp(xp)
+    else:
+        player.add_experience(int(trip.experience_gained * macguffin.exp_boost))
+
     player.incr_trip()
     if trip.mine.type == MineType.COMBAT:
         print("The goods collected on the trip were donated to the training facility.")

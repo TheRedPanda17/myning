@@ -32,7 +32,12 @@ class Macguffin(Object, metaclass=Singleton):
     def from_dict(cls, data) -> "Macguffin":
         if data is None:
             return Macguffin()
-        return Macguffin(**data)
+        return Macguffin(
+            data["exp_boost"],
+            data["store_boost"],
+            data["research_boost"],
+            data["soul_credit_boost"],
+        )
 
     def to_dict(self) -> dict:
         return {
@@ -44,8 +49,19 @@ class Macguffin(Object, metaclass=Singleton):
 
     @property
     def exp_percentage(self):
-        return f"{int(self.exp_boost * 100)}%"
+        return self.percentage(self.exp_boost)
 
     @property
-    def store_percentage(self):
-        return f"{int(self.mineral_boost * 100)}%"
+    def research_percentage(self):
+        return self.percentage(self.mineral_boost)
+
+    @property
+    def soul_credit_percentage(self):
+        return self.percentage(self.soul_credit_boost)
+
+    @property
+    def research_percentage(self):
+        return self.percentage(self.research_boost)
+
+    def percentage(self, number):
+        return f"{int(number * 100)}%"
