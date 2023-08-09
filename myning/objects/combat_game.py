@@ -143,6 +143,9 @@ class CombatGame:
         s += "\n╚" + "═" * (8 * len(self.block_keys) + 5) + "╝\n\n"
 
         s += self._score_str
+
+        s += term.snow4("\n\nIf you don't play the game, it won't penalize you.\n")
+        s += term.snow4("You can disable minigames in the settings menu.")
         return s
 
     @property

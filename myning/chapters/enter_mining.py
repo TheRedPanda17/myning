@@ -80,6 +80,8 @@ class PrintThread(threading.Thread):
                         print(trip_str)
                         print()
                         print(f"Mining... ({int(self.wait)} seconds left)")
+                        print(term.snow4("\nIf you don't play the game, it won't penalize you."))
+                        print(term.snow4("You can disable minigames in the settings menu.\n"))
                         print("Press enter to strike the rocks...\n")
                         print(mine_game.bar_str)
                         last_count = int(self.wait)
