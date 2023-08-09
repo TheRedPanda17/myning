@@ -112,7 +112,7 @@ class ResearchFacility(Object, metaclass=Singleton):
         ticks_per_hour = 60 / self.minutes_per_tick
         return ticks_per_hour * self.points_per_researcher * len(self._researchers)
 
-    def check_in(self):
+    def check_in(self, bonus: int):
         if not self.last_research_tick:
             self.last_research_tick = datetime.now()
             return
@@ -120,7 +120,8 @@ class ResearchFacility(Object, metaclass=Singleton):
         mins_since_last_tick = (datetime.now() - self.last_research_tick).total_seconds() / 60
         tick_completion = mins_since_last_tick / self.minutes_per_tick
 
-        self._points += self.points_per_researcher * len(self._researchers) * tick_completion
+        earned = self.points_per_researcher * len(self._researchers) * tick_completion
+        self._points += earned * bonus
         self.last_research_tick = datetime.now()
 
     def tick(self):
