@@ -22,7 +22,7 @@ exec zsh
 Add `brew` to your path:
 
 ```bash
-echo 'eval $(/opt/homebrew/bin/brew shellenv)' >> ~/.zshrc
+echo 'eval "$(/opt/homebrew/bin/brew shellenv)"' >> ~/.zshrc
 ```
 
 Install pyenv and virtualenv:
@@ -34,8 +34,8 @@ brew install pyenv pyenv-virtualenv
 Initialize pyenv in your shell:
 
 ```bash
-echo 'eval $(pyenv init -)' >> ~/.zshrc
-echo 'eval $(pyenv virtualenv-init -)' >> ~/.zshrc
+echo 'eval "$(pyenv init -)"' >> ~/.zshrc
+echo 'eval "$(pyenv virtualenv-init -)"' >> ~/.zshrc
 ```
 
 Reload your environment (or just restart your terminal):
