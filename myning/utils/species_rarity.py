@@ -4,7 +4,10 @@ from myning.config import RESEARCH, SPECIES
 from myning.objects.character import CharacterSpecies
 from myning.objects.player import Player
 from myning.objects.research_facility import ResearchFacility
-from myning.utils.utils import get_random_array_item
+from myning.utils.utils import get_random_array_item, boosted_random_choice
+from myning.objects.species import Species
+
+from typing import Optional
 
 SPECIES_TIERS = [
     [CharacterSpecies.HUMAN],
@@ -38,7 +41,23 @@ SPECIES_TIERS = [
 SPECIES_WEIGHTS = [150, 75, 40, 20, 10, 7, 4]
 
 
-def get_recruit_species(highest_rarity: int):
+def _recruit_in_tier(tier: list[CharacterSpecies]) -> Optional[Species]:
+    player = Player()
+
+    def is_undiscovered(species_name: CharacterSpecies):
+        return SPECIES[species_name] not in player.discovered_species
+
+    facility = ResearchFacility()
+    percent_boost = 0.0
+    if facility.has_research("species_discovery"):
+        percent_boost = RESEARCH["species_discovery"].player_value / 100
+
+    selected_species_name = boosted_random_choice(tier, is_undiscovered, percent_boost)
+
+    return SPECIES[selected_species_name]
+
+
+def get_recruit_species(highest_rarity: int) -> Optional[Species]:
     player = Player()
     facility = ResearchFacility()
     tiers = list(range(1, highest_rarity + 1))
@@ -52,17 +71,4 @@ def get_recruit_species(highest_rarity: int):
     rarity = random.choices(tiers, weights=species_weights)[0]
 
     tier = SPECIES_TIERS[rarity - 1]
-    if facility.has_research("species_discovery"):
-        individual_weights = []
-        for species in tier:
-            if SPECIES[species] in player.discovered_species:
-                chance = 100 - RESEARCH["species_discovery"].player_value
-                individual_weights.append(chance)
-            else:
-                individual_weights.append(100)
-        if sum(individual_weights) == 0:
-            individual_weights = [1 for _ in individual_weights]
-        species = random.choices(tier, weights=individual_weights)[0]
-    else:
-        species = get_random_array_item(tier)
-    return SPECIES[species]
+    return _recruit_in_tier(tier)
