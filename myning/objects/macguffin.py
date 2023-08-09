@@ -52,6 +52,10 @@ class Macguffin(Object, metaclass=Singleton):
         return self.percentage(self.exp_boost)
 
     @property
+    def mineral_percentage(self):
+        return self.percentage(self.exp_boost)
+
+    @property
     def research_percentage(self):
         return self.percentage(self.mineral_boost)
 

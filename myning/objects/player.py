@@ -233,9 +233,9 @@ class Player(Character, metaclass=Singleton):
         }
         player.blacksmith_level = attrs.get("blacksmith_level") or 1
         player.soul_credits = attrs.get("soul_credits") or 0
-        player.discovered_races = [
-            SPECIES[race_name]
-            for race_name in attrs.get("discovered_races", [CharacterSpecies.HUMAN.value])
+        player.discovered_species = [
+            SPECIES[species_name]
+            for species_name in attrs.get("discovered_races", [CharacterSpecies.HUMAN.value])
         ]
         player.total_trips = attrs.get("total_trips") or 0
         player.completed_migrations = attrs.get("completed_migrations") or [1]

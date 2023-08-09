@@ -100,7 +100,7 @@ def get_dashboard(key=None):
             [
                 term.bold("Macguffin"),
                 Icons.MINERAL.value,
-                f"{term.bold_gold(macguffin.research_percentage)} mineral value boost",
+                f"{term.bold_gold(macguffin.mineral_percentage)} mineral value boost",
             ]
         )
         currencies.append(
