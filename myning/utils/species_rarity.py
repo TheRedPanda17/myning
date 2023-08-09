@@ -40,11 +40,10 @@ SPECIES_TIERS = [
 SPECIES_WEIGHTS = [150, 75, 40, 20, 10, 7, 4]
 
 
-def _recruit_in_tier(tier: list[CharacterSpecies]) -> Optional[Species]:
+def _recruit_in_tier(tier: list[CharacterSpecies]) -> Species | None:
     player = Player()
 
-    def is_undiscovered(species_name: CharacterSpecies):
-        return SPECIES[species_name] not in player.discovered_species
+    is_undiscovered = lambda species_name: SPECIES[species_name] not in player.discovered_species
 
     facility = ResearchFacility()
     percent_boost = 0.0
@@ -56,8 +55,7 @@ def _recruit_in_tier(tier: list[CharacterSpecies]) -> Optional[Species]:
     return SPECIES[selected_species_name]
 
 
-def get_recruit_species(highest_rarity: int) -> Optional[Species]:
-    player = Player()
+def get_recruit_species(highest_rarity: int) -> Species | None:
     facility = ResearchFacility()
     tiers = list(range(1, highest_rarity + 1))
     species_weights = SPECIES_WEIGHTS[:highest_rarity]
