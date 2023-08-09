@@ -80,7 +80,11 @@ class PrintThread(threading.Thread):
                         print(trip_str)
                         print()
                         print(f"Mining... ({int(self.wait)} seconds left)")
-                        print(term.snow4("\nIf you don't play the minigame, you won't be penalized (but you won't get bonuses either)."))
+                        print(
+                            term.snow4(
+                                "\nIf you don't play the minigame, you won't be penalized, but you won't get bonuses either."
+                            )
+                        )
                         print(term.snow4("You can disable minigames in the settings menu.\n"))
                         print("Press enter to strike the rocks...\n")
                         print(mine_game.bar_str)
