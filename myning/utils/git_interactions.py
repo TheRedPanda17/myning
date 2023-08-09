@@ -40,7 +40,7 @@ def check_for_updates():
     if not changed:
         print("Changelog empty (probably just a patch!)")
 
-    input("Press ↩")
+    input("Press ↵")
     # So we can restart the game with the updated files
     exit(122)
 

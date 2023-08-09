@@ -22,7 +22,7 @@ class Icons(str, Enum):
     DAMAGE = "⚔️ "
     DEATH = "💀"
     DONE = "✅"
-    EXIT = "↩ "
+    EXIT = "↵ "
     GARDEN = "🪴"
     GOLD = "💰"
     GRAVEYARD = "🪦"

@@ -11,6 +11,8 @@ from myning.objects.settings import Settings
 from myning.objects.singleton import Singleton
 from myning.utils.file_manager import FileManager
 from myning.utils.io import pick
+from myning.utils.ui import columnate
+from myning.utils.ui_consts import Icons
 
 term = Terminal()
 
@@ -39,7 +41,7 @@ def play():
                 ["Yes", "No"],
                 "Are you sure you want to erase ALL progress and go back in time?",
                 sub_title=f"You'll lose all your progress and gain a {int(standard_boost*100)}% xp and mineral value boost"
-                + "\nand a {int(small_boost*100)}% research, soul credit boost, and plant value.",
+                + f"\nand a {int(small_boost*100)}% research, soul credit boost, and plant value.",
             )
             settings = Settings()
 
@@ -76,11 +78,36 @@ def play():
             standard_boost_str = f"{round(standard_boost * 100, 2)}%"
             small_boost_str = f"{round(small_boost * 100, 2)}%"
 
-            boost_str = f"\nPotential mineral value boost: {term.gold(standard_boost_str)}"
-            boost_str += f"Potential xp boost: {term.magenta(standard_boost_str)}"
-            boost_str += f"\nPotential research value boost: {term.violetred1(small_boost_str)}"
-            boost_str += f"\nPotential soul credit boost: {term.blue(small_boost_str)}"
-            boost_str += f"\nPotential plant value boost: {term.green(small_boost_str)}"
+            boost_str = (
+                term.underline("Potential Macguffin Boosts")
+                + "\n"
+                + "\n".join(
+                    columnate(
+                        [
+                            [
+                                "Mineral value:",
+                                f"{Icons.MINERAL} {term.gold(standard_boost_str)}",
+                            ],
+                            [
+                                "XP gain:",
+                                f"{Icons.XP} {term.magenta(standard_boost_str)}",
+                            ],
+                            [
+                                "Soul credits:",
+                                f"{Icons.GRAVEYARD} {term.blue(small_boost_str)}",
+                            ],
+                            [
+                                "Research speed:",
+                                f"{Icons.RESEARCH_FACILITY} {term.violetred1(small_boost_str)}",
+                            ],
+                            [
+                                "Plant value:",
+                                f"{Icons.PLANT} {term.green(small_boost_str)}",
+                            ],
+                        ]
+                    )
+                )
+            )
             pick(["Cool cool cool"], boost_str)
 
         if option == "About":
