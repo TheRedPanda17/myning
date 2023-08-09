@@ -43,6 +43,7 @@ def play():
 
         elif option == "Upgrade Garden" and upgrade_garden(garden.level, player):
             garden.level_up()
+            FileManager.save(garden)
         elif option == "View Harvest":
             plants = [
                 plant.fruit_stand_arr
