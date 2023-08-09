@@ -1,5 +1,6 @@
 from myning.chapters import visit_store
 from myning.objects.player import Player
+from myning.objects.macguffin import Macguffin
 from myning.objects.store import Store
 from myning.utils.file_manager import FileManager
 from myning.utils.io import pick
@@ -8,6 +9,7 @@ from myning.utils.ui import get_gold_string
 
 def play():
     player = Player()
+    macguffin = Macguffin()
     store = Store(player.level)
     store.generate()
 
@@ -22,7 +24,7 @@ def play():
                 player.inventory.add_item(item)
                 FileManager.save(item)
         elif option == "Sell":
-            bonus_ratio = player.macguffin.mineral_boost
+            bonus_ratio = macguffin.mineral_boost
             sold_items, price = visit_store.sell(
                 player.inventory.items,
                 player.has_upgrade("sell_minerals"),

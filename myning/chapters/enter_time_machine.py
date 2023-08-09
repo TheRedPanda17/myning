@@ -4,6 +4,7 @@ from blessed import Terminal
 
 from myning.chapters.enter_blacksmith import smith_cost
 from myning.config import XP_COST
+from myning.objects.macguffin import Macguffin
 from myning.objects.player import Player
 from myning.objects.research_facility import ResearchFacility
 from myning.objects.settings import Settings
@@ -16,10 +17,11 @@ term = Terminal()
 
 def play():
     player = Player()
+    macguffin = Macguffin()
 
     value = get_total_value()
-    xp_boost = get_boost(player.macguffin.exp_boost, value)
-    mineral_boost = get_boost(player.macguffin.mineral_boost, value)
+    standard_boost = get_standard_boost(macguffin.exp_boost, value)
+    small_boost = get_smaller_boost(macguffin.mineral_boost, value)
 
     while True:
         option, _ = pick(
@@ -36,7 +38,7 @@ def play():
             option, _ = pick(
                 ["Yes", "No"],
                 "Are you sure you want to erase ALL progress and go back in time?",
-                sub_title=f"You'll lose all your progress and gain a {int(xp_boost*100)}% xp boost \nand a {int(mineral_boost*100)}% mineral value boost.",
+                sub_title=f"You'll lose all your progress and gain a {int(small_boost*100)}% xp and mineral value boost \nand a {int(standard_boost*100)}% research and soul credit boost.",
             )
             settings = Settings()
 
@@ -52,11 +54,14 @@ def play():
 
             Player.initialize(player_name)
             player = Player()
-            player.macguffin.exp_boost = xp_boost
-            player.macguffin.mineral_boost = mineral_boost
             player.discovered_species = journal
             player.completed_migrations = migrations
             FileManager.save(player)
+
+            macguffin.exp_boost = standard_boost
+            macguffin.mineral_boost = standard_boost
+            macguffin.research_boost = small_boost
+            macguffin.soul_credit_boost = small_boost
 
             Settings.initialize()
             FileManager.save(settings)
@@ -66,10 +71,13 @@ def play():
 
         if option == "View Potential Macguffin":
             value = get_total_value()
-            xp_boost_str = f"{round(xp_boost * 100, 2)}%"
-            mineral_boost_str = f"{round(mineral_boost * 100, 2)}%"
-            boost_str = f"Potential xp boost: {term.magenta(xp_boost_str)}"
-            boost_str += f"\nPotential mineral value boost: {term.gold(mineral_boost_str)}"
+            standard_boost_str = f"{round(standard_boost * 100, 2)}%"
+            small_boost_str = f"{round(small_boost * 100, 2)}%"
+
+            boost_str = f"Potential xp boost: {term.magenta(standard_boost_str)}"
+            boost_str += f"\nPotential mineral value boost: {term.gold(standard_boost_str)}"
+            boost_str += f"\nPotential research value boost: {term.violetred1(small_boost_str)}"
+            boost_str += f"\nPotential soul credit boost: {term.blue(small_boost_str)}"
             pick(["Cool cool cool"], boost_str)
 
         if option == "About":
@@ -84,8 +92,12 @@ def play():
             continue
 
 
-def get_boost(current_boost: int, game_value: int) -> int:
+def get_standard_boost(current_boost: int, game_value: int) -> int:
     return round((game_value / 500000) + current_boost, 2)
+
+
+def get_smaller_boost(current_boost: int, game_value: int) -> int:
+    return round((game_value / 2500000) + current_boost, 2)
 
 
 def get_total_value() -> int:

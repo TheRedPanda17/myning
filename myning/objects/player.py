@@ -7,7 +7,6 @@ from myning.objects.army import Army
 from myning.objects.character import Character, CharacterSpecies
 from myning.objects.inventory import Inventory
 from myning.objects.item import ItemType
-from myning.objects.macguffin import Macguffin
 from myning.objects.mine import Mine
 from myning.objects.mine_stats import MineStats
 from myning.objects.singleton import Singleton
@@ -44,7 +43,6 @@ class Player(Character, metaclass=Singleton):
             player.mine_progressions = {}
             player.mines_completed = []
             player.blacksmith_level = 1
-            player.macguffin = Macguffin()
             player.soul_credits = 0
             player.discovered_species = [SPECIES[CharacterSpecies.HUMAN.value]]
             player.total_trips = 0
@@ -89,7 +87,6 @@ class Player(Character, metaclass=Singleton):
         self.soul_credits = 0
         self.discovered_species = [SPECIES[CharacterSpecies.HUMAN.value]]
         self.total_trips = 0
-        self.macguffin = Macguffin()
         self.completed_migrations = [1]
 
     def add_ally(self, ally: Character):
@@ -118,12 +115,6 @@ class Player(Character, metaclass=Singleton):
     def revive_ally(self, ally: Character):
         self.remove_fallen_ally(ally)
         self._allies.append(ally)
-
-    def add_xp(self, exp):
-        if len(self.army) > 1:
-            self.exp_available += int(exp * 1 / 2 * len(self.army) * self.macguffin.exp_boost)
-        else:
-            self.add_experience(int(exp * self.macguffin.exp_boost))
 
     def add_available_xp(self, xp: int):
         self.exp_available += xp
@@ -207,7 +198,6 @@ class Player(Character, metaclass=Singleton):
                 name: progress.to_dict() for name, progress in self.mine_progressions.items()
             },
             "blacksmith_level": self.blacksmith_level,
-            "macguffin": self.macguffin.to_dict(),
             "soul_credits": self.soul_credits,
             "discovered_races": [species.name for species in self.discovered_species],
             "total_trips": self.total_trips,
@@ -241,7 +231,6 @@ class Player(Character, metaclass=Singleton):
             for name, progress in attrs["mine_progressions"].items()
         }
         player.blacksmith_level = attrs.get("blacksmith_level") or 1
-        player.macguffin = Macguffin.from_dict(attrs.get("macguffin"))
         player.soul_credits = int(attrs.get("soul_credits") or 0)
         player.discovered_species = [
             SPECIES[species_name]

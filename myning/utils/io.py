@@ -6,6 +6,7 @@ from typing import Callable
 from blessed import Terminal
 
 from myning.config import MINES
+from myning.objects.macguffin import Macguffin
 from myning.objects.player import Player, get_title_string
 from myning.objects.research_facility import ResearchFacility
 from myning.objects.settings import Settings
@@ -46,6 +47,8 @@ def get_dashboard(key=None):
     player = Player()
     compact = Settings().compact_mode
     research_facility = ResearchFacility()
+    macguffin = Macguffin()
+
     if key:
         player._update_dashboard_settings(key)
 
@@ -93,19 +96,19 @@ def get_dashboard(key=None):
             ]
         )
 
-    if player.macguffin.exp_boost > 1 or player.macguffin.mineral_boost > 1:
+    if macguffin.exp_boost > 1 or macguffin.mineral_boost > 1:
         currencies.append(
             [
                 term.bold("Macguffin"),
                 Icons.MINERAL.value,
-                f"{term.bold_gold(player.macguffin.store_percentage)} mineral value boost",
+                f"{term.bold_gold(macguffin.store_percentage)} mineral value boost",
             ]
         )
         currencies.append(
             [
                 "",
                 Icons.XP.value,
-                f"{term.bold_magenta(player.macguffin.exp_percentage)} xp boost",
+                f"{term.bold_magenta(macguffin.exp_percentage)} xp boost",
             ]
         )
 
