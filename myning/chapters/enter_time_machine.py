@@ -43,7 +43,6 @@ def play():
                 sub_title=f"You'll lose all your progress and gain a {int(standard_boost*100)}% xp and mineral value boost"
                 + f"\nand a {int(small_boost*100)}% research, soul credit boost, and plant value.",
             )
-            settings = Settings()
 
             if option == "No":
                 continue
@@ -68,8 +67,7 @@ def play():
             macguffin.soul_credit_boost = small_boost
             macguffin.plant_boost = small_boost
 
-            Settings.initialize()
-            FileManager.multi_save(player, macguffin, settings)
+            FileManager.multi_save(player, macguffin)
 
             # Janky, but this will exit to the run.sh loop which will reboot the game. Basically purges the memory of the game.
             exit(123)
