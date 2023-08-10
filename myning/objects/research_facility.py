@@ -107,12 +107,11 @@ class ResearchFacility(Object, metaclass=Singleton):
     def upgrade_cost(self):
         return utils.fibonacci(self.level + 1) * 5
 
-    @property
-    def points_per_hour(self):
+    def points_per_hour(self, bonus: float):
         ticks_per_hour = 60 / self.minutes_per_tick
-        return ticks_per_hour * self.points_per_researcher * len(self._researchers)
+        return ticks_per_hour * self.points_per_researcher * len(self._researchers) * bonus
 
-    def check_in(self, bonus: int):
+    def check_in(self, bonus: float):
         if not self.last_research_tick:
             self.last_research_tick = datetime.now()
             return

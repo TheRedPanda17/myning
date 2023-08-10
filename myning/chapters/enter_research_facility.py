@@ -25,7 +25,7 @@ def play():
             options,
             title,
             sub_title=f"{len(facility._researchers)}/{facility.level} researchers assigned\n"
-            f"{round(facility.points_per_hour, 2)} research points / hr",
+            f"{round(facility.points_per_hour(macguffin.research_boost), 2)} research points / hr",
         )
 
         if option == "Go Back":
@@ -41,11 +41,13 @@ def play():
 
 
 def assign_researchers():
+    macguffin = Macguffin()
     while True:
         player = Player()
         facility = ResearchFacility()
+        pph = facility.points_per_hour(macguffin.research_boost)
 
-        title = f"Choose companions to start researching ({get_research_string(facility.points_per_hour)} / hr)"
+        title = f"Choose companions to start researching ({get_research_string(pph)} / hr)"
         options = player.army.abbreviated
         options.append("Go Back")
 
@@ -67,11 +69,13 @@ def assign_researchers():
 
 
 def fire_researchers():
+    macguffin = Macguffin()
     while True:
         player = Player()
         facility = ResearchFacility()
+        pph = facility.points_per_hour(macguffin.research_boost)
 
-        title = f"Choose companions to stop researching ({get_research_string(facility.points_per_hour)} / hr)"
+        title = f"Choose companions to stop researching ({get_research_string(pph)} / hr)"
         options = facility.army.abbreviated
         options.append("Go Back")
 
