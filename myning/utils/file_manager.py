@@ -16,6 +16,8 @@ class Subfolders(str, Enum):
 
 
 class FileManager:
+    NEVER_DELETE = ["stats.json", "settings.json"]
+
     @classmethod
     def setup(cls):
         if not Path(".data").is_dir():
@@ -72,7 +74,7 @@ class FileManager:
 
         # Game
         for path in Path(".data").iterdir():
-            if path.is_file():
+            if path.is_file() and path.name not in FileManager.NEVER_DELETE:
                 os.remove(path)
 
     @staticmethod
