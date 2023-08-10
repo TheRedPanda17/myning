@@ -45,7 +45,6 @@ class Player(Character, metaclass=Singleton):
             player.blacksmith_level = 1
             player.soul_credits = 0
             player.discovered_species = [SPECIES[CharacterSpecies.HUMAN.value]]
-            player.total_trips = 0
             player.completed_migrations = [1]
         cls._instance = player
 
@@ -86,7 +85,6 @@ class Player(Character, metaclass=Singleton):
         self.equipment.clear()
         self.soul_credits = 0
         self.discovered_species = [SPECIES[CharacterSpecies.HUMAN.value]]
-        self.total_trips = 0
         self.completed_migrations = [1]
 
     def add_ally(self, ally: Character):
@@ -118,9 +116,6 @@ class Player(Character, metaclass=Singleton):
 
     def add_available_xp(self, xp: int):
         self.exp_available += xp
-
-    def incr_trip(self):
-        self.total_trips += 1
 
     def add_soul_credits(self, credits):
         if credits > 0:
@@ -201,7 +196,6 @@ class Player(Character, metaclass=Singleton):
             "blacksmith_level": self.blacksmith_level,
             "soul_credits": self.soul_credits,
             "discovered_races": [species.name for species in self.discovered_species],
-            "total_trips": self.total_trips,
             "completed_migrations": self.completed_migrations,
         }
 
@@ -237,7 +231,6 @@ class Player(Character, metaclass=Singleton):
             SPECIES[species_name]
             for species_name in attrs.get("discovered_races", [CharacterSpecies.HUMAN.value])
         ]
-        player.total_trips = attrs.get("total_trips") or 0
         player.completed_migrations = attrs.get("completed_migrations") or [1]
         return player
 
