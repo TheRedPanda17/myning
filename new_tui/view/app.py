@@ -1,16 +1,19 @@
 from textual import events
 from textual.app import App
 from textual.binding import Binding
-from textual.containers import Container, ScrollableContainer
 from textual.screen import Screen
 from textual.widgets import Footer, Static
+from myning.objects.trip import Trip
+from new_tui.chapters import mine
 
-from new_tui.utilities import throttle
 from new_tui.view.army import ArmyWidget
 from new_tui.view.chapter import ChapterWidget
 from new_tui.view.currency import CurrencyWidget
 from new_tui.view.header import Header
 from new_tui.view.inventory import InventoryWidget
+from new_tui.view.mine import MineScreen
+
+trip = Trip()
 
 
 class SideContainer(Static):
@@ -65,5 +68,12 @@ class MyningApp(App):
     SCREENS = {"myning": MyningScreen(name="myning")}
     TITLE = "Myning"
 
-    def on_mount(self):
+    async def on_mount(self):
         self.push_screen("myning")
+        if trip.seconds_left > 0:
+
+            def screen_callback(abandoned: bool):
+                chapter = self.query_one("ChapterWidget", ChapterWidget)
+                return chapter.pick(mine.complete_trip(abandoned))
+
+            self.push_screen(MineScreen(), screen_callback)

@@ -2,6 +2,7 @@ from enum import Enum
 
 from blessed import Terminal
 from rich.progress_bar import ProgressBar
+from rich.table import Table
 from rich.text import Text
 
 from myning.objects.mine_stats import MineStats
@@ -158,6 +159,25 @@ class Mine(Object):
         )
 
     @property
+    def tui_progress(self):
+        table = Table.grid(padding=(0, 1, 0, 0))
+        if self.win_criteria:
+            table.add_row("Progress:", self.progress_bar)
+            table.add_row(
+                "Minerals:",
+                remaining_str(self.player_progress.minerals, self.win_criteria.minerals),
+            )
+            table.add_row(
+                "Kills:",
+                remaining_str(self.player_progress.kills, self.win_criteria.kills),
+            )
+            table.add_row(
+                "Minutes Survived:",
+                remaining_str(int(self.player_progress.minutes), int(self.win_criteria.minutes)),
+            )
+        return table
+
+    @property
     def has_death_action(self):
         return bool(self.get_action_odds("lose_ally"))
 
@@ -250,3 +270,7 @@ class Mine(Object):
             Icons.DEATH,
             self.death_chance_tui_str,
         ]
+
+
+def remaining_str(current: int, total: int):
+    return f"{current}/{total}" if current < total else "Complete"

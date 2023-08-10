@@ -2,7 +2,6 @@ from functools import partial
 
 from myning.config import MINES
 from myning.objects.menu_item import MenuItem
-from myning.utils.ui_consts import Icons
 from new_tui.chapters import ExitArgs, PickArgs, mine, store
 from new_tui.formatter import columnate
 
@@ -26,23 +25,24 @@ CHAPTERS = [
 
 def enter():
     implemented_chapters = {
-        "Mine": mine.enter,
+        "Mine": mine.pick_mine,
         "Store": store.Store().enter,
-        "Exit": lambda: ExitArgs(), # pylint: disable=unnecessary-lambda
+        "Exit": lambda: ExitArgs(),  # pylint: disable=unnecessary-lambda
     }
     rows = columnate([chapter.tui_arr for chapter in CHAPTERS])
     handlers = [
-        implemented_chapters.get(chapter.name, partial(handle_unimplemented, chapter.name))
+        implemented_chapters.get(chapter.name, partial(unimplemented, chapter.name))
         for chapter in CHAPTERS
     ]
 
     return PickArgs(
         message="Where would you like to go next?",
         options=list(zip(rows, handlers)),
+        border_title="Town",
     )
 
 
-def handle_unimplemented(location: str):
+def unimplemented(location: str):
     return PickArgs(
         message=f"Sorry, {location} has not been implemented yet.",
         options=[("Bummer!", enter)],

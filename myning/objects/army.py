@@ -10,13 +10,11 @@ from myning.utils.ui_consts import Icons
 class Army(UserList[Character]):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.sort(key=lambda e: (e.level, e.experience))
-        self.reverse()
+        self.sort(key=lambda e: (e.level, e.experience), reverse=True)
 
-    def append(self, __object) -> None:
+    def append(self, __object: Character) -> None:
         super().append(__object)
-        self.sort(key=lambda e: (e.level, e.experience))
-        self.reverse()
+        self.sort(key=lambda e: (e.level, e.experience), reverse=True)
 
     @property
     def abbreviated(self):
@@ -40,12 +38,16 @@ class Army(UserList[Character]):
         return sum(member.health for member in self)
 
     @property
-    def total_health(self) -> int:
-        return sum(member.max_health for member in self)
+    def defeated(self) -> int:
+        return all(member.health <= 0 for member in self)
 
     @property
-    def defeated(self) -> int:
-        return not any(member.health > 0 for member in self)
+    def living_members(self):
+        return [m for m in self if m.health > 0]
+
+    @property
+    def total_health(self) -> int:
+        return sum(member.max_health for member in self)
 
     @property
     def total_damage(self) -> int:

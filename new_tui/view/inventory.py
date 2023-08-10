@@ -1,9 +1,9 @@
-from textual.containers import ScrollableContainer
 from textual.widgets import DataTable
 
 from myning.objects.player import Player
 
 player = Player()
+
 
 class InventoryWidget(DataTable):
     can_focus = True

@@ -20,7 +20,14 @@ def main():
     from new_tui.view.app import MyningApp
 
     MyningApp().run()
-    # print("Game saved. Thank you for playing Myning!")
+    FileManager.multi_save(
+        Garden(),
+        Player(),
+        ResearchFacility(),
+        Settings(),
+        Trip(),
+    )
+    print("Game saved. Thank you for playing Myning!")
 
 
 if __name__ == "__main__":

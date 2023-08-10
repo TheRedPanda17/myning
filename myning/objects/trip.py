@@ -1,4 +1,5 @@
 from blessed import Terminal
+from collections import Counter
 
 from rich.table import Table
 from myning.config import MINES
@@ -10,6 +11,7 @@ from myning.objects.singleton import Singleton
 from myning.utils.file_manager import FileManager, Subfolders
 from myning.utils.ui import columnate
 from myning.utils.ui_consts import Icons
+from new_tui.formatter import Colors
 
 LOST_RATIO = 2
 term = Terminal()
@@ -124,21 +126,6 @@ class Trip(Object, metaclass=Singleton):
         summary.total_seconds = dict.get("total_seconds") or 0
         return summary
 
-    def get_minerals_string(self):
-        mineral = Item("", "", type=ItemType.MINERAL)
-
-        levels = {}
-        for item in self.minerals_mined:
-            if item:
-                levels[item.main_affect] = levels.get(item.main_affect, 0) + 1
-
-        return " ".join(
-            [
-                f"{mineral.color}{mineral.icon} {level}{term.normal} ({levels[level]})"
-                for level in sorted(levels)
-            ]
-        )
-
     @property
     def summary(self):
         mine = f"{term.bold}{self.mine.name}{term.normal}"
@@ -151,50 +138,46 @@ class Trip(Object, metaclass=Singleton):
 
     @property
     def tui_summary(self):
-        table = Table.grid(padding=(0, 1, 0, 0))
+        table = Table.grid(padding=(0, 1, 0, 0), expand=True)
+        table.add_column()
+        table.add_column()
+        table.add_column(justify="right")
         table.add_row(Icons.VICTORY, "Battles won:", str(self.battles_won))
         table.add_row(Icons.SWORD, "Enemies defeated:", str(self.enemies_defeated))
         table.add_row(Icons.MINERAL, "Minerals mined:", str(len(self.minerals_mined)))
         return table
 
-    def __str__(self):
-        title = term.bold("\nYour Mining Trip\n")
-        return title + "\n".join(
-            columnate(
-                [
-                    [
-                        "Minerals",
-                        self.get_minerals_string() if self.minerals_mined else "None",
-                    ],
-                    [
-                        "Items",
-                        " ".join(
-                            f"{item.color}{item.icon} {item.main_affect}{term.normal}"
-                            for item in self.items_found
-                        )
-                        if self.items_found
-                        else "None",
-                    ],
-                    [
-                        "New Allies",
-                        " ".join(f"{ally.name} {ally.level_str}," for ally in self.allies_gained)
-                        if self.allies_gained
-                        else "None",
-                    ],
-                    [
-                        "Lost Allies",
-                        " ".join(f"{ally.name} {ally.level_str}," for ally in self.allies_lost)
-                        if self.allies_lost
-                        else "None",
-                    ],
-                    [
-                        "Battles Won",
-                        f"{term.bold}{self.battles_won}{term.normal}",
-                    ],
-                    [
-                        "Enemies Defeated",
-                        f"{term.bold}{self.enemies_defeated}{term.normal}",
-                    ],
-                ]
-            )
+    @property
+    def tui_table(self):
+        table = Table.grid(padding=(0, 1, 0, 0))
+        mineral_counts = Counter([item.main_affect for item in self.minerals_mined])
+        minerals_str = "\n".join(
+            [
+                f"{Icons.MINERAL} [{Colors.GOLD}]{level}[/] ({mineral_counts[level]})"
+                for level in sorted(mineral_counts)
+            ]
         )
+        table.add_row("Minerals", minerals_str if self.minerals_mined else "None")
+        table.add_row(
+            "Items",
+            "\n".join(
+                f"{item.icon} [{item.tui_color}]{item.main_affect}[/]" for item in self.items_found
+            )
+            if self.items_found
+            else "None",
+        )
+        table.add_row(
+            "New Allies",
+            "\n".join(f"{ally.icon} {ally.name} {ally.level_str}" for ally in self.allies_gained)
+            if self.allies_gained
+            else "None",
+        )
+        table.add_row(
+            "Lost Allies",
+            "\n".join(f"{Icons.DEATH} {ally.name} {ally.level_str}" for ally in self.allies_lost)
+            if self.allies_lost
+            else "None",
+        )
+        table.add_row("Battles Won", f"[bold]{self.battles_won}[/]")
+        table.add_row("Enemies Defeated", f"[bold]{self.enemies_defeated}[/]")
+        return table

@@ -12,8 +12,9 @@ from myning.utils import utils
 from myning.utils.file_manager import FileManager
 from myning.utils.output import print_level_up
 from myning.utils.ui import columnate, get_health_bar
-from myning.utils.ui_consts import Colors, Icons
+from myning.utils.ui_consts import Icons
 from myning.utils.utils import get_random_int
+from new_tui.formatter import Colors
 
 term = Terminal()
 STRENGTH_DIVISOR = 4
@@ -261,23 +262,23 @@ class Character(Object):
 
     @property
     def damage_str(self):
-        return f"{Icons.DAMAGE} {Colors.WEAPON}{self.stats['damage']}{term.normal}"
+        return f"{Icons.DAMAGE} {Colors.WEAPON}{self.stats['damage']}[/]"
 
     @property
     def armor_str(self):
-        return f"{Icons.ARMOR} {Colors.ARMOR}{self.stats['armor']}{term.normal}"
+        return f"{Icons.ARMOR} {Colors.ARMOR}{self.stats['armor']}[/]"
 
     @property
     def level_str(self):
-        return f"{Icons.LEVEL} {Colors.LEVEL}{self.level}{term.normal}"
+        return f"{Icons.LEVEL} [{Colors.LEVEL}]{self.level}[/]"
 
     @property
     def exp_str(self):
-        return f"{Colors.EXP}{self.experience}/{utils.fibonacci(self.level + 1)}{term.normal} xp"
+        return f"[{Colors.XP}]{self.experience}/{utils.fibonacci(self.level + 1)}[/] xp"
 
     @property
     def ghost_str(self):
-        return " " if not self.is_ghost else "🪦"
+        return "🪦" if self.is_ghost else " "
 
     def __str__(self):
         exp = "" if self.is_enemy else f" | {self.exp_str}"
@@ -286,7 +287,6 @@ class Character(Object):
     @property
     def premium(self):
         composite = self.health_mod + self.stats["armor"] + self.stats["damage"]
-
         return int(composite * 0.2) if composite > 0 else 1
 
 

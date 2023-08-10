@@ -57,9 +57,12 @@ class ChapterWidget(ScrollableContainer):
         self.border_title = "Town"
         self.pick(town.enter())
         # For dev, select options by 0-based index to skip to the screen
-        # self.select(0)
-        # self.select(-3)
-        # self.select(0)
+        # from myning.objects.trip import Trip
+
+        # if not Trip().seconds_left:
+        #     self.select(0)
+        #     self.select(-3)
+        #     self.select(0)
 
     async def on_key(self, key: events.Key):
         aliases = {
@@ -108,15 +111,20 @@ class ChapterWidget(ScrollableContainer):
 
     def select(self, option_index: int):
         handler = self.handlers[option_index]
-        module = handler.__module__.rpartition(".")[-1]
-        if module != "functools":
-            self.border_title = module.replace("_", " ").title()
         args = handler()
         if isinstance(args, ExitArgs):
             self.app.exit()
         elif isinstance(args, DynamicArgs):
+            self.pick(PickArgs(message="", options=[]))  # Clear the question widget
             args.callback(self)
         else:
+            if args.border_title:
+                self.border_title = args.border_title
+            elif (module := handler.__module__.rpartition(".")[-1]) not in (
+                "functools",
+                "utilities",
+            ):
+                self.border_title = module.replace("_", " ").title()
             self.pick(args)
 
 

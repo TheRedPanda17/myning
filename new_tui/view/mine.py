@@ -1,31 +1,34 @@
-import math
 import random
-from typing import Callable
+from typing import Type
 
-from textual import events
 from textual.containers import Container, ScrollableContainer
 from textual.screen import Screen
-from textual.widgets import ProgressBar, Static
+from textual.widgets import Footer, ProgressBar, Static
 
 from myning.objects.player import Player
 from myning.objects.trip import Trip
-from myning.utils.file_manager import FileManager
-from myning.utils.generators import generate_character, generate_enemy_army, generate_equipment
-from myning.utils.race_rarity import get_recruit_species
-from myning.utils.utils import get_random_array_item
+from myning.utils.ui_consts import Icons
 from new_tui.actions import (
     Action,
     CombatAction,
-    ItemAction,
+    EquipmentAction,
     LoseAllyAction,
     MineAction,
     RecruitAction,
+    VictoryAction,
 )
 from new_tui.utilities import throttle
 from new_tui.view.header import Header
 
 player = Player()
 trip = Trip()
+ACTIONS: dict[str, Type[Action]] = {
+    "combat": CombatAction,
+    "mineral": MineAction,
+    "equipment": EquipmentAction,
+    "recruit": RecruitAction,
+    "lose_ally": LoseAllyAction,
+}
 
 
 def time_str(seconds: int):  # sourcery skip: assign-if-exp, reintroduce-else
@@ -43,8 +46,17 @@ class Content(Static):
         self.update(content)
 
 
-class TimeRemaining(Static):
+class Summary(Static):
     def on_mount(self):
+        self.update_summary()
+        self.set_interval(1, self.update_summary)
+
+    def update_summary(self):
+        self.update(trip.tui_summary)
+
+
+class TimeRemaining(Static):
+    def on_mount(self) -> None:
         self.set_interval(0.1, self.update_time)
 
     def update_time(self):
@@ -52,18 +64,17 @@ class TimeRemaining(Static):
 
 
 class MineScreen(Screen):
+    BINDINGS = [
+        ("ctrl+q", "abandon", "Abandon Mine"),
+        ("enter", "skip", "Mine/Fight"),
+    ]
+
     def __init__(self) -> None:
         self.content_container = ScrollableContainer()
         self.content = Content()
         self.progress = ProgressBar(total=trip.total_seconds, show_eta=False)
-        self.actions: dict[str, Callable[..., Action]] = {
-            "combat": self.combat,
-            "mineral": self.mine,
-            "equipment": self.equipment,
-            "recruit": self.recruit,
-            "lose_ally": self.lose_ally,
-        }
-        self.action: Action = self.mine()
+        self.action: Action = ACTIONS["mineral"]()
+        self.abandoning = False
         super().__init__()
 
     def compose(self):
@@ -73,57 +84,76 @@ class MineScreen(Screen):
             yield self.content
         with Container() as c:
             c.border_title = "Trip Summary"
-            yield Static(trip.tui_summary)
+            yield Summary()
         with Container() as c:
             c.border_title = "Trip Progress"
             yield TimeRemaining()
             yield self.progress
+        yield Footer()
 
     def on_mount(self):
         self.tick()
         self.set_interval(1, self.tick)
 
-    def on_key(self, key: events.Key):
-        if key.name == "q":
+    def update_screen(self):
+        if self.abandoning:
+            return
+        self.progress.progress = trip.total_seconds - trip.seconds_left
+        self.content.print(self.action.content)
+
+    def action_abandon(self):
+        if self.abandoning:
             self.exit()
         else:
-            self.skip()
-
-    def exit(self):
-        self.dismiss()
-
-    def update_progress(self):
-        self.progress.progress = trip.total_seconds - trip.seconds_left
+            self.confirm_abandon()
 
     @throttle(1)
-    def skip(self):
-        border = self.content_container.styles.border
+    def action_skip(self):
+        if self.abandoning:
+            self.abandoning = False
+        elif not isinstance(self.action, VictoryAction):
+            trip.seconds_left -= self.action.duration
+
+        og_border = self.content_container.styles.border
 
         def reset_border():
-            self.content_container.styles.border = border
+            self.content_container.styles.border = og_border
 
         self.content_container.styles.border = ("round", "lime")
         self.set_timer(0.5, reset_border)
-        trip.seconds_left -= self.action.duration
         self.action = self.next_action
-        self.update_progress()
-        self.content.print(self.action.content)
+        self.update_screen()
+
+    def confirm_abandon(self):
+        self.content.print(
+            "Are you sure you want to abandon your trip?\n\n"
+            f"[bold red1]{Icons.WARNING}  WARNING {Icons.WARNING}[/]\n\n"
+            "You will not receive any items you found or any allies you recruited.\n"
+            "In addition, lost allies and damage sustained will not be recovered.\n\n"
+            "Press [bold dodger_blue1]CTRL+Q[/] again to abandon, "
+            "or [bold dodger_blue1]Enter ↩[/] to continue."
+        )
+        self.abandoning = True
+
+    def exit(self):
+        self.dismiss(self.abandoning)
 
     def tick(self):
-        self.update_progress()
-        self.content.print(self.action.content)
+        if self.abandoning:
+            return
+        self.update_screen()
         self.action.tick()
-        if self.action.duration <= 0:
+        if self.action.duration == 0:
             self.action = self.next_action
 
         trip.tick_passed(1)
-        if trip.seconds_left < 0 or not player.alive:
+        if trip.seconds_left <= 0 or player.army.defeated:
             self.exit()
 
     @property
     def next_action(self):
-        if action := self.action.next:
-            return action
+        if self.action.next:
+            return self.action.next
 
         odds = trip.mine.odds.copy()
         if not player.allies:
@@ -131,48 +161,4 @@ class MineScreen(Screen):
         actions = [o["action"] for o in odds]
         chances = [o["chance"] for o in odds]
         selected_action = random.choices(actions, weights=chances)[0]
-        return self.actions[selected_action]()
-
-    def combat(self):
-        if enemy_count_range := trip.mine.enemies[1] < 0:
-            enemy_count_range = len(player.army) + enemy_count_range
-        enemy_army = generate_enemy_army(
-            trip.mine.character_levels,
-            trip.mine.enemies,
-            trip.mine.max_enemy_items,
-            trip.mine.max_enemy_item_level,
-            trip.mine.enemy_item_scale,
-        )
-        FileManager.save(trip)
-        return CombatAction(enemy_army)
-
-    def mine(self):
-        return MineAction()
-
-    def equipment(self):
-        equipment = generate_equipment(trip.mine.max_item_level)
-        return ItemAction(equipment)
-
-    def recruit(self):
-        levels = trip.mine.character_levels
-        levels = [max(1, math.ceil(level * 0.75)) for level in levels]
-        species = get_recruit_species(trip.mine.companion_rarity)
-        ally = generate_character(levels, race=species)
-        trip.add_ally(ally)
-        FileManager.multi_save(ally, trip)
-        return RecruitAction(ally)
-
-    def lose_ally(self):
-        ally = get_random_array_item(player.allies)
-        player.kill_ally(ally)
-        trip.remove_ally(ally)
-        FileManager.multi_save(trip, player)
-        return LoseAllyAction(ally)
-
-    def unimplemented(self):
-        class UnimplementedAction(Action):
-            @property
-            def content(self):
-                return "unimplemented action"
-
-        return UnimplementedAction(1)
+        return ACTIONS[selected_action]()
