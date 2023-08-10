@@ -71,7 +71,6 @@ def buy(items: List[Item], player: Player, buying_options: BuyingOption = None) 
             confirmation_msg=confirmation,
         ):
             return items_to_buy
-    return []
 
 
 def sell(
