@@ -53,13 +53,16 @@ def boosted_random_choice(
         # Compute boosted probability for each selected value
         selected_probability = selected_count / len(arr)
         selected_probability = selected_probability + selected_probability * percent_boost
-        selected_weight = selected_probability / selected_count
         # Compute probability of all other values
         unselected_probability = 1 - selected_probability
+        if unselected_probability < 0:
+            unselected_probability = 0.01
+            selected_probability = 0.99
+        # Set weights of each individual
         unselected_count = len(arr) - selected_count
         if unselected_count > 0:
             unselected_weight = unselected_probability / unselected_count
-
+        selected_weight = selected_probability / selected_count
     weights = []
     for i, v in enumerate(arr):
         if i in selected_indexes:
