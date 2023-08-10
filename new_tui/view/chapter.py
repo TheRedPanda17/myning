@@ -65,6 +65,7 @@ class ChapterWidget(ScrollableContainer):
         #     self.select(0)
 
     async def on_key(self, key: events.Key):
+        key.stop()
         aliases = {
             "j": "down",
             "k": "up",
@@ -110,6 +111,8 @@ class ChapterWidget(ScrollableContainer):
         self.handlers = handlers
 
     def select(self, option_index: int):
+        if not self.handlers:
+            return
         handler = self.handlers[option_index]
         args = handler()
         if isinstance(args, ExitArgs):

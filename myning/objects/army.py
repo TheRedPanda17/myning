@@ -38,7 +38,7 @@ class Army(UserList[Character]):
         return sum(member.health for member in self)
 
     @property
-    def defeated(self) -> int:
+    def defeated(self):
         return all(member.health <= 0 for member in self)
 
     @property

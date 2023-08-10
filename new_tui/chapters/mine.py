@@ -153,9 +153,10 @@ def complete_trip(abandoned: bool):
         trip.subtract_losses()
         story_args_list.append(
             StoryArgs(
-                message=f"You were defeated. You lost 1/{LOST_RATIO} of the "
-                "items you found and xp you gained.",
+                message=f"You were defeated in {trip.mine.icon} [dodger_blue1]{trip.mine.name}[/]. "
+                f"You lost 1/{LOST_RATIO} of the items you found and xp you gained.",
                 response="Bummer!",
+                subtitle=f"You survived {int(trip.total_seconds / 60)} minute(s)",
             )
         )
     player.add_xp(trip.experience_gained)
