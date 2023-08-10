@@ -38,5 +38,5 @@ class Stats(Object, metaclass=Singleton):
     def to_dict(self) -> dict:
         return {"integer_stats": self.integer_stats}
 
-    def increment_int_stat(self, key: IntegerStatKeys, incredment_by: int = 1):
-        self.integer_stats[key.value] = self.integer_stats.get(key.value, 0) + incredment_by
+    def increment_int_stat(self, key: IntegerStatKeys, increment_by: int = 1):
+        self.integer_stats[key.value] = self.integer_stats.get(key.value, 0) + increment_by
