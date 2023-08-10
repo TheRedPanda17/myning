@@ -39,6 +39,10 @@ SideContainer {
   min-width: 48;
 }
 
+DataTable > .datatable--header {
+  background: 0%;
+}
+
 OptionList {
   background: black 0%;
   border: none;

@@ -24,5 +24,6 @@ class InventoryWidget(DataTable):
             f"{len(player.inventory.items)} items "
             f"([gold1]{sum(item.value for item in player.inventory.items)}g[/])"
         )
+        self.clear()
         for item in player.inventory.items:
             self.add_row(*item.tui_arr)

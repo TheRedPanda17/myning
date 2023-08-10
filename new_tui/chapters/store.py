@@ -1,9 +1,10 @@
-from functools import cache, partial
+from functools import partial
 
 from myning.config import UPGRADES
 from myning.objects.inventory import Inventory
 from myning.objects.item import Item, ItemType
 from myning.objects.player import Player
+from myning.utils.file_manager import FileManager
 from myning.utils.generators import generate_equipment
 from new_tui.chapters import Option, PickArgs, town
 from new_tui.formatter import Formatter, columnate
@@ -30,9 +31,14 @@ class Store:
             options=[
                 ("Buy", self.pick_buy),
                 ("Sell", self.pick_sell),
-                ("Go Back", town.enter),
+                ("Go Back", self.exit),
             ],
         )
+
+    def exit(self):
+        FileManager.save(player)
+        FileManager.multi_delete(*self.inventory.items)
+        return town.enter()
 
     def pick_buy(self):
         items = self.inventory.items
@@ -72,6 +78,7 @@ class Store:
         player.gold -= item.value
         player.inventory.add_item(item)
         self.inventory.remove_item(item)
+        FileManager.multi_save(player, item)
         return self.enter()
 
     def pick_sell(self):

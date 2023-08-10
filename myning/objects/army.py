@@ -1,8 +1,10 @@
-import math
 from collections import UserList
 
+from rich.table import Table
+from rich.text import Text
+
 from myning.objects.character import Character
-from myning.objects.settings import Settings
+from myning.utils import utils
 from myning.utils.ui import columnate, get_health_bar
 from myning.utils.ui_consts import Icons
 
@@ -77,54 +79,77 @@ class Army(UserList[Character]):
             s += str(member.icon)
         return s
 
-    def __str__(self):
-        if not self:
-            return "This army is defeated"
+    def get_table(self, *, show_header=True, show_xp=True):
+        table = Table(box=None, padding=(0, 1, 0, 0))
+        table.add_column("", width=2, no_wrap=True, overflow="ignore")
+        table.add_column(Text("Name", justify="left"))
+        table.add_column(Text("Health", justify="center"))
+        table.add_column(Text(Icons.DAMAGE, justify="center"), justify="right")
+        table.add_column(Text(Icons.ARMOR, justify="center"), justify="right")
+        table.add_column(Text(Icons.LEVEL, justify="center"), justify="right")
+        if show_xp:
+            table.add_column(Text(Icons.XP, justify="center"), justify="right")
+        table.add_column(Text(Icons.GRAVEYARD, justify="center"))
 
-        if len(self) > Settings().army_columns:
-            s = ""
-            column_count = math.ceil(len(self) / Settings().army_columns)
-            row_count = math.ceil(len(self) / column_count)
-            rows = [[] for _ in range(row_count)]
-            members = columnate(
-                [
-                    [
-                        member.icon,
-                        member.name.partition(" ")[0],
-                        member.damage_str,
-                        member.armor_str,
-                        member.level_str,
-                        member.ghost_str,
-                    ]
-                    for member in self
-                ]
-            )
-            for i, member in enumerate(members):
-                row = i % row_count
-                end = "\n" if len(rows[row]) == column_count - 1 else " ║ "
-                rows[row].append(f"{member}{end}")
+        if not show_header:
+            table.show_header = False
+            for column in table.columns:
+                column.header = ""
 
-            for column in rows:
-                for member in column:
-                    s += member
+        for member in self:
+            if not member.name:
+                continue
+            cells = []
+            cells.append(str(member.icon))
+            cells.append(member.name.split()[0])
+            cells.append(get_health_bar(member.health, member.max_health))
+            cells.append(f"[red1]{member.stats['damage']}[/]")
+            cells.append(f"[dodger_blue1]{member.stats['armor']}[/]")
+            cells.append(f"[cyan1]{member.level}[/]")
+            if show_xp:
+                cells.append(
+                    f"[magenta1]{member.experience}/{utils.fibonacci(member.level + 1)}[/]"
+                )
+            cells.append("🪦" if member.is_ghost else " ")
+            table.add_row(*cells)
+        return table
 
-            s += f"\n\n{self.stats_summary}"
-            return s
+    @property
+    def tui_table(self):
+        return self.get_table()
 
-        return "\n".join(
-            columnate(
-                [
-                    [
-                        member.icon,
-                        member.name.partition(" ")[0],
-                        member.health_str,
-                        member.damage_str,
-                        member.armor_str,
-                        member.level_str,
-                        member.exp_str,
-                        member.ghost_str,
-                    ]
-                    for member in self
-                ]
-            )
-        )
+    @property
+    def tui_columns(self):
+        chunk_size = 10
+        chunks = [self[i : i + chunk_size] for i in range(0, len(self), chunk_size)]
+        columns = []
+        for chunk in chunks:
+            table = Table(box=None, padding=(0, 1, 0, 0))
+            table.add_column("", width=2, no_wrap=True, overflow="ignore")
+            table.add_column(Text("Name", justify="left"))
+            table.add_column(Text("Health", justify="center"))
+            table.add_column(Text(Icons.DAMAGE, justify="center"), justify="right")
+            table.add_column(Text(Icons.ARMOR, justify="center"), justify="right")
+            table.add_column(Text(Icons.LEVEL, justify="center"), justify="right")
+            # if show_xp:
+            #     table.add_column(Text(Icons.XP, justify="center"), justify="right")
+            table.add_column(Text(Icons.GRAVEYARD, justify="center"))
+
+            for member in chunk:
+                if not member.name:
+                    continue
+                cells = []
+                cells.append(str(member.icon))
+                cells.append(member.name.split()[0])
+                cells.append(get_health_bar(member.health, member.max_health))
+                cells.append(f"[red1]{member.stats['damage']}[/]")
+                cells.append(f"[dodger_blue1]{member.stats['armor']}[/]")
+                cells.append(f"[cyan1]{member.level}[/]")
+                # if show_xp:
+                #     cells.append(
+                #         f"[magenta1]{member.experience}/{utils.fibonacci(member.level + 1)}[/]"
+                #     )
+                cells.append("🪦" if member.is_ghost else " ")
+                table.add_row(*cells)
+            columns.append(table)
+        return columns

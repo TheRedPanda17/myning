@@ -1,4 +1,5 @@
 from enum import Enum
+from rich.text import Text
 
 from blessed import Terminal
 
@@ -152,7 +153,7 @@ class Item(Object):
         return [
             self.icon,
             self.name,
-            f"[{self.tui_color}]{self.main_affect:2}[/]",
+            Text.from_markup(f"[{self.tui_color}]{self.main_affect}[/]", justify="right"),
         ]
 
     @property

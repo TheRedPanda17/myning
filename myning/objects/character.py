@@ -3,6 +3,7 @@ from datetime import datetime
 from enum import Enum
 
 from blessed import Terminal
+from rich.text import Text
 
 from myning.config import SPECIES, XP_COST
 from myning.objects.equipment import Equipment
@@ -136,9 +137,7 @@ class Character(Object):
         return f"{intro}, my name is {self.name}. I'm {self.description}."
 
     def subtract_health(self, damage):
-        self.health -= damage
-        if self.health < 0:
-            self.health = 0
+        self.health = max(self.health - damage, 0)
 
     @property
     def file_name(self):
@@ -262,11 +261,11 @@ class Character(Object):
 
     @property
     def damage_str(self):
-        return f"{Icons.DAMAGE} {Colors.WEAPON}{self.stats['damage']}[/]"
+        return f"{Icons.DAMAGE} [{Colors.WEAPON}]{self.stats['damage']}[/]"
 
     @property
     def armor_str(self):
-        return f"{Icons.ARMOR} {Colors.ARMOR}{self.stats['armor']}[/]"
+        return f"{Icons.ARMOR} [{Colors.ARMOR}]{self.stats['armor']}[/]"
 
     @property
     def level_str(self):
@@ -288,6 +287,21 @@ class Character(Object):
     def premium(self):
         composite = self.health_mod + self.stats["armor"] + self.stats["damage"]
         return int(composite * 0.2) if composite > 0 else 1
+
+    @property
+    def tui_arr(self):
+        return [
+            str(self.icon),
+            self.name.split()[0],
+            get_health_bar(self.health, self.max_health),
+            Text.from_markup(f"[red1]{self.stats['damage']}[/]", justify="right"),
+            Text.from_markup(f"[dodger_blue1]{self.stats['armor']}[/]", justify="right"),
+            Text.from_markup(f"[cyan1]{self.level}[/]", justify="right"),
+            Text.from_markup(
+                f"[magenta1]{self.experience}/{utils.fibonacci(self.level + 1)}[/]", justify="right"
+            ),
+            "🪦" if self.is_ghost else " ",
+        ]
 
 
 class SpeciesEmoji:

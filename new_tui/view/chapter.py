@@ -12,7 +12,7 @@ from myning.objects.player import Player
 from new_tui.chapters import DynamicArgs, ExitArgs, Handler, PickArgs, town
 from new_tui.formatter import Colors
 from new_tui.utilities import throttle
-from new_tui.view.army import ArmyContents
+from new_tui.view.army import ArmyWidget
 from new_tui.view.currency import CurrencyWidget
 from new_tui.view.inventory import InventoryWidget
 
@@ -64,26 +64,30 @@ class ChapterWidget(ScrollableContainer):
         #     self.select(-3)
         #     self.select(0)
 
-    async def on_key(self, key: events.Key):
-        key.stop()
+    async def on_key(self, event: events.Key):
+        event.stop()
         aliases = {
             "j": "down",
             "k": "up",
             "ctrl_d": "pagedown",
             "ctrl_u": "pageup",
         }
-        _key = aliases.get(key.name, key.name)
+        key = aliases.get(event.name, event.name)
 
-        if _key == "q":
+        if key == "tab":
+            self.app.action_focus_next()
+        elif key == "q":
+            player.allies.pop()
+            self.update_dashboard()
             if self.question.message == town.enter().message:
                 return  # Prevent exiting with q in main menu
             self.select(-1)
-        elif _key in self.hotkeys:
-            self.select(self.hotkeys[_key])
-        elif _key.isdigit():
-            self.option_list.highlighted = int(_key) - 1
+        elif key in self.hotkeys:
+            self.select(self.hotkeys[key])
+        elif key.isdigit():
+            self.option_list.highlighted = int(key) - 1
         elif binding := self.option_list._bindings.keys.get(  # pylint: disable=protected-access
-            _key
+            key
         ):
             await self.option_list.run_action(binding.action)
 
@@ -93,7 +97,7 @@ class ChapterWidget(ScrollableContainer):
     @throttle(0.1)
     def update_dashboard(self):
         if self.app.screen.name == "myning":
-            self.app.query_one("ArmyContents", ArmyContents).update_army()
+            self.app.query_one("ArmyWidget", ArmyWidget).update()
             self.app.query_one("CurrencyWidget", CurrencyWidget).refresh()
             self.app.query_one("InventoryWidget", InventoryWidget).update()
 

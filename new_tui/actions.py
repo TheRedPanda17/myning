@@ -24,7 +24,6 @@ from myning.utils.race_rarity import get_recruit_species
 from myning.utils.string_generation import generate_death_action
 from myning.utils.ui_consts import Icons
 from new_tui.formatter import Formatter
-from new_tui.view.army import get_army_columns
 
 player = Player()
 trip = Trip()
@@ -111,9 +110,9 @@ class CombatAction(Action):
         content_table.add_row(f"Fighting... ({self.duration} seconds left)\n")
         content_table.add_row("⚔️   " * (5 - (self.duration - 1) % 5))
         content_table.add_row("\n[bold]Your Army[/]")
-        content_table.add_row(*get_army_columns(Army(player.army.living_members)))
+        content_table.add_row(*Army(player.army.living_members).tui_columns)
         content_table.add_row("\n[bold]Enemy Army[/]")
-        content_table.add_row(*get_army_columns(Army(self.enemies.living_members)))
+        content_table.add_row(*Army(self.enemies.living_members).tui_columns)
         return content_table
 
     def fight(self):
@@ -204,8 +203,8 @@ class RoundAction(Action):
     def content(self):
         table = Table.grid()
         table.add_row(self.summary)
+        table.add_row(f"Returning to battle in {self.duration}...\n")
         table.add_row(self.log_table)
-        table.add_row(f"\nReturning to battle in {self.duration}...")
         return table
 
     @property
