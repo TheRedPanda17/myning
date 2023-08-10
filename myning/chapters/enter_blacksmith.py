@@ -1,5 +1,5 @@
 import random
-from typing import List, Optional
+from typing import List
 
 from myning.chapters import visit_store
 from myning.config import STRINGS
@@ -7,6 +7,7 @@ from myning.objects.blacksmith_item import BlacksmithItem
 from myning.objects.buying_option import BuyingOption, StoreType
 from myning.objects.item import Item, ItemType
 from myning.objects.player import Player
+from myning.objects.stats import IntegerStatKeys, Stats
 from myning.objects.store import Store
 from myning.utils import utils
 from myning.utils.file_manager import FileManager
@@ -26,6 +27,7 @@ BLACKSMITH_ITEMS = [
 
 def play():
     player = Player()
+    stats = Stats()
 
     while True:
         smith_level = player.blacksmith_level
@@ -56,7 +58,13 @@ def play():
             for item in bought_items:
                 store.inventory.remove_item(item)
                 player.inventory.add_item(item)
-                FileManager.save(item)
+
+                if item.type == ItemType.WEAPON:
+                    stats.increment_int_stat(IntegerStatKeys.WEAPONS_PURCHASED)
+                else:
+                    stats.increment_int_stat(IntegerStatKeys.ARMOR_PURCHASED)
+
+                FileManager.multi_save(item, stats)
         elif index == 1:  # Upgrade
             if player.blacksmith_level >= len(BLACKSMITH_ITEMS):
                 pick(

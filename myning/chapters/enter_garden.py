@@ -4,6 +4,7 @@ from myning.objects.garden import Garden
 from myning.objects.item import ItemType
 from myning.objects.plant import Plant
 from myning.objects.player import Player
+from myning.objects.stats import IntegerStatKeys, Stats
 from myning.utils import utils
 from myning.utils.file_manager import FileManager
 from myning.utils.generators import generate_plant
@@ -66,6 +67,7 @@ def play():
 
 def manage_garden(garden: Garden):
     player = Player()
+    stats = Stats()
     while True:
         garden.collect_water()
         rows = str(garden).split("\n")
@@ -105,9 +107,10 @@ def manage_garden(garden: Garden):
                 plant = garden.get_plant(row, column)
                 if plant and plant.ready:
                     garden.harvest_plant(row, column)
+                    stats.increment_int_stat(IntegerStatKeys.PLANTS_HARVESTED)
                     player.inventory.add_item(plant)
                     FileManager.save(plant)
-            FileManager.multi_save(player, garden)
+            FileManager.multi_save(player, garden, stats)
             continue
         if option == "Plant Next Row":
             row = garden.next_empty_row
@@ -179,6 +182,7 @@ def plant_seed(garden: Garden, row: int, column: int, index=None):
 
 def manage_plant(garden: Garden, row: int, column: int):
     player = Player()
+    stats = Stats()
     garden.collect_water()
 
     options = []
@@ -200,7 +204,9 @@ def manage_plant(garden: Garden, row: int, column: int):
 
     if option == "Harvest":
         plant = garden.harvest_plant(row, column)
+        stats.increment_int_stat(IntegerStatKeys.PLANTS_HARVESTED)
         player.inventory.add_item(plant)
+        FileManager.save(stats)
     elif option == "Water":
         if garden.water:
             garden.water_plant(row, column)

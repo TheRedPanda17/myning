@@ -43,6 +43,7 @@ class Icons(str, Enum):
     SHIRT = "🥼"
     SHOES = "🥾"
     SOUL_CREDITS = "🪙"
+    STATS = "📈"
     STORE = "💰"
     SWORD = "🗡️ "
     TIME = "⏳"

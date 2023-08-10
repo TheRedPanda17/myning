@@ -25,6 +25,7 @@ MAIN_MENU = [
     MenuItem("Research Facility", prerequisites=[MINES["Cavern"]]),
     MenuItem("Time Machine", prerequisites=[MINES["Cave System"]]),
     MenuItem("Journal"),
+    MenuItem("Stats"),
     MenuItem("Settings"),
     MenuItem("Exit"),
 ]

@@ -1,6 +1,7 @@
 from myning.objects.character import Character
 from myning.objects.macguffin import Macguffin
 from myning.objects.player import Player
+from myning.objects.stats import FloatStatKeys, Stats
 from myning.utils.file_manager import FileManager
 from myning.utils.io import confirm, pick
 from myning.utils.ui import columnate, get_gold_string, get_soul_string
@@ -8,6 +9,7 @@ from myning.utils.ui import columnate, get_gold_string, get_soul_string
 
 def play():
     player = Player()
+
     while True:
         if not player.fallen_allies:
             pick(["Bummer!"], "\nYou have no fallen allies to revive.")
@@ -49,14 +51,16 @@ def play():
 
 def lay_to_rest(player: Player, ally: Character):
     macguffin = Macguffin()
+    stats = Stats()
     confirmation = confirm(
         message=f"Send {ally.icon} {ally.name} to the afterlife and gain {get_soul_string(macguffin.soul_credit_boost)} for letting their soul rest?"
     )
 
     if confirmation:
         player.add_soul_credits(macguffin.soul_credit_boost)
+        stats.increment_float_stat(FloatStatKeys.SOUL_CREDITS_EARNED, macguffin.soul_credit_boost)
         player.remove_fallen_ally(ally)
-        FileManager.save(player)
+        FileManager.multi_save(stats, player)
 
 
 def revive(player: Player, ally: Character):

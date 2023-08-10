@@ -1,6 +1,8 @@
 from myning.chapters import visit_store
+from myning.objects.item import ItemType
 from myning.objects.macguffin import Macguffin
 from myning.objects.player import Player
+from myning.objects.stats import IntegerStatKeys, Stats
 from myning.objects.store import Store
 from myning.utils.file_manager import FileManager
 from myning.utils.io import pick
@@ -11,6 +13,7 @@ def play():
     player = Player()
     macguffin = Macguffin()
     store = Store(player.level)
+    stats = Stats()
     store.generate()
 
     while True:
@@ -22,7 +25,12 @@ def play():
             for item in bought_items:
                 store.inventory.remove_item(item)
                 player.inventory.add_item(item)
-                FileManager.save(item)
+                if item.type == ItemType.WEAPON:
+                    stats.increment_int_stat(IntegerStatKeys.WEAPONS_PURCHASED)
+                else:
+                    stats.increment_int_stat(IntegerStatKeys.ARMOR_PURCHASED)
+
+                FileManager.multi_save(item, stats)
         elif option == "Sell":
             sold_items, price = visit_store.sell(
                 player.inventory.items,
@@ -38,6 +46,8 @@ def play():
                 player.inventory.remove_item(sold_item)
                 store.inventory.add_item(sold_item)
             player.gold += price
+            stats.increment_int_stat(IntegerStatKeys.GOLD_EARNED, price)
+            FileManager.save(stats)
         elif option == "Go Back":
             FileManager.multi_delete(*store.inventory.items)
             break

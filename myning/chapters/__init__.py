@@ -12,6 +12,7 @@ from . import (
     enter_mining,
     enter_research_facility,
     enter_settings,
+    enter_stats,
     enter_store,
     enter_time_machine,
     enter_wizard_hut,
