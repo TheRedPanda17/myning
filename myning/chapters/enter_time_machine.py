@@ -59,8 +59,9 @@ def play():
             player = Player()
             player.discovered_species = journal
             player.completed_migrations = migrations
-            FileManager.save(player)
 
+            Macguffin.initialize()
+            macguffin = Macguffin()
             macguffin.xp_boost = standard_boost
             macguffin.mineral_boost = standard_boost
             macguffin.research_boost = small_boost
@@ -68,7 +69,7 @@ def play():
             macguffin.plant_boost = small_boost
 
             Settings.initialize()
-            FileManager.save(settings)
+            FileManager.multi_save(player, macguffin, settings)
 
             # Janky, but this will exit to the run.sh loop which will reboot the game. Basically purges the memory of the game.
             exit(123)
