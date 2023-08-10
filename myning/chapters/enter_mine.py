@@ -10,6 +10,7 @@ from myning.objects.mine import Mine, MineType
 from myning.objects.player import Player
 from myning.objects.research_facility import ResearchFacility
 from myning.objects.species import Species
+from myning.objects.stats import IntegerStatKeys, Stats
 from myning.objects.trip import LOST_RATIO, Trip
 from myning.utils.file_manager import FileManager
 from myning.utils.generators import generate_character, generate_equipment
@@ -200,12 +201,19 @@ def add_trip_to_player():
     player = Player()
     trip = Trip()
     macguffin = Macguffin()
+    stats = Stats()
 
+    stats.increment_int_stat(IntegerStatKeys.ENEMIES_DEFEATED, trip.enemies_defeated)
+    stats.increment_int_stat(IntegerStatKeys.BATTLES_WON, trip.battles_won)
+    stats.increment_int_stat(IntegerStatKeys.MINERALS_MINED, len(trip.minerals_mined))
     if player.army.defeated:
         print(
             f"You were defeated. You lost 1/{LOST_RATIO} of the items you found and xp you gained."
         )
         trip.subtract_losses()
+        stats.increment_int_stat(IntegerStatKeys.ARMY_DEFEATS)
+    else:
+        stats.increment_int_stat(IntegerStatKeys.TRIPS_FINISHED)
 
     for ally in trip.allies_gained:
         player.add_ally(ally)
@@ -222,12 +230,12 @@ def add_trip_to_player():
     else:
         player.add_experience(int(trip.experience_gained * macguffin.xp_boost))
 
-    player.incr_trip()
     if trip.mine.type == MineType.COMBAT:
         print("The goods collected on the trip were donated to the training facility.")
         trip.minerals_mined = []
         trip.items_found = []
 
+    FileManager.save(stats)
     player.inventory.add_items(trip.items_found + trip.minerals_mined)
 
 
