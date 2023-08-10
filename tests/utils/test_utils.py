@@ -28,7 +28,7 @@ def test_fibonacci_sum():
         ([1, 2, 3, 4, 5], 1.0, 0.8),
         ([3, 4, 5, 7, 8, 9, 200], 0.5, 0.0),
         ([-1, 0, 1], 0.5, 1.0),
-        ([3, 2, 1, 0, -1, -2], 0.4, 0.99)
+        ([3, 2, 1, 0, -1, -2], 0.4, 0.99),
     ],
 )
 def test_boosted_random_choice(arr, boost_percent, expected_percent):
