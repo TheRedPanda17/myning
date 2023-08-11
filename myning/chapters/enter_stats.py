@@ -3,6 +3,10 @@ from requests import HTTPError
 
 from myning import api
 from myning.objects.character import SpeciesEmoji
+from myning.objects.garden import Garden
+from myning.objects.macguffin import Macguffin
+from myning.objects.player import Player
+from myning.objects.research_facility import ResearchFacility
 from myning.objects.stats import Stats
 from myning.utils.io import pick
 from myning.utils.ui import columnate, normalize_title
@@ -13,6 +17,7 @@ term = Terminal()
 
 def play():
     stats = Stats()
+    macguffin = Macguffin()
 
     while True:
         option, _ = pick(
@@ -26,7 +31,8 @@ def play():
             elif option == "View Stats":
                 view_stats()
             elif option == "Sync Stats":
-                api.player.sync()
+                score = macguffin.get_new_standard_boost(get_total_value())
+                api.player.sync(score)
             else:
                 pick(["Bummer!"], "This has not been implmented yet.")
         except HTTPError as e:
@@ -74,3 +80,14 @@ def view_stat(id: str):
     s += "\n".join(columnate(columns))
 
     pick(["Nice!"], s)
+
+
+# This is the same function as in the time machine. I haven't figured
+# out a great place where they can share this function and I don't
+# want to cross import
+def get_total_value() -> int:
+    player = Player()
+    facility = ResearchFacility()
+    garden = Garden()
+
+    return player.total_value + facility.total_value + garden.total_value

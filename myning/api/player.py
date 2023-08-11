@@ -6,9 +6,10 @@ from myning.objects.stats import Stats
 from myning.utils.file_manager import FileManager
 
 
-def sync():
+def sync(score: int):
     player = Player()
     stats = Stats()
+
     url = API_CONFIG["base_url"] + "/players"
     headers = {"Authorization": API_CONFIG["auth"]}
     try:
@@ -24,6 +25,7 @@ def sync():
         "stats": stats.all_stats,
         "icon": player.icon.symbol,
         "id": player.id,
+        "score": score * 100,
     }
 
     if exists:
@@ -33,8 +35,6 @@ def sync():
         response = requests.post(url, json=payload, headers=headers)
 
     response.raise_for_status()
-
-    FileManager.save(player)
 
 
 def get_players():

@@ -105,7 +105,17 @@ class ResearchFacility(Object, metaclass=Singleton):
 
     @property
     def upgrade_cost(self):
-        return utils.fibonacci(self.level + 1) * 5
+        return self.get_upgrade_cost(self.level + 1)
+
+    def get_upgrade_cost(self, level):
+        return utils.fibonacci(level) * 5
+
+    @property
+    def total_value(self):
+        research = sum(sum(cost for cost in u.costs[: u.level]) for u in self.research) * 5
+        facility = sum(self.get_upgrade_cost(level) for level in range(1, self.level)) * 5
+
+        return research + facility
 
     def points_per_hour(self, bonus: float):
         ticks_per_hour = 60 / self.minutes_per_tick

@@ -1,13 +1,10 @@
-import math
-
 from blessed import Terminal
 
-from myning.chapters.enter_blacksmith import smith_cost
 from myning.config import XP_COST
+from myning.objects.garden import Garden
 from myning.objects.macguffin import Macguffin
 from myning.objects.player import Player
 from myning.objects.research_facility import ResearchFacility
-from myning.objects.settings import Settings
 from myning.objects.singleton import Singleton
 from myning.utils.file_manager import FileManager
 from myning.utils.io import pick
@@ -22,8 +19,8 @@ def play():
     macguffin = Macguffin()
 
     value = get_total_value()
-    standard_boost = get_standard_boost(macguffin.xp_boost, value)
-    small_boost = get_smaller_boost(macguffin.research_boost, value)
+    standard_boost = macguffin.get_new_standard_boost(value)
+    small_boost = macguffin.get_new_smaller_boost(value)
 
     while True:
         option, _ = pick(
@@ -121,40 +118,12 @@ def play():
             continue
 
 
-def get_standard_boost(current_boost: int, game_value: int) -> int:
-    return round((game_value / 500_000) + current_boost, 2)
-
-
-def get_smaller_boost(current_boost: int, game_value: int) -> int:
-    bonus = (game_value / 2_500_000) + current_boost
-    return round(max(bonus, 1), 2)
-
-
+# This is the same function as in the stats page. I haven't figured
+# out a great place where they can share this function and I don't
+# want to cross import
 def get_total_value() -> int:
     player = Player()
     facility = ResearchFacility()
+    garden = Garden()
 
-    item_value = sum(item.value for item in player.inventory.items)
-    army_value = sum(member.value for member in player.army)
-    exp_value = player.exp_available * XP_COST
-    upgrades_value = sum(sum(cost for cost in u.costs[: u.level]) for u in player.upgrades)
-    blacksmith_cost = sum(smith_cost(level) for level in range(1, player.blacksmith_level + 1))
-    unlocked_mines = sum(mine.cost for mine in player.mines_available)
-    beaten_mines = sum(
-        mine.win_value * math.pow(mine.cost, 1 / 3) for mine in player.mines_completed
-    )
-    research = sum(sum(cost for cost in u.costs[: u.level]) for u in facility.research) * 5
-    research_facility = sum(smith_cost(level) for level in range(1, facility.level + 1)) * 5
-
-    return (
-        item_value
-        + army_value
-        + player.gold
-        + exp_value
-        + upgrades_value
-        + blacksmith_cost
-        + unlocked_mines
-        + beaten_mines
-        + research
-        + research_facility
-    )
+    return player.total_value + facility.total_value + garden.total_value

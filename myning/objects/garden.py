@@ -5,6 +5,7 @@ from blessed import Terminal
 from myning.objects.object import Object
 from myning.objects.plant import Plant
 from myning.objects.singleton import Singleton
+from myning.utils import utils
 from myning.utils.file_manager import FileManager, Subfolders
 
 term = Terminal()
@@ -61,6 +62,43 @@ class Garden(Object, metaclass=Singleton):
             ],
         )
 
+    @property
+    def next_empty_row(self):
+        return self.next_empty_coords[0]
+
+    @property
+    def next_empty_coords(self):
+        for row in range(self.level):
+            for column in range(self.level):
+                plant = self.get_plant(row, column)
+                if not plant:
+                    return row, column
+        return None, None
+
+    @property
+    def next_unharvest_row(self):
+        return self.next_plant_coords[0]
+
+    @property
+    def next_plant_coords(self):
+        for row in range(self.level):
+            for column in range(self.level):
+                plant = self.get_plant(row, column)
+                if plant and plant.ready:
+                    return row, column
+        return None, None
+
+    @property
+    def upgrade_cost(self) -> int:
+        return self.get_upgrade_cost(self.level + 1)
+
+    @property
+    def total_value(self) -> int:
+        return sum(self.get_upgrade_cost(level) for level in range(1, self.level))
+
+    def get_upgrade_cost(self, level: int) -> int:
+        return utils.fibonacci(level + 4) * 100
+
     def collect_water(self):
         if not self.last_collected_water:
             self.last_collected_water = datetime.now()
@@ -98,32 +136,6 @@ class Garden(Object, metaclass=Singleton):
         plant.value = plant.value * (int(self.level / 2) + 4)
         self.uproot_plant(row, column)
         return plant
-
-    @property
-    def next_empty_row(self):
-        return self.next_empty_coords[0]
-
-    @property
-    def next_empty_coords(self):
-        for row in range(self.level):
-            for column in range(self.level):
-                plant = self.get_plant(row, column)
-                if not plant:
-                    return row, column
-        return None, None
-
-    @property
-    def next_unharvest_row(self):
-        return self.next_plant_coords[0]
-
-    @property
-    def next_plant_coords(self):
-        for row in range(self.level):
-            for column in range(self.level):
-                plant = self.get_plant(row, column)
-                if plant and plant.ready:
-                    return row, column
-        return None, None
 
     def water_plant(self, row: int, column: int):
         plant = self.get_plant(row, column)
