@@ -84,6 +84,15 @@ class MineScreen(Screen):
         self.progress.progress = trip.total_seconds - trip.seconds_left
         self.time.update(f"{time_str(trip.seconds_left)} remaining")
 
+    def flash_border(self):
+        og_border = self.content_container.styles.border
+
+        def reset_border():
+            self.content_container.styles.border = og_border
+
+        self.content_container.styles.border = ("round", "lime")
+        self.set_timer(0.5, reset_border)
+
     def action_abandon(self):
         if self.abandoning:
             self.exit()
@@ -98,16 +107,9 @@ class MineScreen(Screen):
             self.exit()
         elif not isinstance(self.action, VictoryAction):
             trip.tick_passed(self.action.duration)
-
-        og_border = self.content_container.styles.border
-
-        def reset_border():
-            self.content_container.styles.border = og_border
-
-        self.content_container.styles.border = ("round", "lime")
-        self.set_timer(0.5, reset_border)
-        self.action = self.next_action
+        self.flash_border()
         self.update_screen()
+        self.action = self.next_action
 
     def confirm_abandon(self):
         self.content.update(

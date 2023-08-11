@@ -79,7 +79,8 @@ class Army(UserList[Character]):
             s += str(member.icon)
         return s
 
-    def get_table(self, *, show_header=True, show_xp=True):
+    @property
+    def tui_table(self):
         table = Table(box=None, padding=(0, 1, 0, 0))
         table.add_column("", width=2, no_wrap=True, overflow="ignore")
         table.add_column(Text("Name", justify="left"))
@@ -87,36 +88,20 @@ class Army(UserList[Character]):
         table.add_column(Text(Icons.DAMAGE, justify="center"), justify="right")
         table.add_column(Text(Icons.ARMOR, justify="center"), justify="right")
         table.add_column(Text(Icons.LEVEL, justify="center"), justify="right")
-        if show_xp:
-            table.add_column(Text(Icons.XP, justify="center"), justify="right")
+        table.add_column(Text(Icons.XP, justify="center"), justify="right")
         table.add_column(Text(Icons.GRAVEYARD, justify="center"))
-
-        if not show_header:
-            table.show_header = False
-            for column in table.columns:
-                column.header = ""
-
         for member in self:
-            if not member.name:
-                continue
-            cells = []
-            cells.append(str(member.icon))
-            cells.append(member.name.split()[0])
-            cells.append(get_health_bar(member.health, member.max_health))
-            cells.append(f"[red1]{member.stats['damage']}[/]")
-            cells.append(f"[dodger_blue1]{member.stats['armor']}[/]")
-            cells.append(f"[cyan1]{member.level}[/]")
-            if show_xp:
-                cells.append(
-                    f"[magenta1]{member.experience}/{utils.fibonacci(member.level + 1)}[/]"
-                )
-            cells.append("🪦" if member.is_ghost else " ")
-            table.add_row(*cells)
+            table.add_row(
+                str(member.icon),
+                member.name.split()[0],
+                get_health_bar(member.health, member.max_health),
+                f"[red1]{member.stats['damage']}[/]",
+                f"[dodger_blue1]{member.stats['armor']}[/]",
+                f"[cyan1]{member.level}[/]",
+                f"[magenta1]{member.experience}/{utils.fibonacci(member.level + 1)}[/]",
+                "🪦" if member.is_ghost else " ",
+            )
         return table
-
-    @property
-    def tui_table(self):
-        return self.get_table()
 
     @property
     def tui_columns(self):
@@ -131,25 +116,16 @@ class Army(UserList[Character]):
             table.add_column(Text(Icons.DAMAGE, justify="center"), justify="right")
             table.add_column(Text(Icons.ARMOR, justify="center"), justify="right")
             table.add_column(Text(Icons.LEVEL, justify="center"), justify="right")
-            # if show_xp:
-            #     table.add_column(Text(Icons.XP, justify="center"), justify="right")
             table.add_column(Text(Icons.GRAVEYARD, justify="center"))
-
             for member in chunk:
-                if not member.name:
-                    continue
-                cells = []
-                cells.append(str(member.icon))
-                cells.append(member.name.split()[0])
-                cells.append(get_health_bar(member.health, member.max_health))
-                cells.append(f"[red1]{member.stats['damage']}[/]")
-                cells.append(f"[dodger_blue1]{member.stats['armor']}[/]")
-                cells.append(f"[cyan1]{member.level}[/]")
-                # if show_xp:
-                #     cells.append(
-                #         f"[magenta1]{member.experience}/{utils.fibonacci(member.level + 1)}[/]"
-                #     )
-                cells.append("🪦" if member.is_ghost else " ")
-                table.add_row(*cells)
+                table.add_row(
+                    str(member.icon),
+                    member.name.split()[0],
+                    get_health_bar(member.health, member.max_health),
+                    f"[red1]{member.stats['damage']}[/]",
+                    f"[dodger_blue1]{member.stats['armor']}[/]",
+                    f"[cyan1]{member.level}[/]",
+                    "🪦" if member.is_ghost else " ",
+                )
             columns.append(table)
         return columns
