@@ -11,6 +11,12 @@ def sync():
     stats = Stats()
     url = API_CONFIG["base_url"] + "/players"
     headers = {"Authorization": API_CONFIG["auth"]}
+    try:
+        current = get_player(player.id)
+        if current:
+            exists = True
+    except requests.HTTPError:
+        exists = False
 
     payload = {
         "name": player.name,
@@ -20,7 +26,12 @@ def sync():
         "id": player.id,
     }
 
-    response = requests.post(url, json=payload, headers=headers)
+    if exists:
+        url += f"/{player.id}"
+        response = requests.patch(url, json=payload, headers=headers)
+    else:
+        response = requests.post(url, json=payload, headers=headers)
+
     response.raise_for_status()
 
     FileManager.save(player)

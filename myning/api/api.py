@@ -1,3 +1,4 @@
+import os
 from base64 import b64encode
 
 
@@ -9,5 +10,5 @@ def basic_auth(username, password):
 API_CONFIG = {
     "base_url": "https://myning.vercel.app/api",
     # "base_url": "http://localhost:3000",
-    "auth": "Bearer dstp2StUcBGPSnOmPT2WRndRbOg7FWTT+BoDXiLAKmeeqVzYxhNGCOXCmYperEj32",
+    "auth": os.environ.get("API_KEY"),
 }
