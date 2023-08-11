@@ -12,10 +12,9 @@ from myning.utils.file_manager import FileManager
 from myning.utils.race_rarity import RACE_TIERS
 from myning.utils.ui_consts import Icons
 from new_tui.chapters import DynamicArgs, Option, PickArgs, StoryArgs, town
+from new_tui.chapters.mine.screen import MineScreen
 from new_tui.formatter import Colors, columnate
 from new_tui.utilities import story_builder
-from new_tui.view.mine import MineScreen
-
 from new_tui.view.chapter import ChapterWidget
 
 player = Player()

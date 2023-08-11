@@ -90,6 +90,7 @@ class Store:
             (row, partial(self.confirm_sell, item)) for row, item in zip(rows, items)
         ]
         if player.has_upgrade("sell_minerals"):
+            # pylint: disable=protected-access
             minerals = player.inventory._items[ItemType.MINERAL].copy()
             tax = UPGRADES["sell_minerals"].player_value / 100
             options.append(
@@ -101,6 +102,7 @@ class Store:
 
         if player.has_upgrade("sell_almost_everything"):
             all_but_top_3_items = []
+            # pylint: disable=protected-access
             for type_items in player.inventory._items.values():
                 sorted_type_items = sorted(type_items, key=lambda i: i.value)
                 all_but_top_3_items.extend(sorted_type_items[:-3])

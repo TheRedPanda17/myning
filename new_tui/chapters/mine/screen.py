@@ -8,7 +8,7 @@ from textual.widgets import Footer, ProgressBar, Static
 from myning.objects.player import Player
 from myning.objects.trip import Trip
 from myning.utils.ui_consts import Icons
-from new_tui.actions import (
+from new_tui.chapters.mine.actions import (
     Action,
     CombatAction,
     EquipmentAction,

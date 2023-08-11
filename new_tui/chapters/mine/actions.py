@@ -77,12 +77,8 @@ class RoundLog:
 
 
 class CombatAction(Action):
-    def __init__(
-        self,
-        *,
-        enemies: Army | None = None,
-        round=1,  # pylint: disable=redefined-builtin
-    ):
+    # pylint: disable=redefined-builtin
+    def __init__(self, *, enemies: Army | None = None, round=1):
         if enemies:
             self.enemies = enemies
         else:

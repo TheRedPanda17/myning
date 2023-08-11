@@ -3,15 +3,15 @@ from textual.app import App
 from textual.binding import Binding
 from textual.screen import Screen
 from textual.widgets import Footer, Static
+
 from myning.objects.trip import Trip
 from new_tui.chapters import mine
-
+from new_tui.chapters.mine.screen import MineScreen
 from new_tui.view.army import ArmyWidget
 from new_tui.view.chapter import ChapterWidget
 from new_tui.view.currency import CurrencyWidget
 from new_tui.view.header import Header
 from new_tui.view.inventory import InventoryWidget
-from new_tui.view.mine import MineScreen
 
 trip = Trip()
 

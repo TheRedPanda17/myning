@@ -2,7 +2,8 @@ from functools import partial
 
 from myning.config import MINES
 from myning.objects.menu_item import MenuItem
-from new_tui.chapters import ExitArgs, PickArgs, mine, store
+from new_tui.chapters import ExitArgs, PickArgs, store
+from new_tui.chapters import mine
 from new_tui.formatter import columnate
 
 CHAPTERS = [
@@ -27,7 +28,7 @@ def enter():
     implemented_chapters = {
         "Mine": mine.pick_mine,
         "Store": store.Store().enter,
-        "Exit": lambda: ExitArgs(),  # pylint: disable=unnecessary-lambda
+        "Exit": ExitArgs,
     }
     rows = columnate([chapter.tui_arr for chapter in CHAPTERS])
     handlers = [
