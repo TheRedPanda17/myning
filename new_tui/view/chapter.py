@@ -76,11 +76,9 @@ class ChapterWidget(ScrollableContainer):
 
         if key == "tab":
             self.app.action_focus_next()
-        elif key == "q":
-            player.allies.pop()
-            self.update_dashboard()
+        elif key in ("escape", "q"):
             if self.question.message == town.enter().message:
-                return  # Prevent exiting with q in main menu
+                return  # Prevent exiting with escape or q in main menu
             self.select(-1)
         elif key in self.hotkeys:
             self.select(self.hotkeys[key])

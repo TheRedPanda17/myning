@@ -42,28 +42,6 @@ def time_str(seconds: int):  # sourcery skip: assign-if-exp, reintroduce-else
     return f"{seconds}s"
 
 
-class Content(Static):
-    def print(self, content):
-        self.update(content)
-
-
-class Summary(Static):
-    def on_mount(self):
-        self.update_summary()
-        self.set_interval(1, self.update_summary)
-
-    def update_summary(self):
-        self.update(trip.tui_summary)
-
-
-class TimeRemaining(Static):
-    def on_mount(self) -> None:
-        self.set_interval(0.1, self.update_time)
-
-    def update_time(self):
-        self.update(f"{time_str(trip.seconds_left)} remaining")
-
-
 class MineScreen(Screen):
     BINDINGS = [
         ("ctrl+q", "abandon", "Abandon Mine"),
@@ -72,9 +50,11 @@ class MineScreen(Screen):
 
     def __init__(self) -> None:
         self.content_container = ScrollableContainer()
-        self.content = Content()
+        self.content = Static()
+        self.summary = Static()
         self.progress = ProgressBar(total=trip.total_seconds, show_eta=False)
-        self.action: Action = ACTIONS["mineral"]()
+        self.time = Static()
+        self.action = self.random_action
         self.abandoning = False
         super().__init__()
 
@@ -85,10 +65,10 @@ class MineScreen(Screen):
             yield self.content
         with Container() as c:
             c.border_title = "Trip Summary"
-            yield Summary()
+            yield self.summary
         with Container() as c:
             c.border_title = "Trip Progress"
-            yield TimeRemaining()
+            yield self.time
             yield self.progress
         yield Footer()
 
@@ -99,8 +79,10 @@ class MineScreen(Screen):
     def update_screen(self):
         if self.abandoning:
             return
+        self.content.update(self.action.content)
+        self.summary.update(trip.tui_summary)
         self.progress.progress = trip.total_seconds - trip.seconds_left
-        self.content.print(self.action.content)
+        self.time.update(f"{time_str(trip.seconds_left)} remaining")
 
     def action_abandon(self):
         if self.abandoning:
@@ -128,7 +110,7 @@ class MineScreen(Screen):
         self.update_screen()
 
     def confirm_abandon(self):
-        self.content.print(
+        self.content.update(
             "Are you sure you want to abandon your trip?\n\n"
             f"[bold red1]{Icons.WARNING}  WARNING {Icons.WARNING}[/]\n\n"
             "You will not receive any items you found or any allies you recruited.\n"
@@ -162,9 +144,10 @@ class MineScreen(Screen):
 
     @property
     def next_action(self):
-        if self.action.next:
-            return self.action.next
+        return self.action.next or self.random_action
 
+    @property
+    def random_action(self):
         odds = trip.mine.odds.copy()
         if not player.allies:
             odds = [o for o in odds if o["action"] != "lose_ally"]

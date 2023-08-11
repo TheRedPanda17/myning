@@ -6,12 +6,18 @@ from rich.text import Text
 from myning.utils.ui_consts import Icons
 
 
-def columnate(items: list[list[str]], *, sep=" ") -> list[Text]:
+def columnate(items: list[list[str | Text | Icons]], *, sep=" ") -> list[Text]:
     widths = []
     for col in zip_longest(*items, fillvalue=""):
         max_width = 0
         for cell in col:
-            width = 2 if isinstance(cell, Icons) else len(Text.from_markup(cell))
+            width = (
+                2
+                if isinstance(cell, Icons)
+                else len(cell)
+                if isinstance(cell, Text)
+                else len(Text.from_markup(cell))
+            )
             if width > max_width:
                 max_width = width
         widths.append(max_width)
@@ -19,7 +25,7 @@ def columnate(items: list[list[str]], *, sep=" ") -> list[Text]:
     for row in items:
         texts = []
         for item, width in zip(row, widths):
-            text = Text.from_markup(item)
+            text = item if isinstance(item, Text) else Text.from_markup(item)
             text.truncate(width, pad=True)
             texts.append(text)
         rows.append(Text(sep).join(texts))
