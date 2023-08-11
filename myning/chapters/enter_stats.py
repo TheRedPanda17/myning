@@ -54,7 +54,7 @@ def view_stats():
         if option == "Exit":
             return
 
-        view_stat(players[i - 1]["id"])
+        view_stat(players[i]["id"])
 
 
 def view_stat(id: str):
