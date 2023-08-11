@@ -1,5 +1,6 @@
 from . import (
     garden_transfer,
+    generate_ids,
     macfuffin_transfer,
     research_transfer,
     soul_credits,
@@ -14,4 +15,5 @@ MIGRATIONS = {
     4: research_transfer,
     5: macfuffin_transfer,
     6: stats_transfer,
+    7: generate_ids,
 }

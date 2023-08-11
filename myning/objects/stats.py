@@ -5,7 +5,7 @@ from blessed import Terminal
 from myning.objects.object import Object
 from myning.objects.singleton import Singleton
 from myning.utils.file_manager import FileManager
-from myning.utils.ui import columnate
+from myning.utils.ui import columnate, normalize_title
 
 term = Terminal()
 
@@ -55,21 +55,20 @@ class Stats(Object, metaclass=Singleton):
         return Stats(data["integer_stats"], data.get("float_stats", {}))
 
     @property
-    def display(self):
-        all_stats = {**self.integer_stats, **self.float_stats}
+    def all_stats(self):
+        return {**self.integer_stats, **self.float_stats}
 
+    @property
+    def display(self):
         columns = []
-        for key, value in all_stats.items():
-            title = f"  {term.bold(self.normalize_title(key))}"
+        for key, value in self.all_stats.items():
+            title = f"  {term.bold(normalize_title(key))}"
             stat = f"{term.white(f'{value}')}"
             columns.append([title, stat])
 
         s = term.bold("Stats\n\n")
         s += "\n".join(columnate(columns))
         return s
-
-    def normalize_title(self, key: str) -> str:
-        return key.replace("_", " ").title()
 
     def to_dict(self) -> dict:
         return {"integer_stats": self.integer_stats, "float_stats": self.float_stats}
