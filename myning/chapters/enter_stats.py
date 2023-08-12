@@ -49,6 +49,7 @@ def view_stats():
                     SpeciesEmoji(player["icon"]),
                     player["name"],
                     f"{Icons.LEVEL} {Colors.LEVEL}{player['level']}{term.normal}",
+                    f" {Icons.STATS} {term.bold}{player['score']}{term.normal}",
                 ]
                 for player in players
             ]

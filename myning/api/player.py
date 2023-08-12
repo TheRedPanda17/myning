@@ -44,7 +44,7 @@ def get_players():
     response.raise_for_status()
 
     data = response.json()
-    return data["data"]
+    return sorted(data["data"], key=lambda p: p["score"], reverse=True)
 
 
 def get_player(id: str):
