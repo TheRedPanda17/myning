@@ -1,5 +1,4 @@
 import random
-from datetime import datetime
 from enum import Enum
 
 from blessed import Terminal
@@ -78,10 +77,6 @@ class Character(Object):
         return self.species.health_mod
 
     @property
-    def intros(self):
-        return [self.species.intro, "Hello", "Howdy"]
-
-    @property
     def max_health(self):
         return self.level * self.health_mod
 
@@ -126,15 +121,10 @@ class Character(Object):
 
         return equipment_value + level_value
 
-    def get_introduction(self):
-        random.seed(datetime.now().timestamp())
-        if len(self.intros) == 0:
-            intro = "Howdy"
-        else:
-            index = random.randint(0, (len(self.intros) - 1))
-            intro = self.intros[index]
-
-        return f"{intro}, my name is {self.name}. I'm {self.description}."
+    @property
+    def introduction(self):
+        greeting = random.choice([self.species.intro, "Hello,", "Howdy,"])
+        return f"{greeting} my name is {self.name}. I'm {self.description}."
 
     def subtract_health(self, damage):
         self.health = max(self.health - damage, 0)

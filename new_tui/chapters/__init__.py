@@ -27,6 +27,7 @@ class ExitArgs:
     pass
 
 
+PickHandler = Callable[..., PickArgs]
 Handler = Callable[..., PickArgs | DynamicArgs | ExitArgs]
 Option = tuple[str | Text | Table, Handler]
 

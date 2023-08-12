@@ -34,6 +34,10 @@ ChapterWidget {
   width: 3fr;
 }
 
+Question {
+  max-width: 100;
+}
+
 SideContainer {
   width: 1fr;
   min-width: 48;

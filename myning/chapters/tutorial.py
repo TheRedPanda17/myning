@@ -27,7 +27,7 @@ def play():
     j_rod = Character("J-Rod", "a friendly minor miner")
     FileManager.save(j_rod)
 
-    print_entity_speech(j_rod, j_rod.get_introduction())
+    print_entity_speech(j_rod, j_rod.introduction)
 
     get_character_speech(player)
 
@@ -101,7 +101,7 @@ def play():
 
     carl = Character("Caaaarl", "your not-at-all sketchy shop owner")
     FileManager.save(carl)
-    print_entity_speech(carl, carl.get_introduction(), wait=False)
+    print_entity_speech(carl, carl.introduction, wait=False)
     print()
     print_entity_speech(
         carl,

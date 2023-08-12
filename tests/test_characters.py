@@ -29,7 +29,7 @@ class TestCharacter:
         char = generate_character(level_range=[1, 2])
         assert isinstance(char.intros, list)
         assert len(char.intros) > 0
-        assert char.get_introduction().isalpha
+        assert char.introduction().isalpha
 
     def test_species_attributes(self):
         """Test that species attributes are correct"""

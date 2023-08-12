@@ -5,7 +5,7 @@ from myning.objects.equipment import EQUIPMENT_TYPES
 from myning.objects.item import Item, ItemType
 from myning.objects.player import Player
 from myning.utils.file_manager import FileManager
-from new_tui.chapters import Option, PickArgs, town
+from new_tui.chapters import Option, PickArgs, town, tutorial
 from new_tui.formatter import Emoji, columnate
 
 player = Player()
@@ -30,7 +30,7 @@ def pick_member():
     if player.has_upgrade("auto_equip"):
         options.append(("Auto-equip Best Items", auto_equip))
 
-    options.append(("Go Back", town.enter))
+    options.append(("Go Back", town.enter if tutorial.is_complete() else tutorial.learn_mine))
     return PickArgs(message="Upgrade Your Army Members' Gear", options=options)
 
 

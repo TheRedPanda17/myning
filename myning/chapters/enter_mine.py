@@ -130,11 +130,7 @@ def recruit_ally():
     species = get_recruit_species(trip.mine.companion_rarity)
     ally = generate_character(levels, species=species)
 
-    print_entity_speech(
-        ally,
-        ally.get_introduction() + " I'd like to join your army.",
-        wait=False,
-    )
+    print_entity_speech(ally, f"{ally.introduction} I'd like to join your army.", wait=False)
 
     trip.add_ally(ally)
     FileManager.multi_save(ally, trip)

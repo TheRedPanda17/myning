@@ -46,7 +46,7 @@ class Action(ABC):
         return None
 
 
-class MineAction(Action):
+class MineralAction(Action):
     def __init__(self):
         duration = random.randint(0, int(CONFIG["tick_length"] + trip.seconds_left / 60)) + 5
         super().__init__(duration)
@@ -179,25 +179,26 @@ class RoundAction(Action):
             f"[bold red1]{self.health_lost:{damage_width}}[/] damage sustained.\n"
         )
         self.log_table = Table.grid(padding=(0, 1, 0, 0))
-        for log in round_logs:
-            self.log_table.add_row(
-                str(log.attacker.icon),
-                f"[{'green1' if log.is_friendly else 'red1'}]{log.attacker.name}[/]",
-                Icons.CRIT if log.critted else "",
-                "[bold dark_cyan](0)[/]"
-                if log.dodged
-                else f"[{'bold orange1' if log.critted else 'normal'}]{log.damage}[/]",
-                Icons.DODGE if log.dodged else "",
-                str(log.defender.icon),
-                f"[{'red1' if log.is_friendly else 'green1'}]{log.defender.name}[/]",
-                Icons.DEATH if log.defender.health <= 0 else "",
-            )
-        self.log_table.columns[3].justify = "right"
+        if round_logs:
+            for log in round_logs:
+                self.log_table.add_row(
+                    str(log.attacker.icon),
+                    f"[{'green1' if log.is_friendly else 'red1'}]{log.attacker.name}[/]",
+                    Icons.CRIT if log.critted else "",
+                    "[bold dark_cyan](0)[/]"
+                    if log.dodged
+                    else f"[{'bold orange1' if log.critted else 'normal'}]{log.damage}[/]",
+                    Icons.DODGE if log.dodged else "",
+                    str(log.defender.icon),
+                    f"[{'red1' if log.is_friendly else 'green1'}]{log.defender.name}[/]",
+                    Icons.DEATH if log.defender.health <= 0 else "",
+                )
+            self.log_table.columns[3].justify = "right"
         super().__init__(5)
 
     @property
     def content(self):
-        table = Table.grid()
+        table = Table.grid(expand=True)
         table.add_row(self.summary)
         table.add_row(f"Returning to battle in {self.duration}...\n")
         table.add_row(self.log_table)
@@ -268,7 +269,7 @@ class RecruitAction(Action):
             [
                 "[green1]You have recruited an ally![/]",
                 f"{ally.icon} [bold]{ally.name}[/] ({Icons.LEVEL} {Formatter.level(ally.level)})",
-                f"{ally.get_introduction()} I'd like to join your army.",
+                f"{ally.introduction} I'd like to join your army.",
             ]
         )
         super().__init__(5)

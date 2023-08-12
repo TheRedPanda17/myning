@@ -32,8 +32,8 @@ class Player(Character, metaclass=Singleton):
     def initialize(cls, name=None):
         player = FileManager.load(Player, "player")
         if not player:
-            if not name:
-                name = input("\nEnter your player name: ") or "Player"
+            while not name:
+                name = input("\nEnter your player name: ")
             player = cls(name)
             player._allies = []
             player._fallen_allies = []

@@ -14,7 +14,7 @@ from new_tui.chapters.mine.actions import (
     EquipmentAction,
     LoseAllyAction,
     LossAction,
-    MineAction,
+    MineralAction,
     RecruitAction,
     VictoryAction,
 )
@@ -25,7 +25,7 @@ player = Player()
 trip = Trip()
 ACTIONS: dict[str, Type[Action]] = {
     "combat": CombatAction,
-    "mineral": MineAction,
+    "mineral": MineralAction,
     "equipment": EquipmentAction,
     "recruit": RecruitAction,
     "lose_ally": LoseAllyAction,

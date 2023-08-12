@@ -11,7 +11,7 @@ from myning.objects.trip import LOST_RATIO, Trip
 from myning.utils.file_manager import FileManager
 from myning.utils.race_rarity import RACE_TIERS
 from myning.utils.ui_consts import Icons
-from new_tui.chapters import DynamicArgs, Option, PickArgs, StoryArgs, town
+from new_tui.chapters import DynamicArgs, Option, PickArgs, StoryArgs, healer, town, tutorial
 from new_tui.chapters.mine.screen import MineScreen
 from new_tui.formatter import Colors, columnate
 from new_tui.utilities import story_builder
@@ -19,6 +19,10 @@ from new_tui.view.chapter import ChapterWidget
 
 player = Player()
 trip = Trip()
+
+
+def exit_mine():
+    return (town.enter if tutorial.is_complete() else tutorial.learn_healer)()
 
 
 def pick_mine():
@@ -48,7 +52,7 @@ def pick_mine():
 
     handlers = [partial(pick_time, mine) for mine in player.mines_available] + [
         pick_unlock_mine,
-        town.enter,
+        exit_mine,
     ]
     has_death_mine = any(mine.has_death_action for mine in player.mines_available)
 
@@ -89,8 +93,8 @@ def start_mine(mine: Mine, minutes: int):
             "You should probably go visit the healer before heading into the mines.",
             options=[
                 ("Could you repeat that please?", partial(start_mine, mine, minutes)),
-                ("Take me there!", partial(town.unimplemented, "Healer")),
-                ("Got it, thanks.", town.enter),
+                ("Take me there!", healer.enter),
+                ("Got it, thanks.", exit_mine),
             ],
         )
 
@@ -144,7 +148,7 @@ def unlock_mine(mine: Mine):
 def complete_trip(abandoned: bool):
     if abandoned:
         trip.clear()
-        return town.enter()
+        return exit_mine()
 
     story_args_list: list[StoryArgs] = []
 
@@ -218,7 +222,7 @@ def complete_trip(abandoned: bool):
             )
 
     trip.clear()
-    return story_builder(story_args_list, town.enter())
+    return story_builder(story_args_list, exit_mine)
 
 
 def available_species(mine: Mine) -> list[Race]:

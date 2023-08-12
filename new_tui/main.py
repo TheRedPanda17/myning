@@ -10,20 +10,26 @@ from myning.utils.file_manager import FileManager
 def main():
     FileManager.setup()
     Player.initialize()
-    ResearchFacility.initialize()
-    ResearchFacility().check_in()
-    Garden.initialize()
     Game.initialize()
-    Trip.initialize()
+    Garden.initialize()
+    ResearchFacility.initialize()
+    ResearchFacility().check_in()  # type: ignore
     Settings.initialize()
+    Trip.initialize()
 
-    from new_tui.view.app import MyningApp
+    # This ensures new players have the new migrations. Preferably, we'd loop through the
+    # MIGRATIONS, but we have a circular dependency if we do, so this is the hack right now.
+    Player().completed_migrations = [1, 2, 3, 4]
+
+    # Load tui after importing and initializing objects to allow global references
+    from new_tui.view.app import MyningApp  # pylint: disable=import-outside-toplevel
 
     MyningApp().run()
     FileManager.multi_save(
+        Game(),
         Garden(),
         Player(),
-        ResearchFacility(),
+        ResearchFacility(),  # type: ignore
         Settings(),
         Trip(),
     )
