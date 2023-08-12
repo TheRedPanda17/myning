@@ -64,6 +64,11 @@ class Store:
         )
 
     def confirm_buy(self, item: Item):
+        if player.gold < item.value:
+            return PickArgs(
+                message="Not enough gold!",
+                options=[("Bummer!", self.pick_buy)],
+            )
         return PickArgs(
             message=f"Are you sure you want to buy {item.tui_str} for {Formatter.gold(item.value)}?",
             options=[
@@ -73,11 +78,6 @@ class Store:
         )
 
     def buy(self, item: Item):
-        if player.gold < item.value:
-            return PickArgs(
-                message="Not enough gold!",
-                options=[("Bummer!", self.pick_buy)],
-            )
         player.gold -= item.value
         player.inventory.add_item(item)
         self.inventory.remove_item(item)

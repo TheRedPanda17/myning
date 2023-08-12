@@ -34,7 +34,10 @@ def columnate(items: list[list[T]], *, sep=" ") -> list[Text]:
         texts = []
         for item, width in zip(row, widths):
             text = item if isinstance(item, Text) else Text.from_markup(item)
-            text.truncate(width, pad=True)
+            if text.justify == "right":
+                text.pad_left(width - len(text))
+            else:
+                text.truncate(width, pad=True)
             texts.append(text)
         rows.append(Text(sep).join(texts))
     return rows

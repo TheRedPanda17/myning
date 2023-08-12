@@ -1,7 +1,8 @@
 from enum import Enum
+from rich.text import Text
 
 from myning.objects.object import Object
-from myning.utils.ui import get_gold_string, get_research_string
+from new_tui.formatter import Formatter
 
 
 class UpgradeType(Enum):
@@ -23,9 +24,6 @@ class Upgrade(Object):
         self.level = 0
         self.type = type
 
-    def __str__(self):
-        return f"{self.name} ({get_gold_string(self.cost)}) - {self.description}"
-
     # name and player_name
     @property
     def name(self):
@@ -39,7 +37,6 @@ class Upgrade(Object):
     def player_name(self):
         return self._name if len(self.values) == 1 else f"{self._name} ({self.level})"
 
-    # description and player_description
     @property
     def description(self):
         return self.descriptions[self.level]
@@ -69,16 +66,16 @@ class Upgrade(Object):
     @property
     def cost_str(self):
         if self.type == UpgradeType.RESEARCH:
-            return get_research_string(self.cost)
+            return Formatter.research_points(self.cost)
         if self.type == UpgradeType.UPGRADE:
-            return get_gold_string(self.cost)
+            return Formatter.gold(self.cost)
         return self.cost
 
     @property
-    def string_arr(self):
+    def arr(self):
         return [
             self.name,
-            f"({self.cost_str})",
+            Text.from_markup(self.cost_str, justify="right"),
             self.description,
         ]
 
