@@ -35,6 +35,10 @@ def get_exp_string(exp: int):
     return term.magenta(f"{exp} exp")
 
 
+def normalize_title(key: str) -> str:
+    return key.replace("_", " ").title()
+
+
 def get_health_bar(health: int, max_health: int, bar_count: int = 11):
     health_fraction = health / max_health if max_health else 0
     green_count = math.ceil(health_fraction * bar_count)

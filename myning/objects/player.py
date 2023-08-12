@@ -1,8 +1,9 @@
+import math
 from typing import List, Optional
 
 from blessed.terminal import Terminal
 
-from myning.config import MINES, SPECIES, UPGRADES
+from myning.config import MINES, SPECIES, UPGRADES, XP_COST
 from myning.objects.army import Army
 from myning.objects.character import Character, CharacterSpecies
 from myning.objects.inventory import Inventory
@@ -60,12 +61,35 @@ class Player(Character, metaclass=Singleton):
     def fired_allies(self) -> List[Character]:
         return self._fired_allies
 
-    def has_upgrade(self, upgrade_id):
-        return upgrade_id in [upgrade.id for upgrade in self.upgrades]
-
     @property
     def alive(self):
         return any(member.health > 0 for member in self.army)
+
+    @property
+    def total_value(self) -> int:
+        item_value = sum(item.value for item in self.inventory.items)
+        army_value = sum(member.value for member in self.army)
+        exp_value = self.exp_available * XP_COST
+        upgrades_value = sum(sum(cost for cost in u.costs[: u.level]) for u in self.upgrades)
+
+        unlocked_mines = sum(mine.cost for mine in self.mines_available)
+        beaten_mines = sum(
+            mine.win_value * math.pow(mine.cost, 1 / 3) for mine in self.mines_completed
+        )
+
+        return (
+            item_value
+            + army_value
+            + exp_value
+            + upgrades_value
+            + unlocked_mines
+            + self.gold
+            + upgrades_value
+            + beaten_mines
+        )
+
+    def has_upgrade(self, upgrade_id):
+        return upgrade_id in [upgrade.id for upgrade in self.upgrades]
 
     def reset(self):
         self._allies = []

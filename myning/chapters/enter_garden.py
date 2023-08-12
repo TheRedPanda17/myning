@@ -42,7 +42,7 @@ def play():
                 FileManager.save(seed)
             FileManager.multi_save(player, garden)
 
-        elif option == "Upgrade Garden" and upgrade_garden(garden.level, player):
+        elif option == "Upgrade Garden" and upgrade_garden(garden.upgrade_cost, player):
             garden.level_up()
             FileManager.save(garden)
         elif option == "View Harvest":
@@ -148,8 +148,7 @@ def manage_garden(garden: Garden):
             manage_plant(garden, row, column)
 
 
-def upgrade_garden(level: int, player: Player):
-    cost = garden_cost(level)
+def upgrade_garden(cost: int, player: Player):
     if player.pay(
         cost,
         failure_msg=f"You need {get_gold_string(cost)} to upgrade your garden",
@@ -222,7 +221,3 @@ def manage_plant(garden: Garden, row: int, column: int):
         garden.uproot_plant(row, column)
 
     FileManager.multi_save(player, plant, garden)
-
-
-def garden_cost(level):
-    return utils.fibonacci(level + 4) * 100

@@ -42,6 +42,13 @@ class Macguffin(Object, metaclass=Singleton):
             data["plant_boost"],
         )
 
+    def get_new_standard_boost(self, game_value: int) -> int:
+        return round((game_value / 500_000) + self.mineral_boost, 2)
+
+    def get_new_smaller_boost(self, game_value: int) -> int:
+        bonus = (game_value / 2_500_000) + self.plant_boost
+        return round(max(bonus, 1), 2)
+
     def to_dict(self) -> dict:
         return {
             "exp_boost": self.xp_boost,

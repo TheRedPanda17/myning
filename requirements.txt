@@ -14,3 +14,4 @@ six==1.16.0
     # via blessed
 wcwidth==0.2.6
     # via blessed
+requests==2.31.0
