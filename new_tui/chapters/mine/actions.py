@@ -267,7 +267,7 @@ class RecruitAction(Action):
         self.message = "\n\n".join(
             [
                 "[green1]You have recruited an ally![/]",
-                f"{ally.icon} [bold]{ally.name}[/] ({Formatter.level(ally.level)})",
+                f"{ally.icon} [bold]{ally.name}[/] ({Icons.LEVEL} {Formatter.level(ally.level)})",
                 f"{ally.get_introduction()} I'd like to join your army.",
             ]
         )

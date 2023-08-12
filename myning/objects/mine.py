@@ -265,6 +265,7 @@ class Mine(Object):
             self.icon,
             self.name,
             Formatter.gold(self.cost),
+            Icons.LEVEL,
             Formatter.level(self.min_player_level),
             f"[{Colors.XP}]{int(self.exp_boost*100):2}% xp[/]" if self.exp_boost else "",
             Icons.DEATH,

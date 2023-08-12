@@ -66,7 +66,7 @@ class Formatter:
 
     @staticmethod
     def level(lvl: int):
-        return f"{Icons.LEVEL} [{Colors.LEVEL}]{lvl}[/]"
+        return f"[{Colors.LEVEL}]{lvl}[/]"
 
     @staticmethod
     def locked(s: str):
