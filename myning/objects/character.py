@@ -15,7 +15,7 @@ from myning.utils.output import print_level_up
 from myning.utils.ui import columnate, get_health_bar
 from myning.utils.ui_consts import Icons
 from myning.utils.utils import get_random_int
-from new_tui.formatter import Colors
+from new_tui.formatter import Colors, Emoji
 
 term = Terminal()
 STRENGTH_DIVISOR = 4
@@ -253,7 +253,7 @@ class Character(Object):
 
     @property
     def icon(self):
-        return SpeciesEmoji(f"{self.species.icon}")
+        return self.species.icon
 
     @property
     def health_str(self):
@@ -303,13 +303,14 @@ class Character(Object):
             "🪦" if self.is_ghost else " ",
         ]
 
-
-class SpeciesEmoji:
-    def __init__(self, symbol: str) -> None:
-        self.symbol = symbol
-
-    def __str__(self):
-        return self.symbol
-
-    def __len__(self):
-        return 1
+    @property
+    def armory_tui_arr(self):
+        return [
+            Emoji(self.icon),
+            self.name,
+            self.damage_str,
+            self.armor_str,
+            self.level_str,
+            self.exp_str,
+            self.ghost_str,
+        ]

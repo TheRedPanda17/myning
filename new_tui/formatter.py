@@ -1,19 +1,26 @@
 from enum import Enum
 from itertools import zip_longest
+from typing import TypeVar
 
 from rich.text import Text
-
 from myning.utils.ui_consts import Icons
 
 
-def columnate(items: list[list[str | Text | Icons]], *, sep=" ") -> list[Text]:
+class Emoji(str):
+    pass
+
+
+T = TypeVar("T", str, Text, Icons)
+
+
+def columnate(items: list[list[T]], *, sep=" ") -> list[Text]:
     widths = []
     for col in zip_longest(*items, fillvalue=""):
         max_width = 0
         for cell in col:
             width = (
                 2
-                if isinstance(cell, Icons)
+                if isinstance(cell, (Icons, Emoji))
                 else len(cell)
                 if isinstance(cell, Text)
                 else len(Text.from_markup(cell))
@@ -59,11 +66,7 @@ class Formatter:
 
     @staticmethod
     def level(lvl: int):
-        return f"[{Colors.LEVEL}]lvl {lvl}[/]"
-
-    @staticmethod
-    def xp(xp: int):
-        return f"[{Colors.XP}]{xp} xp[/]"
+        return f"{Icons.LEVEL} [{Colors.LEVEL}]{lvl}[/]"
 
     @staticmethod
     def locked(s: str):

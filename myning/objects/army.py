@@ -12,11 +12,11 @@ from myning.utils.ui_consts import Icons
 class Army(UserList[Character]):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.sort(key=lambda e: (e.level, e.experience), reverse=True)
+        self.sort(key=lambda c: (c.__class__.__name__ != "Player", -c.level))
 
     def append(self, __object: Character) -> None:
         super().append(__object)
-        self.sort(key=lambda e: (e.level, e.experience), reverse=True)
+        self.sort(key=lambda c: (c.__class__.__name__ != "Player", -c.level))
 
     @property
     def abbreviated(self):

@@ -14,6 +14,10 @@ MARKDOWN_RATIO = 1 / 2
 player = Player()
 
 
+def enter():
+    return Store().enter()
+
+
 class Store:
     def __init__(self):
         self.level = player.level
@@ -36,7 +40,6 @@ class Store:
         )
 
     def exit(self):
-        FileManager.save(player)
         FileManager.multi_delete(*self.inventory.items)
         return town.enter()
 
@@ -148,6 +151,7 @@ class Store:
         player.gold += sell_price(item)
         player.inventory.remove_item(item)
         self.inventory.add_item(item)
+        FileManager.save(player)
         return self.enter()
 
     def confirm_mass_sell(self, description: str, items: list[Item], tax: float):
@@ -170,6 +174,7 @@ class Store:
         for item in items:
             player.inventory.remove_item(item)
             self.inventory.add_item(item)
+        FileManager.save(player)
         return self.enter()
 
 

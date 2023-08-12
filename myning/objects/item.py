@@ -138,7 +138,7 @@ class Item(Object):
                 return Icons.UNKNOWN
 
     def __str__(self):
-        return f"{self.icon} {self.name} - {self.color}{self.main_affect}{term.normal}"
+        return f"{self.icon} {self.name} - [{self.tui_color}]{self.main_affect}[/]"
 
     @property
     def str_arr(self):

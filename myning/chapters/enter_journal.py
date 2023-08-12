@@ -1,12 +1,12 @@
 from blessed import Terminal
 
 from myning.config import SPECIES
-from myning.objects.character import SpeciesEmoji
 from myning.objects.player import Player
 from myning.objects.scroll import Scroll
 from myning.objects.species import Species
 from myning.utils.io import pick
 from myning.utils.ui import columnate
+from new_tui.formatter import Emoji
 
 term = Terminal()
 
@@ -20,9 +20,7 @@ def play():
         options = columnate(
             [
                 [
-                    SpeciesEmoji(species.icon)
-                    if species in player.discovered_species
-                    else SpeciesEmoji("🔒"),
+                    Emoji(species.icon) if species in player.discovered_species else Emoji("🔒"),
                     species.name
                     if species in player.discovered_species
                     else term.dimgray("*" * len(species.name)),

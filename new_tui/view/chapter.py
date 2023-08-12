@@ -57,12 +57,8 @@ class ChapterWidget(ScrollableContainer):
         self.border_title = "Town"
         self.pick(town.enter())
         # For dev, select options by 0-based index to skip to the screen
-        # from myning.objects.trip import Trip
-
-        # if not Trip().seconds_left:
-        #     self.select(0)
-        #     self.select(-3)
-        #     self.select(0)
+        # self.select(2)
+        # self.select(0)
 
     async def on_key(self, event: events.Key):
         event.stop()
