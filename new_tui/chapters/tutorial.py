@@ -5,7 +5,16 @@ from myning.objects.game import Game, GameState
 from myning.objects.item import Item, ItemType
 from myning.objects.player import Player
 from myning.utils.file_manager import FileManager
-from new_tui.chapters import PickArgs, PickHandler, StoryArgs, armory, healer, mine, store, town
+from new_tui.chapters import (
+    PickArgs,
+    PickHandler,
+    StoryArgs,
+    armory,
+    healer,
+    main_menu,
+    mine,
+    store,
+)
 from new_tui.utilities import story_builder
 
 game = Game()
@@ -142,4 +151,4 @@ def learn_bindings():
 def exit_tutorial():
     game._state = GameState.READY  # pylint: disable=protected-access
     FileManager.multi_save(game, player, *player.inventory.items)
-    return town.enter()
+    return main_menu.enter()

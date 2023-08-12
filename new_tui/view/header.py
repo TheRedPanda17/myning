@@ -1,6 +1,5 @@
 from datetime import datetime
 
-from textual.containers import Container, Grid
 from textual.widgets import Static
 
 

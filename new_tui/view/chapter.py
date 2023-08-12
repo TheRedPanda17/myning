@@ -9,7 +9,8 @@ from textual.reactive import Reactive
 from textual.widgets import OptionList, Static
 
 from myning.objects.player import Player
-from new_tui.chapters import DynamicArgs, ExitArgs, Handler, PickArgs, town, tutorial
+from myning.utils.tab_title import TabTitle
+from new_tui.chapters import DynamicArgs, ExitArgs, Handler, PickArgs, main_menu, tutorial
 from new_tui.formatter import Colors
 from new_tui.utilities import throttle
 from new_tui.view.army import ArmyWidget
@@ -54,12 +55,9 @@ class ChapterWidget(ScrollableContainer):
 
     def on_mount(self):
         self.update_dashboard()
-        if tutorial.is_complete():
-            self.border_title = "Town"
-            self.pick(town.enter())
-        else:
-            self.border_title = "Tutorial"
-            self.pick(tutorial.enter())
+        args = main_menu.enter() if tutorial.is_complete() else tutorial.enter()
+        self.border_title = args.border_title
+        self.pick(args)
         # For dev, select options by 0-based index to skip to the screen
         # self.select(2)
         # self.select(0)
@@ -79,7 +77,7 @@ class ChapterWidget(ScrollableContainer):
         elif key == "shift_tab":
             self.app.action_focus_previous()
         elif key in ("escape", "q"):
-            if self.question.message == town.enter().message:
+            if self.question.message == main_menu.enter().message:
                 return  # Prevent exiting with escape or q in main menu
             self.select(-1)
         elif key in self.hotkeys:
@@ -125,13 +123,17 @@ class ChapterWidget(ScrollableContainer):
             self.pick(PickArgs(message="", options=[]))  # Clear the question widget
             args.callback(self)
         else:
+            title = None
             if args.border_title:
-                self.border_title = args.border_title
+                title = args.border_title
             elif (module := handler.__module__.rpartition(".")[-1]) not in (
                 "functools",
                 "utilities",
             ):
-                self.border_title = module.replace("_", " ").title()
+                title = module.replace("_", " ").title()
+            if title:
+                self.border_title = title
+                TabTitle.change_tab_status(title)
             self.pick(args)
 
 

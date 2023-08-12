@@ -6,7 +6,7 @@ from myning.objects.item import Item, ItemType
 from myning.objects.player import Player
 from myning.utils.file_manager import FileManager
 from myning.utils.generators import generate_equipment
-from new_tui.chapters import Option, PickArgs, town, tutorial
+from new_tui.chapters import Option, PickArgs, main_menu, tutorial
 from new_tui.formatter import Formatter, columnate
 
 MARKDOWN_RATIO = 1 / 2
@@ -41,7 +41,7 @@ class Store:
 
     def exit(self):
         FileManager.multi_delete(*self.inventory.items)
-        return (town.enter if tutorial.is_complete() else tutorial.learn_armory)()
+        return (main_menu.enter if tutorial.is_complete() else tutorial.learn_armory)()
 
     def pick_buy(self):
         items = self.inventory.items

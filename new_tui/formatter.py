@@ -3,6 +3,7 @@ from itertools import zip_longest
 from typing import TypeVar
 
 from rich.text import Text
+
 from myning.utils.ui_consts import Icons
 
 

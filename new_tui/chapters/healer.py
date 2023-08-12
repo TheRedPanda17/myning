@@ -11,7 +11,7 @@ from myning.config import UPGRADES
 from myning.objects.army import Army
 from myning.objects.player import Player
 from myning.utils.file_manager import FileManager
-from new_tui.chapters import DynamicArgs, Option, PickArgs, town, tutorial
+from new_tui.chapters import DynamicArgs, Option, PickArgs, main_menu, tutorial
 from new_tui.formatter import Formatter
 from new_tui.utilities import throttle
 from new_tui.view.header import Header
@@ -29,7 +29,7 @@ def members_to_heal(members: Army):
 def healthy():
     return PickArgs(
         message="Everyone is healthy.",
-        options=[("Okay", town.enter if tutorial.is_complete() else tutorial.learn_bindings)],
+        options=[("Okay", main_menu.enter if tutorial.is_complete() else tutorial.learn_bindings)],
     )
 
 
@@ -51,7 +51,7 @@ def enter():
             options.append(("Slowly (free)", slow_heal))
     else:
         options = [("Yes (free)", slow_heal)]
-    options.append(("No", town.enter if tutorial.is_complete() else tutorial.learn_bindings))
+    options.append(("No", main_menu.enter if tutorial.is_complete() else tutorial.learn_bindings))
 
     return PickArgs(message="Start Recovery?", options=options)
 

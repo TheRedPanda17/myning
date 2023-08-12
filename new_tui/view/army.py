@@ -1,5 +1,5 @@
-from textual.widgets import DataTable
 from rich.text import Text
+from textual.widgets import DataTable
 
 from myning.objects.player import Player
 from myning.utils.ui_consts import Icons
