@@ -14,6 +14,7 @@ class InventoryWidget(DataTable):
         self.add_column("i")
         self.add_column("n", width=32)
         self.add_column("v")
+        self.update()
 
     def on_click(self):
         self.focus()

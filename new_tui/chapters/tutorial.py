@@ -143,7 +143,7 @@ def learn_healer():
 
 def learn_bindings():
     return PickArgs(
-        message=f"{jrod.name}: Alright! Before I let you go, note that there are key bindings at the bottom of the screen, depending on what you're doing. You should have everything you need now. Good luck!",
+        message=f"{jrod.name}: Alright! Before I let you go, note that there are key bindings at the bottom of the screen, depending on what you're doing. You can press [dodger_blue1]F1[/] to see more. Also, many of the elements on the screen can be interacted with using the mouse.\n\nYou should have everything you need now. Good luck!",
         options=[("Thanks!", exit_tutorial)],
     )
 

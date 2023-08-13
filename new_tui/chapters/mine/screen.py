@@ -42,7 +42,7 @@ def time_str(seconds: int):  # sourcery skip: assign-if-exp, reintroduce-else
     return f"{seconds}s"
 
 
-class MineScreen(Screen):
+class MineScreen(Screen[bool]):
     BINDINGS = [
         ("ctrl+q", "abandon", "Abandon Mine"),
         ("enter", "skip", "Mine/Fight"),

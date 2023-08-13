@@ -38,7 +38,7 @@ Question {
   max-width: 100;
 }
 
-SideContainer {
+SideBar {
   width: 1fr;
   min-width: 48;
 }
@@ -81,4 +81,17 @@ ProgressBar {
 
 Bar {
   width: 1fr;
+}
+
+/* HelpScreen */
+
+HelpScreen {
+  align: center middle;
+}
+
+HelpScreen > Static {
+  padding: 0 1;
+  width: 60;
+  border: round dodgerblue;
+  background: $surface;
 }

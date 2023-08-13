@@ -12,7 +12,6 @@ class ArmyWidget(DataTable):
     can_focus = True
 
     def on_mount(self):
-        # self.show_header = False
         self.show_cursor = False
         self.add_column("")
         self.add_column("Name")
@@ -22,6 +21,7 @@ class ArmyWidget(DataTable):
         self.add_column(Text(Icons.LEVEL, justify="center"))
         self.add_column(Text(Icons.XP, justify="center"))
         self.add_column(Text(Icons.GRAVEYARD, justify="center"))
+        self.update()
 
     def on_click(self):
         self.focus()

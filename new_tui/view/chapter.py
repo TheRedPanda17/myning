@@ -9,8 +9,9 @@ from textual.reactive import Reactive
 from textual.widgets import OptionList, Static
 
 from myning.objects.player import Player
+from myning.objects.trip import Trip
 from myning.utils.tab_title import TabTitle
-from new_tui.chapters import DynamicArgs, ExitArgs, Handler, PickArgs, main_menu, tutorial
+from new_tui.chapters import DynamicArgs, ExitArgs, Handler, PickArgs, main_menu, mine, tutorial
 from new_tui.formatter import Colors
 from new_tui.utilities import throttle
 from new_tui.view.army import ArmyWidget
@@ -18,6 +19,7 @@ from new_tui.view.currency import CurrencyWidget
 from new_tui.view.inventory import InventoryWidget
 
 player = Player()
+trip = Trip()
 
 
 class Question(Static):
@@ -54,10 +56,16 @@ class ChapterWidget(ScrollableContainer):
         yield self.option_list
 
     def on_mount(self):
-        self.update_dashboard()
-        args = main_menu.enter() if tutorial.is_complete() else tutorial.enter()
-        self.border_title = args.border_title
-        self.pick(args)
+        if trip.seconds_left > 0:
+            self.app.push_screen(
+                mine.MineScreen(),
+                lambda abandoned: self.pick(mine.complete_trip(abandoned)),
+            )
+        else:
+            self.update_dashboard()
+            args = main_menu.enter() if tutorial.is_complete() else tutorial.enter()
+            self.border_title = args.border_title
+            self.pick(args)
         # For dev, select options by 0-based index to skip to the screen
         # self.select(2)
         # self.select(0)
@@ -82,7 +90,7 @@ class ChapterWidget(ScrollableContainer):
             self.select(-1)
         elif key in self.hotkeys:
             self.select(self.hotkeys[key])
-        elif key.isdigit():
+        elif key.isdigit() and key != "0":
             self.option_list.highlighted = int(key) - 1
         elif binding := self.option_list._bindings.keys.get(  # pylint: disable=protected-access
             key
@@ -94,7 +102,7 @@ class ChapterWidget(ScrollableContainer):
 
     @throttle(0.1)
     def update_dashboard(self):
-        if self.app.screen.name == "myning":
+        if self.app.query("SideBar"):
             self.app.query_one("ArmyWidget", ArmyWidget).update()
             self.app.query_one("CurrencyWidget", CurrencyWidget).refresh()
             self.app.query_one("InventoryWidget", InventoryWidget).update()

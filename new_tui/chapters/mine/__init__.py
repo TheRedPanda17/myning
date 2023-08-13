@@ -1,5 +1,6 @@
 from functools import partial
 from itertools import zip_longest
+from typing import TYPE_CHECKING
 
 from rich.table import Table
 
@@ -15,7 +16,9 @@ from new_tui.chapters import DynamicArgs, Option, PickArgs, StoryArgs, healer, m
 from new_tui.chapters.mine.screen import MineScreen
 from new_tui.formatter import Colors, columnate
 from new_tui.utilities import story_builder
-from new_tui.view.chapter import ChapterWidget
+
+if TYPE_CHECKING:
+    from new_tui.view.chapter import ChapterWidget
 
 player = Player()
 trip = Trip()
@@ -103,7 +106,7 @@ def start_mine(mine: Mine, minutes: int):
     return DynamicArgs(callback=mine_callback)
 
 
-def mine_callback(chapter: ChapterWidget):
+def mine_callback(chapter: "ChapterWidget"):
     def screen_callback(abandoned: bool):
         return chapter.pick(complete_trip(abandoned))
 

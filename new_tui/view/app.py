@@ -1,22 +1,18 @@
+from rich.table import Table
 from textual import events
 from textual.app import App
 from textual.binding import Binding
-from textual.screen import Screen
+from textual.screen import ModalScreen, Screen
 from textual.widgets import Footer, Static
 
-from myning.objects.trip import Trip
-from new_tui.chapters import mine
-from new_tui.chapters.mine.screen import MineScreen
 from new_tui.view.army import ArmyWidget
 from new_tui.view.chapter import ChapterWidget
 from new_tui.view.currency import CurrencyWidget
 from new_tui.view.header import Header
 from new_tui.view.inventory import InventoryWidget
 
-trip = Trip()
 
-
-class SideContainer(Static):
+class SideBar(Static):
     def compose(self):
         yield ArmyWidget()
         yield CurrencyWidget()
@@ -26,14 +22,13 @@ class SideContainer(Static):
 class Body(Static):
     def compose(self):
         yield ChapterWidget()
-        yield SideContainer()
+        yield SideBar()
 
 
 class MyningScreen(Screen):
     BINDINGS = [
-        Binding("ctrl+c", "quit", "Quit", priority=True),
-        Binding("tab", "focus_next", "Focus Next"),
-        Binding("shift+tab", "focus_previous", "Focus Previous", show=False),
+        Binding("ctrl+b", "toggle_sidebar", "Toggle Sidebar", priority=True),
+        Binding("f1", "help", "Help", priority=True),
     ]
 
     def compose(self):
@@ -41,7 +36,7 @@ class MyningScreen(Screen):
         yield Body()
         yield Footer()
 
-    async def on_key(self, key: events.Key):
+    async def on_key(self, event: events.Key):
         focused = self.focused
         if not focused:
             return
@@ -55,25 +50,58 @@ class MyningScreen(Screen):
             "g": "home",
             "upper_g": "end",
         }
-        _key = aliases.get(key.name, key.name)
-        if binding := focused._bindings.keys.get(_key):  # pylint: disable=protected-access
+        key = aliases.get(event.name)
+        if key and (binding := focused._bindings.keys.get(key)):  # pylint: disable=protected-access
             await focused.run_action(binding.action)
+
+    async def action_toggle_sidebar(self):
+        if sidebar := self.query("SideBar"):
+            sidebar.remove()
+        else:
+            await self.query_one("Body", Body).mount(SideBar())
+            self.query_one("ChapterWidget", ChapterWidget).update_dashboard()
+
+    def action_help(self) -> None:
+        """Action to display the help dialog."""
+        self.app.push_screen(HelpScreen())
+
+
+class HelpScreen(ModalScreen):
+    def compose(self):
+        table = Table.grid(padding=(0, 2))
+        table.add_row("[bold dodger_blue1]Keyboard Shortcuts[/]")
+        table.add_row("\n[bold dodger_blue1]Movement[/]")
+        table.add_row("↑ or k", "Up")
+        table.add_row("↓ or j", "Down")
+        table.add_row("← or h", "Left")
+        table.add_row("→ or l", "Right")
+        table.add_row("Page up   or Ctrl+u", "Scroll up")
+        table.add_row("Page down or Ctrl+d", "Scroll down")
+        table.add_row("Home or g", "Go to top")
+        table.add_row("End  or G", "Go to bottom")
+        table.add_row("\n[bold dodger_blue1]Focus[/]")
+        table.add_row("Tab", "Focus next")
+        table.add_row("Shift+Tab", "Focus previous")
+        table.add_row("\n[bold dodger_blue1]Selection[/]")
+        table.add_row("Enter", "Select highlighted option")
+        table.add_row("Escape or q", "Go back (selects last option)")
+        table.add_row("Numbers 1-9", "Highlight option #")
+        table.add_row("Underlined hotkeys", "Select hotkey option")
+        table.add_row("\n[bold dodger_blue1]Press any key to close[/]")
+        yield Static(table)
+
+    def on_key(self):
+        if self.app.screen is self:  # Prevent crash from holding F1
+            self.dismiss()
 
 
 class MyningApp(App):
+    BINDINGS = [Binding("ctrl+c", "quit", "Quit", priority=True)]
     CSS_PATH = [
         "app.css",
         "header.css",
     ]
-    SCREENS = {"myning": MyningScreen(name="myning")}
     TITLE = "Myning"
 
-    async def on_mount(self):
-        self.push_screen("myning")
-        if trip.seconds_left > 0:
-
-            def screen_callback(abandoned: bool):
-                chapter = self.query_one("ChapterWidget", ChapterWidget)
-                return chapter.pick(mine.complete_trip(abandoned))
-
-            self.push_screen(MineScreen(), screen_callback)
+    def on_mount(self):
+        self.push_screen(MyningScreen())

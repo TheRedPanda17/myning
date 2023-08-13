@@ -76,7 +76,7 @@ def healer_callback(chapter: "ChapterWidget"):
     chapter.app.push_screen(HealerScreen(), screen_callback)
 
 
-class HealerScreen(Screen):
+class HealerScreen(Screen[None]):
     BINDINGS = [("enter", "skip", "Heal")]
 
     def __init__(self) -> None:
