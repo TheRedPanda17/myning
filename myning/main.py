@@ -17,18 +17,25 @@ def main():
 
     FileManager.setup()
     Player.initialize()
-    ResearchFacility.initialize()
-    Garden.initialize()
+
     Game.initialize()
-    Trip.initialize()
+    Garden.initialize()
     Macguffin.initialize()
-    Stats.initialize()
+    ResearchFacility.initialize()
     Settings.initialize()
+    Stats.initialize()
+    Trip.initialize()
 
     try:
         Game.play()
     except KeyboardInterrupt:
-        FileManager.save(Game())
         FileManager.save(Player())
+
+        FileManager.save(Game())
+        FileManager.save(Garden())
+        FileManager.save(Macguffin())
+        FileManager.save(ResearchFacility())
+        FileManager.save(Settings())
+        FileManager.save(Stats())
         FileManager.save(Trip())
         print("Game saved. Thank you for playing Myning!")

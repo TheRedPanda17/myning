@@ -25,6 +25,7 @@ def check_for_updates():
     old_changelog = get_changelog()
     os.system("git pull")
     print(term.clear)
+    os.system("pip install -r requirements.txt")
     changelog = get_changelog()
     changelog.reverse()
 
