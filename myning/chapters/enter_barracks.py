@@ -25,7 +25,9 @@ def play():
             options = []
 
         if player.has_upgrade("auto_exp"):
-            options.append("Auto-Add Exp")
+            options.append("Auto-Add Xp")
+        if player.has_upgrade("auto_ghost_xp"):
+            options.append("Auto-Add Xp to Ghosts Only")
         options.append("Hire Muscle")
         options.append("Fire Muscle")
         options.append("Buy Exp")
@@ -45,6 +47,8 @@ def play():
             buy_exp(player)
         elif option == "Auto-Add Exp":
             auto_add_exp()
+        elif option == "Auto-Add Xp to Ghosts Only":
+            auto_add_ghost_xp()
         else:
             add_exp(player.army[index])
 
@@ -113,6 +117,37 @@ def auto_add_exp():
     player.army.reverse()
     while player.exp_available > 0:
         member = min(player.army, key=lambda m: m.level)
+        if member.level >= player.level and member.name != player.name:
+            member = player
+
+        exp = fibonacci(member.level + 1)
+        exp -= member.experience
+        if exp > player.exp_available:
+            exp = player.exp_available
+        player.remove_available_exp(exp)
+        member.add_experience(exp, display=False)
+
+
+def auto_add_ghost_xp():
+    player = Player()
+
+    option, _ = pick(
+        ["Yes", "No"], "Are you sure you want to auto-add all your xp to your revived companions?"
+    )
+    if option == "No":
+        return
+    if player.exp_available == 0:
+        pick(
+            ["I should have thought of that..."],
+            "You have no experience to distribute",
+        )
+        return
+
+    player.army.reverse()
+    ghosts = list(filter(lambda m: m.is_ghost, player.army))
+
+    while player.exp_available > 0:
+        member = min(ghosts, key=lambda m: m.level)
         if member.level >= player.level and member.name != player.name:
             member = player
 

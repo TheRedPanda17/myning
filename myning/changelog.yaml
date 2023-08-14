@@ -1,3 +1,7 @@
+- name: Auto Ghost XP Upgrade
+  description: Added a new upgrade to automatically distrubute XP to Ghosts only.
+  date: 08-14-23
+
 - name: Stats
   description: We are now logging more stats so that someday, a highscores feature can be added
   date: 08-09-23

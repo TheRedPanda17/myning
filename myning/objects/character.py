@@ -13,7 +13,7 @@ from myning.utils.file_manager import FileManager
 from myning.utils.output import print_level_up
 from myning.utils.ui import columnate, get_health_bar
 from myning.utils.ui_consts import Colors, Icons
-from myning.utils.utils import get_random_array_item, get_random_int
+from myning.utils.utils import get_random_int
 
 term = Terminal()
 STRENGTH_DIVISOR = 4

@@ -177,3 +177,12 @@ buy_full_set:
     - 1
   costs:
     - 100000
+
+auto_ghost_xp:
+  name: Auto Ghost XP
+  descriptions:
+    - Automatically distribute your xp among your revived allies.
+  values:
+    - 1
+  costs:
+    - 200000
