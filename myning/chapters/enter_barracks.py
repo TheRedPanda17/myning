@@ -45,7 +45,7 @@ def play():
                 player.fire_ally(member)
         elif option == "Buy Exp":
             buy_exp(player)
-        elif option == "Auto-Add Exp":
+        elif option == "Auto-Add Xp":
             auto_add_exp()
         elif option == "Auto-Add Xp to Ghosts Only":
             auto_add_ghost_xp()
