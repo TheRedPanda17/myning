@@ -14,7 +14,7 @@ from myning.utils.race_rarity import RACE_TIERS
 from myning.utils.ui_consts import Icons
 from new_tui.chapters import DynamicArgs, Option, PickArgs, StoryArgs, healer, main_menu, tutorial
 from new_tui.chapters.mine.screen import MineScreen
-from new_tui.formatter import Colors, columnate
+from new_tui.formatter import Colors
 from new_tui.utilities import story_builder
 
 if TYPE_CHECKING:
@@ -29,39 +29,14 @@ def exit_mine():
 
 
 def pick_mine():
-    # ProgressBar cannot be columnated, but individual Table rows cannot be extracted to print
-    # separately. Since we know that progress is always the same length, columnate everything else
-    # then combine into single-row Tables
-    rows = columnate(
-        [mine.tui_arr for mine in player.mines_available]
-        + [
-            ["", "Unlock New Mine"],
-            ["", "Go Back"],
-        ]
-    )
-    rows_with_progress = []
-    for row, mine in zip_longest(rows, player.mines_available):
-        table = Table.grid(padding=(0, 1, 0, 0))
-        if mine and mine.win_criteria:
-            if mine.complete:
-                table.add_row(row, "✨ cleared ✨")
-            else:
-                table.add_row(row, mine.progress_bar)
-        else:
-            table.add_row(row, "")
-        for col in table.columns:
-            col.no_wrap = True
-        rows_with_progress.append(table)
-
-    handlers = [partial(pick_time, mine) for mine in player.mines_available] + [
-        pick_unlock_mine,
-        exit_mine,
+    options = [(mine.tui_arr, partial(pick_time, mine)) for mine in player.mines_available] + [
+        (["", "Unlock New Mine"], pick_unlock_mine),
+        (["", "Go Back"], exit_mine),
     ]
     has_death_mine = any(mine.has_death_action for mine in player.mines_available)
-
     return PickArgs(
         message="Which mine would you like to enter?",
-        options=list(zip(rows_with_progress, handlers)),
+        options=options,  # type: ignore
         subtitle=f"{Icons.DEATH}: Risk of Companion Demise" if has_death_mine else None,
     )
 
@@ -115,12 +90,14 @@ def mine_callback(chapter: "ChapterWidget"):
 
 def pick_unlock_mine():
     mines: list[Mine] = [mine for mine in MINES.values() if mine not in player.mines_available]
-
-    rows = columnate([mine.get_unlock_tui_arr(player.level) for mine in mines] + [["", "Go Back"]])
-    handlers = [partial(unlock_mine, mine) for mine in mines] + [pick_mine]
+    options = [
+        (mine.get_unlock_tui_arr(player.level), partial(unlock_mine, mine)) for mine in mines
+    ] + [
+        (["", "Go Back"], pick_mine),
+    ]
     return PickArgs(
         message="Which mine would you like to unlock?",
-        options=list(zip(rows, handlers)),
+        options=options,  # type:ignore
         subtitle=f"""{Icons.MINERAL}: Normal Mine
 {Icons.RESOURCE}: Resource Mine
 {Icons.DAMAGE}: Combat Zone

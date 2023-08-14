@@ -107,9 +107,9 @@ class MineScreen(Screen[bool]):
             self.exit()
         elif not isinstance(self.action, VictoryAction):
             trip.tick_passed(self.action.duration)
+        self.action = self.next_action
         self.flash_border()
         self.update_screen()
-        self.action = self.next_action
 
     def confirm_abandon(self):
         self.content.update(

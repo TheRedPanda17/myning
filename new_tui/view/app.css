@@ -11,21 +11,8 @@ ScrollableContainer {
   padding: 0 0 0 1;
 }
 
-DataTable {
-  height: 1fr;
-}
-
-.container:focus,
 ScrollableContainer:focus {
   border: round lime;
-}
-
-ScrollableContainer > Static {
-  width: auto;
-}
-
-ScrollableContainer > Question {
-  width: 1fr;
 }
 
 /* MyningScreen */
@@ -34,8 +21,23 @@ ChapterWidget {
   width: 3fr;
 }
 
-Question {
+ChapterWidget > Question {
   max-width: 100;
+}
+
+ChapterWidget > DataTable {
+  border: none;
+  margin: 1 0 0 -1;
+  height: 1fr;
+  padding: 0;
+}
+
+ChapterWidget > DataTable > .datatable--cursor {
+  background: $primary-lighten-1;
+}
+
+ChapterWidget > DataTable > .datatable--hover {
+  background: $boost;
 }
 
 SideBar {
@@ -43,24 +45,12 @@ SideBar {
   min-width: 48;
 }
 
-DataTable > .datatable--header {
+SideBar > DataTable {
+  height: 1fr;
+}
+
+SideBar > DataTable > .datatable--header {
   background: 0%;
-}
-
-OptionList {
-  background: black 0%;
-  border: none;
-  margin: 1 0;
-  max-height: 75%;
-  padding: 0;
-}
-
-OptionList:focus {
-  border: none;
-}
-
-OptionList > .option-list--option-highlighted {
-  background: $primary-lighten-1;
 }
 
 /* MineScreen */
@@ -91,7 +81,7 @@ HelpScreen {
 
 HelpScreen > Static {
   padding: 0 1;
-  width: 60;
+  width: 64;
   border: round dodgerblue;
   background: $surface;
 }

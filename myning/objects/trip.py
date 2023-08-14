@@ -1,7 +1,8 @@
-from blessed import Terminal
 from collections import Counter
 
+from blessed import Terminal
 from rich.table import Table
+
 from myning.config import MINES
 from myning.objects.character import Character
 from myning.objects.item import Item, ItemType

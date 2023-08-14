@@ -36,5 +36,4 @@ class ArmyWidget(DataTable):
             f"{Icons.ARMOR} [{Colors.ARMOR}]{player.army.total_armor}[/]"
         )
         self.clear()
-        for member in player.army:
-            self.add_row(*member.tui_arr)
+        self.add_rows(member.tui_arr for member in player.army)

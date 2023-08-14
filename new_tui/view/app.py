@@ -27,8 +27,8 @@ class Body(Static):
 
 class MyningScreen(Screen):
     BINDINGS = [
-        Binding("ctrl+b", "toggle_sidebar", "Toggle Sidebar", priority=True),
         Binding("f1", "help", "Help", priority=True),
+        Binding("f2", "toggle_sidebar", "Toggle Sidebar", priority=True),
     ]
 
     def compose(self):
@@ -75,10 +75,12 @@ class HelpScreen(ModalScreen):
         table.add_row("↓ or j", "Down")
         table.add_row("← or h", "Left")
         table.add_row("→ or l", "Right")
-        table.add_row("Page up   or Ctrl+u", "Scroll up")
-        table.add_row("Page down or Ctrl+d", "Scroll down")
-        table.add_row("Home or g", "Go to top")
-        table.add_row("End  or G", "Go to bottom")
+        table.add_row("Page up   (fn ↑) or Ctrl+u", "Scroll up")
+        table.add_row("Page down (fn ↓) or Ctrl+d", "Scroll down")
+        table.add_row("                    Ctrl+b", "Scroll left")
+        table.add_row("                    Ctrl+f", "Scroll right")
+        table.add_row("Home      (fn ←) or g", "Go to top")
+        table.add_row("End       (fn →) or G", "Go to bottom")
         table.add_row("\n[bold dodger_blue1]Focus[/]")
         table.add_row("Tab", "Focus next")
         table.add_row("Shift+Tab", "Focus previous")

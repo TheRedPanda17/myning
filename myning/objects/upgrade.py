@@ -1,4 +1,5 @@
 from enum import Enum
+
 from rich.text import Text
 
 from myning.objects.object import Object

@@ -7,7 +7,7 @@ from myning.objects.player import Player
 from myning.objects.upgrade import Upgrade
 from myning.utils.file_manager import FileManager
 from new_tui.chapters import Option, PickArgs, main_menu
-from new_tui.formatter import Colors, Formatter, columnate
+from new_tui.formatter import Colors, Formatter
 
 UPGRADES: dict[str, Upgrade]
 
@@ -16,9 +16,7 @@ player = Player()
 
 def enter():
     available_upgrades = [upgrade for upgrade in UPGRADES.values() if not upgrade.max_level]
-    rows = columnate([upgrade.arr for upgrade in available_upgrades])
-    handlers = [partial(confirm_buy, upgrade) for upgrade in available_upgrades]
-    options: list[Option] = list(zip(rows, handlers))
+    options: list[Option] = [(u.arr, partial(confirm_buy, u)) for u in available_upgrades]
     options.append(("Go Back", main_menu.enter))
 
     purchased_upgrades = [upgrade for upgrade in UPGRADES.values() if upgrade.level > 0]

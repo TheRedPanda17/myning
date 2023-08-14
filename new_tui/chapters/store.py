@@ -7,7 +7,7 @@ from myning.objects.player import Player
 from myning.utils.file_manager import FileManager
 from myning.utils.generators import generate_equipment
 from new_tui.chapters import Option, PickArgs, main_menu, tutorial
-from new_tui.formatter import Formatter, columnate
+from new_tui.formatter import Formatter
 
 MARKDOWN_RATIO = 1 / 2
 
@@ -44,22 +44,18 @@ class Store:
         return (main_menu.enter if tutorial.is_complete() else tutorial.learn_armory)()
 
     def pick_buy(self):
-        items = self.inventory.items
-        item_arrs = []
-        for item in items:
-            item_arr = [*item.tui_arr, f"({Formatter.gold(item.value)})"]
-            if player.has_upgrade("advanced_store_hints") and is_best_item(item):
-                item_arr.append("🔥")
-            elif player.has_upgrade("store_hints") and is_useful_item(item):
-                item_arr.append("✨")
-            item_arrs.append(item_arr)
-        rows = columnate(item_arrs)
-        options = [(row, partial(self.confirm_buy, item)) for row, item in zip(rows, items)]
+        options = [
+            (
+                [*item.tui_arr, f"({Formatter.gold(item.value)})", hint_symbol(item)],
+                partial(self.confirm_buy, item),
+            )
+            for item in self.inventory.items
+        ]
         return PickArgs(
             message="What would you like to buy?",
             options=[
                 *options,
-                ("Go Back", self.enter),
+                (["", "Go Back"], self.enter),
             ],
         )
 
@@ -85,12 +81,12 @@ class Store:
         return self.enter()
 
     def pick_sell(self):
-        items = player.inventory.items
-        rows = columnate(
-            [[*item.tui_arr, f"({Formatter.gold(sell_price(item))})"] for item in items]
-        )
         options: list[Option] = [
-            (row, partial(self.confirm_sell, item)) for row, item in zip(rows, items)
+            (
+                [*item.tui_arr, f"({Formatter.gold(sell_price(item))})"],
+                partial(self.confirm_sell, item),
+            )
+            for item in player.inventory.items
         ]
         if player.has_upgrade("sell_minerals"):
             # pylint: disable=protected-access
@@ -134,7 +130,7 @@ class Store:
             message="What would you like to sell?",
             options=[
                 *options,
-                ("Go Back", self.enter),
+                (["", "Go Back"], self.enter),
             ],
         )
 
@@ -183,16 +179,12 @@ def sell_price(item: Item):
     return int(item.value * multipler) or 1
 
 
-def is_useful_item(item: Item):
-    if item.type in (ItemType.MINERAL, ItemType.PLANT):
-        return False
-
-    for character in player.army:
-        equipped = character.equipment.get_slot_item(item.type)
-        if equipped is None or item.main_affect > equipped.main_affect:
-            return True
-
-    return False
+def hint_symbol(item: Item):
+    if player.has_upgrade("advanced_store_hints") and is_best_item(item):
+        return "🔥"
+    if player.has_upgrade("store_hints") and is_useful_item(item):
+        return "✨"
+    return None
 
 
 def is_best_item(item: Item):
@@ -208,3 +200,15 @@ def is_best_item(item: Item):
             best = equipped
 
     return best is None or item.main_affect > best.main_affect
+
+
+def is_useful_item(item: Item):
+    if item.type in (ItemType.MINERAL, ItemType.PLANT):
+        return False
+
+    for character in player.army:
+        equipped = character.equipment.get_slot_item(item.type)
+        if equipped is None or item.main_affect > equipped.main_affect:
+            return True
+
+    return False

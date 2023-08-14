@@ -1,7 +1,7 @@
 from enum import Enum
-from rich.text import Text
 
 from blessed import Terminal
+from rich.text import Text
 
 from myning.objects.object import Object
 from myning.utils.output import stat_string
@@ -39,7 +39,7 @@ class Item(Object):
         self.description = description
         self.type = type
         self.value = value
-        self.affects = {}
+        self.affects: dict[str, int] = {}
         self.id = f"{self.name} - {get_random_int(10000000000000)}"
 
         if main_affect:
@@ -49,7 +49,7 @@ class Item(Object):
         self.affects[stat] = value
 
     def remove_affect(self, stat):
-        self.affects[stat] = None
+        del self.affects[stat]
 
     @property
     def file_name(self):

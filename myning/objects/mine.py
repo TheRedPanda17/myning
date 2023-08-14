@@ -226,7 +226,13 @@ class Mine(Object):
 
     @property
     def tui_arr(self):
-        return [self.icon, self.name, Icons.DEATH, self.death_chance_tui_str]
+        arr = [self.icon, self.name, Icons.DEATH, self.death_chance_tui_str]
+        if self.win_criteria:
+            if self.complete:
+                arr.append("✨ cleared ✨")
+            else:
+                arr.append(self.progress_bar)
+        return arr
 
     def get_unlock_str_arr(self, unlocked: bool):
         if unlocked:

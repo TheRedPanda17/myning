@@ -1,8 +1,7 @@
 from dataclasses import dataclass
-from typing import TYPE_CHECKING, Callable, Optional, TypeVar
+from typing import TYPE_CHECKING, Callable, Optional
 
 from rich.console import RenderableType
-from rich.table import Table
 from rich.text import Text
 
 if TYPE_CHECKING:
@@ -29,7 +28,8 @@ class ExitArgs:
 
 PickHandler = Callable[..., PickArgs]
 Handler = Callable[..., PickArgs | DynamicArgs | ExitArgs]
-Option = tuple[str | Text | Table, Handler]
+OptionLabel = str | Text | list[str | Text]
+Option = tuple[OptionLabel, Handler]
 
 
 @dataclass

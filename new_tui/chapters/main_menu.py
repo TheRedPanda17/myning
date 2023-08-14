@@ -5,7 +5,7 @@ from myning.objects.mine import Mine
 from myning.objects.player import Player
 from myning.utils.ui_consts import Icons
 from new_tui.chapters import ExitArgs, Handler, PickArgs, armory, healer, mine, store, wizard_hut
-from new_tui.formatter import Formatter, columnate
+from new_tui.formatter import Formatter
 
 player = Player()
 
@@ -13,7 +13,7 @@ player = Player()
 class MenuItem:
     def __init__(self, name: str, handler: Handler, prerequisite_mine: Mine | None = None):
         self.name = name
-        self.icon = getattr(Icons, name.upper().replace(" ", "_"))
+        self.icon: Icons = getattr(Icons, name.upper().replace(" ", "_"))
         self.handler = handler
         self.prerequisite_mine = prerequisite_mine
 
@@ -55,11 +55,9 @@ def enter():
         MenuItem("Settings", unimplemented),
         MenuItem("Exit", ExitArgs),
     ]
-    rows = columnate([chapter.arr for chapter in chapters])
-    handlers = [chapter.play for chapter in chapters]
     return PickArgs(
         message="Where would you like to go next?",
-        options=list(zip(rows, handlers)),  # type: ignore
+        options=[(chapter.arr, chapter.play) for chapter in chapters],
         border_title="Main Menu",
     )
 

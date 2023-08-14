@@ -6,7 +6,7 @@ from myning.objects.item import Item, ItemType
 from myning.objects.player import Player
 from myning.utils.file_manager import FileManager
 from new_tui.chapters import Option, PickArgs, main_menu, tutorial
-from new_tui.formatter import Emoji, columnate
+from new_tui.formatter import Emoji
 
 player = Player()
 
@@ -23,14 +23,15 @@ def pick_member():
                     member_arr.append(Emoji("✨"))
                     break
 
-    rows = columnate(member_arrs)
     handlers = [partial(pick_slot, member) for member in player.army]
-    options: list[Option] = list(zip(rows, handlers))
+    options: list[Option] = list(zip(member_arrs, handlers))
 
     if player.has_upgrade("auto_equip"):
-        options.append(("Auto-equip Best Items", auto_equip))
+        options.append((["", "Auto-equip Best Items"], auto_equip))
 
-    options.append(("Go Back", main_menu.enter if tutorial.is_complete() else tutorial.learn_mine))
+    options.append(
+        (["", "Go Back"], main_menu.enter if tutorial.is_complete() else tutorial.learn_mine)
+    )
     return PickArgs(message="Upgrade Your Army Members' Gear", options=options)
 
 

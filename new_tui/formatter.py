@@ -1,46 +1,8 @@
 from enum import Enum
-from itertools import zip_longest
-from typing import TypeVar
-
-from rich.text import Text
-
-from myning.utils.ui_consts import Icons
 
 
 class Emoji(str):
     pass
-
-
-T = TypeVar("T", str, Text, Icons)
-
-
-def columnate(items: list[list[T]], *, sep=" ") -> list[Text]:
-    widths = []
-    for col in zip_longest(*items, fillvalue=""):
-        max_width = 0
-        for cell in col:
-            width = (
-                2
-                if isinstance(cell, (Icons, Emoji))
-                else len(cell)
-                if isinstance(cell, Text)
-                else len(Text.from_markup(cell))
-            )
-            if width > max_width:
-                max_width = width
-        widths.append(max_width)
-    rows = []
-    for row in items:
-        texts = []
-        for item, width in zip(row, widths):
-            text = item if isinstance(item, Text) else Text.from_markup(item)
-            if text.justify == "right":
-                text.pad_left(width - len(text))
-            else:
-                text.truncate(width, pad=True)
-            texts.append(text)
-        rows.append(Text(sep).join(texts))
-    return rows
 
 
 class Colors(str, Enum):

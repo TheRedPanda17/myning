@@ -1,20 +1,27 @@
 import string
 
-from rich.console import RenderableType
-from rich.table import Table
 from rich.text import Text
 from textual import events
 from textual.containers import ScrollableContainer
-from textual.reactive import Reactive
-from textual.widgets import OptionList, Static
+from textual.widgets import DataTable
 
 from myning.objects.player import Player
 from myning.objects.trip import Trip
 from myning.utils.tab_title import TabTitle
-from new_tui.chapters import DynamicArgs, ExitArgs, Handler, PickArgs, main_menu, mine, tutorial
-from new_tui.formatter import Colors
+from new_tui.chapters import (
+    DynamicArgs,
+    ExitArgs,
+    Handler,
+    OptionLabel,
+    PickArgs,
+    main_menu,
+    mine,
+    tutorial,
+)
 from new_tui.utilities import throttle
 from new_tui.view.army import ArmyWidget
+from new_tui.view.chapter.option_table import OptionTable
+from new_tui.view.chapter.question import Question
 from new_tui.view.currency import CurrencyWidget
 from new_tui.view.inventory import InventoryWidget
 
@@ -22,38 +29,19 @@ player = Player()
 trip = Trip()
 
 
-class Question(Static):
-    message = Reactive("")
-    subtitle: Reactive[RenderableType] = Reactive("")  # type: ignore
-
-    def render(self):
-        table = Table.grid()
-        table.add_column(overflow="fold")
-        table.add_row(f"[bold]{self.message}[/]")
-        if self.subtitle:
-            if isinstance(self.subtitle, str):
-                self.subtitle = f"[{Colors.LOCKED}]{self.subtitle}[/]"
-            table.add_row(self.subtitle)
-        return table
-
-
-RESERVED_HOTKEYS = {"j", "k", "q"}
-
-
 class ChapterWidget(ScrollableContainer):
     can_focus = True
 
     def __init__(self):
         self.question = Question()
-        self.option_list = OptionList(wrap=False)
-        self.option_list.can_focus = False
+        self.option_table = OptionTable()
         self.handlers: list[Handler] = []
         self.hotkeys: dict[str, int] = {}
         super().__init__()
 
     def compose(self):
         yield self.question
-        yield self.option_list
+        yield self.option_table
 
     def on_mount(self):
         if trip.seconds_left > 0:
@@ -67,7 +55,7 @@ class ChapterWidget(ScrollableContainer):
             self.border_title = args.border_title
             self.pick(args)
         # For dev, select options by 0-based index to skip to the screen
-        # self.select(2)
+        # self.select(4)
         # self.select(0)
 
     async def on_key(self, event: events.Key):
@@ -91,14 +79,18 @@ class ChapterWidget(ScrollableContainer):
         elif key in self.hotkeys:
             self.select(self.hotkeys[key])
         elif key.isdigit() and key != "0":
-            self.option_list.highlighted = int(key) - 1
-        elif binding := self.option_list._bindings.keys.get(  # pylint: disable=protected-access
+            self.option_table.move_cursor(row=int(key) - 1)
+        elif key == "ctrl_b":
+            self.option_table.scroll_page_left()
+        elif key == "ctrl_f":
+            self.option_table.scroll_page_right()
+        elif binding := self.option_table._bindings.keys.get(  # pylint: disable=protected-access
             key
         ):
-            await self.option_list.run_action(binding.action)
+            await self.option_table.run_action(binding.action)
 
-    def on_option_list_option_selected(self, option: OptionList.OptionSelected):
-        self.select(option.option_index)
+    def on_data_table_row_selected(self, row: DataTable.RowSelected):
+        self.select(row.cursor_row)
 
     @throttle(0.1)
     def update_dashboard(self):
@@ -114,9 +106,10 @@ class ChapterWidget(ScrollableContainer):
         labels = [o[0] for o in args.options]
         handlers = [o[1] for o in args.options]
         options, hotkeys = get_labels_and_hotkeys(labels)
-        self.option_list.clear_options()
-        self.option_list.add_options(options)
-        self.option_list.highlighted = 0
+        self.option_table.clear(columns=True)
+        if options:
+            self.option_table.add_columns(*(str(_) for _ in range(len(options[0]))))
+            self.option_table.add_rows(options)
         self.hotkeys = hotkeys
         self.handlers = handlers
 
@@ -145,34 +138,53 @@ class ChapterWidget(ScrollableContainer):
             self.pick(args)
 
 
-def get_labels_and_hotkeys(options: list[str | Text | Table]):
+def get_labels_and_hotkeys(options: list[OptionLabel]):
     hotkeys: dict[str, int] = {}
-    labels: list[RenderableType] = []
-    for i, option in enumerate(options):
-        if isinstance(option, Text):
-            label = option.plain
-        elif isinstance(option, Table):
-            cell: Text = option.columns[0]._cells[0]  # type: ignore # pylint: disable=protected-access
-            label = cell.plain
-        else:
-            label = option
+    labels: list[list[str | Text]] = []
+    options = [option if isinstance(option, list) else [option] for option in options]
+    for option_index, option_arr in enumerate(options):
+        if not isinstance(option_arr, list):
+            option_arr = [option_arr]
 
-        for hotkey_index, char in enumerate(label):
-            hotkey = char.lower()
-            if (
-                i != len(options) - 1
-                and "minutes" not in label
-                and hotkey in string.ascii_lowercase
-                and hotkey not in RESERVED_HOTKEYS | set(hotkeys)
-            ):
-                hotkeys[hotkey] = i
-                if isinstance(option, Text):
-                    option.stylize("underline", hotkey_index, hotkey_index + 1)
-                elif isinstance(option, Table):
-                    cell: Text = option.columns[0]._cells[0]  # type: ignore # pylint: disable=protected-access
-                    cell.stylize("underline", hotkey_index, hotkey_index + 1)
-                else:
-                    option = label.replace(char, f"[underline]{char}[/]", 1)
+        if option_index == len(options) - 1:  # No hotkey for last option
+            labels.append(option_arr)
+            continue
+
+        text_option_index = None
+        text_option = None
+        for index, item in enumerate(option_arr):
+            # Must be strictly str and not a subclass such as Icons
+            # Also check that item is not empty string
+            if type(item) is str and item:  # pylint: disable=unidiomatic-typecheck
+                text_option = Text.from_markup(item)
+                text_option_index = index
                 break
-        labels.append(option)
+            if isinstance(item, Text):
+                text_option = item
+                text_option_index = index
+                break
+
+        if text_option and text_option_index is not None:
+            hotkey, hotkey_index = get_hotkey(text_option.plain, hotkeys)
+            if hotkey and hotkey_index is not None:
+                hotkeys[hotkey] = option_index
+                text_option.stylize("underline", hotkey_index, hotkey_index + 1)
+                option_arr[text_option_index] = text_option
+
+        labels.append(option_arr)
     return labels, hotkeys
+
+
+RESERVED_HOTKEYS = {"j", "k", "q"}
+
+
+def get_hotkey(label: str, hotkeys: dict[str, int]):
+    for hotkey_index, char in enumerate(label):
+        hotkey = char.lower()
+        if (
+            "minutes" not in label
+            and hotkey in string.ascii_lowercase
+            and hotkey not in RESERVED_HOTKEYS | set(hotkeys)
+        ):
+            return hotkey, hotkey_index
+    return None, None
