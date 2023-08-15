@@ -32,6 +32,10 @@ ChapterWidget > DataTable {
   padding: 0;
 }
 
+ChapterWidget > DataTable > .datatable--header {
+  background: 0%;
+}
+
 ChapterWidget > DataTable > .datatable--cursor {
   background: $primary-lighten-1;
 }

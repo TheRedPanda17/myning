@@ -12,7 +12,7 @@ player = Player()
 
 
 def pick_member():
-    member_arrs = [member.armory_tui_arr for member in player.army]
+    member_arrs = [member.abbreviated_tui_arr for member in player.army]
 
     if player.has_upgrade("armory_hints"):
         for i, member_arr in enumerate(member_arrs):
@@ -32,7 +32,11 @@ def pick_member():
     options.append(
         (["", "Go Back"], main_menu.enter if tutorial.is_complete() else tutorial.learn_mine)
     )
-    return PickArgs(message="Upgrade Your Army Members' Gear", options=options)
+    return PickArgs(
+        message="Upgrade Your Army Members' Gear",
+        options=options,
+        column_titles=player.abbreviated_tui_column_titles,
+    )
 
 
 def pick_slot(c: Character):

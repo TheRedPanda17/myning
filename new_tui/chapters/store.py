@@ -122,7 +122,7 @@ class Store:
             tax = UPGRADES["sell_everything"].player_value / 100
             options.append(
                 (
-                    "Sell Everything",
+                    ["", "Sell Everything"],
                     partial(self.confirm_mass_sell, "of your items", all_items, tax),
                 )
             )

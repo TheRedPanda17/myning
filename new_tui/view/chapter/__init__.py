@@ -80,9 +80,9 @@ class ChapterWidget(ScrollableContainer):
             self.select(self.hotkeys[key])
         elif key.isdigit() and key != "0":
             self.option_table.move_cursor(row=int(key) - 1)
-        elif key == "ctrl_b":
+        elif key in ("upper_h", "ctrl_b"):
             self.option_table.scroll_page_left()
-        elif key == "ctrl_f":
+        elif key in ("upper_l", "ctrl_f"):
             self.option_table.scroll_page_right()
         elif binding := self.option_table._bindings.keys.get(  # pylint: disable=protected-access
             key
@@ -108,7 +108,12 @@ class ChapterWidget(ScrollableContainer):
         options, hotkeys = get_labels_and_hotkeys(labels)
         self.option_table.clear(columns=True)
         if options:
-            self.option_table.add_columns(*(str(_) for _ in range(len(options[0]))))
+            if args.column_titles:
+                self.option_table.show_header = True
+                self.option_table.add_columns(*args.column_titles)
+            else:
+                self.option_table.show_header = False
+                self.option_table.add_columns(*(str(_) for _ in range(len(options[0]))))
             self.option_table.add_rows(options)
         self.hotkeys = hotkeys
         self.handlers = handlers

@@ -278,6 +278,20 @@ class Character(Object):
         composite = self.health_mod + self.stats["armor"] + self.stats["damage"]
         return int(composite * 0.2) if composite > 0 else 1
 
+    @classmethod
+    @property
+    def tui_column_titles(cls):
+        return [
+            "",
+            "Name",
+            Text("Health", justify="center"),
+            Text(Icons.DAMAGE, justify="center"),
+            Text(Icons.ARMOR, justify="center"),
+            Text(Icons.LEVEL, justify="center"),
+            Text(Icons.XP, justify="center"),
+            Text(Icons.GRAVEYARD, justify="center"),
+        ]
+
     @property
     def tui_arr(self):
         return [
@@ -293,14 +307,11 @@ class Character(Object):
             "🪦" if self.is_ghost else " ",
         ]
 
+    @classmethod
     @property
-    def armory_tui_arr(self):
-        return [
-            Emoji(self.icon),
-            self.name,
-            self.damage_str,
-            self.armor_str,
-            self.level_str,
-            self.exp_str,
-            self.ghost_str,
-        ]
+    def abbreviated_tui_column_titles(cls):
+        return [x for i, x in enumerate(cls.tui_column_titles) if i != 2]
+
+    @property
+    def abbreviated_tui_arr(self):
+        return [x for i, x in enumerate(self.tui_arr) if i != 2]

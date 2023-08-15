@@ -14,6 +14,7 @@ class PickArgs:
     options: list["Option"]
     subtitle: Optional[RenderableType] = None
     border_title: Optional[str] = None
+    column_titles: Optional[list[str]] = None
 
 
 @dataclass
