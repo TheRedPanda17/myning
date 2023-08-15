@@ -2,7 +2,7 @@ import random
 from typing import List
 
 from myning.chapters import visit_store
-from myning.config import STRINGS
+from myning.config import STRINGS, UPGRADES
 from myning.objects.blacksmith_item import BlacksmithItem
 from myning.objects.buying_option import BuyingOption, StoreType
 from myning.objects.item import Item, ItemType
@@ -22,6 +22,7 @@ BLACKSMITH_ITEMS = [
     BlacksmithItem("Ninja", 50, 2000),
     BlacksmithItem("Jedi", 75, 5000),
     BlacksmithItem("Blademaster", 100, 10000),
+    BlacksmithItem("Spartan", 150, 40000),
 ]
 
 
@@ -48,11 +49,12 @@ def play():
         if index == 0:  # Buy
             buying_options = None
             if player.has_upgrade("buy_full_set"):
+                set = UPGRADES["buy_full_set"].player_value
                 buying_options = BuyingOption(
-                    name="all Blademaster items",
+                    name=f"all {set} items",
                     store_type=StoreType.BLACKSMITH,
                     options_string="Buy Full Set",
-                    filter="Blademaster's",
+                    filter=f"{set}'s",
                 )
             bought_items = visit_store.buy(store.inventory.items, player, buying_options)
             for item in bought_items:
@@ -118,4 +120,4 @@ def generate_items(classes: List["BlacksmithItem"]):
 
 
 def smith_cost(level):
-    return utils.fibonacci(level + 2) * 100
+    return utils.fibonacci(level + 4) * 100

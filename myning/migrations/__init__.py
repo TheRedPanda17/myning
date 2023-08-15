@@ -1,4 +1,5 @@
 from . import (
+    black_smith_upgrade,
     garden_transfer,
     generate_ids,
     macfuffin_transfer,
@@ -16,4 +17,5 @@ MIGRATIONS = {
     5: macfuffin_transfer,
     6: stats_transfer,
     7: generate_ids,
+    8: black_smith_upgrade,
 }
