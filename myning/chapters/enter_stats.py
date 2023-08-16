@@ -21,12 +21,12 @@ def play():
 
     while True:
         option, _ = pick(
-            ["Sync Stats", "View Stats", "Exit"],
+            ["Sync Stats", "View Stats", "Go Back"],
             stats.display,
         )
 
         try:
-            if option == "Exit":
+            if option == "Go Back":
                 return
             elif option == "View Stats":
                 view_stats()
@@ -54,11 +54,11 @@ def view_stats():
                 for player in players
             ]
         )
-        options.append("Exit")
+        options.append("Go Back")
 
         option, i = pick(options)
 
-        if option == "Exit":
+        if option == "Go Back":
             return
 
         view_stat(players[i]["id"])
