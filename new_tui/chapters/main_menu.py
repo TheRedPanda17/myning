@@ -4,7 +4,17 @@ from myning.config import MINES
 from myning.objects.mine import Mine
 from myning.objects.player import Player
 from myning.utils.ui_consts import Icons
-from new_tui.chapters import ExitArgs, Handler, PickArgs, armory, healer, mine, store, wizard_hut
+from new_tui.chapters import (
+    ExitArgs,
+    Handler,
+    PickArgs,
+    armory,
+    barracks,
+    healer,
+    mine,
+    store,
+    wizard_hut,
+)
 from new_tui.formatter import Formatter
 
 player = Player()
@@ -45,7 +55,7 @@ def enter():
         MenuItem("Armory", armory.pick_member),
         MenuItem("Healer", healer.enter),
         MenuItem("Wizard Hut", wizard_hut.enter, MINES["Hole in the ground"]),
-        MenuItem("Barracks", unimplemented, MINES["Small pit"]),
+        MenuItem("Barracks", barracks.enter, MINES["Small pit"]),
         MenuItem("Blacksmith", unimplemented, MINES["Trench"]),
         MenuItem("Graveyard", unimplemented, MINES["Large pit"]),
         MenuItem("Garden", unimplemented, MINES["Cave"]),

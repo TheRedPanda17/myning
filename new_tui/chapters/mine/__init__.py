@@ -85,6 +85,7 @@ def mine_callback(chapter: "ChapterWidget"):
     def screen_callback(abandoned: bool):
         return chapter.pick(complete_trip(abandoned))
 
+    chapter.clear()
     chapter.app.push_screen(MineScreen(), screen_callback)
 
 
@@ -142,8 +143,17 @@ def complete_trip(abandoned: bool):
                 subtitle=f"You survived {int(trip.total_seconds / 60)} minute(s)",
             )
         )
+
+    current_level = player.level
     player.add_xp(trip.experience_gained)
     player.incr_trip()
+    if player.level > current_level:
+        story_args_list.append(
+            StoryArgs(
+                message=f"[green1]\n Leveled up to level {Colors.LEVEL}{player.level}[/]",
+                response="Sweet!",
+            )
+        )
 
     if trip.mine.type == MineType.COMBAT:
         trip.minerals_mined = []

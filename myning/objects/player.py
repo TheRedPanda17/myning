@@ -143,17 +143,20 @@ class Player(Character, metaclass=Singleton):
     def add_available_xp(self, xp: int):
         self.exp_available += xp
 
+    def remove_available_xp(self, xp: int):
+        if xp > 0:
+            self.exp_available -= xp
+
     def add_soul_credits(self, credits):
         if credits > 0:
             self.soul_credits += credits
 
-    def remove_soul_credits(self, credits):
+    def remove_soul_credits(self, credits: int):
         if credits > 0:
             self.soul_credits -= credits
 
-    def remove_available_exp(self, exp):
-        if exp > 0:
-            self.exp_available -= int(exp)
+    def incr_trip(self):
+        self.total_trips += 1
 
     def get_mine_progress(self, progress_name):
         progress = self.mine_progressions.get(progress_name)

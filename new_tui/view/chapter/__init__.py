@@ -55,8 +55,11 @@ class ChapterWidget(ScrollableContainer):
             self.border_title = args.border_title
             self.pick(args)
         # For dev, select options by 0-based index to skip to the screen
-        # self.select(4)
+        # self.select(5)
         # self.select(0)
+
+    def on_click(self):
+        self.focus()
 
     async def on_key(self, event: events.Key):
         event.stop()
@@ -126,7 +129,6 @@ class ChapterWidget(ScrollableContainer):
         if isinstance(args, ExitArgs):
             self.app.exit()
         elif isinstance(args, DynamicArgs):
-            self.pick(PickArgs(message="", options=[]))  # Clear the question widget
             args.callback(self)
         else:
             title = None
@@ -141,6 +143,9 @@ class ChapterWidget(ScrollableContainer):
                 self.border_title = title
                 TabTitle.change_tab_status(title)
             self.pick(args)
+
+    def clear(self):
+        self.pick(PickArgs(message="", options=[]))
 
 
 def get_labels_and_hotkeys(options: list[OptionLabel]):

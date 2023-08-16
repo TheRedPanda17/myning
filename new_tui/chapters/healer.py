@@ -73,6 +73,7 @@ def healer_callback(chapter: "ChapterWidget"):
     def screen_callback(_):
         return chapter.pick(healthy())
 
+    chapter.clear()
     chapter.app.push_screen(HealerScreen(), screen_callback)
 
 

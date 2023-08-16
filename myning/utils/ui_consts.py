@@ -29,6 +29,7 @@ class Icons(str, Enum):
     GOLD = "💰"
     GRAVEYARD = "🪦"
     HEALER = "🌿"
+    HEART = "❤️"
     HELMET = "🪖"
     JOURNAL = "📜"
     LEVEL = "📊"

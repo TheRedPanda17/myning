@@ -86,7 +86,7 @@ def add_exp(member: Character):
                 pick(["Bummer!"], f"You don't have enough xp to level {member.name} up.")
                 return
 
-            player.remove_available_exp(xp_for_level)
+            player.remove_available_xp(xp_for_level)
             member.add_experience(xp_for_level, display=False)
             return
 
@@ -97,7 +97,7 @@ def add_exp(member: Character):
         max_value=player.exp_available,
     )
     if xp:
-        player.remove_available_exp(xp)
+        player.remove_available_xp(xp)
         member.add_experience(xp, display=False)
 
 
@@ -124,7 +124,7 @@ def auto_add_exp():
         exp -= member.experience
         if exp > player.exp_available:
             exp = player.exp_available
-        player.remove_available_exp(exp)
+        player.remove_available_xp(exp)
         member.add_experience(exp, display=False)
 
 

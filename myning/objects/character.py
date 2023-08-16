@@ -267,11 +267,12 @@ class Character(Object):
 
     @property
     def ghost_str(self):
-        return "🪦" if self.is_ghost else " "
+        return "🪦" if self.is_ghost else ""
 
     def __str__(self):
-        exp = "" if self.is_enemy else f" | {self.exp_str}"
-        return f"{self.icon} {self.name}: {self.health_str} {self.damage_str} {self.armor_str} | {self.level_str}{exp} {self.ghost_str}"
+        exp = "" if self.is_enemy else f" {self.exp_str}"
+        ghost_str = f" {self.ghost_str}" if self.is_ghost else ""
+        return f"{self.icon} {self.name}: {self.health_str} {self.damage_str} {self.armor_str} {self.level_str}{exp}{ghost_str}"
 
     @property
     def premium(self):

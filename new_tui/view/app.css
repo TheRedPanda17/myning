@@ -36,6 +36,10 @@ ChapterWidget > DataTable > .datatable--header {
   background: 0%;
 }
 
+ChapterWidget > DataTable > .datatable--header-hover {
+  background: 0%;
+}
+
 ChapterWidget > DataTable > .datatable--cursor {
   background: $primary-lighten-1;
 }
@@ -84,8 +88,35 @@ HelpScreen {
 }
 
 HelpScreen > Static {
+  background: $surface;
+  border: round dodgerblue;
   padding: 0 1;
   width: 64;
-  border: round dodgerblue;
+}
+
+/* IntInputScreen */
+
+IntInputScreen {
+  align: center middle;
+}
+
+IntInputScreen > Vertical {
   background: $surface;
+  border: round dodgerblue;
+  height: auto;
+  padding: 0 1;
+  width: 64;
+}
+
+IntInputScreen > Vertical > IntInput {
+  background: $surface;
+  border-left: none;
+  border-right: none;
+  border-top: none;
+  margin: 0 0 1 0;
+  padding: 1 0 0 0;
+}
+
+#error {
+  color: $error;
 }

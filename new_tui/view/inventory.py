@@ -6,11 +6,9 @@ player = Player()
 
 
 class InventoryWidget(DataTable):
-    can_focus = True
-
     def on_mount(self):
-        self.show_header = False
         self.show_cursor = False
+        self.show_header = False
         self.add_column("i")
         self.add_column("n", width=32)
         self.add_column("v")
