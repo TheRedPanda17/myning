@@ -1,12 +1,14 @@
 from functools import partial
 
+from rich.text import Text
+
 from myning.config import UPGRADES
-from myning.objects.inventory import Inventory
 from myning.objects.item import Item, ItemType
 from myning.objects.player import Player
 from myning.utils.file_manager import FileManager
 from myning.utils.generators import generate_equipment
 from new_tui.chapters import Option, PickArgs, main_menu, tutorial
+from new_tui.chapters.base_store import BaseStore
 from new_tui.formatter import Formatter
 
 MARKDOWN_RATIO = 1 / 2
@@ -18,11 +20,10 @@ def enter():
     return Store().enter()
 
 
-class Store:
+class Store(BaseStore):
     def __init__(self):
         self.level = player.level
-        self.inventory = Inventory()
-        self.generate()
+        super().__init__()
 
     def generate(self):
         item_count = max(self.level, 5)
@@ -40,50 +41,16 @@ class Store:
         )
 
     def exit(self):
-        FileManager.multi_delete(*self.inventory.items)
+        super().exit()
         return (main_menu.enter if tutorial.is_complete() else tutorial.learn_armory)()
-
-    def pick_buy(self):
-        options = [
-            (
-                [*item.tui_arr, f"({Formatter.gold(item.value)})", hint_symbol(item)],
-                partial(self.confirm_buy, item),
-            )
-            for item in self.inventory.items
-        ]
-        return PickArgs(
-            message="What would you like to buy?",
-            options=[
-                *options,
-                (["", "Go Back"], self.enter),
-            ],
-        )
-
-    def confirm_buy(self, item: Item):
-        if player.gold < item.value:
-            return PickArgs(
-                message="Not enough gold!",
-                options=[("Bummer!", self.pick_buy)],
-            )
-        return PickArgs(
-            message=f"Are you sure you want to buy {item.tui_str} for {Formatter.gold(item.value)}?",
-            options=[
-                ("Yes", partial(self.buy, item)),
-                ("No", self.pick_buy),
-            ],
-        )
-
-    def buy(self, item: Item):
-        player.gold -= item.value
-        player.inventory.add_item(item)
-        self.inventory.remove_item(item)
-        FileManager.multi_save(player, item)
-        return self.enter()
 
     def pick_sell(self):
         options: list[Option] = [
             (
-                [*item.tui_arr, f"({Formatter.gold(sell_price(item))})"],
+                [
+                    *item.tui_arr,
+                    Text.from_markup(f"({Formatter.gold(sell_price(item))})", justify="right"),
+                ],
                 partial(self.confirm_sell, item),
             )
             for item in player.inventory.items
@@ -175,40 +142,5 @@ class Store:
 
 
 def sell_price(item: Item):
-    multipler = player.macguffin.mineral_boost if item.type == ItemType.MINERAL else MARKDOWN_RATIO
-    return int(item.value * multipler) or 1
-
-
-def hint_symbol(item: Item):
-    if player.has_upgrade("advanced_store_hints") and is_best_item(item):
-        return "🔥"
-    if player.has_upgrade("store_hints") and is_useful_item(item):
-        return "✨"
-    return None
-
-
-def is_best_item(item: Item):
-    if item.type in (ItemType.MINERAL, ItemType.PLANT):
-        return False
-
-    best = player.inventory.get_best_in_slot(item.type)
-    for character in player.army:
-        equipped = character.equipment.get_slot_item(item.type)
-        if equipped is None:
-            continue
-        if best is None or equipped.main_affect > best.main_affect:
-            best = equipped
-
-    return best is None or item.main_affect > best.main_affect
-
-
-def is_useful_item(item: Item):
-    if item.type in (ItemType.MINERAL, ItemType.PLANT):
-        return False
-
-    for character in player.army:
-        equipped = character.equipment.get_slot_item(item.type)
-        if equipped is None or item.main_affect > equipped.main_affect:
-            return True
-
-    return False
+    multiplier = player.macguffin.mineral_boost if item.type == ItemType.MINERAL else MARKDOWN_RATIO
+    return int(item.value * multiplier) or 1

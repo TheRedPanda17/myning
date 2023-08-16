@@ -55,7 +55,7 @@ class ChapterWidget(ScrollableContainer):
             self.border_title = args.border_title
             self.pick(args)
         # For dev, select options by 0-based index to skip to the screen
-        # self.select(5)
+        # self.select(6)
         # self.select(0)
 
     def on_click(self):
@@ -137,7 +137,7 @@ class ChapterWidget(ScrollableContainer):
             elif (module := handler.__module__.rpartition(".")[-1]) not in (
                 "functools",
                 "utilities",
-            ):
+            ) and "base" not in module:
                 title = module.replace("_", " ").title()
             if title:
                 self.border_title = title
