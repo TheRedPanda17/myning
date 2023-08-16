@@ -1,3 +1,7 @@
+- name: Blacksmith Armor Set Upgrades
+  description: Updated the Armor Set Upgrade to allow for multiple armor sets and added a new armor - Spartan Armor.
+  date: 08-15-23
+
 - name: Auto Ghost XP Upgrade
   description: Added a new upgrade to automatically distrubute XP to Ghosts only.
   date: 08-14-23

@@ -170,13 +170,34 @@ buy_all_garden:
     - 15000
 
 buy_full_set:
-  name: Buy a Full Set of Blademaster Gear - Blacksmith
+  name: Buy a Set of Gear - Blacksmith
   descriptions:
-    - Buy all the blademaster gear in the blacksmith at once.
+    - Buy a full set of Soldier gear in the blacksmith
+    - Buy a full set of Commander gear in the blacksmith
+    - Buy a full set of General gear in the blacksmith
+    - Buy a full set of Samurai gear in the blacksmith
+    - Buy a full set of Ninja gear in the blacksmith
+    - Buy a full set of Jedi gear in the blacksmith
+    - Buy a full set of Blademaster gear in the blacksmith
+    - Buy a full set of Spartan gear in the blacksmith
   values:
-    - 1
+    - Soldier
+    - Commander
+    - General
+    - Samurai
+    - Ninja
+    - Jedi
+    - Blademaster
+    - Spartan
   costs:
+    - 500
+    - 2500
+    - 5000
+    - 10000
+    - 20000
+    - 50000
     - 100000
+    - 400000
 
 auto_ghost_xp:
   name: Auto Ghost XP

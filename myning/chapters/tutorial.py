@@ -16,7 +16,7 @@ def play():
     # This ensures new players have the new migrations. Preferably, we'd loop
     # through the MIGRATIONS, but we have a circular dependency if we do,
     # so this is the hack right now.
-    player.completed_migrations = [1, 2, 3, 4, 5, 6, 7]
+    player.completed_migrations = [1, 2, 3, 4, 5, 6, 7, 8]
     FileManager.save(player)
 
     print(term.bold(f"\nWelcome to Myning, {player.name}!\n"))
