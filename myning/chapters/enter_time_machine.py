@@ -45,6 +45,7 @@ def play():
                 continue
 
             player_name = player.name
+            player_id = player.id
 
             # Reset the game
             FileManager.backup_game()
@@ -55,6 +56,7 @@ def play():
             player = Player()
             player.discovered_species = journal
             player.completed_migrations = migrations
+            player.id = player_id
 
             Macguffin.initialize()
             macguffin = Macguffin()
