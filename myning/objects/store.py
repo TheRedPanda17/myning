@@ -29,4 +29,12 @@ class Store:
 
     @property
     def items(self):
-        return self._items
+        return list(sorted(self._items, key=lambda i: i.type))
+
+    @property
+    def items_by_value(self):
+        return list(sorted(self._items, key=lambda i: i.value))
+
+    @property
+    def empty(self):
+        return len(self._items) == 0

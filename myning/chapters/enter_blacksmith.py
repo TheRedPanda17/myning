@@ -56,7 +56,14 @@ def play():
                     options_string="Buy Full Set",
                     filter=f"{set}'s",
                 )
-            bought_items = visit_store.buy(store.items, player, buying_options)
+
+            items = store.items
+            if (
+                player.has_upgrade("sort_by_value")
+                and "blacksmith" in UPGRADES["sort_by_value"].player_value
+            ):
+                items = store.items_by_value
+            bought_items = visit_store.buy(items, player, buying_options)
             for item in bought_items:
                 store.remove_item(item)
                 player.inventory.add_item(item)

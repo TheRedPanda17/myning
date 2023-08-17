@@ -71,7 +71,7 @@ class Army(UserList[Character]):
         s = ""
         for i, member in enumerate(self):
             if i != 0:
-                s += "\n" if i % 10 == 0 else " "
+                s += "\n" if i % 15 == 0 else " "
             s += str(member.icon)
         return s
 

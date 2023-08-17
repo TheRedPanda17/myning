@@ -1,4 +1,5 @@
 from myning.chapters import visit_store
+from myning.config import UPGRADES
 from myning.objects.item import ItemType
 from myning.objects.macguffin import Macguffin
 from myning.objects.player import Player
@@ -21,9 +22,14 @@ def play():
             ["Buy", "Sell", "Go Back"],
             f"What would you like to do? ({get_gold_string(player.gold)})",
         )
-        if option == "Buy" and (bought_items := visit_store.buy(store.items, player)):
+
+        items = store.items
+        if player.has_upgrade("sort_by_value"):
+            items = store.items_by_value
+
+        if option == "Buy" and (bought_items := visit_store.buy(items, player)):
             for item in bought_items:
-                store.add_item(item)
+                store.remove_item(item)
                 player.inventory.add_item(item)
                 if item.type == ItemType.WEAPON:
                     stats.increment_int_stat(IntegerStatKeys.WEAPONS_PURCHASED)

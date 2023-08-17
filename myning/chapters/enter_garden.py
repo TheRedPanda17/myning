@@ -1,11 +1,12 @@
 from myning.chapters import visit_store
+from myning.config import UPGRADES
 from myning.objects.buying_option import BuyingOption, StoreType
 from myning.objects.garden import Garden
 from myning.objects.item import ItemType
 from myning.objects.plant import Plant
 from myning.objects.player import Player
 from myning.objects.stats import IntegerStatKeys, Stats
-from myning.utils import utils
+from myning.objects.store import Store
 from myning.utils.file_manager import FileManager
 from myning.utils.generators import generate_plant
 from myning.utils.io import pick
@@ -13,12 +14,13 @@ from myning.utils.ui import columnate, get_gold_string, get_water_string
 
 
 def play():
-    player, garden = Player(), Garden()
+    player, garden, store = Player(), Garden(), Store()
 
     def get_seeds():
-        return [generate_plant(garden.level) for _ in range(1, max(garden.level, 5))]
+        for _ in range(1, max(garden.level, 5)):
+            store.add_item(generate_plant(garden.level))
 
-    seeds = get_seeds()
+    get_seeds()
 
     while True:
         option, _ = pick(
@@ -28,16 +30,24 @@ def play():
         if option == "Manage Garden":
             manage_garden(garden)
         elif option == "Buy Seeds":
-            if not seeds:
-                seeds = get_seeds()
+            if store.empty:
+                get_seeds()
+
+            items = store.items
+            if (
+                player.has_upgrade("sort_by_value")
+                and "garden" in UPGRADES["sort_by_value"].player_value
+            ):
+                items = store.items_by_value
+
             buying_options = None
             if player.has_upgrade("buy_all_garden"):
                 buying_options = BuyingOption(
                     name="all items", store_type=StoreType.GARDEN, options_string="Fast Buy All"
                 )
-            bought_items = visit_store.buy(seeds, player, buying_options)
+            bought_items = visit_store.buy(items, player, buying_options)
             for seed in bought_items:
-                seeds.remove(seed)
+                store.remove_item(seed)
                 player.inventory.add_item(seed)
                 FileManager.save(seed)
             FileManager.multi_save(player, garden)

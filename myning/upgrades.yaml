@@ -106,6 +106,21 @@ armory_hints:
   costs:
     - 2000
 
+sort_by_value:
+  name: Sort Stores By Value
+  descriptions:
+    - Get the option to sort the store by value
+    - Get the option to sort the blacksmith by value
+    - Get the option to sort the garden store by value
+  values:
+    - store
+    - store,blacksmith
+    - store,blacksmith,garden
+  costs:
+    - 2_500
+    - 7_500
+    - 12_500
+
 auto_exp:
   name: Auto-Exp
   descriptions:
