@@ -21,9 +21,9 @@ def play():
             ["Buy", "Sell", "Go Back"],
             f"What would you like to do? ({get_gold_string(player.gold)})",
         )
-        if option == "Buy" and (bought_items := visit_store.buy(store.inventory.items, player)):
+        if option == "Buy" and (bought_items := visit_store.buy(store.items, player)):
             for item in bought_items:
-                store.inventory.remove_item(item)
+                store.add_item(item)
                 player.inventory.add_item(item)
                 if item.type == ItemType.WEAPON:
                     stats.increment_int_stat(IntegerStatKeys.WEAPONS_PURCHASED)
@@ -44,10 +44,10 @@ def play():
                 continue
             for sold_item in sold_items:
                 player.inventory.remove_item(sold_item)
-                store.inventory.add_item(sold_item)
+                store.add_item(sold_item)
             player.gold += price
             stats.increment_int_stat(IntegerStatKeys.GOLD_EARNED, price)
             FileManager.save(stats)
         elif option == "Go Back":
-            FileManager.multi_delete(*store.inventory.items)
+            FileManager.multi_delete(*store.items)
             break

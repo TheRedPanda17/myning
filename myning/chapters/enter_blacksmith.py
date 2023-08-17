@@ -36,7 +36,7 @@ def play():
         available_classes = BLACKSMITH_ITEMS[:smith_level]
         items = generate_items(available_classes)
         for item in items:
-            store.inventory.add_item(item)
+            store.add_item(item)
 
         _, index = pick(
             [
@@ -56,9 +56,9 @@ def play():
                     options_string="Buy Full Set",
                     filter=f"{set}'s",
                 )
-            bought_items = visit_store.buy(store.inventory.items, player, buying_options)
+            bought_items = visit_store.buy(store.items, player, buying_options)
             for item in bought_items:
-                store.inventory.remove_item(item)
+                store.remove_item(item)
                 player.inventory.add_item(item)
 
                 if item.type == ItemType.WEAPON:
@@ -80,7 +80,7 @@ def play():
                 player.blacksmith_level = new_level
                 FileManager.save(player)
         elif index == 2:  # Go Back
-            FileManager.multi_delete(*store.inventory.items)
+            FileManager.multi_delete(*store.items)
             break
 
 
