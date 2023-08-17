@@ -12,7 +12,7 @@ class Colors(str, Enum):
     LOCKED = "grey53"
     PLANT = "green1"
     RESEARCH_POINTS = "deep_pink3"
-    SOUL_CREDITS = "slate_blue3"
+    SOUL_CREDITS = "light_slate_blue"
     WEAPON = "red1"
     XP = "magenta1"
 

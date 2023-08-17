@@ -1,9 +1,8 @@
 import math
 import random
-from typing import List, Optional
+from typing import Optional
 
 from blessed.terminal import Terminal
-from textual.reactive import reactive
 
 from myning.config import MINES, SPECIES, UPGRADES, XP_COST
 from myning.objects.army import Army
@@ -56,11 +55,11 @@ class Player(Character, metaclass=Singleton):
         return Army([self, *self._allies])
 
     @property
-    def allies(self) -> List[Character]:
+    def allies(self) -> list[Character]:
         return self._allies
 
     @property
-    def fired_allies(self) -> List[Character]:
+    def fired_allies(self) -> list[Character]:
         return self._fired_allies
 
     @property
@@ -173,17 +172,12 @@ class Player(Character, metaclass=Singleton):
         return random.choice(species_list)
 
     @property
-    def fallen_allies(self) -> List[Character]:
+    def fallen_allies(self) -> list[Character]:
         return self._fallen_allies
 
     @property
     def ghost_count(self):
-        count = 0
-        for ally in self._allies:
-            if ally.is_ghost:
-                count += 1
-
-        return count
+        return len([ally for ally in self.allies if ally.is_ghost])
 
     @property
     def seeds(self):

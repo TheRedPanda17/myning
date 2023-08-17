@@ -10,6 +10,7 @@ from myning.utils.generators import generate_equipment
 from new_tui.chapters import Option, PickArgs, main_menu, tutorial
 from new_tui.chapters.base_store import BaseStore
 from new_tui.formatter import Formatter
+from new_tui.utilities import confirm
 
 MARKDOWN_RATIO = 1 / 2
 
@@ -51,7 +52,7 @@ class Store(BaseStore):
                     *item.tui_arr,
                     Text.from_markup(f"({Formatter.gold(sell_price(item))})", justify="right"),
                 ],
-                partial(self.confirm_sell, item),
+                partial(self.sell, item),
             )
             for item in player.inventory.items
         ]
@@ -101,15 +102,11 @@ class Store(BaseStore):
             ],
         )
 
-    def confirm_sell(self, item: Item):
-        return PickArgs(
-            message=f"Are you sure you want to sell {item.tui_str} for {Formatter.gold(sell_price(item))}?",
-            options=[
-                ("Yes", partial(self.sell, item)),
-                ("No", self.pick_sell),
-            ],
-        )
-
+    @confirm(
+        lambda self, item: f"Are you sure you want to sell {item.tui_str} for "
+        f"{Formatter.gold(sell_price(item))}?",
+        pick_sell,
+    )
     def sell(self, item: Item):
         player.gold += sell_price(item)
         player.inventory.remove_item(item)
