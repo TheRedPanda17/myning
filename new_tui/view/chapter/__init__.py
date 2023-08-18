@@ -18,6 +18,7 @@ from new_tui.chapters import (
     mine,
     tutorial,
 )
+from new_tui.chapters.garden.manage import GardenTable
 from new_tui.utilities import throttle
 from new_tui.view.army import ArmyWidget
 from new_tui.view.chapter.option_table import OptionTable
@@ -27,6 +28,15 @@ from new_tui.view.inventory import InventoryWidget
 
 player = Player()
 trip = Trip()
+
+
+HOTKEY_ALIASES = {
+    "j": "down",
+    "k": "up",
+    "ctrl_d": "pagedown",
+    "ctrl_u": "pageup",
+}
+RESERVED_HOTKEYS = {"j", "k", "q"}
 
 
 class ChapterWidget(ScrollableContainer):
@@ -54,8 +64,8 @@ class ChapterWidget(ScrollableContainer):
             args = main_menu.enter() if tutorial.is_complete() else tutorial.enter()
             self.border_title = args.border_title
             self.pick(args)
-        # For dev, select options by 0-based index to skip to the screen
-        # self.select(7)
+        # TODO Remove dev haccs
+        # self.select(8)
         # self.select(0)
 
     def on_click(self):
@@ -63,14 +73,7 @@ class ChapterWidget(ScrollableContainer):
 
     async def on_key(self, event: events.Key):
         event.stop()
-        aliases = {
-            "j": "down",
-            "k": "up",
-            "ctrl_d": "pagedown",
-            "ctrl_u": "pageup",
-        }
-        key = aliases.get(event.name, event.name)
-
+        key = HOTKEY_ALIASES.get(event.name, event.name)
         if key == "tab":
             self.app.action_focus_next()
         elif key == "shift_tab":
@@ -87,6 +90,9 @@ class ChapterWidget(ScrollableContainer):
             self.option_table.scroll_page_left()
         elif key in ("upper_l", "ctrl_f"):
             self.option_table.scroll_page_right()
+        elif garden_query := self.query("GardenTable"):
+            garden_table = garden_query.first(GardenTable)
+            await garden_table.handle_chapter_key(key)
         elif binding := self.option_table._bindings.keys.get(  # pylint: disable=protected-access
             key
         ):
@@ -95,7 +101,6 @@ class ChapterWidget(ScrollableContainer):
     def on_data_table_row_selected(self, row: DataTable.RowSelected):
         self.select(row.cursor_row)
 
-    @throttle(0.1)
     def update_dashboard(self):
         if self.app.query("SideBar"):
             self.app.query_one("ArmyWidget", ArmyWidget).update()
@@ -108,6 +113,18 @@ class ChapterWidget(ScrollableContainer):
         self.question.subtitle = args.subtitle or ""
         labels = [o[0] for o in args.options]
         handlers = [o[1] for o in args.options]
+        if self.query("GardenTable"):
+            HOTKEY_ALIASES["h"] = "left"
+            HOTKEY_ALIASES["l"] = "right"
+            RESERVED_HOTKEYS.add("h")
+            RESERVED_HOTKEYS.add("l")
+        else:
+            if "h" in RESERVED_HOTKEYS:
+                del HOTKEY_ALIASES["h"]
+                RESERVED_HOTKEYS.remove("h")
+            if "l" in RESERVED_HOTKEYS:
+                del HOTKEY_ALIASES["l"]
+                RESERVED_HOTKEYS.remove("l")
         options, hotkeys = get_labels_and_hotkeys(labels)
         self.option_table.clear(columns=True)
         if options:
@@ -116,7 +133,7 @@ class ChapterWidget(ScrollableContainer):
                 self.option_table.add_columns(*args.column_titles)
             else:
                 self.option_table.show_header = False
-                self.option_table.add_columns(*(str(_) for _ in range(len(options[0]))))
+                self.option_table.add_columns(*(str(i) for i in range(len(options[0]))))
             self.option_table.add_rows(options)
         self.hotkeys = hotkeys
         self.handlers = handlers
@@ -183,9 +200,6 @@ def get_labels_and_hotkeys(options: list[OptionLabel]):
 
         labels.append(option_arr)
     return labels, hotkeys
-
-
-RESERVED_HOTKEYS = {"j", "k", "q"}
 
 
 def get_hotkey(label: str, hotkeys: dict[str, int]):

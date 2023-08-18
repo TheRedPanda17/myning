@@ -62,7 +62,7 @@ class Store(BaseStore):
             tax = UPGRADES["sell_minerals"].player_value / 100
             options.append(
                 (
-                    "Sell Minerals",
+                    ["", "Sell Minerals"],
                     partial(self.confirm_mass_sell, "of your minerals", minerals, tax),
                 )
             )
@@ -76,7 +76,7 @@ class Store(BaseStore):
             tax = UPGRADES["sell_almost_everything"].player_value / 100
             options.append(
                 (
-                    "Sell Almost Everything",
+                    ["", "Sell Almost Everything"],
                     partial(
                         self.confirm_mass_sell,
                         "but your top 3 items in each category",
@@ -139,5 +139,6 @@ class Store(BaseStore):
 
 
 def sell_price(item: Item):
+    # TODO if the item is a plant and it's expired, is the value supposed to be affected?
     multiplier = player.macguffin.mineral_boost if item.type == ItemType.MINERAL else MARKDOWN_RATIO
     return int(item.value * multiplier) or 1

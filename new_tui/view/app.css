@@ -23,11 +23,11 @@ ChapterWidget {
 
 ChapterWidget > Question {
   max-width: 100;
+  margin-bottom: 1;
 }
 
 ChapterWidget > DataTable {
   border: none;
-  margin: 1 0 0 -1;
   height: 1fr;
   padding: 0;
 }
@@ -46,6 +46,13 @@ ChapterWidget > DataTable > .datatable--cursor {
 
 ChapterWidget > DataTable > .datatable--hover {
   background: $boost;
+}
+
+ChapterWidget > GardenTable {
+  border: double saddlebrown;
+  height: auto;
+  width: auto;
+  max-width: 100%;
 }
 
 SideBar {

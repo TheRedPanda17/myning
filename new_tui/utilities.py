@@ -25,7 +25,7 @@ def throttle(interval: float):
 
 def confirm(
     message: str | Callable[..., str],
-    no: PickHandler,
+    no: Handler,
     validator: Callable[..., PickArgs | None] | None = None,
 ):
     """

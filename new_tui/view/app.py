@@ -92,6 +92,9 @@ class HelpScreen(ModalScreen):
         table.add_row("\n[bold dodger_blue1]Press any key to close[/]")
         yield Static(table)
 
+    def on_click(self):
+        self.dismiss()
+
     def on_key(self):
         if self.app.screen is self:  # Prevent crash from holding F1
             self.dismiss()

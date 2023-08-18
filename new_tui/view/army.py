@@ -1,4 +1,3 @@
-from rich.text import Text
 from textual.widgets import DataTable
 
 from myning.objects.player import Player
@@ -11,14 +10,7 @@ player = Player()
 class ArmyWidget(DataTable):
     def on_mount(self):
         self.show_cursor = False
-        self.add_column("")
-        self.add_column("Name")
-        self.add_column(Text("Health", justify="center"))
-        self.add_column(Text(Icons.DAMAGE, justify="center"))
-        self.add_column(Text(Icons.ARMOR, justify="center"))
-        self.add_column(Text(Icons.LEVEL, justify="center"))
-        self.add_column(Text(Icons.XP, justify="center"))
-        self.add_column(Text(Icons.GRAVEYARD, justify="center"))
+        self.add_columns(*player.tui_column_titles)
         self.update()
 
     def on_click(self):

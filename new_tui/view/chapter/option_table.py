@@ -3,7 +3,8 @@ from textual.widgets import DataTable
 
 
 class OptionTable(DataTable):
-    def on_mount(self):
+    def __init__(self):
+        super().__init__()
         self.can_focus = False
         self.cursor_foreground_priority = "renderable"
         self.cursor_type = "row"
@@ -68,3 +69,19 @@ class OptionTable(DataTable):
             super().action_cursor_down()
         else:
             self.move_cursor(row=0)
+
+    # Override to allow circular wraparound
+    def action_cursor_left(self):
+        self._set_hover_cursor(False)
+        if self.cursor_column > 0:
+            super().action_cursor_left()
+        else:
+            self.move_cursor(column=len(self.columns) - 1)
+
+    # Override to allow circular wraparound
+    def action_cursor_right(self):
+        self._set_hover_cursor(False)
+        if self.cursor_column < len(self.columns) - 1:
+            super().action_cursor_right()
+        else:
+            self.move_cursor(column=0)

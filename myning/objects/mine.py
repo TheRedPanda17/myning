@@ -212,7 +212,7 @@ class Mine(Object):
             1: "[red1]very high[/]",
         }
         closest_key_floor = max(c for c in chances if c < odds)
-        return chances[closest_key_floor]
+        return f"{Icons.DEATH} {chances[closest_key_floor]}"
 
     @property
     def str_arr(self):
@@ -226,7 +226,7 @@ class Mine(Object):
 
     @property
     def tui_arr(self):
-        arr = [self.icon, self.name, Icons.DEATH, self.death_chance_tui_str]
+        arr = [self.icon, self.name, self.death_chance_tui_str]
         if self.win_criteria:
             if self.complete:
                 arr.append("✨ cleared ✨")
@@ -261,20 +261,17 @@ class Mine(Object):
             return [
                 self.icon,
                 Formatter.locked(f"{Icons.LOCKED} {self.name} "),
-                Formatter.locked(f"{self.cost}g"),
+                Text.from_markup(Formatter.locked(f"{self.cost:,}g"), justify="right"),
                 Formatter.locked(f"{Icons.LEVEL} {self.min_player_level} "),
                 Formatter.locked(f"{int(self.exp_boost * 100):2}% xp") if self.exp_boost else "",
-                Icons.DEATH,
                 Formatter.locked(Text.from_markup(self.death_chance_tui_str).plain),
             ]
         return [
             self.icon,
             self.name,
-            Formatter.gold(self.cost),
-            Icons.LEVEL,
-            Formatter.level(self.min_player_level),
+            Text.from_markup(Formatter.gold(self.cost), justify="right"),
+            f"{Icons.LEVEL} {Formatter.level(self.min_player_level)}",
             f"[{Colors.XP}]{int(self.exp_boost*100):2}% xp[/]" if self.exp_boost else "",
-            Icons.DEATH,
             self.death_chance_tui_str,
         ]
 

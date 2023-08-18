@@ -120,7 +120,7 @@ class Garden(Object, metaclass=Singleton):
     def add_plant(self, plant: "Plant", row: int, column: int):
         self.rows[row][column] = plant
 
-    def get_plant(self, row: int, column: int) -> "Plant":
+    def get_plant(self, row: int, column: int):
         return self.rows[row][column]
 
     def check_ready(self, row: int, column: int) -> bool:
@@ -128,7 +128,9 @@ class Garden(Object, metaclass=Singleton):
         return plant and plant.ready
 
     def uproot_plant(self, row: int, column: int):
+        uprooted_plant = self.rows[row][column]
         self.rows[row][column] = None
+        return uprooted_plant
 
     def harvest_plant(self, row: int, column: int):
         plant: Plant = self.rows[row][column]
@@ -143,6 +145,7 @@ class Garden(Object, metaclass=Singleton):
             return
         plant.started = plant.started - timedelta(minutes=1 * self.level)
         self.water -= 1
+        return plant
 
     def __str__(self):
         s = "╔" + "════╦" * (self.level - 1) + "════╗\n"

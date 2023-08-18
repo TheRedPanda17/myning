@@ -19,16 +19,16 @@ class Colors(str, Enum):
 
 class Formatter:
     @staticmethod
-    def gold(gold: int):
-        return f"[{Colors.GOLD}]{gold}g[/]"
+    def gold(g: int):
+        return f"[{Colors.GOLD}]{g:,}g[/]"
 
     @staticmethod
-    def soul_credits(soul_credits: int):
-        return f"[{Colors.SOUL_CREDITS}]{soul_credits} soul credits[/]"
+    def soul_credits(sc: int):
+        return f"[{Colors.SOUL_CREDITS}]{sc} soul credits[/]"
 
     @staticmethod
-    def research_points(research_points: int):
-        return f"[{Colors.RESEARCH_POINTS}]{research_points} research points[/]"
+    def research_points(rp: int):
+        return f"[{Colors.RESEARCH_POINTS}]{rp} research points[/]"
 
     @staticmethod
     def level(lvl: int):
@@ -37,3 +37,7 @@ class Formatter:
     @staticmethod
     def locked(s: str):
         return f"[{Colors.LOCKED}]{s}[/]"
+
+    @staticmethod
+    def water(w: int):
+        return f"[sky_blue1]{w} water[/]"

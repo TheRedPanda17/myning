@@ -160,7 +160,7 @@ def complete_trip(abandoned: bool):
         trip.items_found = []
         story_args_list.append(
             StoryArgs(
-                message="The goods collected on your trip in the ⚔️ Combat Zone "
+                message="The goods collected on your trip in the ⚔️  Combat Zone "
                 "were donated to the training facility.",
             )
         )

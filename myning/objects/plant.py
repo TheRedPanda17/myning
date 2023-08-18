@@ -2,9 +2,13 @@ from datetime import datetime, timedelta
 from enum import Enum
 
 from blessed import Terminal
+from rich.progress_bar import ProgressBar
+from rich.table import Table
+from rich.text import Text
 
 from myning.objects.item import Item
 from myning.utils.ui_consts import Icons
+from new_tui.formatter import Colors, Formatter
 
 
 class PlantType(str, Enum):
@@ -65,12 +69,12 @@ class Plant(Item):
     @property
     def growth_icon(self):
         if self.growth >= 1:
-            return f" {self.icon} "
-        elif self.growth >= 0.75:
-            return " 🌳 "
-        elif self.growth >= 0.5:
-            return " 🪴 "
-        return " 🌱 "
+            return self.icon
+        if self.growth >= 0.75:
+            return "🌳"
+        if self.growth >= 0.5:
+            return "🪴"
+        return "🌱"
 
     @property
     def end_time(self):
@@ -120,13 +124,26 @@ class Plant(Item):
         return f"{type}\n{growth}\n{time_left}"
 
     @property
+    def tui_details(self):
+        table = Table.grid(padding=(0, 1, 0, 0))
+        table.add_column(style=Colors.LOCKED)
+        table.add_row("Type", self.icon)
+        table.add_row("Time left", f"{int(self.time_left // 60)} minutes")
+        progress = ProgressBar(total=1, completed=self.growth, width=11)
+        percentage = f"{self.growth * 100:.2f}%"
+        table.add_row("Growth", progress, percentage, self.growth_icon)
+        return table
+
+    @property
     def fruit_stand_arr(self):
         return [
             self.icon,
             self.name,
-            f"{self.color}{self.main_affect if not self.expired else 0}{term.normal}",
-            f"{Icons.TIME} {term.cyan}{int(self.expires_in/60)}{term.normal}",
-            "mins",
+            Text.from_markup(
+                f"[{self.tui_color}]{0 if self.expired else self.main_affect}[/]", justify="right"
+            ),
+            Icons.TIME,
+            Text.from_markup(f"{Formatter.level(int(self.expires_in / 60))} mins", justify="right"),
         ]
 
     @property
@@ -147,3 +164,5 @@ class Plant(Item):
                 return "🥥"
             case PlantType.ORANGE:
                 return "🍊"
+            case _:
+                return Icons.UNKNOWN.value

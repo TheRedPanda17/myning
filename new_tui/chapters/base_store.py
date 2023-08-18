@@ -70,7 +70,7 @@ class BaseStore(ABC):
                 options=[("Bummer!", self.pick_buy)],
             )
         return PickArgs(
-            message=f"Are you sure you want to buy {item.tui_str} for {Formatter.gold(item.value)}?",
+            message=f"Are you sure you want to buy {item.tui_str} for {Formatter.gold(item.value)}?",  # pylint: disable=line-too-long
             options=[
                 ("Yes", partial(self.buy, item)),
                 ("No", self.pick_buy),
@@ -93,7 +93,7 @@ class BaseStore(ABC):
                 options=[("Bummer!", self.pick_buy)],
             )
         return PickArgs(
-            message=f"Are you sure you want to buy {self.buying_option.name} for {Formatter.gold(cost)}?",
+            message=f"Are you sure you want to buy {self.buying_option.name} for {Formatter.gold(cost)}?",  # pylint: disable=line-too-long
             options=[
                 ("Yes", partial(self.multi_buy, items)),
                 ("No", self.pick_buy),
@@ -104,8 +104,9 @@ class BaseStore(ABC):
         cost = sum(item.value for item in items)
         player.gold -= cost
         for item in items:
+            player.inventory.add_item(item)
             self.inventory.remove_item(item)
-            FileManager.multi_save(player, item)
+        FileManager.multi_save(player, *items)
         return self.enter()
 
     def hint_symbol(self, item: Item):
