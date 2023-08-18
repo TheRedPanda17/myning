@@ -5,6 +5,7 @@ from myning.objects.garden import Garden
 from myning.objects.item import ItemType
 from myning.objects.plant import Plant
 from myning.objects.player import Player
+from myning.objects.settings import Settings, SortOrder
 from myning.objects.stats import IntegerStatKeys, Stats
 from myning.objects.store import Store
 from myning.utils.file_manager import FileManager
@@ -14,7 +15,7 @@ from myning.utils.ui import columnate, get_gold_string, get_water_string
 
 
 def play():
-    player, garden, store = Player(), Garden(), Store()
+    player, garden, store, settings = Player(), Garden(), Store(), Settings()
 
     def get_seeds():
         for _ in range(1, max(garden.level, 5)):
@@ -37,6 +38,7 @@ def play():
             if (
                 player.has_upgrade("sort_by_value")
                 and "garden" in UPGRADES["sort_by_value"].player_value
+                and settings.sort_order == SortOrder.VALUE
             ):
                 items = store.items_by_value
 

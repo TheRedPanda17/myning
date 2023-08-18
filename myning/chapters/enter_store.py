@@ -3,6 +3,7 @@ from myning.config import UPGRADES
 from myning.objects.item import ItemType
 from myning.objects.macguffin import Macguffin
 from myning.objects.player import Player
+from myning.objects.settings import Settings, SortOrder
 from myning.objects.stats import IntegerStatKeys, Stats
 from myning.objects.store import Store
 from myning.utils.file_manager import FileManager
@@ -15,6 +16,7 @@ def play():
     macguffin = Macguffin()
     store = Store(player.level)
     stats = Stats()
+    settings = Settings()
     store.generate()
 
     while True:
@@ -24,7 +26,7 @@ def play():
         )
 
         items = store.items
-        if player.has_upgrade("sort_by_value"):
+        if player.has_upgrade("sort_by_value") and settings.sort_order == SortOrder.VALUE:
             items = store.items_by_value
 
         if option == "Buy" and (bought_items := visit_store.buy(items, player)):

@@ -1,6 +1,13 @@
+from enum import Enum
+
 from myning.objects.object import Object
 from myning.objects.singleton import Singleton
 from myning.utils.file_manager import FileManager
+
+
+class SortOrder(str, Enum):
+    TYPE = "type"
+    VALUE = "value"
 
 
 class Settings(Object, metaclass=Singleton):
@@ -17,11 +24,13 @@ class Settings(Object, metaclass=Singleton):
         mini_games_disabled=False,
         hard_combat_disabled=True,
         compact_mode=False,
+        sort_order=SortOrder.TYPE,
     ) -> None:
         self.army_columns = army_columns
         self.mini_games_disabled = mini_games_disabled
         self.hard_combat_disabled = hard_combat_disabled
         self.compact_mode = compact_mode
+        self.sort_order: SortOrder = sort_order
 
     @classmethod
     def from_dict(cls, attrs: dict):
@@ -33,6 +42,7 @@ class Settings(Object, metaclass=Singleton):
             "mini_games_disabled": self.mini_games_disabled,
             "hard_combat_disabled": self.hard_combat_disabled,
             "compact_mode": self.compact_mode,
+            "sort_order": self.sort_order,
         }
 
     @classmethod
@@ -52,6 +62,9 @@ class Settings(Object, metaclass=Singleton):
 
     def toggle_compact_mode(self):
         self.compact_mode = not self.compact_mode
+
+    def toggle_sort_order(self):
+        self.sort_order = SortOrder.TYPE if self.sort_order == SortOrder.VALUE else SortOrder.VALUE
 
     @property
     def mini_games_status(self) -> str:

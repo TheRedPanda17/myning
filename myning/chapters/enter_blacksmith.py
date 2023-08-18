@@ -7,6 +7,7 @@ from myning.objects.blacksmith_item import BlacksmithItem
 from myning.objects.buying_option import BuyingOption, StoreType
 from myning.objects.item import Item, ItemType
 from myning.objects.player import Player
+from myning.objects.settings import Settings, SortOrder
 from myning.objects.stats import IntegerStatKeys, Stats
 from myning.objects.store import Store
 from myning.utils import utils
@@ -27,8 +28,7 @@ BLACKSMITH_ITEMS = [
 
 
 def play():
-    player = Player()
-    stats = Stats()
+    player, stats, settings = Player(), Stats(), Settings()
 
     while True:
         smith_level = player.blacksmith_level
@@ -61,8 +61,10 @@ def play():
             if (
                 player.has_upgrade("sort_by_value")
                 and "blacksmith" in UPGRADES["sort_by_value"].player_value
+                and settings.sort_order == SortOrder.VALUE
             ):
                 items = store.items_by_value
+
             bought_items = visit_store.buy(items, player, buying_options)
             for item in bought_items:
                 store.remove_item(item)
