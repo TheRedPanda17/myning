@@ -30,10 +30,8 @@ with open("myning/names.yaml", "r") as f:
 
 with open("myning/species.yaml", "r") as f:
     SPECIES = yaml.load(f, Loader=yaml.FullLoader)
-    for id, species in SPECIES.items():
-        SPECIES[id] = Species.from_dict(species)
-    # Required for data stability and fixing the typo
-    SPECIES["Yuan-TiPureblood"] = SPECIES["Yuan-Ti Pureblood"]
+    for id, race in SPECIES.items():
+        SPECIES[id] = Species.from_dict(race)
 
 with open("myning/research.yaml", "r") as f:
     RESEARCH = yaml.load(f, Loader=yaml.FullLoader)

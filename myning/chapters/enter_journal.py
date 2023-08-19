@@ -72,7 +72,7 @@ def build_species_scroll_view(scroll: Scroll, species: Species):
     scroll.build_heading("Alignment")
     scroll.build_indented_paragraph(species.alignment)
     scroll.build_heading("Rarity")
-    scroll.build_indented_paragraph(species.rarity_str)
+    scroll.build_indented_paragraph(species.rarity)
     scroll.build_heading("Stats")
     scroll.build_indented_paragraph(species.skills_str)
     scroll.build_heading("Description")

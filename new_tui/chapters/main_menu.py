@@ -15,6 +15,7 @@ from new_tui.chapters import (
     garden,
     graveyard,
     healer,
+    journal,
     mine,
     research_facility,
     store,
@@ -67,7 +68,7 @@ def enter():
         MenuItem("Garden", garden.enter, MINES["Cave"]),
         MenuItem("Research Facility", research_facility.enter, MINES["Cavern"]),
         MenuItem("Time Machine", time_machine.enter, MINES["Cave System"]),
-        MenuItem("Journal", unimplemented),
+        MenuItem("Journal", journal.enter),
         MenuItem("Settings", unimplemented),
         MenuItem("Exit", ExitArgs),
     ]
