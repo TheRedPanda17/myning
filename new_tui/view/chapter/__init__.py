@@ -182,9 +182,7 @@ def get_labels_and_hotkeys(options: list[OptionLabel]):
         text_option_index = None
         text_option = None
         for index, item in enumerate(option_arr):
-            # Must be strictly str and not a subclass such as Icons
-            # Also check that item is not empty string
-            if type(item) is str and item:  # pylint: disable=unidiomatic-typecheck
+            if isinstance(item, str) and any(c in string.ascii_letters for c in item):
                 text_option = Text.from_markup(item)
                 text_option_index = index
                 break
