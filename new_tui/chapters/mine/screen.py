@@ -13,7 +13,6 @@ from new_tui.chapters.mine.actions import (
     CombatAction,
     EquipmentAction,
     LoseAllyAction,
-    LossAction,
     MineralAction,
     RecruitAction,
     VictoryAction,
@@ -103,7 +102,7 @@ class MineScreen(Screen[bool]):
     def action_skip(self):
         if self.abandoning:
             self.abandoning = False
-        elif isinstance(self.action, LossAction):
+        elif player.army.defeated:
             self.exit()
         elif not isinstance(self.action, VictoryAction):
             trip.tick_passed(self.action.duration)
@@ -132,13 +131,7 @@ class MineScreen(Screen[bool]):
         self.action.tick()
 
         trip.tick_passed(1)
-        if (
-            trip.seconds_left <= 0
-            # When defeated, automatically exit only after LossAction is finished
-            or player.army.defeated
-            and isinstance(self.action, LossAction)
-            and self.action.duration <= 0
-        ):
+        if trip.seconds_left <= 0 or player.army.defeated:
             self.exit()
 
         if self.action.duration <= 0:

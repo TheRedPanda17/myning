@@ -151,7 +151,7 @@ class CombatAction(Action):
     def next(self):
         self.fight()
         if player.army.defeated:
-            return LossAction()
+            return None
         if self.enemies.defeated:
             trip.add_battle(len(self.enemies), True)
             FileManager.save(trip)
@@ -207,15 +207,6 @@ class RoundAction(Action):
     @property
     def next(self):
         return self.next_action
-
-
-class LossAction(Action):
-    def __init__(self):
-        super().__init__(5)
-
-    @property
-    def content(self):
-        return "[red1]You lost the battle![/]"
 
 
 class VictoryAction(Action):
