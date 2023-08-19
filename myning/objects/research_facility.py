@@ -26,9 +26,9 @@ class ResearchFacility(Object, metaclass=Singleton):
         self,
         level: int = 1,
         points: int = 0,
-        last_research_tick: datetime = None,
-        researchers: list[Character] = None,
-        research: list[Upgrade] = None,
+        last_research_tick: datetime | None = None,
+        researchers: list[Character] | None = None,
+        research: list[Upgrade] | None = None,
     ):
         self.level = level
         self._points = points
@@ -143,7 +143,7 @@ class ResearchFacility(Object, metaclass=Singleton):
     def add_researcher(self, researcher: Character):
         self._researchers.append(researcher)
 
-    def remover_researcher(self, researcher: Character):
+    def remove_researcher(self, researcher: Character):
         self._researchers.remove(researcher)
 
     def purchase(self, cost):

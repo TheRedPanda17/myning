@@ -65,7 +65,7 @@ class ChapterWidget(ScrollableContainer):
             self.border_title = args.border_title
             self.pick(args)
         # TODO Remove dev haccs
-        # self.select(8)
+        # self.select(9)
         # self.select(0)
 
     def on_click(self):

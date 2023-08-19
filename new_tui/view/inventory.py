@@ -1,6 +1,7 @@
 from textual.widgets import DataTable
 
 from myning.objects.player import Player
+from new_tui.formatter import Formatter
 
 player = Player()
 
@@ -21,7 +22,7 @@ class InventoryWidget(DataTable):
         self.border_title = "Inventory"
         self.border_subtitle = (
             f"{len(player.inventory.items)} items "
-            f"([gold1]{sum(item.value for item in player.inventory.items)}g[/])"
+            f"({Formatter.gold(sum(item.value for item in player.inventory.items))})"
         )
         self.clear()
         self.add_rows(item.tui_arr for item in player.inventory.items)

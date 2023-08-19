@@ -84,7 +84,7 @@ def fire_researchers():
             return
         else:
             character = facility.army[index]
-            facility.remover_researcher(character)
+            facility.remove_researcher(character)
             player.add_ally(character)
 
             FileManager.multi_save(player, facility)
