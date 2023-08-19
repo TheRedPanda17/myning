@@ -155,9 +155,6 @@ class Player(Character, metaclass=Singleton):
         if credits > 0:
             self.soul_credits -= credits
 
-    def incr_trip(self):
-        self.total_trips += 1
-
     def get_mine_progress(self, progress_name):
         progress = self.mine_progressions.get(progress_name)
         if progress:

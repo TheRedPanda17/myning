@@ -10,6 +10,7 @@ from myning.objects.mine import Mine, MineType
 from myning.objects.player import Player
 from myning.objects.research_facility import ResearchFacility
 from myning.objects.species import Species
+from myning.objects.stats import IntegerStatKeys, Stats
 from myning.objects.trip import LOST_RATIO, Trip
 from myning.utils.file_manager import FileManager
 from myning.utils.species_rarity import SPECIES_TIERS
@@ -25,6 +26,7 @@ if TYPE_CHECKING:
 player = Player()
 macguffin = Macguffin()
 facility = ResearchFacility()
+stats = Stats()
 trip = Trip()
 
 
@@ -137,7 +139,11 @@ def complete_trip(abandoned: bool):
 
     story_args_list: list[StoryArgs] = []
 
+    stats.increment_int_stat(IntegerStatKeys.ENEMIES_DEFEATED, trip.enemies_defeated)
+    stats.increment_int_stat(IntegerStatKeys.BATTLES_WON, trip.battles_won)
+    stats.increment_int_stat(IntegerStatKeys.MINERALS_MINED, len(trip.minerals_mined))
     if player.army.defeated:
+        stats.increment_int_stat(IntegerStatKeys.ARMY_DEFEATS)
         trip.subtract_losses()
         story_args_list.append(
             StoryArgs(
@@ -148,6 +154,8 @@ def complete_trip(abandoned: bool):
                 subtitle=f"You survived {int(trip.total_seconds / 60)} minute(s)",
             )
         )
+    else:
+        stats.increment_int_stat(IntegerStatKeys.TRIPS_FINISHED)
 
     starting_level = player.level
     if len(player.army) > 1:
@@ -156,7 +164,6 @@ def complete_trip(abandoned: bool):
     else:
         player.add_experience(int(trip.experience_gained * macguffin.xp_boost))
 
-    player.incr_trip()
     if player.level > starting_level:
         story_args_list.append(
             StoryArgs(
@@ -227,6 +234,7 @@ def complete_trip(abandoned: bool):
             )
 
     trip.clear()
+    FileManager.multi_save(player, stats, trip)
     return story_builder(story_args_list, exit_mine)
 
 
