@@ -7,6 +7,7 @@ from myning.objects.blacksmith_item import BlacksmithItem
 from myning.objects.buying_option import BuyingOption, StoreType
 from myning.objects.item import Item, ItemType
 from myning.objects.player import Player
+from myning.objects.settings import Settings, SortOrder
 from myning.objects.stats import IntegerStatKeys, Stats
 from myning.objects.store import Store
 from myning.utils import utils
@@ -27,8 +28,7 @@ BLACKSMITH_ITEMS = [
 
 
 def play():
-    player = Player()
-    stats = Stats()
+    player, stats, settings = Player(), Stats(), Settings()
 
     while True:
         smith_level = player.blacksmith_level
@@ -36,7 +36,7 @@ def play():
         available_classes = BLACKSMITH_ITEMS[:smith_level]
         items = generate_items(available_classes)
         for item in items:
-            store.inventory.add_item(item)
+            store.add_item(item)
 
         _, index = pick(
             [
@@ -56,9 +56,18 @@ def play():
                     options_string="Buy Full Set",
                     filter=f"{set}'s",
                 )
-            bought_items = visit_store.buy(store.inventory.items, player, buying_options)
+
+            items = store.items
+            if (
+                player.has_upgrade("sort_by_value")
+                and "blacksmith" in UPGRADES["sort_by_value"].player_value
+                and settings.sort_order == SortOrder.VALUE
+            ):
+                items = store.items_by_value
+
+            bought_items = visit_store.buy(items, player, buying_options)
             for item in bought_items:
-                store.inventory.remove_item(item)
+                store.remove_item(item)
                 player.inventory.add_item(item)
 
                 if item.type == ItemType.WEAPON:
@@ -80,7 +89,7 @@ def play():
                 player.blacksmith_level = new_level
                 FileManager.save(player)
         elif index == 2:  # Go Back
-            FileManager.multi_delete(*store.inventory.items)
+            FileManager.multi_delete(*store.items)
             break
 
 

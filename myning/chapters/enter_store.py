@@ -1,7 +1,9 @@
 from myning.chapters import visit_store
+from myning.config import UPGRADES
 from myning.objects.item import ItemType
 from myning.objects.macguffin import Macguffin
 from myning.objects.player import Player
+from myning.objects.settings import Settings, SortOrder
 from myning.objects.stats import IntegerStatKeys, Stats
 from myning.objects.store import Store
 from myning.utils.file_manager import FileManager
@@ -14,6 +16,7 @@ def play():
     macguffin = Macguffin()
     store = Store(player.level)
     stats = Stats()
+    settings = Settings()
     store.generate()
 
     while True:
@@ -21,9 +24,14 @@ def play():
             ["Buy", "Sell", "Go Back"],
             f"What would you like to do? ({get_gold_string(player.gold)})",
         )
-        if option == "Buy" and (bought_items := visit_store.buy(store.inventory.items, player)):
+
+        items = store.items
+        if player.has_upgrade("sort_by_value") and settings.sort_order == SortOrder.VALUE:
+            items = store.items_by_value
+
+        if option == "Buy" and (bought_items := visit_store.buy(items, player)):
             for item in bought_items:
-                store.inventory.remove_item(item)
+                store.remove_item(item)
                 player.inventory.add_item(item)
                 if item.type == ItemType.WEAPON:
                     stats.increment_int_stat(IntegerStatKeys.WEAPONS_PURCHASED)
@@ -44,10 +52,10 @@ def play():
                 continue
             for sold_item in sold_items:
                 player.inventory.remove_item(sold_item)
-                store.inventory.add_item(sold_item)
+                store.add_item(sold_item)
             player.gold += price
             stats.increment_int_stat(IntegerStatKeys.GOLD_EARNED, price)
             FileManager.save(stats)
         elif option == "Go Back":
-            FileManager.multi_delete(*store.inventory.items)
+            FileManager.multi_delete(*store.items)
             break
