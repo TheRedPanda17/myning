@@ -1,33 +1,33 @@
-import math
 import sys
 from functools import partial
 from typing import TYPE_CHECKING
 
 from rich.table import Table
 
-from myning.config import XP_COST
+from myning.objects.garden import Garden
+from myning.objects.macguffin import Macguffin
 from myning.objects.player import Player
 from myning.objects.research_facility import ResearchFacility
-from myning.objects.settings import Settings
 from myning.objects.singleton import Singleton
 from myning.utils.file_manager import FileManager
 from myning.utils.ui_consts import Icons
 from new_tui.chapters import PickArgs, main_menu
-from new_tui.chapters.blacksmith import smith_cost
 from new_tui.formatter import Colors
 from new_tui.utilities import confirm
 
 if TYPE_CHECKING:
     from new_tui.view.chapter import ChapterWidget
 
-player = Player()
 facility = ResearchFacility()
+garden = Garden()
+macguffin = Macguffin()
+player = Player()
 
 
 def enter():
     value = get_total_value()
-    xp_boost = get_boost(player.macguffin.exp_boost, value)
-    mineral_boost = get_boost(player.macguffin.mineral_boost, value)
+    xp_boost = get_boost(macguffin.xp_boost, value)
+    mineral_boost = get_boost(macguffin.mineral_boost, value)
     return PickArgs(
         message="What would you like to do?",
         options=[
@@ -61,24 +61,37 @@ def view_potential(xp_boost, mineral_boost):
     enter,
 )
 def go_back_in_time(xp_boost, mineral_boost):
-    journal = player.discovered_races
+    value = get_total_value()
+    standard_boost = macguffin.get_new_standard_boost(value)
+    small_boost = macguffin.get_new_smaller_boost(value)
+
+    journal = player.discovered_species
     migrations = player.completed_migrations
-    name = player.name
-    settings = Settings()
+    new_species = player.roll_for_species()
+    player_name = player.name
+    player_id = player.id
 
     # Reset the game
     FileManager.backup_game()
     FileManager.reset_game()
     Singleton.reset()  # type: ignore
 
-    Player.initialize(name)
+    Player.initialize(player_name)
     new_player = Player()
-    new_player.macguffin.exp_boost = xp_boost
-    new_player.macguffin.mineral_boost = mineral_boost
-    new_player.discovered_races = journal
+    new_player.discovered_species = journal
     new_player.completed_migrations = migrations
-    Settings().initialize()
-    FileManager.multi_save(new_player, settings)
+    new_player.id = player_id
+    player.species = new_species
+
+    Macguffin.initialize()
+    new_macguffin = Macguffin()
+    new_macguffin.xp_boost = standard_boost
+    new_macguffin.mineral_boost = standard_boost
+    new_macguffin.research_boost = small_boost
+    new_macguffin.soul_credit_boost = small_boost
+    new_macguffin.plant_boost = small_boost
+
+    FileManager.multi_save(new_player, new_macguffin)
 
     # TODO fix jank, don't use exit ideally
     # Janky, but this will exit to the run.sh loop which will reboot the game. Basically purges
@@ -100,28 +113,7 @@ def get_boost(current_boost: int, game_value: int):
     return round((game_value / 500000) + current_boost, 2)
 
 
-def get_total_value():
-    item_value = sum(item.value for item in player.inventory.items)
-    army_value = sum(member.value for member in player.army)
-    exp_value = player.exp_available * XP_COST
-    upgrades_value = sum(sum(u.costs[: u.level]) for u in player.upgrades)
-    blacksmith_cost = sum(smith_cost(level) for level in range(1, player.blacksmith_level + 1))
-    unlocked_mines = sum(mine.cost for mine in player.mines_available)
-    beaten_mines = int(
-        sum(mine.win_value * math.pow(mine.cost, 1 / 3) for mine in player.mines_completed)
-    )
-    research = sum(sum(u.costs[: u.level]) for u in facility.research) * 5
-    research_facility = sum(smith_cost(level) for level in range(1, facility.level + 1)) * 5
-
-    return (
-        item_value
-        + army_value
-        + player.gold
-        + exp_value
-        + upgrades_value
-        + blacksmith_cost
-        + unlocked_mines
-        + beaten_mines
-        + research
-        + research_facility
-    )
+# This is the same function as in the stats page. I haven't figured out a great place where they can
+# share this function and I don't want to cross import
+def get_total_value() -> int:
+    return player.total_value + facility.total_value + garden.total_value

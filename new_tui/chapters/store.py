@@ -4,6 +4,7 @@ from rich.text import Text
 
 from myning.config import UPGRADES
 from myning.objects.item import Item, ItemType
+from myning.objects.macguffin import Macguffin
 from myning.objects.player import Player
 from myning.utils.file_manager import FileManager
 from myning.utils.generators import generate_equipment
@@ -15,6 +16,7 @@ from new_tui.utilities import confirm
 MARKDOWN_RATIO = 1 / 2
 
 player = Player()
+macguffin = Macguffin()
 
 
 def enter():
@@ -140,5 +142,5 @@ class Store(BaseStore):
 
 def sell_price(item: Item):
     # TODO if the item is a plant and it's expired, is the value supposed to be affected?
-    multiplier = player.macguffin.mineral_boost if item.type == ItemType.MINERAL else MARKDOWN_RATIO
+    multiplier = macguffin.mineral_boost if item.type == ItemType.MINERAL else MARKDOWN_RATIO
     return int(item.value * multiplier) or 1

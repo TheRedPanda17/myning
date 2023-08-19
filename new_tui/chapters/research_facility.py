@@ -2,6 +2,7 @@ from functools import partial
 
 from myning.config import RESEARCH
 from myning.objects.character import Character
+from myning.objects.macguffin import Macguffin
 from myning.objects.player import Player
 from myning.objects.research_facility import ResearchFacility
 from myning.objects.upgrade import Upgrade
@@ -10,6 +11,7 @@ from new_tui.chapters import Option, PickArgs, main_menu
 from new_tui.formatter import Formatter
 
 player = Player()
+macguffin = Macguffin()
 facility = ResearchFacility()
 RESEARCH: dict[str, Upgrade]
 
@@ -25,7 +27,7 @@ def enter():
             ("Go Back", main_menu.enter),
         ],
         subtitle=f"{len(facility.army)}/{facility.level} researchers assigned\n"
-        f"{round(facility.points_per_hour, 2)} research points / hr",
+        f"{round(facility.points_per_hour(macguffin.research_boost), 2)} research points / hr",
     )
 
 
@@ -38,7 +40,7 @@ def pick_assign():
         message="Choose companion to assign to research",
         options=options,
         subtitle=f"{len(facility.army)}/{facility.level} researchers assigned\n"
-        f"{round(facility.points_per_hour, 2)} research points / hr",
+        f"{round(facility.points_per_hour(macguffin.research_boost), 2)} research points / hr",
         column_titles=player.abbreviated_tui_column_titles,
     )
 
@@ -69,7 +71,7 @@ def pick_remove():
         message="Choose companion to remove from research",
         options=options,
         subtitle=f"{len(facility.army)}/{facility.level} researchers assigned\n"
-        f"{round(facility.points_per_hour, 2)} research points / hr",
+        f"{round(facility.points_per_hour(macguffin.research_boost), 2)} research points / hr",
         column_titles=player.abbreviated_tui_column_titles,
     )
 

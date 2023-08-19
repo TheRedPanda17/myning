@@ -4,13 +4,13 @@ from typing import TYPE_CHECKING
 
 from rich.table import Table
 
-from myning.config import MINES, RACES
+from myning.config import MINES, SPECIES
 from myning.objects.mine import Mine, MineType
 from myning.objects.player import Player
-from myning.objects.race import Race
+from myning.objects.species import Species
 from myning.objects.trip import LOST_RATIO, Trip
 from myning.utils.file_manager import FileManager
-from myning.utils.race_rarity import RACE_TIERS
+from myning.utils.species_rarity import SPECIES_TIERS
 from myning.utils.ui_consts import Icons
 from new_tui.chapters import DynamicArgs, Option, PickArgs, StoryArgs, healer, main_menu, tutorial
 from new_tui.chapters.mine.screen import MineScreen
@@ -169,13 +169,13 @@ def complete_trip(abandoned: bool):
 
     for ally in trip.allies_gained:
         player.add_ally(ally)
-        if ally.race not in player.discovered_races:
-            player.discovered_races.append(ally.race)
+        if ally.species not in player.discovered_species:
+            player.discovered_species.append(ally.species)
             message = "✨ You have discovered a new species! ✨\n"
             subtitle = (
-                f"{ally.race.icon} [bold yellow1]{ally.race.name}[/]\n\n"
+                f"{ally.species.icon} [bold yellow1]{ally.species.name}[/]\n\n"
                 f"{ally.name} has joined your army. Read and discover more about "
-                f"{ally.race.icon} {ally.race.name}(s) in your [bold underline]Journal[/]"
+                f"{ally.species.icon} {ally.species.name}(s) in your [bold underline]Journal[/]"
             )
             story_args_list.append(
                 StoryArgs(message=message, response="Awesome!", subtitle=subtitle)
@@ -216,15 +216,15 @@ def complete_trip(abandoned: bool):
     return story_builder(story_args_list, exit_mine)
 
 
-def available_species(mine: Mine) -> list[Race]:
+def available_species(mine: Mine) -> list[Species]:
     if not mine.companion_rarity:
         return []
     species = []
     for i in range(mine.companion_rarity):
-        tier = RACE_TIERS[i]
-        species.extend(RACES[s] for s in tier)
+        tier = SPECIES_TIERS[i]
+        species.extend(SPECIES[s] for s in tier)
     return species
 
 
-def unlock_species_emojies(species: list[Race]) -> list[str]:
-    return [s.icon if s in player.discovered_races else "❓" for s in species]
+def unlock_species_emojies(species: list[Species]) -> list[str]:
+    return [s.icon if s in player.discovered_species else "❓" for s in species]

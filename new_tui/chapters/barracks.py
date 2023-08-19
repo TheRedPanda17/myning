@@ -46,7 +46,7 @@ def enter():
 
 def pick_hire_muscle():
     entities = [
-        generate_character((1, 1), max_items=1, race=random.choice(player.discovered_races))
+        generate_character((1, 1), max_items=1, species=random.choice(player.discovered_species))
         for _ in range(20)
     ]
     entities.sort(key=lambda e: e.name)

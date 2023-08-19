@@ -20,7 +20,7 @@ from myning.utils.generators import (
     generate_mineral,
     generate_reward,
 )
-from myning.utils.race_rarity import get_recruit_species
+from myning.utils.species_rarity import get_recruit_species
 from myning.utils.string_generation import generate_death_action
 from myning.utils.ui_consts import Icons
 from new_tui.formatter import Formatter
@@ -253,7 +253,7 @@ class RecruitAction(Action):
         levels = trip.mine.character_levels
         levels = [max(1, math.ceil(level * 0.75)) for level in levels]
         species = get_recruit_species(trip.mine.companion_rarity)
-        ally = generate_character(levels, race=species)
+        ally = generate_character(levels, species=species)
         trip.add_ally(ally)
         FileManager.multi_save(trip, ally)
         self.message = "\n\n".join(

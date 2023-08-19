@@ -13,7 +13,6 @@ def main():
     Game.initialize()
     Garden.initialize()
     ResearchFacility.initialize()
-    ResearchFacility().check_in()
     Settings.initialize()
     Trip.initialize()
 
