@@ -8,6 +8,7 @@ from textual.widgets import DataTable
 from myning.objects.player import Player
 from myning.objects.trip import Trip
 from myning.utils.tab_title import TabTitle
+from myning.utils.ui_consts import Icons
 from new_tui.chapters import (
     DynamicArgs,
     ExitArgs,
@@ -65,7 +66,7 @@ class ChapterWidget(ScrollableContainer):
             self.border_title = args.border_title
             self.pick(args)
         # TODO Remove dev haccs
-        # self.select(9)
+        # self.select(10)
         # self.select(0)
 
     def on_click(self):
@@ -79,7 +80,8 @@ class ChapterWidget(ScrollableContainer):
         elif key == "shift_tab":
             self.app.action_focus_previous()
         elif key in ("escape", "q"):
-            if self.question.message == main_menu.enter().message:
+            last_option = self.option_table.get_row_at(self.option_table.row_count - 1)
+            if last_option == [Icons.EXIT, "Exit"]:
                 return  # Prevent exiting with escape or q in main menu
             self.select(-1)
         elif key in self.hotkeys:

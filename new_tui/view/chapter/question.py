@@ -7,15 +7,20 @@ from new_tui.formatter import Colors
 
 
 class Question(Static):
-    message = Reactive("", layout=True)
+    message: Reactive[RenderableType] = Reactive("", layout=True)  # type:ignore
     subtitle: Reactive[RenderableType] = Reactive("", layout=True)  # type: ignore
 
     def render(self):
         table = Table.grid()
         table.add_column(overflow="fold")
-        table.add_row(f"[bold]{self.message}[/]")
+
+        if isinstance(self.message, str):
+            self.message = f"[bold]{self.message}[/]"
+        table.add_row(self.message)
+
         if self.subtitle:
             if isinstance(self.subtitle, str):
                 self.subtitle = f"[{Colors.LOCKED}]{self.subtitle}[/]"
             table.add_row(self.subtitle)
+
         return table

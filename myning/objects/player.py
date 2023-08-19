@@ -12,6 +12,7 @@ from myning.objects.item import ItemType
 from myning.objects.mine import Mine
 from myning.objects.mine_stats import MineStats
 from myning.objects.singleton import Singleton
+from myning.objects.upgrade import Upgrade
 from myning.utils.file_manager import FileManager
 
 term = Terminal()
@@ -100,9 +101,9 @@ class Player(Character, metaclass=Singleton):
         self.gold = 1
         self.exp_available = 0
         self.mines_available: list[Mine] = [MINES["Hole in the ground"]]
-        self.upgrades = []
+        self.upgrades: list[Upgrade] = []
         self.mine_progressions = {}
-        self.mines_completed = []
+        self.mines_completed: list[Mine] = []
         self.blacksmith_level = 1
         self.level = 1
         self.experience = 0

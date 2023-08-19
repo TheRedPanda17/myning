@@ -7,6 +7,7 @@ from myning.utils.ui_consts import Icons
 from new_tui.chapters import (
     ExitArgs,
     Handler,
+    Option,
     PickArgs,
     armory,
     barracks,
@@ -17,6 +18,7 @@ from new_tui.chapters import (
     mine,
     research_facility,
     store,
+    time_machine,
     wizard_hut,
 )
 from new_tui.formatter import Formatter
@@ -64,14 +66,15 @@ def enter():
         MenuItem("Graveyard", graveyard.enter, MINES["Large pit"]),
         MenuItem("Garden", garden.enter, MINES["Cave"]),
         MenuItem("Research Facility", research_facility.enter, MINES["Cavern"]),
-        MenuItem("Time Machine", unimplemented, MINES["Cave System"]),
+        MenuItem("Time Machine", time_machine.enter, MINES["Cave System"]),
         MenuItem("Journal", unimplemented),
         MenuItem("Settings", unimplemented),
         MenuItem("Exit", ExitArgs),
     ]
+    options: list[Option] = [(chapter.arr, chapter.play) for chapter in chapters]
     return PickArgs(
         message="Where would you like to go next?",
-        options=[(chapter.arr, chapter.play) for chapter in chapters],
+        options=options,
         border_title="Main Menu",
     )
 

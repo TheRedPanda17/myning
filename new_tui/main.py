@@ -13,7 +13,7 @@ def main():
     Game.initialize()
     Garden.initialize()
     ResearchFacility.initialize()
-    ResearchFacility().check_in()  # type: ignore
+    ResearchFacility().check_in()
     Settings.initialize()
     Trip.initialize()
 
@@ -29,7 +29,7 @@ def main():
         Game(),
         Garden(),
         Player(),
-        ResearchFacility(),  # type: ignore
+        ResearchFacility(),
         Settings(),
         Trip(),
     )

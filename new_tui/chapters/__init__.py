@@ -10,7 +10,7 @@ if TYPE_CHECKING:
 
 @dataclass
 class PickArgs:
-    message: str
+    message: RenderableType
     options: list["Option"]
     subtitle: Optional[RenderableType] = None
     border_title: Optional[str] = None

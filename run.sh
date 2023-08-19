@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 while true; do
-    python dev.py
+    textual run --dev new_tui/main.py
     STATUS=$?
     if [ $STATUS == 123 ]; then # Exit status 123 means time travel
         echo "Going back in time..."
