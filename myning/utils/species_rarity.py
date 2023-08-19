@@ -1,12 +1,10 @@
 import random
-from typing import Optional
 
 from myning.config import RESEARCH, SPECIES
 from myning.objects.character import CharacterSpecies
 from myning.objects.player import Player
 from myning.objects.research_facility import ResearchFacility
-from myning.objects.species import Species
-from myning.utils.utils import boosted_random_choice, get_random_array_item
+from myning.utils.utils import boosted_random_choice
 
 SPECIES_TIERS = [
     [CharacterSpecies.HUMAN],
@@ -47,7 +45,7 @@ def get_current_tier() -> None:
     return highest_tier
 
 
-def _recruit_in_tier(tier: list[CharacterSpecies]) -> Species | None:
+def _recruit_in_tier(tier: list[CharacterSpecies]):
     player = Player()
 
     is_undiscovered = lambda species_name: SPECIES[species_name] not in player.discovered_species
@@ -58,11 +56,10 @@ def _recruit_in_tier(tier: list[CharacterSpecies]) -> Species | None:
         percent_boost = RESEARCH["species_discovery"].player_value / 100
 
     selected_species_name = boosted_random_choice(tier, is_undiscovered, percent_boost)
+    return SPECIES[selected_species_name] if selected_species_name else None
 
-    return SPECIES[selected_species_name]
 
-
-def get_recruit_species(highest_rarity: int) -> Species | None:
+def get_recruit_species(highest_rarity: int):
     facility = ResearchFacility()
     tiers = list(range(1, highest_rarity + 1))
     species_weights = SPECIES_WEIGHTS[:highest_rarity]
