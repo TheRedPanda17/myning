@@ -26,7 +26,7 @@ def enter():
             ("Go Back", main_menu.enter),
         ],
         subtitle=f"{len(facility.army)}/{facility.level} researchers assigned\n"
-        f"{round(facility.points_per_hour(macguffin.research_boost), 2)} research points / hr",
+        f"{facility.points_per_hour(macguffin.research_boost):.2f} research points / hr",
     )
 
 
@@ -39,7 +39,7 @@ def pick_assign():
         message="Choose companion to assign to research",
         options=options,
         subtitle=f"{len(facility.army)}/{facility.level} researchers assigned\n"
-        f"{round(facility.points_per_hour(macguffin.research_boost), 2)} research points / hr",
+        f"{facility.points_per_hour(macguffin.research_boost):.2f} research points / hr",
         column_titles=player.abbreviated_tui_column_titles,
     )
 
@@ -70,7 +70,7 @@ def pick_remove():
         message="Choose companion to remove from research",
         options=options,
         subtitle=f"{len(facility.army)}/{facility.level} researchers assigned\n"
-        f"{round(facility.points_per_hour(macguffin.research_boost), 2)} research points / hr",
+        f"{facility.points_per_hour(macguffin.research_boost):2f} research points / hr",
         column_titles=player.abbreviated_tui_column_titles,
     )
 
