@@ -5,6 +5,7 @@ from myning.config import MINES
 from myning.objects.macguffin import Macguffin
 from myning.objects.player import Player
 from myning.objects.research_facility import ResearchFacility
+from myning.utils.file_manager import FileManager
 from myning.utils.ui_consts import Icons
 from new_tui.formatter import Colors, Formatter
 
@@ -51,5 +52,9 @@ class CurrencyWidget(Static):
 
     def on_mount(self):
         self.border_title = "Currency"
-        self.set_interval(1, lambda: facility.check_in(macguffin.research_boost))
-        self.set_interval(1, self.refresh)
+        self.set_interval(1, self.check_in)
+
+    def check_in(self):
+        facility.check_in(macguffin.research_boost)
+        FileManager.save(facility)
+        self.refresh()

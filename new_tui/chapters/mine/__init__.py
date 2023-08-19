@@ -4,9 +4,10 @@ from typing import TYPE_CHECKING
 
 from rich.table import Table
 
-from myning.config import MINES, SPECIES
+from myning.config import MINES, RESEARCH, SPECIES
 from myning.objects.mine import Mine, MineType
 from myning.objects.player import Player
+from myning.objects.research_facility import ResearchFacility
 from myning.objects.species import Species
 from myning.objects.trip import LOST_RATIO, Trip
 from myning.utils.file_manager import FileManager
@@ -21,6 +22,7 @@ if TYPE_CHECKING:
     from new_tui.view.chapter import ChapterWidget
 
 player = Player()
+facility = ResearchFacility()
 trip = Trip()
 
 
@@ -187,6 +189,10 @@ def complete_trip(abandoned: bool):
             subtitle=trip.tui_table,
         )
     )
+
+    if facility.has_research("speed_up_time"):
+        increase = RESEARCH["speed_up_time"].player_value + 100
+        trip.total_seconds = int(trip.total_seconds * increase / 100)
 
     progress = trip.mine.player_progress
     progress.minutes += trip.total_seconds / 60.0

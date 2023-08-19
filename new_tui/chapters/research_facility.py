@@ -13,7 +13,6 @@ from new_tui.formatter import Formatter
 player = Player()
 macguffin = Macguffin()
 facility = ResearchFacility()
-RESEARCH: dict[str, Upgrade]
 
 
 def enter():

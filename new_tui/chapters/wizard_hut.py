@@ -9,8 +9,6 @@ from myning.utils.file_manager import FileManager
 from new_tui.chapters import Option, PickArgs, main_menu
 from new_tui.formatter import Colors, Formatter
 
-UPGRADES: dict[str, Upgrade]
-
 player = Player()
 
 

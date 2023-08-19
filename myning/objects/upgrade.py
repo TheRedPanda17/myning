@@ -16,7 +16,7 @@ class UpgradeType(Enum):
 
 
 class Upgrade(Object):
-    def __init__(self, id, name, descriptions, costs, values, type):
+    def __init__(self, id, name, descriptions, costs, values: list[int], type):
         self.id = id
         self.name = name
         self.descriptions = descriptions

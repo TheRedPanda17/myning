@@ -10,7 +10,6 @@ from new_tui.chapters import Option, PickArgs, main_menu
 from new_tui.formatter import Colors
 
 player = Player()
-SPECIES: dict[str, Species]
 
 
 def enter():
