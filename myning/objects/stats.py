@@ -1,6 +1,8 @@
 from enum import Enum
 
 from blessed import Terminal
+from rich.table import Table
+from rich.text import Text
 
 from myning.objects.object import Object
 from myning.objects.singleton import Singleton
@@ -44,9 +46,13 @@ class Stats(Object, metaclass=Singleton):
     def file_name(cls):
         return "stats"
 
-    def __init__(self, integer_stats: dict = {}, float_stats: dict = {}):
-        self.integer_stats = integer_stats
-        self.float_stats = float_stats
+    def __init__(
+        self,
+        integer_stats: dict[str, int] | None = None,
+        float_stats: dict[str, float] | None = None,
+    ):
+        self.integer_stats = integer_stats or {}
+        self.float_stats = float_stats or {}
 
     @classmethod
     def from_dict(cls, data: dict) -> "Stats":
@@ -55,7 +61,7 @@ class Stats(Object, metaclass=Singleton):
         return Stats(data["integer_stats"], data.get("float_stats", {}))
 
     @property
-    def all_stats(self):
+    def all_stats(self) -> dict[str, int | float]:
         return {**self.integer_stats, **self.float_stats}
 
     @property
@@ -69,6 +75,22 @@ class Stats(Object, metaclass=Singleton):
         s = term.bold("Stats\n\n")
         s += "\n".join(columnate(columns))
         return s
+
+    @property
+    def tui_display(self):
+        table = Table.grid(padding=(0, 2))
+        table.add_column(style="bold")
+        for key, value in self.all_stats.items():
+            table.add_row(
+                normalize_title(key),
+                Text.from_markup(
+                    f"{value:,}"
+                    if isinstance(value, int) or value.is_integer()
+                    else f"{value:,.2f}",
+                    justify="right",
+                ),
+            )
+        return table
 
     def to_dict(self) -> dict:
         return {"integer_stats": self.integer_stats, "float_stats": self.float_stats}

@@ -3,6 +3,7 @@ from functools import partial
 from myning.objects.character import Character
 from myning.objects.macguffin import Macguffin
 from myning.objects.player import Player
+from myning.objects.stats import FloatStatKeys, Stats
 from myning.utils.file_manager import FileManager
 from new_tui.chapters import PickArgs, main_menu
 from new_tui.formatter import Formatter
@@ -10,6 +11,7 @@ from new_tui.utilities import confirm
 
 player = Player()
 macguffin = Macguffin()
+stats = Stats()
 
 
 def enter():
@@ -99,7 +101,8 @@ def revive(member: Character, /):
 def lay_to_rest(member: Character, /):
     player.add_soul_credits(macguffin.soul_credit_boost)
     player.remove_fallen_ally(member)
-    FileManager.save(player)
+    stats.increment_float_stat(FloatStatKeys.SOUL_CREDITS_EARNED, macguffin.soul_credit_boost)
+    FileManager.multi_save(player, stats)
     return enter()
 
 

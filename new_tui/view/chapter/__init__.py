@@ -20,7 +20,6 @@ from new_tui.chapters import (
     tutorial,
 )
 from new_tui.chapters.garden.manage import GardenTable
-from new_tui.utilities import throttle
 from new_tui.view.army import ArmyWidget
 from new_tui.view.chapter.option_table import OptionTable
 from new_tui.view.chapter.question import Question
@@ -66,7 +65,7 @@ class ChapterWidget(ScrollableContainer):
             self.border_title = args.border_title
             self.pick(args)
         # TODO Remove dev haccs
-        # self.select(11)
+        self.select(12)
         # self.select(0)
 
     def on_click(self):

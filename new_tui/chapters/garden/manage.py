@@ -4,6 +4,7 @@ from typing import TYPE_CHECKING
 from myning.objects.garden import Garden
 from myning.objects.plant import Plant
 from myning.objects.player import Player
+from myning.objects.stats import IntegerStatKeys, Stats
 from myning.utils.file_manager import FileManager
 from new_tui.chapters import DynamicArgs, Handler, Option, PickArgs
 from new_tui.chapters.garden.garden_table import GardenTable
@@ -15,6 +16,7 @@ if TYPE_CHECKING:
 
 player = Player()
 garden = Garden()
+stats = Stats()
 
 
 def manage_garden():
@@ -71,9 +73,7 @@ def harvest_row():
     for column in range(garden.level):
         plant = garden.get_plant(row, column)
         if plant and plant.ready:
-            garden.harvest_plant(row, column)
-            player.inventory.add_item(plant)
-            FileManager.save(plant)
+            harvest_plant(row, column)
     FileManager.multi_save(player, garden)
     return manage_garden()
 
@@ -96,10 +96,7 @@ def plant_row():
         if not plant:
             # TODO fix return type of inventory.get_slot to resolve type issue
             assert isinstance(seed, Plant)
-            seed.sow()
-            garden.add_plant(seed, row, column)
-            player.inventory.remove_item(seed)
-            FileManager.save(seed)
+            plant_seed(seed, row, column)
     FileManager.multi_save(player, garden)
     return manage_garden()
 
@@ -159,7 +156,8 @@ def plant_seed(seed: Plant, row: int, column: int):
 def harvest_plant(row: int, column: int):
     plant = garden.harvest_plant(row, column)
     player.inventory.add_item(plant)
-    FileManager.multi_save(player, garden, plant)
+    stats.increment_int_stat(IntegerStatKeys.PLANTS_HARVESTED)
+    FileManager.multi_save(player, garden, plant, stats)
     return manage_garden()
 
 

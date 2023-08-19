@@ -6,13 +6,15 @@ from rich.text import Text
 from myning.objects.buying_option import BuyingOption
 from myning.objects.equipment import EQUIPMENT_TYPES
 from myning.objects.inventory import Inventory
-from myning.objects.item import Item
+from myning.objects.item import Item, ItemType
 from myning.objects.player import Player
+from myning.objects.stats import IntegerStatKeys, Stats
 from myning.utils.file_manager import FileManager
 from new_tui.chapters import PickArgs, main_menu
 from new_tui.formatter import Formatter
 
 player = Player()
+stats = Stats()
 
 
 class BaseStore(ABC):
@@ -81,7 +83,11 @@ class BaseStore(ABC):
         player.gold -= item.value
         player.inventory.add_item(item)
         self.inventory.remove_item(item)
-        FileManager.multi_save(player, item)
+        if item.type == ItemType.WEAPON:
+            stats.increment_int_stat(IntegerStatKeys.WEAPONS_PURCHASED)
+        elif item.type in EQUIPMENT_TYPES:
+            stats.increment_int_stat(IntegerStatKeys.ARMOR_PURCHASED)
+        FileManager.multi_save(player, item, stats)
         return self.enter()
 
     def confirm_multi_buy(self, items: list[Item]):
