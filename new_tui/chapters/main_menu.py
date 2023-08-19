@@ -41,18 +41,14 @@ class MenuItem:
     @property
     def play(self):
         if not self.prerequisite_mine or self.unlocked:
-            # TODO remove next two lines
-            if self.handler.__name__ == "unimplemented":
-                return partial(unimplemented, self.name)
             return self.handler
         return partial(mine_required, self.prerequisite_mine.name)
 
     @property
     def arr(self):
-        return [
-            self.icon if self.unlocked else Icons.LOCKED,
-            self.name if self.unlocked else Formatter.locked(self.name),
-        ]
+        return (
+            [self.icon, self.name] if self.unlocked else [Icons.LOCKED, Formatter.locked(self.name)]
+        )
 
 
 def enter():
@@ -69,7 +65,7 @@ def enter():
         MenuItem("Research Facility", research_facility.enter, MINES["Cavern"]),
         MenuItem("Time Machine", time_machine.enter, MINES["Cave System"]),
         MenuItem("Journal", journal.enter),
-        MenuItem("Settings", unimplemented),
+        # MenuItem("Settings", settings.enter),
         MenuItem("Exit", ExitArgs),
     ]
     options: list[Option] = [(chapter.arr, chapter.play) for chapter in chapters]
@@ -84,11 +80,4 @@ def mine_required(mine_name: str):
     return PickArgs(
         message=f"You must complete {mine_name} first",
         options=[("I'll get on it", enter)],
-    )
-
-
-def unimplemented(location: str):
-    return PickArgs(
-        message=f"Sorry, {location} has not been implemented yet.",
-        options=[("Bummer!", enter)],
     )
