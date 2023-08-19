@@ -23,12 +23,12 @@ class Formatter:
         return f"[{Colors.GOLD}]{g:,}g[/]"
 
     @staticmethod
-    def soul_credits(sc: int):
-        return f"[{Colors.SOUL_CREDITS}]{sc} soul credits[/]"
+    def soul_credits(sc: float):
+        return f"[{Colors.SOUL_CREDITS}]{sc:.2f} soul credits[/]"
 
     @staticmethod
-    def research_points(rp: int):
-        return f"[{Colors.RESEARCH_POINTS}]{rp} research points[/]"
+    def research_points(rp: float):
+        return f"[{Colors.RESEARCH_POINTS}]{rp:.2f} research points[/]"
 
     @staticmethod
     def level(lvl: int):
@@ -41,3 +41,8 @@ class Formatter:
     @staticmethod
     def water(w: int):
         return f"[sky_blue1]{w} water[/]"
+
+    @staticmethod
+    def percentage(p: float):
+        p *= 100
+        return f"{p:.0f}%" if p.is_integer else f"{p:.2f}%"

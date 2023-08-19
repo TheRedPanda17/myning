@@ -1,6 +1,7 @@
 from functools import partial
 
 from myning.objects.character import Character
+from myning.objects.macguffin import Macguffin
 from myning.objects.player import Player
 from myning.utils.file_manager import FileManager
 from new_tui.chapters import PickArgs, main_menu
@@ -8,6 +9,7 @@ from new_tui.formatter import Formatter
 from new_tui.utilities import confirm
 
 player = Player()
+macguffin = Macguffin()
 
 
 def enter():
@@ -44,7 +46,10 @@ def action(member: Character):
                 partial(revive, member),
             ),
             (
-                ["Lay to Rest", f"[bold green1]+{Formatter.soul_credits(1)}"],
+                [
+                    "Lay to Rest",
+                    f"[bold green1]+{Formatter.soul_credits(macguffin.soul_credit_boost)}",
+                ],
                 partial(lay_to_rest, member),
             ),
             ("Go Back", enter),
@@ -87,12 +92,12 @@ def revive(member: Character, /):
 
 
 @confirm(
-    f"Send {{0.icon}} {{0.name}} to the afterlife and gain {Formatter.soul_credits(1)} "
-    "for letting their soul rest?",
+    f"Send {{0.icon}} {{0.name}} to the afterlife and gain "
+    f"{Formatter.soul_credits(macguffin.soul_credit_boost)} for letting their soul rest?",
     enter,
 )
 def lay_to_rest(member: Character, /):
-    player.add_soul_credit()
+    player.add_soul_credits(macguffin.soul_credit_boost)
     player.remove_fallen_ally(member)
     FileManager.save(player)
     return enter()

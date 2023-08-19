@@ -5,6 +5,7 @@ from typing import TYPE_CHECKING
 from rich.table import Table
 
 from myning.config import MINES, RESEARCH, SPECIES
+from myning.objects.macguffin import Macguffin
 from myning.objects.mine import Mine, MineType
 from myning.objects.player import Player
 from myning.objects.research_facility import ResearchFacility
@@ -15,13 +16,14 @@ from myning.utils.species_rarity import SPECIES_TIERS
 from myning.utils.ui_consts import Icons
 from new_tui.chapters import DynamicArgs, Option, PickArgs, StoryArgs, healer, main_menu, tutorial
 from new_tui.chapters.mine.screen import MineScreen
-from new_tui.formatter import Colors
+from new_tui.formatter import Colors, Formatter
 from new_tui.utilities import story_builder
 
 if TYPE_CHECKING:
     from new_tui.view.chapter import ChapterWidget
 
 player = Player()
+macguffin = Macguffin()
 facility = ResearchFacility()
 trip = Trip()
 
@@ -147,13 +149,19 @@ def complete_trip(abandoned: bool):
             )
         )
 
-    current_level = player.level
-    player.add_xp(trip.experience_gained)
+    starting_level = player.level
+    if len(player.army) > 1:
+        xp = int(trip.experience_gained * 1 / 2 * len(player.army) * macguffin.xp_boost)
+        player.add_available_xp(xp)
+    else:
+        player.add_experience(int(trip.experience_gained * macguffin.xp_boost))
+
     player.incr_trip()
-    if player.level > current_level:
+    if player.level > starting_level:
         story_args_list.append(
             StoryArgs(
-                message=f"[green1]\n Leveled up to level {Colors.LEVEL}{player.level}[/]",
+                # pylint: disable=line-too-long
+                message=f"[green1]\n You leveled up from {Icons.LEVEL} {Formatter.level(starting_level)} to {Icons.LEVEL} {Formatter.level(player.level)}.",
                 response="Sweet!",
             )
         )

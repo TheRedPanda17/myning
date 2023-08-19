@@ -18,11 +18,11 @@ class Macguffin(Object, metaclass=Singleton):
 
     def __init__(
         self,
-        xp_boost=1,
-        mineral_boost=1,
-        research_boost=1,
-        soul_credit_boost=1,
-        plant_boost=1,
+        xp_boost: float = 1,
+        mineral_boost: float = 1,
+        research_boost: float = 1,
+        soul_credit_boost: float = 1,
+        plant_boost: float = 1,
     ):
         self.xp_boost = xp_boost
         self.mineral_boost = mineral_boost
@@ -42,10 +42,10 @@ class Macguffin(Object, metaclass=Singleton):
             data["plant_boost"],
         )
 
-    def get_new_standard_boost(self, game_value: int) -> int:
+    def get_new_standard_boost(self, game_value: int):
         return round((game_value / 500_000) + self.mineral_boost, 2)
 
-    def get_new_smaller_boost(self, game_value: int) -> int:
+    def get_new_smaller_boost(self, game_value: int):
         bonus = (game_value / 2_500_000) + self.plant_boost
         return round(max(bonus, 1), 2)
 
@@ -57,26 +57,3 @@ class Macguffin(Object, metaclass=Singleton):
             "soul_credit_boost": self.soul_credit_boost,
             "plant_boost": self.plant_boost,
         }
-
-    @property
-    def xp_percentage(self):
-        return self.percentage(self.xp_boost)
-
-    @property
-    def mineral_percentage(self):
-        return self.percentage(self.mineral_boost)
-
-    @property
-    def research_percentage(self):
-        return self.percentage(self.research_boost)
-
-    @property
-    def soul_credit_percentage(self):
-        return self.percentage(self.soul_credit_boost)
-
-    @property
-    def plant_percentage(self):
-        return self.percentage(self.plant_boost)
-
-    def percentage(self, number):
-        return f"{int(number * 100)}%"
