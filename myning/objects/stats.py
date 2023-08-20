@@ -84,7 +84,7 @@ class Stats(Object, metaclass=Singleton):
             table.add_row(
                 normalize_title(key),
                 Text.from_markup(
-                    f"{value:,}"
+                    f"{value:,.0f}"
                     if isinstance(value, int) or value.is_integer()
                     else f"{value:,.2f}",
                     justify="right",

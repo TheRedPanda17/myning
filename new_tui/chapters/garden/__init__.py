@@ -3,7 +3,6 @@ from myning.objects.garden import Garden
 from myning.objects.item import ItemType
 from myning.objects.plant import Plant
 from myning.objects.player import Player
-from myning.utils import utils
 from myning.utils.file_manager import FileManager
 from myning.utils.generators import generate_plant
 from new_tui.chapters import PickArgs, main_menu
@@ -44,15 +43,15 @@ class GardenStore(BaseStore):
 
 
 def confirm_upgrade():
-    cost = garden_cost(garden.level)
-    if player.gold < cost:
+    if player.gold < garden.upgrade_cost:
         return PickArgs(
-            message=f"You need {Formatter.gold(cost)} to upgrade your garden size to "
-            f"{garden.level + 1}",
+            message=f"You need {Formatter.gold(garden.upgrade_cost)} to upgrade your garden size "
+            f"to {garden.level + 1}",
             options=[("Bummer!", enter)],
         )
     return PickArgs(
-        message=f"Upgrade your garden size to {garden.level + 1} for {Formatter.gold(cost)}?",
+        message=f"Upgrade your garden size to {garden.level + 1} "
+        f"for {Formatter.gold(garden.upgrade_cost)}?",
         options=[
             ("Yes", upgrade),
             ("No", enter),
@@ -61,8 +60,7 @@ def confirm_upgrade():
 
 
 def upgrade():
-    cost = garden_cost(garden.level)
-    player.gold -= cost
+    player.gold -= garden.upgrade_cost
     garden.level_up()
     FileManager.multi_save(player, garden)
     return enter()
@@ -87,7 +85,3 @@ def view_plant():
         message="Eventually, you'll be able to do more than sell your plants. (But not yet)",
         options=[("Bummer!", enter)],
     )
-
-
-def garden_cost(level):
-    return utils.fibonacci(level + 4) * 100
