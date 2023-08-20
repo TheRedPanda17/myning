@@ -12,6 +12,7 @@ from myning.utils.ui_consts import Icons
 from myning.utils.utils import fibonacci
 from new_tui.chapters import DynamicArgs, Option, PickArgs, main_menu
 from new_tui.formatter import Colors, Formatter
+from new_tui.utilities import confirm
 from new_tui.view.input import IntInputScreen
 
 if TYPE_CHECKING:
@@ -26,7 +27,9 @@ def enter():
     options: list[Option] = list(zip(member_arrs, handlers))
 
     if player.has_upgrade("auto_exp"):
-        options.append((["", "Auto-Add xp"], confirm_auto_add_xp))
+        options.append((["", "Auto-Add xp"], auto_add_xp))
+    if player.has_upgrade("auto_ghost_xp"):
+        options.append((["", "Auto-Add xp to Ghosts Only"], auto_add_ghost_xp))
 
     options.extend(
         (
@@ -158,12 +161,13 @@ def add_xp(member: Character):
             message="How would you like to add xp?",
             options=[
                 (
-                    f"Level {member.name} Up ([{Colors.XP}]{xp_for_level} xp[/])",
+                    f"Level {member.name} Up ([{Colors.XP}]{xp_for_level} xp[/] needed)",
                     partial(level_up, member),
                 ),
                 ("Add xp Manually", partial(add_xp_manually, member)),
                 ("Go Back", enter),
             ],
+            subtitle=f"You have {player.exp_available} xp to distribute.",
         )
     return add_xp_manually(member)
 
@@ -235,13 +239,7 @@ def buy_xp():
     return DynamicArgs(callback=buy_xp_callback)
 
 
-def confirm_auto_add_xp():
-    return PickArgs(
-        message="Are you sure you want to auto-add all your exp?",
-        options=[("Yes", auto_add_xp), ("No", enter)],
-    )
-
-
+@confirm("Are you sure you want to auto-add all your exp?", enter)
 def auto_add_xp():
     if player.exp_available == 0:
         return PickArgs(
@@ -252,6 +250,30 @@ def auto_add_xp():
     player.army.reverse()
     while player.exp_available > 0:
         member = min(player.army, key=lambda m: m.level)
+        if member.level >= player.level and member.name != player.name:
+            member = player
+
+        xp = fibonacci(member.level + 1)
+        xp -= member.experience
+        xp = min(xp, player.exp_available)
+        player.remove_available_xp(xp)
+        member.add_experience(xp, display=False)
+
+    return enter()
+
+
+@confirm("Are you sure you want to auto-add all your xp to your revived companions?", enter)
+def auto_add_ghost_xp():
+    if player.exp_available == 0:
+        return PickArgs(
+            message="You have no experience to distribute",
+            options=[("I should have thought of that...", enter)],
+        )
+
+    player.army.reverse()
+    ghosts = [m for m in player.army if m.is_ghost]
+    while player.exp_available > 0:
+        member = min(ghosts, key=lambda m: m.level)
         if member.level >= player.level and member.name != player.name:
             member = player
 
