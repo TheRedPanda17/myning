@@ -38,11 +38,9 @@ SPECIES_TIERS = [
 SPECIES_WEIGHTS = [150, 75, 40, 20, 10, 7, 4]
 
 
-def get_current_tier() -> None:
+def get_current_tier():
     player = Player()
-    highest_tier = max(map(lambda x: x.rarity_tier, player.discovered_species))
-
-    return highest_tier
+    return max(s.rarity_tier for s in player.discovered_species)
 
 
 def _recruit_in_tier(tier: list[CharacterSpecies]):

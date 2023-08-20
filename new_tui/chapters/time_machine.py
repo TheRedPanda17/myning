@@ -97,6 +97,8 @@ def view_potential():
             f"{Formatter.percentage(get_potential_smaller_boost())} soul credits",
             f"{Formatter.percentage(get_potential_smaller_boost())} research speed",
             f"{Formatter.percentage(get_potential_smaller_boost())} plant value",
+            "",
+            "Oh, yeah, and there's a slight chance you may experience a bit of transmogrification.",
         ]
     ),
     enter,
@@ -121,7 +123,7 @@ def go_back_in_time():
     new_player.discovered_species = journal
     new_player.completed_migrations = migrations
     new_player.id = player_id
-    player.species = new_species
+    new_player.species = new_species
 
     Macguffin.initialize()
     new_macguffin = Macguffin()
