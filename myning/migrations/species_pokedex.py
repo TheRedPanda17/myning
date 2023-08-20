@@ -3,8 +3,8 @@ import os
 from myning.config import SPECIES
 from myning.objects.character import CharacterSpecies
 from myning.objects.player import Player
-from myning.utils import string_generation
-from myning.utils.file_manager import FileManager
+from myning.utilities import string_generation
+from myning.utilities.file_manager import FileManager
 
 
 def run():

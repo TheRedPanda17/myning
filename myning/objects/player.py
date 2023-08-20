@@ -13,7 +13,7 @@ from myning.objects.mine import Mine
 from myning.objects.mine_stats import MineStats
 from myning.objects.singleton import Singleton
 from myning.objects.upgrade import Upgrade
-from myning.utils.file_manager import FileManager
+from myning.utilities.file_manager import FileManager
 
 term = Terminal()
 
@@ -189,7 +189,7 @@ class Player(Character, metaclass=Singleton):
         failure_option: Optional[str] = None,
         confirmation_msg: Optional[str] = None,
     ) -> bool:
-        from myning.utils.io import confirm, pick
+        from myning.utilities.io import confirm, pick
 
         if self.gold >= cost:
             if confirmation_msg is None or confirm(confirmation_msg):

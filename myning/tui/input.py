@@ -3,7 +3,7 @@ from textual.screen import ModalScreen
 from textual.validation import Number
 from textual.widgets import Input, Static
 
-from myning.formatter import Formatter
+from myning.utilities.formatter import Formatter
 
 
 class IntInput(Input):

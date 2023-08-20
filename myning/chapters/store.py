@@ -5,14 +5,14 @@ from rich.text import Text
 from myning.chapters import Option, PickArgs, main_menu, tutorial
 from myning.chapters.base_store import BaseStore
 from myning.config import UPGRADES
-from myning.formatter import Formatter
 from myning.objects.item import Item, ItemType
 from myning.objects.macguffin import Macguffin
 from myning.objects.plant import Plant
 from myning.objects.player import Player
-from myning.utilities import confirm
-from myning.utils.file_manager import FileManager
-from myning.utils.generators import generate_equipment
+from myning.utilities.file_manager import FileManager
+from myning.utilities.formatter import Formatter
+from myning.utilities.generators import generate_equipment
+from myning.utilities.pick import confirm
 
 MARKDOWN_RATIO = 1 / 2
 

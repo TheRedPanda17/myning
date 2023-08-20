@@ -1,12 +1,11 @@
 from functools import partial
 
 from myning.chapters import Option, PickArgs, main_menu, tutorial
-from myning.formatter import Emoji
 from myning.objects.character import Character
 from myning.objects.equipment import EQUIPMENT_TYPES
 from myning.objects.item import Item, ItemType
 from myning.objects.player import Player
-from myning.utils.file_manager import FileManager
+from myning.utilities.file_manager import FileManager
 
 player = Player()
 
@@ -20,7 +19,7 @@ def pick_member():
             for slot in EQUIPMENT_TYPES:
                 equipped = member.equipment.get_slot_item(slot)
                 if player.inventory.has_better_item(equipped, slot):
-                    member_arr.append(Emoji("✨"))
+                    member_arr.append("✨")
                     break
 
     handlers = [partial(pick_slot, member) for member in player.army]

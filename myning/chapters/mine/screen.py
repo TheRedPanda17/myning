@@ -16,9 +16,9 @@ from myning.chapters.mine.actions import (
 )
 from myning.objects.player import Player
 from myning.objects.trip import Trip
-from myning.utilities import throttle
-from myning.utils.tab_title import TabTitle
-from myning.utils.ui_consts import Icons
+from myning.utilities.pick import throttle
+from myning.utilities.tab_title import TabTitle
+from myning.utilities.ui import Icons
 from myning.view.header import Header
 
 player = Player()

@@ -1,9 +1,6 @@
 import os
 
 import yaml
-from blessed import Terminal
-
-term = Terminal()
 
 
 def check_for_updates():
@@ -15,7 +12,6 @@ def check_for_updates():
     if not os.popen("git diff HEAD origin/main").read():
         return
 
-    print(term.clear)
     print("There is a new version of Myning available. Would you like to update?")
     if input("(y/n): ").lower() == "n":
         print("\nNot updating.")
@@ -24,7 +20,6 @@ def check_for_updates():
 
     old_changelog = get_changelog()
     os.system("git pull")
-    print(term.clear)
     os.system("pip install -r requirements.txt > /dev/null")
     changelog = get_changelog()
     changelog.reverse()
@@ -34,7 +29,7 @@ def check_for_updates():
         if change in old_changelog:
             continue
         changed = True
-        print(f'{term.bold}New Update "{change["name"]}"{term.normal} on {change["date"]}')
+        print(f'New Update "{change["name"]}" on {change["date"]}')
         if change["description"]:
             print(change["description"])
 

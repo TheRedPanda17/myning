@@ -4,9 +4,8 @@ from rich.table import Table
 from rich.text import Text
 
 from myning.objects.character import Character
-from myning.utils import utils
-from myning.utils.ui import columnate, get_health_bar
-from myning.utils.ui_consts import Icons
+from myning.utilities.fib import fibonacci
+from myning.utilities.ui import Icons, get_health_bar
 
 
 class Army(UserList[Character]):
@@ -17,23 +16,6 @@ class Army(UserList[Character]):
     def append(self, __object: Character) -> None:
         super().append(__object)
         self.sort(key=lambda c: (c.__class__.__name__ != "Player", -c.level))
-
-    @property
-    def abbreviated(self):
-        return columnate(
-            [
-                [
-                    member.icon,
-                    member.name,
-                    member.damage_str,
-                    member.armor_str,
-                    member.level_str,
-                    member.exp_str,
-                    member.ghost_str,
-                ]
-                for member in self
-            ]
-        )
 
     @property
     def current_health(self) -> int:
@@ -98,7 +80,7 @@ class Army(UserList[Character]):
                 f"[red1]{member.stats['damage']}[/]",
                 f"[dodger_blue1]{member.stats['armor']}[/]",
                 f"[cyan1]{member.level}[/]",
-                f"[magenta1]{member.experience}/{utils.fibonacci(member.level + 1)}[/]",
+                f"[magenta1]{member.experience}/{fibonacci(member.level + 1)}[/]",
                 "🪦" if member.is_ghost else " ",
             )
         return table

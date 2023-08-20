@@ -1,8 +1,7 @@
 from blessed import Terminal
 
 from myning.objects.item import Item, ItemType
-from myning.utils.file_manager import FileManager
-from myning.utils.ui import columnate
+from myning.utilities.file_manager import FileManager
 
 term = Terminal()
 
@@ -74,11 +73,3 @@ class Equipment:
 
     def change_item(self, slot, item):
         self._slots[slot] = item
-
-    def __str__(self):
-        return "\n".join(
-            columnate(
-                [[key.capitalize(), str(item)] for key, item in self._slots.items()],
-                sep="  ",
-            )
-        )

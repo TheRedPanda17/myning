@@ -1,6 +1,6 @@
 from myning.config import NAMES, STRINGS
 from myning.objects.character import CharacterSpecies
-from myning.utils.utils import get_random_array_item, get_random_array_item_and_index
+from myning.utilities.rand import get_random_array_item, get_random_array_item_and_index
 
 creature_types = [
     "Spider",

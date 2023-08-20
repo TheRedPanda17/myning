@@ -5,16 +5,14 @@ from blessed import Terminal
 from rich.text import Text
 
 from myning.config import SPECIES, XP_COST
-from myning.formatter import Colors, Emoji
 from myning.objects.equipment import Equipment
 from myning.objects.object import Object
 from myning.objects.species import Species
-from myning.utils import utils
-from myning.utils.file_manager import FileManager
-from myning.utils.output import print_level_up
-from myning.utils.ui import columnate, get_health_bar
-from myning.utils.ui_consts import Icons
-from myning.utils.utils import get_random_int
+from myning.utilities import rand
+from myning.utilities.fib import fibonacci, fibonacci_sum
+from myning.utilities.file_manager import FileManager
+from myning.utilities.rand import get_random_int
+from myning.utilities.ui import Colors, Icons, get_health_bar
 
 term = Terminal()
 STRENGTH_DIVISOR = 4
@@ -117,7 +115,7 @@ class Character(Object):
     @property
     def value(self):
         equipment_value = sum(item.value for item in self.equipment.all_items)
-        level_value = utils.fibonacci_sum(self.level) * XP_COST
+        level_value = fibonacci_sum(self.level) * XP_COST
 
         return equipment_value + level_value
 
@@ -177,22 +175,19 @@ class Character(Object):
         entity.is_ghost = dict.get("is_ghost") or False
         return entity
 
-    def add_experience(self, exp, display=True):
-        if exp <= 0:
+    def add_experience(self, xp: int):
+        if xp <= 0:
             return
-        self.experience += exp
-        needed = utils.fibonacci(self.level + 1)
+        self.experience += xp
+        needed = fibonacci(self.level + 1)
         while self.experience >= needed:
             self.level += 1
-            self.experience = self.experience - needed
+            self.experience -= needed
             self.health += self.health_mod
             for stat in Character.base_stats:
                 self.stats[stat] += 1
 
-            needed = utils.fibonacci(self.level + 1)
-
-            if display:
-                print_level_up(self.level)
+            needed = fibonacci(self.level + 1)
 
         FileManager.save(self)
 
@@ -224,24 +219,6 @@ class Character(Object):
         ]
 
     @property
-    def stats_str(self):
-        return "\n".join(
-            columnate(
-                [
-                    [
-                        "Damage",
-                        f"{Colors.WEAPON}{Icons.DAMAGE} {self.stats['damage']}{term.normal}",
-                    ],
-                    [
-                        "Armor",
-                        f"{Colors.ARMOR}{Icons.ARMOR} {self.stats['armor']}{term.normal}",
-                    ],
-                ],
-                sep="  ",
-            )
-        )
-
-    @property
     def icon(self):
         return self.species.icon
 
@@ -263,7 +240,7 @@ class Character(Object):
 
     @property
     def exp_str(self):
-        return f"[{Colors.XP}]{self.experience}/{utils.fibonacci(self.level + 1)}[/] xp"
+        return f"[{Colors.XP}]{self.experience}/{fibonacci(self.level + 1)}[/] xp"
 
     @property
     def ghost_str(self):
@@ -303,7 +280,8 @@ class Character(Object):
             Text.from_markup(f"[dodger_blue1]{self.stats['armor']}[/]", justify="right"),
             Text.from_markup(f"[cyan1]{self.level}[/]", justify="right"),
             Text.from_markup(
-                f"[magenta1]{self.experience}/{utils.fibonacci(self.level + 1)}[/]", justify="right"
+                f"[magenta1]{self.experience}/{fibonacci(self.level + 1)}[/]",
+                justify="right",
             ),
             "🪦" if self.is_ghost else " ",
         ]

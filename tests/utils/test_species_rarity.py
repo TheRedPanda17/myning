@@ -4,7 +4,7 @@ from unittest.mock import MagicMock, Mock, patch
 from myning.config import SPECIES
 from myning.objects.character import CharacterSpecies
 from myning.objects.player import Player
-from myning.utils.species_rarity import get_current_tier, get_recruit_species
+from myning.utilities.species_rarity import get_current_tier, get_recruit_species
 
 
 class TestSpeciesRarity(unittest.TestCase):

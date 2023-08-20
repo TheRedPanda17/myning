@@ -1,7 +1,7 @@
 from textual.widgets import DataTable
 
-from myning.formatter import Formatter
 from myning.objects.player import Player
+from myning.utilities.formatter import Formatter
 
 player = Player()
 

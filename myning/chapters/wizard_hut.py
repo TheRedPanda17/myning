@@ -4,10 +4,11 @@ from rich.table import Table
 
 from myning.chapters import Option, PickArgs, main_menu
 from myning.config import UPGRADES
-from myning.formatter import Colors, Formatter
 from myning.objects.player import Player
 from myning.objects.upgrade import Upgrade
-from myning.utils.file_manager import FileManager
+from myning.utilities.file_manager import FileManager
+from myning.utilities.formatter import Formatter
+from myning.utilities.ui import Colors
 
 player = Player()
 

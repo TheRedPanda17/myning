@@ -6,13 +6,13 @@ from rich.text import Text
 
 from myning.chapters import DynamicArgs, Option, PickArgs, main_menu
 from myning.config import XP_COST
-from myning.formatter import Colors, Formatter
 from myning.objects.character import Character
 from myning.objects.player import Player
-from myning.utilities import confirm
-from myning.utils.generators import generate_character
-from myning.utils.ui_consts import Icons
-from myning.utils.utils import fibonacci
+from myning.utilities.fib import fibonacci
+from myning.utilities.formatter import Formatter
+from myning.utilities.generators import generate_character
+from myning.utilities.pick import confirm
+from myning.utilities.ui import Colors, Icons
 from myning.view.input import IntInputScreen
 
 if TYPE_CHECKING:

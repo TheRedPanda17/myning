@@ -2,13 +2,13 @@ from functools import partial
 
 from myning.chapters import Option, PickArgs, main_menu
 from myning.config import RESEARCH
-from myning.formatter import Formatter
 from myning.objects.character import Character
 from myning.objects.macguffin import Macguffin
 from myning.objects.player import Player
 from myning.objects.research_facility import ResearchFacility
 from myning.objects.upgrade import Upgrade
-from myning.utils.file_manager import FileManager
+from myning.utilities.file_manager import FileManager
+from myning.utilities.formatter import Formatter
 
 player = Player()
 macguffin = Macguffin()

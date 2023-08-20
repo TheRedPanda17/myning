@@ -5,14 +5,14 @@ from rich.text import Text
 
 from myning.chapters import PickArgs, main_menu
 from myning.config import UPGRADES
-from myning.formatter import Formatter
 from myning.objects.buying_option import BuyingOption
 from myning.objects.equipment import EQUIPMENT_TYPES
 from myning.objects.item import Item, ItemType
 from myning.objects.player import Player
 from myning.objects.settings import Settings, SortOrder
 from myning.objects.stats import IntegerStatKeys, Stats
-from myning.utils.file_manager import FileManager
+from myning.utilities.file_manager import FileManager
+from myning.utilities.formatter import Formatter
 
 player = Player()
 stats = Stats()

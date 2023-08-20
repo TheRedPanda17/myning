@@ -4,15 +4,15 @@ from typing import TYPE_CHECKING
 from rich.table import Table
 
 from myning.chapters import PickArgs, main_menu
-from myning.formatter import Colors, Formatter
 from myning.objects.garden import Garden
 from myning.objects.macguffin import Macguffin
 from myning.objects.player import Player
 from myning.objects.research_facility import ResearchFacility
 from myning.objects.singleton import Singleton
-from myning.utilities import confirm
-from myning.utils.file_manager import FileManager
-from myning.utils.ui_consts import Icons
+from myning.utilities.file_manager import FileManager
+from myning.utilities.formatter import Formatter
+from myning.utilities.pick import confirm
+from myning.utilities.ui import Colors, Icons
 
 if TYPE_CHECKING:
     from myning.view.chapter import ChapterWidget

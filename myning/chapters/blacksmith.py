@@ -4,14 +4,14 @@ from functools import partial
 from myning.chapters import PickArgs
 from myning.chapters.base_store import BaseStore
 from myning.config import STRINGS, UPGRADES
-from myning.formatter import Formatter
 from myning.objects.blacksmith_item import BlacksmithItem
 from myning.objects.buying_option import BuyingOption
 from myning.objects.equipment import EQUIPMENT_TYPES
 from myning.objects.item import Item, ItemType
 from myning.objects.player import Player
-from myning.utils import utils
-from myning.utils.file_manager import FileManager
+from myning.utilities import rand
+from myning.utilities.file_manager import FileManager
+from myning.utilities.formatter import Formatter
 
 player = Player()
 
@@ -54,7 +54,7 @@ class Blacksmith(BaseStore):
         for tier in TIERS:
             for item_type in EQUIPMENT_TYPES:
                 value = tier.value if item_type == ItemType.WEAPON else int(tier.value * 0.4)
-                type_name = random.choice(STRINGS[item_type.lower()])
+                type_name = rand.choice(STRINGS[item_type.lower()])
                 name = f"{tier.name}'s {type_name}"
                 description = f"A {item_type.name}'s  {type_name}."
                 self.add_item(Item(name, description, item_type, value, tier.main_affect))
@@ -102,4 +102,4 @@ class Blacksmith(BaseStore):
 
 
 def smith_cost(level):
-    return utils.fibonacci(level + 4) * 100
+    return rand.fibonacci(level + 4) * 100

@@ -5,8 +5,9 @@ from blessed import Terminal
 from myning.objects.object import Object
 from myning.objects.plant import Plant
 from myning.objects.singleton import Singleton
-from myning.utils import utils
-from myning.utils.file_manager import FileManager, Subfolders
+from myning.utilities import rand
+from myning.utilities.fib import fibonacci
+from myning.utilities.file_manager import FileManager, Subfolders
 
 term = Terminal()
 
@@ -97,7 +98,7 @@ class Garden(Object, metaclass=Singleton):
         return sum(self.get_upgrade_cost(level) for level in range(1, self.level))
 
     def get_upgrade_cost(self, level: int) -> int:
-        return utils.fibonacci(level + 4) * 100
+        return fibonacci(level + 4) * 100
 
     def collect_water(self):
         if not self.last_collected_water:

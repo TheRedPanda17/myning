@@ -5,11 +5,10 @@ from rich.progress_bar import ProgressBar
 from rich.table import Table
 from rich.text import Text
 
-from myning.formatter import Colors, Formatter
 from myning.objects.mine_stats import MineStats
 from myning.objects.object import Object
-from myning.utils.ui import columnate, get_gold_string, get_level_string, get_locked_str
-from myning.utils.ui_consts import Icons
+from myning.utilities.formatter import Formatter
+from myning.utilities.ui import Colors, Icons
 
 
 class MineType(str, Enum):
@@ -129,34 +128,6 @@ class Mine(Object):
             + min(self.player_progress.minerals, self.win_criteria.minutes)
         )
         return ProgressBar(total=self.win_criteria.total_items, completed=current, width=20)
-
-    @property
-    def progress(self):
-        def _remaining_str(current: int, total: int):
-            return f"{current}/{total}" if current < total else "Complete"
-
-        return "\n".join(
-            columnate(
-                [
-                    [
-                        "Progress",
-                        self.progress_bar,
-                    ],
-                    [
-                        "Minerals:",
-                        _remaining_str(self.player_progress.minerals, self.win_criteria.minerals),
-                    ],
-                    [
-                        "Kills:",
-                        _remaining_str(self.player_progress.kills, self.win_criteria.kills),
-                    ],
-                    [
-                        "Minutes Survived:",
-                        _remaining_str(self.player_progress.minutes, self.win_criteria.minutes),
-                    ],
-                ]
-            )
-        )
 
     @property
     def tui_progress(self):

@@ -2,7 +2,7 @@ from unittest import mock
 
 from myning.config import SPECIES
 from myning.objects.character import Character, CharacterSpecies, SpeciesEmoji
-from myning.utils.generators import generate_character
+from myning.utilities.generators import generate_character
 
 
 class TestCharacter:

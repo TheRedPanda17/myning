@@ -3,13 +3,13 @@ from typing import TYPE_CHECKING
 
 from myning.chapters import DynamicArgs, Handler, Option, PickArgs
 from myning.chapters.garden.garden_table import GardenTable
-from myning.formatter import Formatter
 from myning.objects.garden import Garden
 from myning.objects.plant import Plant
 from myning.objects.player import Player
 from myning.objects.stats import IntegerStatKeys, Stats
-from myning.utilities import confirm
-from myning.utils.file_manager import FileManager
+from myning.utilities.file_manager import FileManager
+from myning.utilities.formatter import Formatter
+from myning.utilities.pick import confirm
 
 if TYPE_CHECKING:
     from myning.view.chapter import ChapterWidget

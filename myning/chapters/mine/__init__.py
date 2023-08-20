@@ -7,7 +7,6 @@ from rich.table import Table
 from myning.chapters import DynamicArgs, Option, PickArgs, StoryArgs, healer, main_menu, tutorial
 from myning.chapters.mine.screen import MineScreen
 from myning.config import MINES, RESEARCH, SPECIES
-from myning.formatter import Colors, Formatter
 from myning.objects.macguffin import Macguffin
 from myning.objects.mine import Mine, MineType
 from myning.objects.player import Player
@@ -15,11 +14,12 @@ from myning.objects.research_facility import ResearchFacility
 from myning.objects.species import Species
 from myning.objects.stats import IntegerStatKeys, Stats
 from myning.objects.trip import LOST_RATIO, Trip
-from myning.utilities import story_builder
-from myning.utils.file_manager import FileManager
-from myning.utils.species_rarity import SPECIES_TIERS
-from myning.utils.tab_title import TabTitle
-from myning.utils.ui_consts import Icons
+from myning.utilities.file_manager import FileManager
+from myning.utilities.formatter import Formatter
+from myning.utilities.pick import story_builder
+from myning.utilities.species_rarity import SPECIES_TIERS
+from myning.utilities.tab_title import TabTitle
+from myning.utilities.ui import Colors, Icons
 
 if TYPE_CHECKING:
     from myning.view.chapter import ChapterWidget

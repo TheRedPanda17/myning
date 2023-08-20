@@ -1,8 +1,7 @@
 import random
 from collections import UserList
 from datetime import datetime
-from functools import cache
-from typing import Callable, Optional, TypeVar
+from typing import Callable, TypeVar
 
 T = TypeVar("T")
 ListType = list[T] | UserList[T]
@@ -24,12 +23,11 @@ def get_random_int(a: int, b: int | None = None):
     return random.randint(a, b)
 
 
-def get_random_array_item_and_index(arr: ListType[T], max=None) -> tuple[T, int]:
+def get_random_array_item_and_index(arr: ListType[T], maximum=None) -> tuple[T, int]:
     """Get a random item from an array and return it along with its index."""
-
-    if not max or max > len(arr) - 1:
-        max = len(arr) - 1
-    index = get_random_int(max)
+    if not maximum or maximum > len(arr) - 1:
+        maximum = len(arr) - 1
+    index = get_random_int(maximum)
     return arr[index], index
 
 
@@ -70,23 +68,3 @@ def boosted_random_choice(
         else:
             weights.append(unselected_weight)
     return random.choices(arr, weights=weights)[0]
-
-
-@cache
-def fibonacci(n: int) -> int:
-    match n:
-        case 1:
-            return 0
-        case 2:
-            return 1
-        case 3:
-            return 3
-        case 4:
-            return 5
-        case _:
-            return fibonacci(n - 1) + fibonacci(n - 2)
-
-
-@cache
-def fibonacci_sum(n: int):
-    return sum(fibonacci(i) for i in range(1, n + 1))

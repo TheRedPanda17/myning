@@ -3,7 +3,7 @@ from rich.table import Table
 from textual.reactive import Reactive
 from textual.widgets import Static
 
-from myning.formatter import Colors
+from myning.utilities.ui import Colors
 
 
 class Question(Static):

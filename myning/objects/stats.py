@@ -6,8 +6,8 @@ from rich.text import Text
 
 from myning.objects.object import Object
 from myning.objects.singleton import Singleton
-from myning.utils.file_manager import FileManager
-from myning.utils.ui import columnate, normalize_title
+from myning.utilities.file_manager import FileManager
+from myning.utilities.formatter import Formatter
 
 term = Terminal()
 
@@ -65,24 +65,12 @@ class Stats(Object, metaclass=Singleton):
         return {**self.integer_stats, **self.float_stats}
 
     @property
-    def display(self):
-        columns = []
-        for key, value in self.all_stats.items():
-            title = f"  {term.bold(normalize_title(key))}"
-            stat = f"{term.white(f'{value}')}"
-            columns.append([title, stat])
-
-        s = term.bold("Stats\n\n")
-        s += "\n".join(columnate(columns))
-        return s
-
-    @property
     def tui_display(self):
         table = Table.grid(padding=(0, 2))
         table.add_column(style="bold")
         for key, value in self.all_stats.items():
             table.add_row(
-                normalize_title(key),
+                Formatter.title(key),
                 Text.from_markup(
                     f"{value:,.0f}"
                     if isinstance(value, int) or value.is_integer()

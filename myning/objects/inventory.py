@@ -1,6 +1,6 @@
 from myning.objects.item import Item, ItemType
 from myning.objects.plant import Plant
-from myning.utils.file_manager import FileManager, Subfolders
+from myning.utilities.file_manager import FileManager, Subfolders
 
 
 class Inventory:

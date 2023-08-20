@@ -2,7 +2,7 @@ import random
 
 import pytest
 
-from myning.utils.utils import boosted_random_choice, fibonacci, fibonacci_sum
+from myning.utilities.rand import boosted_random_choice, fibonacci, fibonacci_sum
 
 
 def test_fibonacci():

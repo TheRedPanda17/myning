@@ -8,8 +8,9 @@ from myning.objects.character import Character
 from myning.objects.object import Object
 from myning.objects.singleton import Singleton
 from myning.objects.upgrade import Upgrade
-from myning.utils import utils
-from myning.utils.file_manager import FileManager
+from myning.utilities import rand
+from myning.utilities.fib import fibonacci
+from myning.utilities.file_manager import FileManager
 
 term = Terminal()
 
@@ -108,7 +109,7 @@ class ResearchFacility(Object, metaclass=Singleton):
         return self.get_upgrade_cost(self.level + 1)
 
     def get_upgrade_cost(self, level):
-        return utils.fibonacci(level) * 5
+        return fibonacci(level) * 5
 
     @property
     def total_value(self):

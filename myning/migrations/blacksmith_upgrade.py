@@ -2,7 +2,7 @@ import json
 
 from myning.config import UPGRADES
 from myning.objects.player import Player
-from myning.utils.file_manager import FileManager
+from myning.utilities.file_manager import FileManager
 
 
 def run():

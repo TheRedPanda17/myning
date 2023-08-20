@@ -5,8 +5,8 @@ from typing import List
 from blessed import Terminal
 
 from myning.objects.settings import Settings
-from myning.utils.ui import get_progress_bar
-from myning.utils.utils import get_random_array_item
+from myning.utilities.rand import get_random_array_item
+from myning.utilities.ui import get_progress_bar
 
 term = Terminal()
 

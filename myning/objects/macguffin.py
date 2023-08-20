@@ -1,6 +1,6 @@
 from myning.objects.object import Object
 from myning.objects.singleton import Singleton
-from myning.utils.file_manager import FileManager
+from myning.utilities.file_manager import FileManager
 
 
 class Macguffin(Object, metaclass=Singleton):

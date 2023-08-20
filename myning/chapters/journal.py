@@ -4,10 +4,9 @@ from rich.table import Table
 
 from myning.chapters import Option, PickArgs, main_menu
 from myning.config import SPECIES
-from myning.formatter import Colors
 from myning.objects.player import Player
 from myning.objects.species import Species
-from myning.utils.ui_consts import Icons
+from myning.utilities.ui import Colors, Icons
 
 player = Player()
 

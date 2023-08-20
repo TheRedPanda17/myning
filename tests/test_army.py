@@ -3,7 +3,7 @@
 from myning.chapters.enter_healer import recover
 from myning.objects.army import Army
 from myning.objects.character import Character
-from myning.utils.generators import generate_character
+from myning.utilities.generators import generate_character
 
 
 class TestArmy:

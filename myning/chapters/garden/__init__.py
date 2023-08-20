@@ -1,14 +1,14 @@
 from myning.chapters import PickArgs, main_menu
 from myning.chapters.base_store import BaseStore
 from myning.chapters.garden.manage import manage_garden
-from myning.formatter import Formatter
 from myning.objects.buying_option import BuyingOption
 from myning.objects.garden import Garden as GardenObject
 from myning.objects.item import ItemType
 from myning.objects.plant import Plant
 from myning.objects.player import Player
-from myning.utils.file_manager import FileManager
-from myning.utils.generators import generate_plant
+from myning.utilities.file_manager import FileManager
+from myning.utilities.formatter import Formatter
+from myning.utilities.generators import generate_plant
 
 player = Player()
 garden = GardenObject()

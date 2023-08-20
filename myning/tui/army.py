@@ -1,8 +1,7 @@
 from textual.widgets import DataTable
 
-from myning.formatter import Colors
 from myning.objects.player import Player
-from myning.utils.ui_consts import Icons
+from myning.utilities.ui import Colors, Icons
 
 player = Player()
 

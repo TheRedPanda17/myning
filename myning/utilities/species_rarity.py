@@ -4,7 +4,7 @@ from myning.config import RESEARCH, SPECIES
 from myning.objects.character import CharacterSpecies
 from myning.objects.player import Player
 from myning.objects.research_facility import ResearchFacility
-from myning.utils.utils import boosted_random_choice
+from myning.utilities.rand import boosted_random_choice
 
 SPECIES_TIERS = [
     [CharacterSpecies.HUMAN],

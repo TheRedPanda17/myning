@@ -5,8 +5,8 @@ from myning.objects.character import Character
 from myning.objects.game import Game, GameState
 from myning.objects.item import Item, ItemType
 from myning.objects.player import Player
-from myning.utilities import story_builder
-from myning.utils.file_manager import FileManager
+from myning.utilities.file_manager import FileManager
+from myning.utilities.pick import story_builder
 
 game = Game()
 player = Player()
@@ -48,7 +48,7 @@ def get_mineral():
     player.inventory.add_item(nugget)
     return narrate(
         [
-            nugget.get_new_text(),
+            nugget.tutorial_new_str,
             "You inspect the item:\n\n" + str(nugget),
             f"{jrod.name} Now you know what to look for. You can sell it to the Overlo-- I mean our bosses. You can use that to upgrade your tools and weapons.",
             f"{player.name}: Weapons?",
@@ -70,7 +70,7 @@ def get_pickaxe():
     player.inventory.add_item(pickaxe)
     return narrate(
         [
-            pickaxe.get_new_text(),
+            pickaxe.tutorial_new_str,
             "You inspect the item:\n\n" + str(pickaxe),
             f"{player.name}: Thanks.",
             f"{jrod.name}: You'll need to see as well, I suppose.",
@@ -92,7 +92,7 @@ def get_helmet():
     player.inventory.add_item(helmet)
     return narrate(
         [
-            helmet.get_new_text(),
+            helmet.tutorial_new_str,
             "You inspect the item:\n\n" + str(helmet),
             f"{jrod.name}: Okay! You're ready to go meet the shop keeper! I would suggest selling the mineral I gave you and buying some equipment.",
             f"{carl.name}: {carl.introduction}",

@@ -7,24 +7,24 @@ from rich.console import RenderableType
 from rich.table import Table
 
 from myning.config import CONFIG
-from myning.formatter import Formatter
 from myning.objects.army import Army
 from myning.objects.character import Character
 from myning.objects.item import Item
 from myning.objects.player import Player
 from myning.objects.trip import Trip
-from myning.utils.file_manager import FileManager
-from myning.utils.generators import (
+from myning.utilities.file_manager import FileManager
+from myning.utilities.formatter import Formatter
+from myning.utilities.generators import (
     generate_character,
     generate_enemy_army,
     generate_equipment,
     generate_mineral,
     generate_reward,
 )
-from myning.utils.species_rarity import get_recruit_species
-from myning.utils.string_generation import generate_death_action
-from myning.utils.tab_title import TabTitle
-from myning.utils.ui_consts import Icons
+from myning.utilities.species_rarity import get_recruit_species
+from myning.utilities.string_generation import generate_death_action
+from myning.utilities.tab_title import TabTitle
+from myning.utilities.ui import Icons
 
 player = Player()
 trip = Trip()
@@ -227,7 +227,7 @@ class VictoryAction(Action):
     @property
     def content(self):
         lines = ["[green1]You won the battle![/]\n"] + [
-            item.tui_new_text for item in self.rewards[: len(self.rewards) - self.duration + 1]
+            item.battle_new_str for item in self.rewards[: len(self.rewards) - self.duration + 1]
         ]
         return "\n".join(lines)
 
@@ -245,7 +245,7 @@ class ItemAction(Action):
 
     @property
     def content(self):
-        return self.item.tui_new_text
+        return self.item.battle_new_str
 
 
 class EquipmentAction(ItemAction):

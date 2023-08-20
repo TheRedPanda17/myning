@@ -4,7 +4,7 @@ from myning.config import MINES
 from myning.objects.object import Object
 from myning.objects.player import Player
 from myning.objects.singleton import Singleton
-from myning.utils.file_manager import FileManager
+from myning.utilities.file_manager import FileManager
 
 
 class GameState(int, Enum):

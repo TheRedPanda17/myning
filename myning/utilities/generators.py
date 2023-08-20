@@ -7,8 +7,8 @@ from myning.objects.character import Character, CharacterSpecies
 from myning.objects.equipment import EQUIPMENT_TYPES
 from myning.objects.item import Item, ItemType
 from myning.objects.plant import PLANT_TYPES, Plant
-from myning.utils import string_generation
-from myning.utils.utils import (
+from myning.utilities import string_generation
+from myning.utilities.rand import (
     get_random_array_item,
     get_random_array_item_and_index,
     get_random_int,
@@ -52,7 +52,7 @@ def generate_character(
 
 def generate_equipment(level, type: ItemType | None = None, scale=1):
     type = type or get_random_array_item(EQUIPMENT_TYPES)
-    modifier, weight = get_random_array_item_and_index(STRINGS["modifiers"], max=level)
+    modifier, weight = get_random_array_item_and_index(STRINGS["modifiers"], maximum=level)
     if weight == 0:
         weight = 1
     base_name = get_random_array_item(STRINGS[type.value])
@@ -70,7 +70,7 @@ def generate_equipment(level, type: ItemType | None = None, scale=1):
 
 
 def generate_mineral(max, mineral=None):
-    modifier, weight = get_random_array_item_and_index(STRINGS["sizes"], max=max)
+    modifier, weight = get_random_array_item_and_index(STRINGS["sizes"], maximum=max)
     if weight == 0:
         weight = 1
     base_name = mineral if mineral else get_random_array_item(STRINGS["minerals"])

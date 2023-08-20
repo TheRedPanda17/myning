@@ -1,7 +1,7 @@
 from rich.table import Table
 
 from myning.objects.object import Object
-from myning.utils.ui_consts import Icons
+from myning.utilities.ui import Icons
 
 SKILL_GAPS = {
     "strength": [0, 1, 2, 4, 6],

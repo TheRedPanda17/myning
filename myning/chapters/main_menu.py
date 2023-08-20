@@ -21,10 +21,10 @@ from myning.chapters import (
     wizard_hut,
 )
 from myning.config import MINES
-from myning.formatter import Formatter
 from myning.objects.mine import Mine
 from myning.objects.player import Player
-from myning.utils.ui_consts import Icons
+from myning.utilities.formatter import Formatter
+from myning.utilities.ui import Icons
 
 player = Player()
 

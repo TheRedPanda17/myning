@@ -1,7 +1,7 @@
 import json
 
 from myning.objects.garden import Garden
-from myning.utils.file_manager import FileManager
+from myning.utilities.file_manager import FileManager
 
 
 def run():

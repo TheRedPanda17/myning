@@ -2,7 +2,7 @@ from enum import Enum
 
 from myning.objects.object import Object
 from myning.objects.singleton import Singleton
-from myning.utils.file_manager import FileManager
+from myning.utilities.file_manager import FileManager
 
 
 class SortOrder(str, Enum):

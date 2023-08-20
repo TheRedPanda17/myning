@@ -2,7 +2,7 @@ import sys
 
 from myning.migrations import MIGRATIONS
 from myning.objects.player import Player
-from myning.utils.file_manager import FileManager
+from myning.utilities.file_manager import FileManager
 
 
 def migrate(id: int):

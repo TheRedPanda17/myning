@@ -2,12 +2,12 @@ from rich.table import Table
 from textual.widgets import Static
 
 from myning.config import MINES
-from myning.formatter import Colors, Formatter
 from myning.objects.macguffin import Macguffin
 from myning.objects.player import Player
 from myning.objects.research_facility import ResearchFacility
-from myning.utils.file_manager import FileManager
-from myning.utils.ui_consts import Icons
+from myning.utilities.file_manager import FileManager
+from myning.utilities.formatter import Formatter
+from myning.utilities.ui import Colors, Icons
 
 player = Player()
 macguffin = Macguffin()

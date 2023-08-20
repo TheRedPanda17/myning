@@ -4,9 +4,8 @@ from blessed import Terminal
 from rich.text import Text
 
 from myning.objects.object import Object
-from myning.utils.output import stat_string
-from myning.utils.ui_consts import Colors, Icons
-from myning.utils.utils import get_random_int
+from myning.utilities.rand import get_random_int
+from myning.utilities.ui import Colors, Icons
 
 term = Terminal()
 
@@ -163,23 +162,12 @@ class Item(Object):
             s += f" ([{self.tui_color}]{self.main_affect}[/])"
         return s
 
-    def print_details(self):
-        s = stat_string("Name", self.name)
-        s += stat_string("Description", self.description)
-        s += stat_string("Value", self.value, newline=len(self.affects) != 0)
-
-        i = 0
-        for key, affect in self.affects.items():
-            s += stat_string(key.capitalize(), affect, newline=i != len(self.affects) - 1)
-            i += 1
-
-        return s
-
-    def get_new_text(self):
+    @property
+    def tutorial_new_str(self):
         return f"New {self.type} added: [{self.tui_color}]{self.name}[/]"
 
     @property
-    def tui_new_text(self):
+    def battle_new_str(self):
         return (
             f"New {self.type} added: "
             f"{self.icon} [{self.tui_color}]{self.name}[/] "

@@ -6,14 +6,13 @@ from rich.text import Text
 
 from myning import api
 from myning.chapters import Option, PickArgs, main_menu
-from myning.formatter import Formatter
 from myning.objects.garden import Garden
 from myning.objects.macguffin import Macguffin
 from myning.objects.player import Player
 from myning.objects.research_facility import ResearchFacility
 from myning.objects.stats import Stats
-from myning.utils.ui import normalize_title
-from myning.utils.ui_consts import Icons
+from myning.utilities.formatter import Formatter
+from myning.utilities.ui import Icons
 
 facility = ResearchFacility()
 garden = Garden()
@@ -78,7 +77,7 @@ def view_player_stats(player_id: str):
                 f"{value:,.0f}" if isinstance(value, int) or value.is_integer() else f"{value:,.2f}"
             )
         table.add_row(
-            normalize_title(key),
+            Formatter.title(key),
             Text.from_markup(value, justify="right"),
         )
     return PickArgs(

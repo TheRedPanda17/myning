@@ -2,7 +2,7 @@ import json
 
 from myning.objects.macguffin import Macguffin
 from myning.objects.stats import Stats
-from myning.utils.file_manager import FileManager
+from myning.utilities.file_manager import FileManager
 
 
 def run():
