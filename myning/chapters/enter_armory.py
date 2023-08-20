@@ -41,6 +41,7 @@ def play():
             continue
 
         update_inventory(army[index])
+    FileManager.save(player)
 
 
 def update_inventory(character: Character):
@@ -88,8 +89,6 @@ def update_inventory(character: Character):
         player.inventory.remove_item(to_equip)
 
         character.equipment.change_item(slot, to_equip)
-
-        FileManager.save(character)
 
 
 def auto_equip():

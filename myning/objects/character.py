@@ -139,10 +139,6 @@ class Character(Object):
         if self.health < 0:
             self.health = 0
 
-    @property
-    def file_name(self):
-        return f"entities/{self.id}"
-
     def to_dict(self):
         return {
             "name": self.name,
@@ -173,17 +169,6 @@ class Character(Object):
         if "id" in dict:
             entity.id = dict["id"]
 
-        # add id (and save) for all allies without
-        # TODO: remove after everyone is migrated
-        elif "allies" not in dict:
-            # clear old file?
-            entity.id = entity.name
-            FileManager.delete(entity)
-
-            # create new file for allies
-            entity.id = f"{entity.name} - {get_random_int(10 ** 13)}"
-            FileManager.save(entity)
-
         entity.is_ghost = dict.get("is_ghost") or False
         return entity
 
@@ -203,8 +188,6 @@ class Character(Object):
 
             if display:
                 print_level_up(self.level)
-
-        FileManager.save(self)
 
     @classmethod
     @property

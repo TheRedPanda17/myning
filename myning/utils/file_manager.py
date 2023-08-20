@@ -12,7 +12,6 @@ T = TypeVar("T", bound=Object)
 
 class Subfolders(str, Enum):
     ITEMS = "items"
-    ENTITIES = "entities"
 
 
 class FileManager:
@@ -24,8 +23,6 @@ class FileManager:
             os.mkdir(".data")
         if not Path(".data/items").is_dir():
             os.mkdir(".data/items")
-        if not Path(".data/entities").is_dir():
-            os.mkdir(".data/entities")
 
     @classmethod
     def multi_save(cls, *items):
@@ -66,10 +63,6 @@ class FileManager:
     def reset_game():
         # Items
         for path in Path(".data/items").iterdir():
-            os.remove(path)
-
-        # Entities
-        for path in Path(".data/entities").iterdir():
             os.remove(path)
 
         # Game

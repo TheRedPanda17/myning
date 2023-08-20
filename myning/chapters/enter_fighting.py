@@ -63,10 +63,10 @@ def play(allies: Army, enemies: Army):
                 )
             if is_friendly:
                 damage_done += damage
-                FileManager.save(combatant)
+                # FileManager.save(combatant)
             else:
                 damage_taken += damage
-                FileManager.save(target)
+                # FileManager.save(target)
 
             if target.health == 0:
                 battle_order.remove(target)
