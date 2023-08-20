@@ -14,6 +14,7 @@ from myning.objects.stats import IntegerStatKeys, Stats
 from myning.objects.trip import LOST_RATIO, Trip
 from myning.utils.file_manager import FileManager
 from myning.utils.species_rarity import SPECIES_TIERS
+from myning.utils.tab_title import TabTitle
 from myning.utils.ui_consts import Icons
 from new_tui.chapters import DynamicArgs, Option, PickArgs, StoryArgs, healer, main_menu, tutorial
 from new_tui.chapters.mine.screen import MineScreen
@@ -89,6 +90,9 @@ def start_mine(mine: Mine, minutes: int):
 
 def mine_callback(chapter: "ChapterWidget"):
     def screen_callback(abandoned: bool):
+        chapter.border_title = "Main Menu"
+        TabTitle.change_tab_status("Done!")
+        TabTitle.change_tab_subactivity("")
         return chapter.pick(complete_trip(abandoned))
 
     chapter.clear()

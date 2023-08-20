@@ -7,6 +7,7 @@ from textual.widgets import Footer, ProgressBar, Static
 
 from myning.objects.player import Player
 from myning.objects.trip import Trip
+from myning.utils.tab_title import TabTitle
 from myning.utils.ui_consts import Icons
 from new_tui.chapters.mine.actions import (
     Action,
@@ -81,7 +82,9 @@ class MineScreen(Screen[bool]):
         self.content.update(self.action.content)
         self.summary.update(trip.tui_summary)
         self.progress.progress = trip.total_seconds - trip.seconds_left
-        self.time.update(f"{time_str(trip.seconds_left)} remaining")
+        time_left = time_str(trip.seconds_left)
+        self.time.update(f"{time_left} remaining")
+        TabTitle.change_tab_status(f"{time_left} remaining in {trip.mine.icon} {trip.mine.name}")
 
     def flash_border(self):
         og_border = self.content_container.styles.border

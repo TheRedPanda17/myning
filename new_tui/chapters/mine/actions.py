@@ -22,6 +22,7 @@ from myning.utils.generators import (
 )
 from myning.utils.species_rarity import get_recruit_species
 from myning.utils.string_generation import generate_death_action
+from myning.utils.tab_title import TabTitle
 from myning.utils.ui_consts import Icons
 from new_tui.formatter import Formatter
 
@@ -95,6 +96,10 @@ class CombatAction(Action):
         self.round_logs: list[RoundLog] = []
         self.damage_done = 0
         self.damage_taken = 0
+        TabTitle.change_tab_subactivity(
+            f"⚔️ Battling ({player.species.icon}{len(player.army.living_members)} "
+            f"v 👽{len(self.enemies.living_members)})"
+        )
         duration = int(CONFIG["tick_length"] / 5) + 3
         super().__init__(duration)
 
@@ -211,6 +216,7 @@ class RoundAction(Action):
 
 class VictoryAction(Action):
     def __init__(self, enemy_count: int):
+        TabTitle.change_tab_subactivity("")
         rewards = generate_reward(trip.mine.max_item_level, enemy_count)
         for reward in rewards:
             trip.add_item(reward)
