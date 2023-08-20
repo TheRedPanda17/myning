@@ -3,11 +3,12 @@ from functools import partial
 
 from rich.text import Text
 
+from myning.config import UPGRADES
 from myning.objects.buying_option import BuyingOption
 from myning.objects.equipment import EQUIPMENT_TYPES
-from myning.objects.inventory import Inventory
 from myning.objects.item import Item, ItemType
 from myning.objects.player import Player
+from myning.objects.settings import Settings, SortOrder
 from myning.objects.stats import IntegerStatKeys, Stats
 from myning.utils.file_manager import FileManager
 from new_tui.chapters import PickArgs, main_menu
@@ -15,13 +16,14 @@ from new_tui.formatter import Formatter
 
 player = Player()
 stats = Stats()
+settings = Settings()
 
 
 class BaseStore(ABC):
     buying_option: BuyingOption | None = None
 
     def __init__(self):
-        self.inventory = Inventory()
+        self._items: list[Item] = []
         self.generate()
 
     @abstractmethod
@@ -32,11 +34,47 @@ class BaseStore(ABC):
     def enter(self) -> PickArgs:
         pass
 
+    def add_item(self, item: Item):
+        self._items.append(item)
+
+    def add_items(self, *items: Item):
+        for item in items:
+            self.add_item(item)
+
+    def remove_item(self, item: Item):
+        if item in self._items:
+            self._items.remove(item)
+
+    def remove_items(self, *items: Item):
+        for item in items:
+            if item in self._items:
+                self._items.remove(item)
+
+    @property
+    def items(self):
+        store_name = self.__class__.__name__.lower()
+        return sorted(
+            self._items,
+            key=lambda i: i.value
+            if (
+                player.has_upgrade("sort_by_value")
+                and store_name in UPGRADES["sort_by_value"].player_value
+                and settings.sort_order == SortOrder.VALUE
+            )
+            else i.type,
+        )
+
+    @property
+    def empty(self):
+        return not self._items
+
     def exit(self):
-        FileManager.multi_delete(*self.inventory.items)
-        return main_menu.enter
+        FileManager.multi_delete(*self._items)
+        return main_menu.enter()
 
     def pick_buy(self):
+        if self.empty:
+            self.generate()
         options = [
             (
                 [
@@ -46,10 +84,10 @@ class BaseStore(ABC):
                 ],
                 partial(self.confirm_buy, item),
             )
-            for item in self.inventory.items
+            for item in self.items
         ]
         if self.buying_option:
-            items = [item for item in self.inventory.items if self.buying_option.filter(item)]
+            items = [item for item in self.items if self.buying_option.filter(item)]
             cost = sum(item.value for item in items)
             options.append(
                 (
@@ -87,7 +125,7 @@ class BaseStore(ABC):
     def buy(self, item: Item):
         player.gold -= item.value
         player.inventory.add_item(item)
-        self.inventory.remove_item(item)
+        self.remove_item(item)
         if item.type == ItemType.WEAPON:
             stats.increment_int_stat(IntegerStatKeys.WEAPONS_PURCHASED)
         elif item.type in EQUIPMENT_TYPES:
@@ -114,9 +152,8 @@ class BaseStore(ABC):
     def multi_buy(self, items: list[Item]):
         cost = sum(item.value for item in items)
         player.gold -= cost
-        for item in items:
-            player.inventory.add_item(item)
-            self.inventory.remove_item(item)
+        player.inventory.add_items(items)
+        self.remove_items(*items)
         FileManager.multi_save(player, *items)
         return self.enter()
 

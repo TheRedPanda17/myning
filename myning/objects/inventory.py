@@ -21,6 +21,11 @@ class Inventory:
         if item.type in self._items and item in self._items[item.type]:
             self._items[item.type].remove(item)
 
+    def remove_items(self, *items: Item):
+        for item in items:
+            if item.type in self._items and item in self._items[item.type]:
+                self._items[item.type].remove(item)
+
     def get_slot(self, slot) -> list[Item]:
         slot = self._items.get(slot)
         if slot:

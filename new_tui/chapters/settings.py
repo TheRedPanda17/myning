@@ -1,13 +1,34 @@
-# from myning.objects.settings import Settings
-from new_tui.chapters import PickArgs, main_menu
+from myning.objects.player import Player
+from myning.objects.settings import Settings
+from new_tui.chapters import Option, PickArgs, main_menu
 
-# settings = Settings()
+player = Player()
+settings = Settings()
 
 
 def enter():
+    options: list[Option] = []
+    if player.has_upgrade("sort_by_value"):
+        options.append((["Sort Order", f"({settings.sort_order})"], toggle_sort_order))
+
+    if not options:
+        return PickArgs(
+            message="There are currently no settings available.",
+            options=[("Go Back", main_menu.enter)],
+        )
+
+    options.append(("Go Back", main_menu.enter))
     return PickArgs(
-        message="There are currently no settings available.",
-        options=[("Go Back", main_menu.enter)],
+        message="What settings would you like to adjust?",
+        options=options,
+    )
+
+
+def toggle_sort_order():
+    settings.toggle_sort_order()
+    return PickArgs(
+        message=f"Sort Order is now {settings.sort_order}",
+        options=[("Done", enter)],
     )
 
     # option, _ = pick(

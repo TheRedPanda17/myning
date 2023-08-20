@@ -30,9 +30,8 @@ class Store(BaseStore):
         super().__init__()
 
     def generate(self):
-        item_count = max(self.level, 5)
-        for _ in range(item_count):
-            self.inventory.add_item(generate_equipment(self.level))
+        amount = max(self.level, 5)
+        self.add_items(*(generate_equipment(self.level) for _ in range(amount)))
 
     def enter(self):
         return PickArgs(
@@ -113,7 +112,7 @@ class Store(BaseStore):
     def sell(self, item: Item):
         player.gold += sell_price(item)
         player.inventory.remove_item(item)
-        self.inventory.add_item(item)
+        self.add_item(item)
         FileManager.save(player)
         return self.enter()
 
@@ -134,9 +133,8 @@ class Store(BaseStore):
 
     def mass_sell(self, items: list[Item], total: int):
         player.gold += total
-        for item in items:
-            player.inventory.remove_item(item)
-            self.inventory.add_item(item)
+        player.inventory.remove_items(*items)
+        self.add_items(*items)
         FileManager.save(player)
         return self.enter()
 

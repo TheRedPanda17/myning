@@ -18,6 +18,7 @@ from new_tui.chapters import (
     journal,
     mine,
     research_facility,
+    settings,
     stats,
     store,
     time_machine,
@@ -67,7 +68,7 @@ def enter():
         MenuItem("Time Machine", time_machine.enter, MINES["Cave System"]),
         MenuItem("Journal", journal.enter),
         MenuItem("Stats", stats.enter),
-        # MenuItem("Settings", settings.enter),
+        MenuItem("Settings", settings.enter),
         MenuItem("Exit", ExitArgs),
     ]
     options: list[Option] = [(chapter.arr, chapter.play) for chapter in chapters]

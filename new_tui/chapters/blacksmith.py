@@ -9,7 +9,7 @@ from myning.objects.item import Item, ItemType
 from myning.objects.player import Player
 from myning.utils import utils
 from myning.utils.file_manager import FileManager
-from new_tui.chapters import PickArgs, main_menu
+from new_tui.chapters import PickArgs
 from new_tui.chapters.base_store import BaseStore
 from new_tui.formatter import Formatter
 
@@ -57,7 +57,7 @@ class Blacksmith(BaseStore):
                 type_name = random.choice(STRINGS[item_type.lower()])
                 name = f"{tier.name}'s {type_name}"
                 description = f"A {item_type.name}'s  {type_name}."
-                self.inventory.add_item(Item(name, description, item_type, value, tier.main_affect))
+                self.add_item(Item(name, description, item_type, value, tier.main_affect))
 
     def enter(self):
         cost = smith_cost(self.level)
@@ -74,10 +74,6 @@ class Blacksmith(BaseStore):
                 ("Go Back", self.exit),
             ],
         )
-
-    def exit(self):
-        FileManager.multi_delete(*self.inventory.items)
-        return main_menu.enter()
 
     def confirm_upgrade(self, cost: int):
         if self.maxed:
