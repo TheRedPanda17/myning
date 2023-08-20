@@ -53,7 +53,12 @@ class BaseStore(ABC):
             cost = sum(item.value for item in items)
             options.append(
                 (
-                    ["", f"Buy {self.buying_option.name}", "", f"({Formatter.gold(cost)})"],
+                    [
+                        "",
+                        f"Buy {self.buying_option.name}",
+                        "",
+                        Text.from_markup(f"({Formatter.gold(cost)})", justify="right"),
+                    ],
                     partial(self.confirm_multi_buy, items),
                 )
             )

@@ -1,7 +1,7 @@
 import random
 from functools import partial
 
-from myning.config import STRINGS
+from myning.config import STRINGS, UPGRADES
 from myning.objects.blacksmith_item import BlacksmithItem
 from myning.objects.buying_option import BuyingOption
 from myning.objects.equipment import EQUIPMENT_TYPES
@@ -23,6 +23,7 @@ TIERS = [
     BlacksmithItem("Ninja", 50, 2000),
     BlacksmithItem("Jedi", 75, 5000),
     BlacksmithItem("Blademaster", 100, 10000),
+    BlacksmithItem("Spartan", 150, 40000),
 ]
 
 
@@ -33,9 +34,10 @@ def enter():
 class Blacksmith(BaseStore):
     def __init__(self):
         if player.has_upgrade("buy_full_set"):
+            tier = UPGRADES["buy_full_set"].player_value
             self.buying_option = BuyingOption(
-                "all Blademaster items",
-                lambda item: "Blademaster" in item.name,
+                f"all {tier} items",
+                lambda item: tier in item.name,
             )
         super().__init__()
 
@@ -104,4 +106,4 @@ class Blacksmith(BaseStore):
 
 
 def smith_cost(level):
-    return utils.fibonacci(level + 2) * 100
+    return utils.fibonacci(level + 4) * 100
