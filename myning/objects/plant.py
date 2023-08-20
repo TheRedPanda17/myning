@@ -6,9 +6,9 @@ from rich.progress_bar import ProgressBar
 from rich.table import Table
 from rich.text import Text
 
+from myning.formatter import Colors, Formatter
 from myning.objects.item import Item
 from myning.utils.ui_consts import Icons
-from new_tui.formatter import Colors, Formatter
 
 
 class PlantType(str, Enum):

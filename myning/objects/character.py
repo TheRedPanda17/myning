@@ -5,6 +5,7 @@ from blessed import Terminal
 from rich.text import Text
 
 from myning.config import SPECIES, XP_COST
+from myning.formatter import Colors, Emoji
 from myning.objects.equipment import Equipment
 from myning.objects.object import Object
 from myning.objects.species import Species
@@ -14,7 +15,6 @@ from myning.utils.output import print_level_up
 from myning.utils.ui import columnate, get_health_bar
 from myning.utils.ui_consts import Icons
 from myning.utils.utils import get_random_int
-from new_tui.formatter import Colors, Emoji
 
 term = Terminal()
 STRENGTH_DIVISOR = 4

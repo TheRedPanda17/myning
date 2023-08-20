@@ -26,16 +26,26 @@ def main():
     Stats.initialize()
     Trip.initialize()
 
-    try:
-        Game.play()
-    except KeyboardInterrupt:
-        FileManager.save(Player())
+    # This ensures new players have the new migrations. Preferably, we'd loop through the
+    # MIGRATIONS, but we have a circular dependency if we do, so this is the hack right now.
+    Player().completed_migrations = [1, 2, 3, 4, 5, 6, 7, 8]
 
-        FileManager.save(Game())
-        FileManager.save(Garden())
-        FileManager.save(Macguffin())
-        FileManager.save(ResearchFacility())
-        FileManager.save(Settings())
-        FileManager.save(Stats())
-        FileManager.save(Trip())
-        print("Game saved. Thank you for playing Myning!")
+    # Load tui after importing and initializing objects to allow global references
+    from myning.view.app import MyningApp  # pylint: disable=import-outside-toplevel
+
+    MyningApp().run()
+    FileManager.multi_save(
+        Game(),
+        Garden(),
+        Macguffin(),
+        Player(),
+        ResearchFacility(),
+        Settings(),
+        Stats(),
+        Trip(),
+    )
+    print("Game saved. Thank you for playing Myning!")
+
+
+if __name__ == "__main__":
+    main()

@@ -4,6 +4,7 @@ from blessed import Terminal
 from rich.table import Table
 
 from myning.config import MINES
+from myning.formatter import Colors
 from myning.objects.character import Character
 from myning.objects.item import Item, ItemType
 from myning.objects.mine import Mine
@@ -12,7 +13,6 @@ from myning.objects.singleton import Singleton
 from myning.utils.file_manager import FileManager, Subfolders
 from myning.utils.ui import columnate
 from myning.utils.ui_consts import Icons
-from new_tui.formatter import Colors
 
 LOST_RATIO = 2
 term = Terminal()

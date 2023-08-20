@@ -2,8 +2,8 @@ from enum import Enum
 
 from rich.text import Text
 
+from myning.formatter import Formatter
 from myning.objects.object import Object
-from new_tui.formatter import Formatter
 
 
 class UpgradeType(Enum):

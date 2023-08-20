@@ -5,11 +5,11 @@ from rich.progress_bar import ProgressBar
 from rich.table import Table
 from rich.text import Text
 
+from myning.formatter import Colors, Formatter
 from myning.objects.mine_stats import MineStats
 from myning.objects.object import Object
 from myning.utils.ui import columnate, get_gold_string, get_level_string, get_locked_str
 from myning.utils.ui_consts import Icons
-from new_tui.formatter import Colors, Formatter
 
 
 class MineType(str, Enum):
