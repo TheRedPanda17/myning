@@ -106,7 +106,7 @@ def learn_armory():
     return PickArgs(
         message=f"{jrod.name}: It's time to get your equipment ready. Here's what you're wearing down into the mines.\n",
         options=[("Press Enter to continue...", armory.pick_member)],
-        subtitle=str(player.equipment),
+        subtitle=player.equipment_table,
     )
 
 
