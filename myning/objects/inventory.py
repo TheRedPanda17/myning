@@ -39,8 +39,12 @@ class Inventory:
     def get_slot(self, slot) -> list[Item] | list[Plant]:
         return self._items.get(slot, [])
 
-    def has_better_item(self, current: Item):
-        slot_items = self.get_slot(current.type)
+    def has_better_item(self, slot: ItemType, current: Item | None):
+        slot_items = self.get_slot(slot)
+        if not slot_items:
+            return False
+        if not current:
+            return True
         # pylint: disable=not-an-iterable
         return any(item for item in slot_items if item.main_affect > current.main_affect)
 

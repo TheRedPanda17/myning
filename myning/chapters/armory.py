@@ -18,7 +18,7 @@ def pick_member():
             member = player.army[i]
             for slot in EQUIPMENT_TYPES:
                 equipped = member.equipment.get_slot_item(slot)
-                if equipped and player.inventory.has_better_item(equipped):
+                if player.inventory.has_better_item(slot, equipped):
                     member_arr.append("✨")
                     break
 
@@ -42,11 +42,11 @@ def pick_slot(c: Character):
     options = []
     for slot in EQUIPMENT_TYPES:
         equipped = c.equipment.get_slot_item(slot)
-        has_better = equipped and player.inventory.has_better_item(equipped)
+        has_better = player.inventory.has_better_item(slot, equipped)
         inventory_hints = player.has_upgrade("inventory_hints")
         options.append(
             (
-                f"{slot.capitalize()} {'✨' if has_better and inventory_hints else ''}",
+                [slot.capitalize(), "✨" if has_better and inventory_hints else ""],
                 partial(pick_equipment, c, slot),
             )
         )
@@ -87,12 +87,11 @@ def auto_equip():
     for character in player.army:
         for slot in EQUIPMENT_TYPES:
             equipped = character.equipment.get_slot_item(slot)
-            if (
-                equipped
-                and player.inventory.has_better_item(equipped)
-                and (best := player.inventory.get_best_in_slot(slot))
+            if player.inventory.has_better_item(slot, equipped) and (
+                best := player.inventory.get_best_in_slot(slot)
             ):
-                player.inventory.add_item(equipped)
+                if equipped:
+                    player.inventory.add_item(equipped)
                 player.inventory.remove_item(best)
                 character.equipment.change_item(best)
     FileManager.multi_save(*player.army)
