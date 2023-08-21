@@ -3,7 +3,6 @@ import requests
 from myning.api.api import API_CONFIG
 from myning.objects.player import Player
 from myning.objects.stats import Stats
-from myning.utilities.file_manager import FileManager
 
 
 def sync(score: int):

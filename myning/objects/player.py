@@ -1,6 +1,5 @@
 import math
 import random
-from typing import Optional
 
 from myning.config import MINES, SPECIES, UPGRADES, XP_COST
 from myning.objects.army import Army

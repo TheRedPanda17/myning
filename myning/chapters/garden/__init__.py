@@ -4,7 +4,6 @@ from myning.chapters.garden.manage import manage_garden
 from myning.objects.buying_option import BuyingOption
 from myning.objects.garden import Garden as GardenObject
 from myning.objects.item import ItemType
-from myning.objects.plant import Plant
 from myning.objects.player import Player
 from myning.utilities.file_manager import FileManager
 from myning.utilities.formatter import Formatter

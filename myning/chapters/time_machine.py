@@ -1,5 +1,4 @@
 import sys
-from typing import TYPE_CHECKING
 
 from rich.table import Table
 
@@ -13,9 +12,6 @@ from myning.utilities.file_manager import FileManager
 from myning.utilities.formatter import Formatter
 from myning.utilities.pick import confirm
 from myning.utilities.ui import Colors, Icons
-
-if TYPE_CHECKING:
-    from myning.tui.chapter import ChapterWidget
 
 facility = ResearchFacility()
 garden = Garden()
