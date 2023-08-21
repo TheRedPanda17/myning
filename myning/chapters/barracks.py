@@ -13,10 +13,10 @@ from myning.utilities.formatter import Formatter
 from myning.utilities.generators import generate_character
 from myning.utilities.pick import confirm
 from myning.utilities.ui import Colors, Icons
-from myning.view.input import IntInputScreen
+from myning.tui.input import IntInputScreen
 
 if TYPE_CHECKING:
-    from myning.view.chapter import ChapterWidget
+    from myning.tui.chapter import ChapterWidget
 
 player = Player()
 

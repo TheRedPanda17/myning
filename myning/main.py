@@ -35,7 +35,7 @@ def main():
     Player().completed_migrations = [1, 2, 3, 4, 5, 6, 7, 8]
 
     # Load tui after importing and initializing objects to allow global references
-    from myning.view.app import MyningApp  # pylint: disable=import-outside-toplevel
+    from myning.tui.app import MyningApp  # pylint: disable=import-outside-toplevel
 
     MyningApp().run()
     FileManager.multi_save(

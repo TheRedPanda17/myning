@@ -5,11 +5,11 @@ from textual.binding import Binding
 from textual.screen import ModalScreen, Screen
 from textual.widgets import Footer, Static
 
-from myning.view.army import ArmyWidget
-from myning.view.chapter import ChapterWidget
-from myning.view.currency import CurrencyWidget
-from myning.view.header import Header
-from myning.view.inventory import InventoryWidget
+from myning.tui.army import ArmyWidget
+from myning.tui.chapter import ChapterWidget
+from myning.tui.currency import CurrencyWidget
+from myning.tui.header import Header
+from myning.tui.inventory import InventoryWidget
 
 
 class SideBar(Static):

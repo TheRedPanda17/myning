@@ -14,7 +14,7 @@ from myning.objects.player import Player
 from myning.utilities.file_manager import FileManager
 from myning.utilities.formatter import Formatter
 from myning.utilities.pick import throttle
-from myning.view.header import Header
+from myning.tui.header import Header
 
 if TYPE_CHECKING:
     from myning.chapters import ChapterWidget

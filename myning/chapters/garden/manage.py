@@ -12,7 +12,7 @@ from myning.utilities.formatter import Formatter
 from myning.utilities.pick import confirm
 
 if TYPE_CHECKING:
-    from myning.view.chapter import ChapterWidget
+    from myning.tui.chapter import ChapterWidget
 
 player = Player()
 garden = Garden()

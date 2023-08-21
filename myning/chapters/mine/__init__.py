@@ -19,7 +19,7 @@ from myning.utilities.tab_title import TabTitle
 from myning.utilities.ui import Colors, Icons
 
 if TYPE_CHECKING:
-    from myning.view.chapter import ChapterWidget
+    from myning.tui.chapter import ChapterWidget
 
 player = Player()
 macguffin = Macguffin()

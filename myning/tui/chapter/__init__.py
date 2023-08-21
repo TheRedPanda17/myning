@@ -20,11 +20,11 @@ from myning.objects.player import Player
 from myning.objects.trip import Trip
 from myning.utilities.tab_title import TabTitle
 from myning.utilities.ui import Icons
-from myning.view.army import ArmyWidget
-from myning.view.chapter.option_table import OptionTable
-from myning.view.chapter.question import Question
-from myning.view.currency import CurrencyWidget
-from myning.view.inventory import InventoryWidget
+from myning.tui.army import ArmyWidget
+from myning.tui.chapter.option_table import OptionTable
+from myning.tui.chapter.question import Question
+from myning.tui.currency import CurrencyWidget
+from myning.tui.inventory import InventoryWidget
 
 player = Player()
 trip = Trip()

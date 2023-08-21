@@ -5,7 +5,7 @@ from rich.console import RenderableType
 from rich.text import Text
 
 if TYPE_CHECKING:
-    from myning.view.chapter import ChapterWidget
+    from myning.tui.chapter import ChapterWidget
 
 
 @dataclass

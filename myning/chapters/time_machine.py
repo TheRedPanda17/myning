@@ -15,7 +15,7 @@ from myning.utilities.pick import confirm
 from myning.utilities.ui import Colors, Icons
 
 if TYPE_CHECKING:
-    from myning.view.chapter import ChapterWidget
+    from myning.tui.chapter import ChapterWidget
 
 facility = ResearchFacility()
 garden = Garden()

@@ -19,7 +19,7 @@ from myning.objects.trip import Trip
 from myning.utilities.pick import throttle
 from myning.utilities.tab_title import TabTitle
 from myning.utilities.ui import Icons
-from myning.view.header import Header
+from myning.tui.header import Header
 
 player = Player()
 trip = Trip()

@@ -5,10 +5,10 @@ from textual.coordinate import Coordinate
 from textual.widgets import DataTable
 
 from myning.objects.garden import Garden
-from myning.view.chapter.option_table import OptionTable
+from myning.tui.chapter.option_table import OptionTable
 
 if TYPE_CHECKING:
-    from myning.view.chapter import ChapterWidget
+    from myning.tui.chapter import ChapterWidget
 
 garden = Garden()
 
