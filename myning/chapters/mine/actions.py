@@ -287,7 +287,7 @@ class LoseAllyAction(Action):
             f"[dodger_blue1]{ally.icon} {ally.name} was almost {reason}.[/]\n\n"
             "Luckily, they're a ghost"
             if ally.is_ghost
-            else f"[red1]Oh no! ally.icon {ally.name} has died![/]\n\nCause of death: {reason}"
+            else f"[red1]Oh no! {ally.icon} {ally.name} has died![/]\n\nCause of death: {reason}"
         )
         super().__init__(5)
 
