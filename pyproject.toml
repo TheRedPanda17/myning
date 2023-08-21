@@ -21,7 +21,6 @@ exclude = '''
 '''
 
 [tool.isort]
-skip = "scripts/*,main.py"
 profile = "black"
 line_length = 100
 
@@ -29,7 +28,7 @@ line_length = 100
 addopts = "-svx --cov=."
 asyncio_mode = "auto"
 testpaths = [
-    "tests",
+  "tests",
 ]
 
 [tool.coverage.run]
