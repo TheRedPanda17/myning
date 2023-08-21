@@ -14,7 +14,7 @@ Human:
   size: medium
   rarity_tier: 1
 Dwarf:
-  icon: 🧙
+  icon: 🧍
   health_mod: 12
   strength: 5
   defense: 3
@@ -310,7 +310,7 @@ Kenku:
   size: medium
   rarity_tier: 5
 Kobold:
-  icon: 🤡
+  icon: 🦎
   health_mod: 7
   strength: 0
   defense: 0
