@@ -79,4 +79,7 @@ class FileManager:
 
     @staticmethod
     def backup_game():
-        shutil.copytree(".data", ".data.bak")
+        backup_dir = ".data.bak"
+        if os.path.exists(backup_dir):
+            shutil.rmtree(backup_dir)
+        shutil.copytree(".data", backup_dir)
