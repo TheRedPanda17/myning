@@ -65,7 +65,7 @@ def pick_equipment(c: Character, slot: ItemType):
             message=f"You have no {slot}.",
             options=[("Bummer", pick_member)],
         )
-    options: list[Option] = [(item.arr, partial(equip, c, slot, item)) for item in items]
+    options: list[Option] = [(item.arr, partial(equip, c, item)) for item in items]
     options.append((["", "Go Back"], partial(pick_slot, c)))
     return PickArgs(
         message=f"Choose {slot} to equip:\n",
@@ -74,12 +74,12 @@ def pick_equipment(c: Character, slot: ItemType):
     )
 
 
-def equip(c: Character, slot: ItemType, equipment: Item):
-    if equipped := c.equipment.get_slot_item(slot):
+def equip(c: Character, equipment: Item):
+    if equipped := c.equipment.get_slot_item(equipment.type):
         player.inventory.add_item(equipped)
     player.inventory.remove_item(equipment)
-    c.equipment.change_item(slot, equipment)
-    FileManager.save(c)
+    c.equipment.change_item(equipment)
+    FileManager.multi_save(player, c)
     return pick_slot(c)
 
 
@@ -94,6 +94,6 @@ def auto_equip():
             ):
                 player.inventory.add_item(equipped)
                 player.inventory.remove_item(best)
-                character.equipment.change_item(slot, best)
+                character.equipment.change_item(best)
     FileManager.multi_save(*player.army)
     return pick_member()

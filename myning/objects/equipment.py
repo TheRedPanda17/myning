@@ -69,8 +69,8 @@ class Equipment:
         )
         return equipment
 
-    def change_item(self, slot, item):
-        self._slots[slot] = item
+    def change_item(self, item: Item):
+        self._slots[item.type] = item
 
     @property
     def table(self):
