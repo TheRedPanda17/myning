@@ -3,12 +3,12 @@ from enum import Enum
 
 
 class Icons(str, Enum):
-    ARMOR = "🛡"
+    ARMOR = "🛡 "
     ARMORY = "🛡"
     BARRACKS = "⛺️"
     BLACKSMITH = "🔨"
     CRIT = "🩸"
-    DAMAGE = "⚔️"
+    DAMAGE = "⚔️ "
     DEATH = "💀"
     DODGE = "🍃"
     DONE = "✅"
@@ -41,7 +41,7 @@ class Icons(str, Enum):
     UNKNOWN = "❓"
     VICTORY = "🚩"
     WARNING = "⚠️"
-    WEAPON = "⚔️"
+    WEAPON = "⚔️ "
     WIZARD = "🔮"
     WIZARD_HUT = "🔮"
     XP = "✨"

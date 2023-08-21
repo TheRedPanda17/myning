@@ -1,6 +1,7 @@
 import random
 from enum import Enum
 
+from rich.table import Table
 from rich.text import Text
 
 from myning.config import SPECIES, XP_COST
@@ -291,3 +292,10 @@ class Character(Object):
     @property
     def abbreviated_arr(self):
         return [x for i, x in enumerate(self.arr) if i != 2]
+
+    @property
+    def equipment_table(self):
+        table = Table.grid()
+        table.add_row(f"{self.icon} {self.name} {self.damage_str} {self.armor_str}\n")
+        table.add_row(self.equipment.table)
+        return table

@@ -11,10 +11,10 @@ from myning.chapters import DynamicArgs, Option, PickArgs, main_menu, tutorial
 from myning.config import UPGRADES
 from myning.objects.army import Army
 from myning.objects.player import Player
+from myning.tui.header import Header
 from myning.utilities.file_manager import FileManager
 from myning.utilities.formatter import Formatter
 from myning.utilities.pick import throttle
-from myning.tui.header import Header
 
 if TYPE_CHECKING:
     from myning.chapters import ChapterWidget

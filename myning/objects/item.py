@@ -53,7 +53,7 @@ class Item(Object):
 
     @property
     def main_affect(self):
-        if self.type == ItemType.MINERAL or self.type == ItemType.PLANT:
+        if self.type in (ItemType.MINERAL, ItemType.PLANT):
             return self.value
         return self.affects[self.main_affect_type]
 
@@ -91,13 +91,13 @@ class Item(Object):
     def color(self):
         match self.type:
             case ItemType.MINERAL:
-                return "gold1"
+                return Colors.GOLD
             case ItemType.WEAPON:
-                return "red1"
+                return Colors.WEAPON
             case ItemType.HELMET | ItemType.SHIRT | ItemType.PANTS | ItemType.SHOES:
-                return "dodger_blue1"
+                return Colors.ARMOR
             case ItemType.PLANT:
-                return "green1"
+                return Colors.PLANT
             case _:
                 return ""
 

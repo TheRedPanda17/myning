@@ -54,7 +54,7 @@ def pick_slot(c: Character):
     return PickArgs(
         message="Select slot:\n",
         options=options,
-        subtitle=f"{c.name} {c.damage_str} {c.armor_str}\n\n{c.equipment}",
+        subtitle=c.equipment_table,
     )
 
 
@@ -65,12 +65,12 @@ def pick_equipment(c: Character, slot: ItemType):
             message=f"You have no {slot}.",
             options=[("Bummer", pick_member)],
         )
-    options: list[Option] = [(str(item), partial(equip, c, slot, item)) for item in items]
-    options.append(("Go Back", partial(pick_slot, c)))
+    options: list[Option] = [(item.arr, partial(equip, c, slot, item)) for item in items]
+    options.append((["", "Go Back"], partial(pick_slot, c)))
     return PickArgs(
         message=f"Choose {slot} to equip:\n",
         options=options,
-        subtitle=f"{c.name} {c.damage_str} {c.armor_str}\n\n{c.equipment}",
+        subtitle=c.equipment_table,
     )
 
 

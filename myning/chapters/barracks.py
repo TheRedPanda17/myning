@@ -2,18 +2,19 @@ import random
 from functools import partial
 from typing import TYPE_CHECKING
 
+from rich.table import Table
 from rich.text import Text
 
 from myning.chapters import DynamicArgs, Option, PickArgs, main_menu
 from myning.config import XP_COST
 from myning.objects.character import Character
 from myning.objects.player import Player
+from myning.tui.input import IntInputScreen
 from myning.utilities.fib import fibonacci
 from myning.utilities.formatter import Formatter
 from myning.utilities.generators import generate_character
 from myning.utilities.pick import confirm
 from myning.utilities.ui import Colors, Icons
-from myning.tui.input import IntInputScreen
 
 if TYPE_CHECKING:
     from myning.tui.chapter import ChapterWidget
@@ -92,7 +93,8 @@ def confirm_hire_muscle(entity: Character, cost: int):
             options=[("Bummer", enter)],
         )
     return PickArgs(
-        message="Are you sure you want to hire " f"{entity.name} for {cost} gold?",
+        message=f"Are you sure you want to hire {entity.icon} {entity.name} "
+        f"for {Formatter.gold(cost)}?",
         options=[
             ("Yes", partial(hire_muscle, entity, cost)),
             ("No", enter),
@@ -127,7 +129,9 @@ def confirm_fire_muscle(member: Character):
     message = f"Are you sure you want to fire {member}?"
     subtitle = None
     if member.equipment.all_items:
-        subtitle = f"...and return the following to your inventory: \n\n{member.equipment}"
+        subtitle = Table.grid()
+        subtitle.add_row(Formatter.locked("...and return the following to your inventory:\n"))
+        subtitle.add_row(member.equipment.table)
     return PickArgs(
         message=message,
         options=[
@@ -189,7 +193,7 @@ def add_xp_manually(member: Character):
     xp_for_level = fibonacci(member.level + 1)
     xp_for_level -= member.experience
     question = (
-        f"How much of your [magenta1]{(player.exp_available)} xp[/] "
+        f"How much of your {Formatter.xp(player.exp_available)} "
         f"would you like to give {member.name} ({member.exp_str})?"
     )
     placeholder = f"{xp_for_level} xp until level {member.level+1}"

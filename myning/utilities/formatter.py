@@ -7,6 +7,10 @@ class Formatter:
         return f"[{Colors.GOLD}]{g:,}g[/]"
 
     @staticmethod
+    def xp(x: int):
+        return f"[{Colors.XP}]{x} xp[/]"
+
+    @staticmethod
     def soul_credits(sc: float):
         return f"[{Colors.SOUL_CREDITS}]{sc:.2f} soul credits[/]"
 

@@ -142,11 +142,3 @@ class Garden(Object, metaclass=Singleton):
         plant.started = plant.started - timedelta(minutes=1 * self.level)
         self.water -= 1
         return plant
-
-    def __str__(self):
-        s = "╔" + "════╦" * (self.level - 1) + "════╗\n"
-        for i in range(len(self.rows)):
-            s += f"║{'║'.join([plant.garden_string if plant else ' xx ' for plant in self.rows[i]])}║\n"
-
-        s += "╚" + "════╩" * (self.level - 1) + "════╝"
-        return s

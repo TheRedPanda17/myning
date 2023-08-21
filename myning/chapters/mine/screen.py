@@ -16,10 +16,10 @@ from myning.chapters.mine.actions import (
 )
 from myning.objects.player import Player
 from myning.objects.trip import Trip
+from myning.tui.header import Header
 from myning.utilities.pick import throttle
 from myning.utilities.tab_title import TabTitle
 from myning.utilities.ui import Icons
-from myning.tui.header import Header
 
 player = Player()
 trip = Trip()

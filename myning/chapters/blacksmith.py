@@ -51,7 +51,7 @@ class Blacksmith(BaseStore):
 
     # TODO improve logic and refactor BlacksmithItem class, lots of room for improvement
     def generate(self):
-        for tier in TIERS:
+        for tier in TIERS[: self.level]:
             for item_type in EQUIPMENT_TYPES:
                 value = tier.value if item_type == ItemType.WEAPON else int(tier.value * 0.4)
                 type_name = random.choice(STRINGS[item_type.lower()])
@@ -87,7 +87,7 @@ class Blacksmith(BaseStore):
                 options=[("Shucks", self.enter)],
             )
         return PickArgs(
-            message=f"Are you sure you want to upgrade your blacksmith for {cost}g?",
+            message=f"Are you sure you want to upgrade your blacksmith for {Formatter.gold(cost)}?",
             options=[
                 (f"Upgrade to level {self.level+1}", partial(self.upgrade, cost)),
                 ("Maybe Later", self.enter),
@@ -98,6 +98,8 @@ class Blacksmith(BaseStore):
         player.gold -= cost
         player.blacksmith_level += 1
         FileManager.save(player)
+        self.remove_items(*self.items)
+        self.generate()
         return self.enter()
 
 

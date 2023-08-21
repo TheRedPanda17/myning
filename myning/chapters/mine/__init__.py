@@ -128,7 +128,7 @@ def unlock_mine(mine: Mine):
     player.mines_available.append(mine)
     FileManager.save(player)
     return PickArgs(
-        message=f"You have unlocked {mine.name}",
+        message=f"You have unlocked {mine.icon} {mine.name}",
         options=[("Sweet!", pick_mine)],
     )
 

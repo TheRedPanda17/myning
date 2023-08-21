@@ -69,16 +69,3 @@ class Inventory:
                 if fetched:
                     inventory._items[type_name].append(fetched)
         return inventory
-
-    def __str__(self):
-        items = [item for type in self._items for item in self._items[type]]
-        if not items:
-            return "Empty"
-
-        s = ""
-        for item in items:
-            if item != items[0]:
-                s += "\n"
-            s += str(item)
-
-        return s

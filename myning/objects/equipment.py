@@ -1,3 +1,5 @@
+from rich.table import Table
+
 from myning.objects.item import Item, ItemType
 from myning.utilities.file_manager import FileManager
 
@@ -69,3 +71,10 @@ class Equipment:
 
     def change_item(self, slot, item):
         self._slots[slot] = item
+
+    @property
+    def table(self):
+        table = Table.grid(padding=(0, 1))
+        for item_type, item in self._slots.items():
+            table.add_row(f"{item_type.capitalize()}: ", *(item.arr if item else ["  ", "None"]))
+        return table

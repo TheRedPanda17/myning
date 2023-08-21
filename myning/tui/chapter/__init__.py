@@ -18,13 +18,13 @@ from myning.chapters import (
 from myning.chapters.garden.manage import GardenTable
 from myning.objects.player import Player
 from myning.objects.trip import Trip
-from myning.utilities.tab_title import TabTitle
-from myning.utilities.ui import Icons
 from myning.tui.army import ArmyWidget
 from myning.tui.chapter.option_table import OptionTable
 from myning.tui.chapter.question import Question
 from myning.tui.currency import CurrencyWidget
 from myning.tui.inventory import InventoryWidget
+from myning.utilities.tab_title import TabTitle
+from myning.utilities.ui import Icons
 
 player = Player()
 trip = Trip()
