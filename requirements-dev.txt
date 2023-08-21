@@ -75,7 +75,7 @@ platformdirs==3.9.1
     # via black
 pluggy==1.2.0
     # via pytest
-pygments==2.15.1
+pygments==2.16.1
     # via
     #   pdbpp
     #   rich
