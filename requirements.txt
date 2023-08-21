@@ -31,7 +31,7 @@ requests==2.31.0
     # via -r requirements.in
 rich==13.5.2
     # via textual
-textual==0.33.0
+textual==0.32.0
     # via -r requirements.in
 typing-extensions==4.7.1
     # via textual

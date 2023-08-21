@@ -20,6 +20,10 @@ venv-dev:
 	pip install -r requirements.txt
 	pip install -r requirements-dev.txt
 
+deps-install:
+	pip install -r requirements.txt
+	pip install -r requirements-dev.txt
+
 deps-compile:
 	pip-compile --no-emit-index-url --no-emit-trusted-host requirements.in
 	pip-compile --no-emit-index-url --no-emit-trusted-host requirements-dev.in

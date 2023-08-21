@@ -94,8 +94,10 @@ pytest-cov==4.1.0
     # via -r requirements-dev.in
 rich==13.5.2
     # via textual
-textual==0.33.0
-    # via textual-dev
+textual==0.32.0
+    # via
+    #   -r requirements-dev.in
+    #   textual-dev
 textual-dev==1.1.0
     # via -r requirements-dev.in
 tomli==2.0.1

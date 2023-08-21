@@ -1,3 +1,3 @@
 pyyaml
 requests
-textual
+textual==0.32.0 # Lock to fix mine screen border bug
