@@ -9,6 +9,7 @@ from myning.objects.item import Item, ItemType
 from myning.objects.macguffin import Macguffin
 from myning.objects.plant import Plant
 from myning.objects.player import Player
+from myning.objects.stats import IntegerStatKeys, Stats
 from myning.utilities.file_manager import FileManager
 from myning.utilities.formatter import Formatter
 from myning.utilities.generators import generate_equipment
@@ -18,6 +19,7 @@ MARKDOWN_RATIO = 1 / 2
 
 player = Player()
 macguffin = Macguffin()
+stats = Stats()
 
 
 def enter():
@@ -110,10 +112,12 @@ class Store(BaseStore):
         pick_sell,
     )
     def sell(self, item: Item):
-        player.gold += sell_price(item)
+        price = sell_price(item)
+        player.gold += price
         player.inventory.remove_item(item)
         self.add_item(item)
-        FileManager.save(player)
+        stats.increment_int_stat(IntegerStatKeys.GOLD_EARNED, price)
+        FileManager.multi_save(player, stats)
         return self.enter()
 
     def confirm_mass_sell(self, description: str, items: list[Item], tax: float):
@@ -135,7 +139,8 @@ class Store(BaseStore):
         player.gold += total
         player.inventory.remove_items(*items)
         self.add_items(*items)
-        FileManager.save(player)
+        stats.increment_int_stat(IntegerStatKeys.GOLD_EARNED, total)
+        FileManager.multi_save(player, stats)
         return self.enter()
 
 
