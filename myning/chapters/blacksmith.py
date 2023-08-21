@@ -1,5 +1,4 @@
 import random
-from functools import partial
 
 from myning.chapters import PickArgs
 from myning.chapters.base_store import BaseStore
@@ -49,7 +48,10 @@ class Blacksmith(BaseStore):
     def maxed(self):
         return self.level >= len(TIERS)
 
-    # TODO improve logic and refactor BlacksmithItem class, lots of room for improvement
+    @property
+    def upgrade_cost(self):
+        return fibonacci(self.level + 4) * 100
+
     def generate(self):
         for tier in TIERS[: self.level]:
             for item_type in EQUIPMENT_TYPES:
@@ -57,51 +59,50 @@ class Blacksmith(BaseStore):
                 type_name = random.choice(STRINGS[item_type.lower()])
                 name = f"{tier.name}'s {type_name}"
                 description = f"A {item_type.name}'s  {type_name}."
-                self.add_item(Item(name, description, item_type, value, tier.main_affect))
+                item = Item(name, description, item_type, value, tier.main_affect)
+                if not any(i.value == item.value and i.type == item.type for i in self.items):
+                    self.add_item(item)
 
     def enter(self):
-        cost = smith_cost(self.level)
-        upgrade_option = (
-            Formatter.locked("Upgrade Smith (maxed)")
-            if self.maxed
-            else f"Upgrade Smith ({Formatter.gold(cost)})"
-        )
+        self.generate()
         return PickArgs(
             message="What would you like to do?",
             options=[
                 ("Buy", self.pick_buy),
-                (upgrade_option, partial(self.confirm_upgrade, cost)),
+                (
+                    Formatter.locked("Upgrade Smith (maxed)")
+                    if self.maxed
+                    else f"Upgrade Smith ({Formatter.gold(self.upgrade_cost)})",
+                    self.confirm_upgrade,
+                ),
                 ("Go Back", self.exit),
             ],
         )
 
-    def confirm_upgrade(self, cost: int):
+    def confirm_upgrade(self):
         if self.maxed:
             return PickArgs(
                 message=f"Blacksmith cannot build anything more beneficial than {TIERS[-1].name}.",
                 options=[("Go Back", self.enter)],
             )
-        if player.gold < cost:
+        if player.gold < self.upgrade_cost:
             return PickArgs(
                 message="You don't have enough gold to upgrade your blacksmith.",
                 options=[("Shucks", self.enter)],
             )
         return PickArgs(
-            message=f"Are you sure you want to upgrade your blacksmith for {Formatter.gold(cost)}?",
+            message="Are you sure you want to upgrade your blacksmith "
+            f"for {Formatter.gold(self.upgrade_cost)}?",
             options=[
-                (f"Upgrade to level {self.level+1}", partial(self.upgrade, cost)),
+                (f"Upgrade to level {self.level+1}", self.upgrade),
                 ("Maybe Later", self.enter),
             ],
         )
 
-    def upgrade(self, cost: int):
-        player.gold -= cost
+    def upgrade(self):
+        player.gold -= self.upgrade_cost
         player.blacksmith_level += 1
         FileManager.save(player)
         self.remove_items(*self.items)
         self.generate()
         return self.enter()
-
-
-def smith_cost(level):
-    return fibonacci(level + 4) * 100

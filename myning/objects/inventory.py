@@ -40,13 +40,12 @@ class Inventory:
         return self._items.get(slot, [])
 
     def has_better_item(self, slot: ItemType, current: Item | None):
-        slot_items = self.get_slot(slot)
-        if not slot_items:
-            return False
-        if not current:
+        if slot_items := self.get_slot(slot):
+            if current:
+                # pylint: disable=not-an-iterable
+                return any(item for item in slot_items if item.main_affect > current.main_affect)
             return True
-        # pylint: disable=not-an-iterable
-        return any(item for item in slot_items if item.main_affect > current.main_affect)
+        return False
 
     def get_best_in_slot(self, slot: ItemType):
         if slot_items := self.get_slot(slot):
