@@ -191,7 +191,7 @@ class Character(Object):
 
     @classmethod
     @property
-    def companion_species(cls) -> list:
+    def companion_species(cls):
         return [
             CharacterSpecies.DWARF,
             CharacterSpecies.HUMAN,

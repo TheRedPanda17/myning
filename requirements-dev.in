@@ -3,5 +3,6 @@ isort
 pdbpp
 pip-tools
 pytest
+pytest-asyncio
 pytest-cov
 textual-dev

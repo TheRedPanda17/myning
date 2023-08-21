@@ -1,6 +1,5 @@
 import json
 
-from myning.objects.macguffin import Macguffin
 from myning.objects.stats import Stats
 from myning.utilities.file_manager import FileManager
 

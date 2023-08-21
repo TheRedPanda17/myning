@@ -1,6 +1,6 @@
 import json
 import os
-from distutils.dir_util import copy_tree
+import shutil
 from enum import Enum
 from pathlib import Path
 from typing import Type, TypeVar
@@ -79,4 +79,4 @@ class FileManager:
 
     @staticmethod
     def backup_game():
-        copy_tree(".data", ".data.bak")
+        shutil.copytree(".data", ".data.bak")

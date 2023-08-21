@@ -154,10 +154,7 @@ class Player(Character, metaclass=Singleton):
             return self.mine_progressions[progress_name]
 
     def roll_for_species(self):
-        species_list = self.discovered_species
-        if self.species in species_list:
-            species_list.remove(self.species)
-        return random.choice(species_list)
+        return random.choice([s for s in self.discovered_species if s.name != self.species.name])
 
     @property
     def fallen_allies(self) -> list[Character]:

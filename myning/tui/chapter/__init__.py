@@ -64,10 +64,6 @@ class ChapterWidget(ScrollableContainer):
             args = main_menu.enter() if tutorial.is_complete() else tutorial.enter()
             self.border_title = args.border_title
             self.pick(args)
-        # TODO Remove dev haccs
-        # self.select(12)
-        # self.select(1)
-        # self.select(0)
 
     def on_click(self):
         self.focus()

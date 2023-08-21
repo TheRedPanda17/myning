@@ -13,10 +13,7 @@ class Question(Static):
     def render(self):
         table = Table.grid()
         table.add_column(overflow="fold")
-
-        if isinstance(self.message, str):
-            self.message = f"[bold]{self.message}[/]"
-        table.add_row(self.message)
+        table.add_row(f"[bold]{self.message}[/]" if isinstance(self.message, str) else self.message)
 
         if self.subtitle:
             if isinstance(self.subtitle, str):

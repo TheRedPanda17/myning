@@ -23,6 +23,8 @@ venv-dev:
 deps-compile:
 	pip-compile --no-emit-index-url --no-emit-trusted-host requirements.in
 	pip-compile --no-emit-index-url --no-emit-trusted-host requirements-dev.in
+	pip install -r requirements.txt
+	pip install -r requirements-dev.txt
 
 lint: isort black
 	@true
