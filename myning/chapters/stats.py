@@ -1,6 +1,7 @@
 from datetime import datetime
 from functools import partial
 
+import requests
 from rich.table import Table
 from rich.text import Text
 
@@ -34,8 +35,14 @@ def enter():
 
 
 def sync():
-    # score = macguffin.get_new_standard_boost(get_total_value())
-    # api.player.sync(int(score))
+    score = macguffin.get_new_standard_boost(get_total_value())
+    try:
+        api.player.sync(int(score))
+    except requests.HTTPError as e:
+        return PickArgs(
+            message=f"Error contacting the API: {e.response.status_code}",
+            options=[("Bummer!", enter)],
+        )
     return enter()
 
 

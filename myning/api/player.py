@@ -22,7 +22,7 @@ def sync(score: int):
         "name": player.name,
         "level": player.level,
         "stats": stats.all_stats,
-        "icon": player.icon.symbol,
+        "icon": player.icon,
         "id": player.id,
         "score": score * 100,
     }
