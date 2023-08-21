@@ -126,12 +126,15 @@ class ChapterWidget(ScrollableContainer):
         options, hotkeys = get_labels_and_hotkeys(labels)
         self.option_table.clear(columns=True)
         if options:
+            column_count = max(len(option) for option in options)
             if args.column_titles:
                 self.option_table.show_header = True
+                while len(args.column_titles) < column_count:
+                    args.column_titles.append("")
                 self.option_table.add_columns(*args.column_titles)
             else:
                 self.option_table.show_header = False
-                self.option_table.add_columns(*(str(i) for i in range(len(options[0]))))
+                self.option_table.add_columns(*(str(i) for i in range(column_count)))
             self.option_table.add_rows(options)
         self.hotkeys = hotkeys
         self.handlers = handlers
