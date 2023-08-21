@@ -120,6 +120,7 @@ def go_back_in_time():
     new_player.completed_migrations = migrations
     new_player.id = player_id
     new_player.species = new_species
+    new_player.health = new_player.max_health
 
     Macguffin.initialize()
     new_macguffin = Macguffin()
