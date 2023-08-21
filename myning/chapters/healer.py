@@ -103,7 +103,7 @@ class HealerScreen(Screen[None]):
     def update_screen(self):
         table = Table.grid()
         table.add_row("Recovering... (press [bold dodger_blue1]Enter ↩[/] to speed up)\n")
-        table.add_row(player.army.tui_table)
+        table.add_row(player.army.table)
         self.content.update(table)
         self.progress.progress = player.army.current_health
 

@@ -1,7 +1,6 @@
 from functools import partial
 from typing import TYPE_CHECKING
 
-
 from myning.chapters import DynamicArgs, Option, PickArgs, StoryArgs, healer, main_menu, tutorial
 from myning.chapters.mine.screen import MineScreen
 from myning.config import MINES, RESEARCH, SPECIES
@@ -34,7 +33,7 @@ def exit_mine():
 
 
 def pick_mine():
-    options = [(mine.tui_arr, partial(pick_time, mine)) for mine in player.mines_available] + [
+    options = [(mine.arr, partial(pick_time, mine)) for mine in player.mines_available] + [
         (["", "Unlock New Mine"], pick_unlock_mine),
         (["", "Go Back"], exit_mine),
     ]
@@ -100,7 +99,7 @@ def mine_callback(chapter: "ChapterWidget"):
 def pick_unlock_mine():
     mines: list[Mine] = [mine for mine in MINES.values() if mine not in player.mines_available]
     options = [
-        (mine.get_unlock_tui_arr(player.level), partial(unlock_mine, mine)) for mine in mines
+        (mine.get_unlock_arr(player.level), partial(unlock_mine, mine)) for mine in mines
     ] + [
         (["", "Go Back"], pick_mine),
     ]
@@ -203,7 +202,7 @@ def complete_trip(abandoned: bool):
     story_args_list.append(
         StoryArgs(
             message=f"Your mining trip in {trip.mine.icon} [dodger_blue1]{trip.mine.name}[/]\n",
-            subtitle=trip.tui_table,
+            subtitle=trip.table,
         )
     )
 
@@ -230,7 +229,7 @@ def complete_trip(abandoned: bool):
                 StoryArgs(
                     message=f"You have completed a mining trip in {trip.mine.icon} "
                     f"[dodger_blue1]{trip.mine.name}[/].\n",
-                    subtitle=trip.mine.tui_progress,
+                    subtitle=trip.mine.progress,
                     response="Thanks for the update",
                 )
             )
@@ -252,4 +251,3 @@ def available_species(mine: Mine) -> list[Species]:
 
 def unlock_species_emojies(species: list[Species]) -> list[str]:
     return [s.icon if s in player.discovered_species else "❓" for s in species]
-

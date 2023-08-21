@@ -114,7 +114,7 @@ class Plant(Item):
         return max(0, (self.end_time - datetime.now()).total_seconds())
 
     @property
-    def tui_details(self):
+    def details(self):
         table = Table.grid(padding=(0, 1, 0, 0))
         table.add_column(style=Colors.LOCKED)
         table.add_row("Type", self.icon)

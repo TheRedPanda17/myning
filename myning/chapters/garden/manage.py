@@ -121,7 +121,7 @@ def manage_plant(row: int, column: int):
         message="What would you like to do with this plant? "
         f"({Formatter.water(garden.water)} available)",
         options=options,
-        subtitle=plant.tui_details,
+        subtitle=plant.details,
     )
 
 

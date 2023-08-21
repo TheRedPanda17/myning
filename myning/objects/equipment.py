@@ -1,7 +1,5 @@
-
 from myning.objects.item import Item, ItemType
 from myning.utilities.file_manager import FileManager
-
 
 EQUIPMENT_TYPES = [
     item_type

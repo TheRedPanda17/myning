@@ -255,7 +255,7 @@ class Character(Object):
 
     @classmethod
     @property
-    def tui_column_titles(cls):
+    def column_titles(cls):
         return [
             "",
             "Name",
@@ -268,7 +268,7 @@ class Character(Object):
         ]
 
     @property
-    def tui_arr(self):
+    def arr(self):
         return [
             str(self.icon),
             self.name.split()[0],
@@ -285,10 +285,9 @@ class Character(Object):
 
     @classmethod
     @property
-    def abbreviated_tui_column_titles(cls):
-        return [x for i, x in enumerate(cls.tui_column_titles) if i != 2]
+    def abbreviated_column_titles(cls):
+        return [x for i, x in enumerate(cls.column_titles) if i != 2]
 
     @property
-    def abbreviated_tui_arr(self):
-        return [x for i, x in enumerate(self.tui_arr) if i != 2]
-
+    def abbreviated_arr(self):
+        return [x for i, x in enumerate(self.arr) if i != 2]

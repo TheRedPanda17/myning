@@ -29,7 +29,7 @@ def enter():
             ("View Highscores", pick_player),
             ("Go Back", main_menu.enter),
         ],
-        subtitle=stats.tui_display,
+        subtitle=stats.display,
     )
 
 

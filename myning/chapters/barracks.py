@@ -22,7 +22,7 @@ player = Player()
 
 
 def enter():
-    member_arrs = [member.abbreviated_tui_arr for member in player.army]
+    member_arrs = [member.abbreviated_arr for member in player.army]
     handlers = [partial(add_xp, member) for member in player.army]
     options: list[Option] = list(zip(member_arrs, handlers))
 
@@ -43,7 +43,7 @@ def enter():
         message="Upgrade Your Allies or Hire More Warriors",
         options=options,
         subtitle=f"You have {player.exp_available} xp to distribute." if player.allies else None,
-        column_titles=player.abbreviated_tui_column_titles,
+        column_titles=player.abbreviated_column_titles,
     )
 
 
@@ -112,14 +112,14 @@ def pick_fire_muscle():
             message="You ain't got nobody to fire!",
             options=[("I should have thought of that...", enter)],
         )
-    member_arrs = [member.abbreviated_tui_arr for member in player.allies]
+    member_arrs = [member.abbreviated_arr for member in player.allies]
     handlers = [partial(confirm_fire_muscle, member) for member in player.allies]
     options: list[Option] = list(zip(member_arrs, handlers))
     options.append((["", "Go Back"], enter))
     return PickArgs(
         message="Which Ally do you want to fire?",
         options=options,
-        column_titles=player.abbreviated_tui_column_titles,
+        column_titles=player.abbreviated_column_titles,
     )
 
 

@@ -80,7 +80,7 @@ class MineScreen(Screen[bool]):
         if self.abandoning:
             return
         self.content.update(self.action.content)
-        self.summary.update(trip.tui_summary)
+        self.summary.update(trip.summary)
         self.progress.progress = trip.total_seconds - trip.seconds_left
         time_left = time_str(trip.seconds_left)
         self.time.update(f"{time_left} remaining")

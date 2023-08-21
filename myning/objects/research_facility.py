@@ -1,6 +1,5 @@
 from datetime import datetime
 
-
 from myning.config import RESEARCH
 from myning.objects.army import Army
 from myning.objects.character import Character
@@ -149,4 +148,3 @@ class ResearchFacility(Object, metaclass=Singleton):
 
     def has_research(self, research_id):
         return research_id in [research.id for research in self._research]
-

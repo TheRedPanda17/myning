@@ -9,7 +9,6 @@ from myning.utilities.file_manager import FileManager
 from myning.utilities.formatter import Formatter
 
 
-
 class IntegerStatKeys(str, Enum):
     TRIPS_FINISHED = "trips_finished"
     ARMY_DEFEATS = "army_defeats"
@@ -63,7 +62,7 @@ class Stats(Object, metaclass=Singleton):
         return {**self.integer_stats, **self.float_stats}
 
     @property
-    def tui_display(self):
+    def display(self):
         table = Table.grid(padding=(0, 2))
         table.add_column(style="bold")
         for key, value in self.all_stats.items():

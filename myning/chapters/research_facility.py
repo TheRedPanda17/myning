@@ -31,7 +31,7 @@ def enter():
 
 
 def pick_assign():
-    character_arrs = [character.abbreviated_tui_arr for character in player.army[1:]]
+    character_arrs = [character.abbreviated_arr for character in player.army[1:]]
     handlers = [partial(assign, character) for character in player.army[1:]]
     options: list[Option] = list(zip(character_arrs, handlers))
     options.append((["", "Go Back"], enter))
@@ -40,7 +40,7 @@ def pick_assign():
         options=options,
         subtitle=f"{len(facility.army)}/{facility.level} researchers assigned\n"
         f"{facility.points_per_hour(macguffin.research_boost):.2f} research points / hr",
-        column_titles=player.abbreviated_tui_column_titles,
+        column_titles=player.abbreviated_column_titles,
     )
 
 
@@ -62,7 +62,7 @@ def pick_remove():
             message="You have no companions currently researching",
             options=[("Go Back", enter)],
         )
-    character_arrs = [character.abbreviated_tui_arr for character in facility.army]
+    character_arrs = [character.abbreviated_arr for character in facility.army]
     handlers = [partial(remove, character) for character in facility.army]
     options: list[Option] = list(zip(character_arrs, handlers))
     options.append((["", "Go Back"], enter))
@@ -71,7 +71,7 @@ def pick_remove():
         options=options,
         subtitle=f"{len(facility.army)}/{facility.level} researchers assigned\n"
         f"{facility.points_per_hour(macguffin.research_boost):2f} research points / hr",
-        column_titles=player.abbreviated_tui_column_titles,
+        column_titles=player.abbreviated_column_titles,
     )
 
 

@@ -126,7 +126,7 @@ class Mine(Object):
         return ProgressBar(total=self.win_criteria.total_items, completed=current, width=20)
 
     @property
-    def tui_progress(self):
+    def progress(self):
         table = Table.grid(padding=(0, 1, 0, 0))
         if self.win_criteria:
             table.add_row("Progress:", self.progress_bar)
@@ -153,7 +153,7 @@ class Mine(Object):
         return f"{self.icon} {self.name} {death_str}"
 
     @property
-    def death_chance_tui_str(self):
+    def death_chance_str(self):
         odds = self.get_action_odds("lose_ally")
         chances = {
             -1: "[green1]none[/]",
@@ -166,8 +166,8 @@ class Mine(Object):
         return f"{Icons.DEATH} {chances[closest_key_floor]}"
 
     @property
-    def tui_arr(self):
-        arr = [self.icon, self.name, self.death_chance_tui_str]
+    def arr(self):
+        arr = [self.icon, self.name, self.death_chance_str]
         if self.win_criteria:
             if self.complete:
                 arr.append("✨ cleared ✨")
@@ -175,7 +175,7 @@ class Mine(Object):
                 arr.append(self.progress_bar)
         return arr
 
-    def get_unlock_tui_arr(self, player_level: int):
+    def get_unlock_arr(self, player_level: int):
         if player_level < self.min_player_level:
             return [
                 self.icon,
@@ -183,7 +183,7 @@ class Mine(Object):
                 Text.from_markup(Formatter.locked(f"{self.cost:,}g"), justify="right"),
                 Formatter.locked(f"{Icons.LEVEL} {self.min_player_level} "),
                 Formatter.locked(f"{int(self.exp_boost * 100):2}% xp") if self.exp_boost else "",
-                Formatter.locked(Text.from_markup(self.death_chance_tui_str).plain),
+                Formatter.locked(Text.from_markup(self.death_chance_str).plain),
             ]
         return [
             self.icon,
@@ -191,7 +191,7 @@ class Mine(Object):
             Text.from_markup(Formatter.gold(self.cost), justify="right"),
             f"{Icons.LEVEL} {Formatter.level(self.min_player_level)}",
             f"[{Colors.XP}]{int(self.exp_boost*100):2}% xp[/]" if self.exp_boost else "",
-            self.death_chance_tui_str,
+            self.death_chance_str,
         ]
 
 

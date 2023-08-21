@@ -62,7 +62,7 @@ class Army(UserList[Character]):
         return s
 
     @property
-    def tui_table(self):
+    def table(self):
         table = Table(box=None, padding=(0, 1, 0, 0))
         table.add_column("", width=2, no_wrap=True, overflow="ignore")
         table.add_column(Text("Name", justify="left"))
@@ -86,7 +86,7 @@ class Army(UserList[Character]):
         return table
 
     @property
-    def tui_columns(self):
+    def columns(self):
         chunk_size = 10
         chunks = [self[i : i + chunk_size] for i in range(0, len(self), chunk_size)]
         columns = []

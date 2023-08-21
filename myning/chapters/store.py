@@ -105,7 +105,7 @@ class Store(BaseStore):
         )
 
     @confirm(
-        lambda self, item: f"Are you sure you want to sell {item.tui_str} for "
+        lambda self, item: f"Are you sure you want to sell {item.str} for "
         f"{Formatter.gold(sell_price(item))}?",
         pick_sell,
     )

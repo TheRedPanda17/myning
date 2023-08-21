@@ -124,7 +124,7 @@ class Trip(Object, metaclass=Singleton):
         return summary
 
     @property
-    def tui_summary(self):
+    def summary(self):
         table = Table.grid(padding=(0, 1, 0, 0), expand=True)
         table.add_column()
         table.add_column()
@@ -135,7 +135,7 @@ class Trip(Object, metaclass=Singleton):
         return table
 
     @property
-    def tui_table(self):
+    def table(self):
         table = Table.grid(padding=(0, 1, 0, 0))
         mineral_counts = Counter([item.main_affect for item in self.minerals_mined])
         minerals_str = "\n".join(

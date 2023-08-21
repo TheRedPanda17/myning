@@ -111,9 +111,9 @@ class CombatAction(Action):
         content_table.add_row(f"Fighting... ({self.duration} seconds left)\n")
         content_table.add_row("⚔️   " * (5 - (self.duration - 1) % 5))
         content_table.add_row("\n[bold]Your Army[/]")
-        content_table.add_row(*Army(player.army.living_members).tui_columns)
+        content_table.add_row(*Army(player.army.living_members).columns)
         content_table.add_row("\n[bold]Enemy Army[/]")
-        content_table.add_row(*Army(self.enemies.living_members).tui_columns)
+        content_table.add_row(*Army(self.enemies.living_members).columns)
         return content_table
 
     def fight(self):

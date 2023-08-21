@@ -9,7 +9,7 @@ player = Player()
 class ArmyWidget(DataTable):
     def on_mount(self):
         self.show_cursor = False
-        self.add_columns(*player.tui_column_titles)
+        self.add_columns(*player.column_titles)
         self.update()
 
     def on_click(self):
@@ -25,4 +25,4 @@ class ArmyWidget(DataTable):
             f"{Icons.ARMOR} [{Colors.ARMOR}]{player.army.total_armor}[/]"
         )
         self.clear()
-        self.add_rows(member.tui_arr for member in player.army)
+        self.add_rows(member.arr for member in player.army)
