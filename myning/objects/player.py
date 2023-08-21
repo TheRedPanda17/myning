@@ -2,8 +2,6 @@ import math
 import random
 from typing import Optional
 
-from blessed.terminal import Terminal
-
 from myning.config import MINES, SPECIES, UPGRADES, XP_COST
 from myning.objects.army import Army
 from myning.objects.character import Character, CharacterSpecies
@@ -15,18 +13,11 @@ from myning.objects.singleton import Singleton
 from myning.objects.upgrade import Upgrade
 from myning.utilities.file_manager import FileManager
 
-term = Terminal()
-
 
 class Player(Character, metaclass=Singleton):
     # Remove the required argument from the constructor
     def __init__(self, name=None, *args, **kwargs):
         super().__init__(name, *args, **kwargs)
-        self.dashboard_settings = {
-            "a": False,
-            "e": False,
-            "i": True,
-        }
 
     @classmethod
     def initialize(cls, name=None):
@@ -260,13 +251,3 @@ class Player(Character, metaclass=Singleton):
         ]
         player.completed_migrations = attrs.get("completed_migrations") or [1]
         return player
-
-    def _update_dashboard_settings(self, key):
-        self.dashboard_settings[key] = not self.dashboard_settings[key]
-
-
-def get_title_string(title: str, toggle_key):
-    s = term.bold(title)
-    if toggle_key:
-        s += f" {term.bright_black(f'({toggle_key} to toggle)')}"
-    return s

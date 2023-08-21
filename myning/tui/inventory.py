@@ -25,4 +25,4 @@ class InventoryWidget(DataTable):
             f"({Formatter.gold(sum(item.value for item in player.inventory.items))})"
         )
         self.clear()
-        self.add_rows(item.tui_arr for item in player.inventory.items)
+        self.add_rows(item.arr for item in player.inventory.items)

@@ -1,9 +1,7 @@
-from blessed import Terminal
 
 from myning.objects.item import Item, ItemType
 from myning.utilities.file_manager import FileManager
 
-term = Terminal()
 
 EQUIPMENT_TYPES = [
     item_type

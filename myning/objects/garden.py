@@ -1,15 +1,12 @@
 from datetime import datetime, timedelta
 
-from blessed import Terminal
 
 from myning.objects.object import Object
 from myning.objects.plant import Plant
 from myning.objects.singleton import Singleton
-from myning.utilities import rand
 from myning.utilities.fib import fibonacci
 from myning.utilities.file_manager import FileManager, Subfolders
 
-term = Terminal()
 
 
 class Garden(Object, metaclass=Singleton):
@@ -155,3 +152,4 @@ class Garden(Object, metaclass=Singleton):
 
         s += "╚" + "════╩" * (self.level - 1) + "════╝"
         return s
+

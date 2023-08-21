@@ -1,20 +1,17 @@
 import random
 from enum import Enum
 
-from blessed import Terminal
 from rich.text import Text
 
 from myning.config import SPECIES, XP_COST
 from myning.objects.equipment import Equipment
 from myning.objects.object import Object
 from myning.objects.species import Species
-from myning.utilities import rand
 from myning.utilities.fib import fibonacci, fibonacci_sum
 from myning.utilities.file_manager import FileManager
 from myning.utilities.rand import get_random_int
 from myning.utilities.ui import Colors, Icons, get_health_bar
 
-term = Terminal()
 STRENGTH_DIVISOR = 4
 DEF_DIVISOR = 8
 CRIT_DIVISOR = 5
@@ -294,3 +291,4 @@ class Character(Object):
     @property
     def abbreviated_tui_arr(self):
         return [x for i, x in enumerate(self.tui_arr) if i != 2]
+

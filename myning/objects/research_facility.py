@@ -1,6 +1,5 @@
 from datetime import datetime
 
-from blessed import Terminal
 
 from myning.config import RESEARCH
 from myning.objects.army import Army
@@ -8,11 +7,8 @@ from myning.objects.character import Character
 from myning.objects.object import Object
 from myning.objects.singleton import Singleton
 from myning.objects.upgrade import Upgrade
-from myning.utilities import rand
 from myning.utilities.fib import fibonacci
 from myning.utilities.file_manager import FileManager
-
-term = Terminal()
 
 
 class ResearchFacility(Object, metaclass=Singleton):
@@ -153,3 +149,4 @@ class ResearchFacility(Object, metaclass=Singleton):
 
     def has_research(self, research_id):
         return research_id in [research.id for research in self._research]
+

@@ -78,7 +78,7 @@ class BaseStore(ABC):
         options = [
             (
                 [
-                    *item.tui_arr,
+                    *item.arr,
                     Text.from_markup(f"({Formatter.gold(item.value)})", justify="right"),
                     self.hint_symbol(item),
                 ],
@@ -115,7 +115,7 @@ class BaseStore(ABC):
                 options=[("Bummer!", self.pick_buy)],
             )
         return PickArgs(
-            message=f"Are you sure you want to buy {item.tui_str} for {Formatter.gold(item.value)}?",  # pylint: disable=line-too-long
+            message=f"Are you sure you want to buy {item} for {Formatter.gold(item.value)}?",  # pylint: disable=line-too-long
             options=[
                 ("Yes", partial(self.buy, item)),
                 ("No", self.pick_buy),

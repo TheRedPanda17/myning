@@ -51,7 +51,7 @@ class Store(BaseStore):
         options: list[Option] = [
             (
                 [
-                    *item.tui_arr,
+                    *item.arr,
                     Text.from_markup(f"({Formatter.gold(sell_price(item))})", justify="right"),
                 ],
                 partial(self.sell, item),

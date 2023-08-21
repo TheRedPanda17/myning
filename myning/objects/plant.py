@@ -1,7 +1,6 @@
 from datetime import datetime, timedelta
 from enum import Enum
 
-from blessed import Terminal
 from rich.progress_bar import ProgressBar
 from rich.table import Table
 from rich.text import Text
@@ -21,7 +20,6 @@ class PlantType(str, Enum):
 
 
 PLANT_TYPES = [plant_type for plant_type in PlantType]
-term = Terminal()
 
 
 class Plant(Item):
@@ -116,14 +114,6 @@ class Plant(Item):
         return max(0, (self.end_time - datetime.now()).total_seconds())
 
     @property
-    def details_string(self):
-        type = f"{term.bold}Type: {term.normal}{self.icon}"
-        growth = f"{term.bold}Growth: {term.normal}{self.growth * 100:.2f}%"
-        time_left = f"{term.bold}Time left: {term.normal}{int(self.time_left//60)} minutes"
-
-        return f"{type}\n{growth}\n{time_left}"
-
-    @property
     def tui_details(self):
         table = Table.grid(padding=(0, 1, 0, 0))
         table.add_column(style=Colors.LOCKED)
@@ -140,7 +130,7 @@ class Plant(Item):
             self.icon,
             self.name,
             Text.from_markup(
-                f"[{self.tui_color}]{0 if self.expired else self.main_affect}[/]", justify="right"
+                f"[{self.color}]{0 if self.expired else self.main_affect}[/]", justify="right"
             ),
             Icons.TIME,
             Text.from_markup(f"{Formatter.level(int(self.expires_in / 60))} mins", justify="right"),

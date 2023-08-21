@@ -133,7 +133,7 @@ def pick_seed(row: int, column: int):
         )
 
     options: list[Option] = [
-        (seed.tui_arr, partial(plant_seed, seed, row, column))
+        (seed.arr, partial(plant_seed, seed, row, column))
         for seed in player.seeds
         # TODO fix return type of inventory.get_slot to resolve type issue
         if isinstance(seed, Plant)

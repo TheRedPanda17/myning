@@ -1,6 +1,5 @@
 from enum import Enum
 
-from blessed import Terminal
 from rich.progress_bar import ProgressBar
 from rich.table import Table
 from rich.text import Text
@@ -15,9 +14,6 @@ class MineType(str, Enum):
     REGULAR = "regular"
     COMBAT = "combat"
     RESOURCE = "resource"
-
-
-term = Terminal()
 
 
 class Mine(Object):
@@ -157,22 +153,6 @@ class Mine(Object):
         return f"{self.icon} {self.name} {death_str}"
 
     @property
-    def death_chance_str(self):
-        odds = self.get_action_odds("lose_ally")
-        str = "💀 {msg}"
-        match odds:
-            case 0:
-                return str.format(msg=term.green("none"))
-            case _ if odds < 0.5:
-                return str.format(msg=term.olivedrab1("low"))
-            case _ if odds < 0.7:
-                return str.format(msg=term.yellow("medium"))
-            case _ if odds < 1:
-                return str.format(msg=term.orange("high"))
-            case _:
-                return str.format(msg=term.red("very high"))
-
-    @property
     def death_chance_tui_str(self):
         odds = self.get_action_odds("lose_ally")
         chances = {
@@ -186,16 +166,6 @@ class Mine(Object):
         return f"{Icons.DEATH} {chances[closest_key_floor]}"
 
     @property
-    def str_arr(self):
-        arr = [f"{self.icon}", self.name, self.death_chance_str]
-        if self.win_criteria:
-            arr.append("✨ cleared ✨" if self.complete else self.progress_bar)
-        else:
-            arr.append("")
-
-        return arr
-
-    @property
     def tui_arr(self):
         arr = [self.icon, self.name, self.death_chance_tui_str]
         if self.win_criteria:
@@ -203,28 +173,6 @@ class Mine(Object):
                 arr.append("✨ cleared ✨")
             else:
                 arr.append(self.progress_bar)
-        return arr
-
-    def get_unlock_str_arr(self, unlocked: bool):
-        if unlocked:
-            arr = [
-                f"{self.icon}",
-                self.name,
-                get_gold_string(self.cost),
-                get_level_string(self.min_player_level),
-                f"{term.magenta}{int(self.exp_boost * 100):3}% xp" if self.exp_boost else "",
-                self.death_chance_str,
-            ]
-        else:
-            arr = [
-                f"{self.icon}",
-                get_locked_str(f"🔒 {self.name}"),
-                get_locked_str(f"{self.cost}g"),
-                get_locked_str(f"lvl {self.min_player_level}"),
-                get_locked_str(f"{int(self.exp_boost * 100):3}% xp") if self.exp_boost else "",
-                get_locked_str(self.death_chance_str),
-            ]
-
         return arr
 
     def get_unlock_tui_arr(self, player_level: int):

@@ -1,6 +1,5 @@
 from enum import Enum
 
-from blessed import Terminal
 from rich.table import Table
 from rich.text import Text
 
@@ -9,7 +8,6 @@ from myning.objects.singleton import Singleton
 from myning.utilities.file_manager import FileManager
 from myning.utilities.formatter import Formatter
 
-term = Terminal()
 
 
 class IntegerStatKeys(str, Enum):

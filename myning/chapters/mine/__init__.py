@@ -1,8 +1,6 @@
 from functools import partial
-from itertools import zip_longest
 from typing import TYPE_CHECKING
 
-from rich.table import Table
 
 from myning.chapters import DynamicArgs, Option, PickArgs, StoryArgs, healer, main_menu, tutorial
 from myning.chapters.mine.screen import MineScreen
@@ -254,3 +252,4 @@ def available_species(mine: Mine) -> list[Species]:
 
 def unlock_species_emojies(species: list[Species]) -> list[str]:
     return [s.icon if s in player.discovered_species else "❓" for s in species]
+

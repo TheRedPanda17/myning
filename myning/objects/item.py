@@ -1,13 +1,10 @@
 from enum import Enum
 
-from blessed import Terminal
 from rich.text import Text
 
 from myning.objects.object import Object
 from myning.utilities.rand import get_random_int
 from myning.utilities.ui import Colors, Icons
-
-term = Terminal()
 
 
 class ItemType(str, Enum):
@@ -94,20 +91,6 @@ class Item(Object):
     def color(self):
         match self.type:
             case ItemType.MINERAL:
-                return Colors.GOLD
-            case ItemType.WEAPON:
-                return Colors.WEAPON
-            case ItemType.HELMET | ItemType.SHIRT | ItemType.PANTS | ItemType.SHOES:
-                return Colors.ARMOR
-            case ItemType.PLANT:
-                return Colors.PLANT
-            case _:
-                return term.normal
-
-    @property
-    def tui_color(self):
-        match self.type:
-            case ItemType.MINERAL:
                 return "gold1"
             case ItemType.WEAPON:
                 return "red1"
@@ -137,39 +120,27 @@ class Item(Object):
                 return Icons.UNKNOWN
 
     def __str__(self):
-        return f"{self.icon} {self.name} - [{self.tui_color}]{self.main_affect}[/]"
-
-    @property
-    def str_arr(self):
-        return [
-            f"{self.icon}",
-            self.name,
-            f"{self.color}{self.main_affect}{term.normal}",
-        ]
-
-    @property
-    def tui_arr(self):
-        return [
-            self.icon,
-            self.name,
-            Text.from_markup(f"[{self.tui_color}]{self.main_affect}[/]", justify="right"),
-        ]
-
-    @property
-    def tui_str(self):
-        s = f"{self.icon} [{self.tui_color}]{self.name}[/]"
+        s = f"{self.icon} [{self.color}]{self.name}[/]"
         if self.type not in (ItemType.MINERAL, ItemType.PLANT):
-            s += f" ([{self.tui_color}]{self.main_affect}[/])"
+            s += f" ([{self.color}]{self.main_affect}[/])"
         return s
 
     @property
+    def arr(self):
+        return [
+            self.icon,
+            self.name,
+            Text.from_markup(f"[{self.color}]{self.main_affect}[/]", justify="right"),
+        ]
+
+    @property
     def tutorial_new_str(self):
-        return f"New {self.type} added: [{self.tui_color}]{self.name}[/]"
+        return f"New {self.type} added: [{self.color}]{self.name}[/]"
 
     @property
     def battle_new_str(self):
         return (
             f"New {self.type} added: "
-            f"{self.icon} [{self.tui_color}]{self.name}[/] "
-            f"([{self.tui_color}]{self.main_affect}[/])"
+            f"{self.icon} [{self.color}]{self.name}[/] "
+            f"([{self.color}]{self.main_affect}[/])"
         )

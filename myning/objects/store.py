@@ -1,9 +1,7 @@
-from blessed.terminal import Terminal
 
 from myning.objects.item import Item
 from myning.utilities.generators import generate_equipment
 
-term = Terminal()
 
 
 class Store:

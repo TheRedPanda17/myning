@@ -181,7 +181,7 @@ def level_up(member: Character):
             options=[("Bummer!", enter)],
         )
     player.remove_available_xp(xp_for_level)
-    member.add_experience(xp_for_level, display=False)
+    member.add_experience(xp_for_level)
     return enter()
 
 
@@ -257,7 +257,7 @@ def auto_add_xp():
         xp -= member.experience
         xp = min(xp, player.exp_available)
         player.remove_available_xp(xp)
-        member.add_experience(xp, display=False)
+        member.add_experience(xp)
 
     return enter()
 
@@ -281,7 +281,7 @@ def auto_add_ghost_xp():
         xp -= member.experience
         xp = min(xp, player.exp_available)
         player.remove_available_xp(xp)
-        member.add_experience(xp, display=False)
+        member.add_experience(xp)
 
     return enter()
 

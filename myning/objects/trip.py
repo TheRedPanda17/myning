@@ -1,6 +1,5 @@
 from collections import Counter
 
-from blessed import Terminal
 from rich.table import Table
 
 from myning.config import MINES
@@ -13,7 +12,6 @@ from myning.utilities.file_manager import FileManager, Subfolders
 from myning.utilities.ui import Colors, Icons
 
 LOST_RATIO = 2
-term = Terminal()
 
 
 class Trip(Object, metaclass=Singleton):
@@ -126,16 +124,6 @@ class Trip(Object, metaclass=Singleton):
         return summary
 
     @property
-    def summary(self):
-        mine = f"{term.bold}{self.mine.name}{term.normal}"
-        time_left = f"{int(self.seconds_left / 60) + 1} minutes left"
-        battles = f"{Icons.VICTORY} {self.battles_won}"
-        enemies = f"{Icons.SWORD} {self.enemies_defeated}"
-        minerals = f"{Icons.MINERAL} {len(self.minerals_mined)}"
-
-        return f"{mine}: {time_left} {battles} {enemies} {minerals}"
-
-    @property
     def tui_summary(self):
         table = Table.grid(padding=(0, 1, 0, 0), expand=True)
         table.add_column()
@@ -160,7 +148,7 @@ class Trip(Object, metaclass=Singleton):
         table.add_row(
             "Items",
             "\n".join(
-                f"{item.icon} [{item.tui_color}]{item.main_affect}[/]" for item in self.items_found
+                f"{item.icon} [{item.color}]{item.main_affect}[/]" for item in self.items_found
             )
             if self.items_found
             else "None",
