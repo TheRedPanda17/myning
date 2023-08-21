@@ -1,4 +1,4 @@
-from myning.chapters import PickArgs, main_menu
+from myning.chapters import Option, PickArgs, main_menu
 from myning.chapters.base_store import BaseStore
 from myning.chapters.garden.manage import manage_garden
 from myning.objects.buying_option import BuyingOption
@@ -64,12 +64,11 @@ class Garden(BaseStore):
         return self.enter()
 
     def view_harvest(self):
-        options = []
-        for plant in player.inventory.get_slot(ItemType.PLANT.value):
-            # TODO fix return type of inventory.get_slot to resolve type issue
-            assert isinstance(plant, Plant)
-            if plant.harvested:
-                options.append((plant.fruit_stand_arr, self.view_plant))
+        options: list[Option] = [
+            (plant.fruit_stand_arr, self.view_plant)
+            for plant in player.inventory.get_slot(ItemType.PLANT)
+            if plant.harvested
+        ]
         options.append((["", "Go Back"], self.enter))
         return PickArgs(
             message="View your plants",

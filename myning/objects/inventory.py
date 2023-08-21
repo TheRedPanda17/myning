@@ -1,3 +1,5 @@
+from typing import Literal, overload
+
 from myning.objects.item import Item, ItemType
 from myning.objects.plant import Plant
 from myning.utilities.file_manager import FileManager, Subfolders
@@ -26,25 +28,26 @@ class Inventory:
             if item.type in self._items and item in self._items[item.type]:
                 self._items[item.type].remove(item)
 
-    def get_slot(self, slot) -> list[Item]:
-        slot = self._items.get(slot)
-        if slot:
-            return slot
-        return []
+    @overload
+    def get_slot(self, slot: Literal[ItemType.PLANT]) -> list[Plant]:
+        ...
 
-    def has_better_item(self, current: Item | None, type: ItemType):
-        slot_items = self.get_slot(type)
-        if not slot_items:
-            return False
-        return (not current and slot_items) or (
-            current and any(item.main_affect > current.main_affect for item in slot_items)
-        )
+    @overload
+    def get_slot(self, slot: ItemType) -> list[Item]:
+        ...
 
-    def get_best_in_slot(self, slot) -> Item | None:
-        slot_items = self.get_slot(slot)
-        if not slot_items:
-            return None
-        return max(slot_items, key=lambda item: item.main_affect)
+    def get_slot(self, slot) -> list[Item] | list[Plant]:
+        return self._items.get(slot, [])
+
+    def has_better_item(self, current: Item):
+        slot_items = self.get_slot(current.type)
+        # pylint: disable=not-an-iterable
+        return any(item for item in slot_items if item.main_affect > current.main_affect)
+
+    def get_best_in_slot(self, slot: ItemType):
+        if slot_items := self.get_slot(slot):
+            return max(slot_items, key=lambda item: item.main_affect)
+        return None
 
     @property
     def items(self):

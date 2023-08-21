@@ -18,7 +18,7 @@ def pick_member():
             member = player.army[i]
             for slot in EQUIPMENT_TYPES:
                 equipped = member.equipment.get_slot_item(slot)
-                if player.inventory.has_better_item(equipped, slot):
+                if equipped and player.inventory.has_better_item(equipped):
                     member_arr.append("✨")
                     break
 
@@ -42,7 +42,7 @@ def pick_slot(c: Character):
     options = []
     for slot in EQUIPMENT_TYPES:
         equipped = c.equipment.get_slot_item(slot)
-        has_better = player.inventory.has_better_item(equipped, slot)
+        has_better = equipped and player.inventory.has_better_item(equipped)
         inventory_hints = player.has_upgrade("inventory_hints")
         options.append(
             (
@@ -89,7 +89,7 @@ def auto_equip():
             equipped = character.equipment.get_slot_item(slot)
             if (
                 equipped
-                and player.inventory.has_better_item(equipped, slot)
+                and player.inventory.has_better_item(equipped)
                 and (best := player.inventory.get_best_in_slot(slot))
             ):
                 player.inventory.add_item(equipped)

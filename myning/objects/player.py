@@ -63,11 +63,11 @@ class Player(Character, metaclass=Singleton):
         item_value = sum(item.value for item in self.inventory.items)
         army_value = sum(member.value for member in self.army)
         exp_value = self.exp_available * XP_COST
-        upgrades_value = sum(sum(cost for cost in u.costs[: u.level]) for u in self.upgrades)
+        upgrades_value = sum(sum(u.costs[: u.level]) for u in self.upgrades)
 
         unlocked_mines = sum(mine.cost for mine in self.mines_available)
-        beaten_mines = sum(
-            mine.win_value * math.pow(mine.cost, 1 / 3) for mine in self.mines_completed
+        beaten_mines = int(
+            sum(mine.win_value * math.pow(mine.cost, 1 / 3) for mine in self.mines_completed)
         )
 
         return (
@@ -170,25 +170,8 @@ class Player(Character, metaclass=Singleton):
 
     @property
     def seeds(self):
-        plants = self.inventory.get_slot(ItemType.PLANT.value)
-        return [plant for plant in plants if plant.is_seed]
-
-    def pay(
-        self,
-        cost: int,
-        failure_msg: Optional[str] = None,
-        failure_option: Optional[str] = None,
-        confirmation_msg: Optional[str] = None,
-    ) -> bool:
-        from myning.utilities.io import confirm, pick
-
-        if self.gold >= cost:
-            if confirmation_msg is None or confirm(confirmation_msg):
-                self.gold -= cost
-                return True
-        elif failure_msg is not None and failure_option is not None:
-            pick([failure_option], failure_msg)
-        return False
+        plants = self.inventory.get_slot(ItemType.PLANT)
+        return [p for p in plants if p.is_seed]  # pylint: disable=not-an-iterable
 
     @classmethod
     @property

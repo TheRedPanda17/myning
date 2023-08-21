@@ -94,8 +94,6 @@ def plant_row():
                 options=[("Bummer!", manage_garden)],
             )
         if not plant:
-            # TODO fix return type of inventory.get_slot to resolve type issue
-            assert isinstance(seed, Plant)
             plant_seed(seed, row, column)
     FileManager.multi_save(player, garden)
     return manage_garden()
@@ -133,10 +131,7 @@ def pick_seed(row: int, column: int):
         )
 
     options: list[Option] = [
-        (seed.arr, partial(plant_seed, seed, row, column))
-        for seed in player.seeds
-        # TODO fix return type of inventory.get_slot to resolve type issue
-        if isinstance(seed, Plant)
+        (seed.arr, partial(plant_seed, seed, row, column)) for seed in player.seeds
     ]
     options.append((["", "Go Back"], manage_garden))
     return PickArgs(
