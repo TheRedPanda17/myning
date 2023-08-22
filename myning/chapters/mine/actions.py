@@ -31,7 +31,7 @@ trip = Trip()
 
 class Action(ABC):
     def __init__(self, duration=5):
-        self.duration = min(duration, trip.seconds_left)
+        self.duration = duration
 
     def tick(self):
         self.duration -= 1

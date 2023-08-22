@@ -12,6 +12,7 @@ from myning.chapters.mine.actions import (
     LoseAllyAction,
     MineralAction,
     RecruitAction,
+    RoundAction,
     VictoryAction,
 )
 from myning.config import TICK_LENGTH
@@ -34,6 +35,8 @@ ACTIONS: dict[str, Type[Action]] = {
 
 
 def time_str(seconds: int):  # sourcery skip: assign-if-exp, reintroduce-else
+    if seconds <= 0:
+        return "0s"
     minutes, seconds = divmod(seconds, 60)
     hours, minutes = divmod(minutes, 60)
     if hours > 0:
@@ -88,13 +91,11 @@ class MineScreen(Screen[bool]):
         TabTitle.change_tab_status(f"{time_left} remaining in {trip.mine.icon} {trip.mine.name}")
 
     def flash_border(self):
-        og_border = self.content_container.styles.border
-
-        def reset_border():
-            self.content_container.styles.border = og_border
-
         self.content_container.styles.border = ("round", "lime")
-        self.set_timer(TICK_LENGTH / 2, reset_border)
+        self.set_timer(TICK_LENGTH / 2, self.reset_border)
+
+    def reset_border(self):
+        self.content_container.styles.border = ("round", "dodgerblue")
 
     def action_abandon(self):
         if self.abandoning:
@@ -102,6 +103,7 @@ class MineScreen(Screen[bool]):
         else:
             self.confirm_abandon()
 
+    @throttle(0.1)
     def action_skip(self):
         if self.abandoning:
             self.abandoning = False
@@ -148,7 +150,11 @@ class MineScreen(Screen[bool]):
         self.action.tick()
 
         trip.seconds_passed(1)
-        if trip.seconds_left <= 0 or player.army.defeated:
+        if (
+            trip.seconds_left <= 0
+            and not isinstance(self.action, (CombatAction, RoundAction))
+            or player.army.defeated
+        ):
             self.exit()
 
         if self.action.duration <= 0:
@@ -160,8 +166,6 @@ class MineScreen(Screen[bool]):
 
     @property
     def random_action(self):
-        # TODO remove throttle experiment
-        # return VictoryAction(10)
         odds = trip.mine.odds.copy()
         if not player.allies:
             odds = [o for o in odds if o["action"] != "lose_ally"]
