@@ -122,4 +122,5 @@ def _story_to_pick_handler(story: StoryArgs, handler: PickHandler):
         message=story.message,
         options=[(story.response, handler)],
         subtitle=story.subtitle,
+        border_title=story.border_title,
     )

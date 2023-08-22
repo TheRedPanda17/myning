@@ -19,7 +19,10 @@ def is_complete():
 
 def narrate(messages: list[str], handler: PickHandler):
     return story_builder(
-        [StoryArgs(message=m, response="Press Enter to continue...") for m in messages],
+        [
+            StoryArgs(message=m, response="Press Enter to continue...", border_title="Tutorial")
+            for m in messages
+        ],
         handler,
     )
 

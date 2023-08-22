@@ -38,3 +38,4 @@ class StoryArgs:
     message: str
     response: str = "Okay"
     subtitle: Optional[RenderableType] = None
+    border_title: Optional[str] = None

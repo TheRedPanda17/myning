@@ -154,7 +154,7 @@ class ChapterWidget(ScrollableContainer):
                 title = args.border_title
             elif (module := handler.__module__.rpartition(".")[-1]) not in (
                 "functools",
-                "utilities",
+                "pick",
             ) and "base" not in module:
                 title = module.replace("_", " ").title()
             if title:
