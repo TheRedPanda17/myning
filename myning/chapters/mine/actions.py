@@ -99,7 +99,7 @@ class CombatAction(Action):
             f"⚔️ Battling ({player.species.icon}{len(player.army.living_members)} "
             f"v 👽{len(self.enemies.living_members)})"
         )
-        duration = random.randint(0, len(self.enemies.living_members)) + 5
+        duration = random.randint(5, 9)
         super().__init__(duration)
 
     @property

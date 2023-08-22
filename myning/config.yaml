@@ -1,2 +1,6 @@
+markdown_ratio: 0.5
 xp_cost: 2
-tick_length: 0.6
+
+mine_tick_length: 0.5
+tick_length: 1
+victory_tick_length: 0.1
