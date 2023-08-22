@@ -169,7 +169,7 @@ def complete_trip(abandoned: bool):
         story_args_list.append(
             StoryArgs(
                 # pylint: disable=line-too-long
-                message=f"[green1]\n You leveled up from {Icons.LEVEL} {Formatter.level(starting_level)} to {Icons.LEVEL} {Formatter.level(player.level)}.",
+                message=f"[green1]You leveled up from {Icons.LEVEL} {Formatter.level(starting_level)} to {Icons.LEVEL} {Formatter.level(player.level)}.",
                 response="Sweet!",
             )
         )

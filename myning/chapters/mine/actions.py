@@ -6,7 +6,6 @@ from dataclasses import dataclass
 from rich.console import RenderableType
 from rich.table import Table
 
-from myning.config import CONFIG
 from myning.objects.army import Army
 from myning.objects.character import Character
 from myning.objects.item import Item
@@ -49,7 +48,7 @@ class Action(ABC):
 
 class MineralAction(Action):
     def __init__(self):
-        duration = random.randint(0, int(CONFIG["tick_length"] + trip.seconds_left / 60)) + 5
+        duration = random.randint(5, trip.seconds_left // 60 + 30)
         super().__init__(duration)
 
     @property
@@ -100,7 +99,7 @@ class CombatAction(Action):
             f"⚔️ Battling ({player.species.icon}{len(player.army.living_members)} "
             f"v 👽{len(self.enemies.living_members)})"
         )
-        duration = int(CONFIG["tick_length"] / 5) + 3
+        duration = random.randint(0, len(self.enemies.living_members)) + 5
         super().__init__(duration)
 
     @property
@@ -218,8 +217,7 @@ class VictoryAction(Action):
     def __init__(self, enemy_count: int):
         TabTitle.change_tab_subactivity("")
         rewards = generate_reward(trip.mine.max_item_level, enemy_count)
-        for reward in rewards:
-            trip.add_item(reward)
+        trip.add_items(*rewards)
         FileManager.multi_save(trip, *rewards)
         self.rewards = rewards
         super().__init__(len(rewards) + 1)

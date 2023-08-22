@@ -44,6 +44,10 @@ class Trip(Object, metaclass=Singleton):
         else:
             self.items_found.append(item)
 
+    def add_items(self, *items: Item):
+        for item in items:
+            self.add_item(item)
+
     def add_ally(self, ally: Character):
         self.allies_gained.append(ally)
 
@@ -56,7 +60,7 @@ class Trip(Object, metaclass=Singleton):
         if won:
             self.battles_won += 1
 
-    def tick_passed(self, seconds: int):
+    def seconds_passed(self, seconds: int):
         self.seconds_left -= seconds
 
     def start_trip(self, seconds: int):

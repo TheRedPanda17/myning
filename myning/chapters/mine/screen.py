@@ -14,6 +14,7 @@ from myning.chapters.mine.actions import (
     RecruitAction,
     VictoryAction,
 )
+from myning.config import TICK_LENGTH
 from myning.objects.player import Player
 from myning.objects.trip import Trip
 from myning.tui.header import Header
@@ -93,7 +94,7 @@ class MineScreen(Screen[bool]):
             self.content_container.styles.border = og_border
 
         self.content_container.styles.border = ("round", "lime")
-        self.set_timer(0.5, reset_border)
+        self.set_timer(TICK_LENGTH / 2, reset_border)
 
     def action_abandon(self):
         if self.abandoning:
@@ -101,17 +102,15 @@ class MineScreen(Screen[bool]):
         else:
             self.confirm_abandon()
 
-    @throttle(1)
     def action_skip(self):
         if self.abandoning:
             self.abandoning = False
         elif player.army.defeated:
             self.exit()
-        elif not isinstance(self.action, VictoryAction):
-            trip.tick_passed(self.action.duration)
-        self.action = self.next_action
-        self.flash_border()
-        self.update_screen()
+        elif isinstance(self.action, VictoryAction):
+            self.skip_victory()
+        else:
+            self.skip_action()
 
     def confirm_abandon(self):
         self.content.update(
@@ -127,13 +126,28 @@ class MineScreen(Screen[bool]):
     def exit(self):
         self.dismiss(self.abandoning)
 
+    @throttle(TICK_LENGTH)
+    def skip_action(self):
+        trip.seconds_passed(self.action.duration)
+        self.skip()
+
+    @throttle(0.1)
+    def skip_victory(self):
+        self.action.tick()
+        self.skip()
+
+    def skip(self):
+        self.action = self.next_action
+        self.flash_border()
+        self.update_screen()
+
     def tick(self):
         if self.abandoning:
             return
         self.update_screen()
         self.action.tick()
 
-        trip.tick_passed(1)
+        trip.seconds_passed(1)
         if trip.seconds_left <= 0 or player.army.defeated:
             self.exit()
 
@@ -146,6 +160,8 @@ class MineScreen(Screen[bool]):
 
     @property
     def random_action(self):
+        # TODO remove throttle experiment
+        # return VictoryAction(10)
         odds = trip.mine.odds.copy()
         if not player.allies:
             odds = [o for o in odds if o["action"] != "lose_ally"]

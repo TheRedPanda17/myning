@@ -4,8 +4,7 @@ from myning.objects.mine import Mine
 from myning.objects.species import Species
 from myning.objects.upgrade import Upgrade, UpgradeType
 
-XP_COST = 2
-
+CONFIG: dict[str, int]
 MINES: dict[str, Mine] = {}
 RESEARCH: dict[str, Upgrade] = {}
 SPECIES: dict[str, Species] = {}
@@ -13,7 +12,7 @@ UPGRADES: dict[str, Upgrade] = {}
 
 
 with open("myning/config.yaml", "r") as f:
-    CONFIG: dict = yaml.load(f, Loader=yaml.FullLoader)
+    CONFIG = yaml.load(f, Loader=yaml.FullLoader)
 
 with open("myning/names.yaml", "r") as f:
     NAMES = yaml.load(f, Loader=yaml.FullLoader)
@@ -43,3 +42,6 @@ with open("myning/upgrades.yaml", "r") as f:
     for id, upgrade in data.items():
         upgrade["id"] = id
         UPGRADES[id] = Upgrade.from_dict(upgrade)
+
+XP_COST = CONFIG["xp_cost"]
+TICK_LENGTH = CONFIG["tick_length"]
