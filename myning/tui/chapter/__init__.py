@@ -63,6 +63,7 @@ class ChapterWidget(ScrollableContainer):
             self.update_dashboard()
             args = main_menu.enter() if tutorial.is_complete() else tutorial.enter()
             self.border_title = args.border_title
+            TabTitle.change_tab_status(args.border_title)
             self.pick(args)
 
     def on_click(self):
