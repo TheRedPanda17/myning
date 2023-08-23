@@ -1,3 +1,5 @@
+#!/usr/bin/env bash
+
 while true; do
     python dev.py
     STATUS=$?
