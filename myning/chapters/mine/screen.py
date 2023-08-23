@@ -90,10 +90,12 @@ class MineScreen(Screen[bool]):
             self.exit()
         elif isinstance(self.action, ItemAction):
             if self.check_skip(TICK_LENGTH):
+                trip.seconds_passed(TICK_LENGTH)
                 self.action.tick()
                 self.skip()
         elif isinstance(self.action, VictoryAction):
             if self.check_skip(VICTORY_TICK_LENGTH):
+                trip.seconds_passed(TICK_LENGTH)
                 self.action.tick()
                 self.skip()
         elif self.check_skip(MINE_TICK_LENGTH):
