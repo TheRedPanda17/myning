@@ -86,7 +86,7 @@ class MineScreen(Screen[bool]):
     def action_skip(self):
         if self.abandoning:
             self.abandoning = False
-        elif player.army.defeated:
+        elif self.should_exit:
             self.exit()
         elif isinstance(self.action, ItemAction):
             if self.check_skip(TICK_LENGTH):
@@ -115,7 +115,7 @@ class MineScreen(Screen[bool]):
         self.action.tick()
 
         trip.seconds_passed(TICK_LENGTH)
-        if trip.seconds_left <= 0 and not self.action.next or player.army.defeated:
+        if self.should_exit:
             self.exit()
 
         if self.action.duration <= 0:
@@ -161,6 +161,10 @@ class MineScreen(Screen[bool]):
 
     def exit(self):
         self.dismiss(self.abandoning)
+
+    @property
+    def should_exit(self):
+        return trip.seconds_left <= 0 and not self.action.next or player.army.defeated
 
     @property
     def next_action(self):
