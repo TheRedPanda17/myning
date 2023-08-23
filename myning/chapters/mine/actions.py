@@ -277,16 +277,16 @@ class RecruitAction(Action):
 class LoseAllyAction(Action):
     def __init__(self):
         ally = random.choice(player.allies)
-        player.kill_ally(ally)
-        trip.remove_ally(ally)
-        FileManager.multi_save(trip, player)
         reason = generate_death_action()
-        self.message = (
-            f"[dodger_blue1]{ally.icon} {ally.name} was almost {reason}.[/]\n\n"
-            "Luckily, they're a ghost"
-            if ally.is_ghost
-            else f"[red1]Oh no! {ally.icon} {ally.name} has died![/]\n\nCause of death: {reason}"
-        )
+        if ally.is_ghost:
+            self.message = f"[dodger_blue1]{ally.icon} {ally.name} was almost {reason}.[/]\n\nLuckily, they're a ghost."
+        else:
+            self.message = (
+                f"[red1]Oh no! {ally.icon} {ally.name} has died![/]\n\nCause of death: {reason}."
+            )
+            player.kill_ally(ally)
+            trip.remove_ally(ally)
+            FileManager.multi_save(trip, player)
         super().__init__(5)
 
     @property
