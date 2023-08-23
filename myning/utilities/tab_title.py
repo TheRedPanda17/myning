@@ -24,6 +24,10 @@ class TabTitle:
         if cls._tab_subactivity:
             title += f" - {cls._tab_subactivity}"
         if IS_IN_TMUX:
-            os.system(f'echo "\033]0; {title} \007"')
+            os.system(f'printf "\033]0; {title} \007"')
         else:
-            os.system(f'echo "\033]1; {title} \007"')
+            os.system(f'printf "\033]1; {title} \007"')
+
+    @classmethod
+    def beep(cls):
+        os.system("printf '\a'")
