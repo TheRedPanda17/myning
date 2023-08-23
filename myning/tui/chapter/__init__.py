@@ -15,7 +15,8 @@ from myning.chapters import (
     mine,
     tutorial,
 )
-from myning.chapters.garden.manage import GardenTable
+from myning.chapters.garden.garden_table import GardenTable
+from myning.chapters.mine.screen import MineScreen
 from myning.objects.player import Player
 from myning.objects.trip import Trip
 from myning.tui.army import ArmyWidget
@@ -54,16 +55,17 @@ class ChapterWidget(ScrollableContainer):
         yield self.option_table
 
     def on_mount(self):
-        if trip.seconds_left > 0:
+        if trip.seconds_left != 0:
             self.app.push_screen(
-                mine.MineScreen(),
+                MineScreen(),
                 lambda abandoned: self.pick(mine.complete_trip(abandoned)),
             )
         else:
             self.update_dashboard()
             args = main_menu.enter() if tutorial.is_complete() else tutorial.enter()
-            self.border_title = args.border_title
-            TabTitle.change_tab_status(args.border_title)
+            if args.border_title:
+                self.border_title = args.border_title
+                TabTitle.change_tab_status(args.border_title)
             self.pick(args)
 
     def on_click(self):

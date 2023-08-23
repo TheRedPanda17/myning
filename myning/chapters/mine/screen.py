@@ -14,7 +14,6 @@ from myning.chapters.mine.actions import (
     LoseAllyAction,
     MineralAction,
     RecruitAction,
-    RoundAction,
     VictoryAction,
 )
 from myning.config import MINE_TICK_LENGTH, TICK_LENGTH, VICTORY_TICK_LENGTH
@@ -83,45 +82,6 @@ class MineScreen(Screen[bool]):
         self.tick()
         self.set_interval(TICK_LENGTH, self.tick)
 
-    @property
-    def next_action(self):
-        return self.action.next or self.random_action
-
-    @property
-    def random_action(self):
-        odds = trip.mine.odds.copy()
-        if not player.allies:
-            odds = [o for o in odds if o["action"] != "lose_ally"]
-        actions = [o["action"] for o in odds]
-        chances = [o["chance"] for o in odds]
-        selected_action = random.choices(actions, weights=chances)[0]
-        return ACTIONS[selected_action]()
-
-    def tick(self):
-        if self.abandoning:
-            return
-        self.update_screen()
-        self.action.tick()
-
-        trip.seconds_passed(TICK_LENGTH)
-        if (
-            trip.seconds_left <= 0
-            and not isinstance(self.action, (CombatAction, RoundAction))
-            or player.army.defeated
-        ):
-            self.exit()
-
-        if self.action.duration <= 0:
-            self.action = self.next_action
-
-    def update_screen(self):
-        self.content.update(self.action.content)
-        self.summary.update(trip.summary)
-        self.progress.progress = trip.total_seconds - trip.seconds_left
-        time_left = time_str(trip.seconds_left)
-        self.time.update(f"{time_left} remaining")
-        TabTitle.change_tab_status(f"{time_left} remaining in {trip.mine.icon} {trip.mine.name}")
-
     @throttle(min(MINE_TICK_LENGTH, TICK_LENGTH, VICTORY_TICK_LENGTH))
     def action_skip(self):
         if self.abandoning:
@@ -139,6 +99,33 @@ class MineScreen(Screen[bool]):
         elif self.check_skip(MINE_TICK_LENGTH):
             trip.seconds_passed(self.action.duration)
             self.skip()
+
+    def action_abandon(self):
+        if self.abandoning:
+            self.exit()
+        else:
+            self.confirm_abandon()
+
+    def tick(self):
+        if self.abandoning:
+            return
+        self.update_screen()
+        self.action.tick()
+
+        trip.seconds_passed(TICK_LENGTH)
+        if trip.seconds_left <= 0 and not self.action.next or player.army.defeated:
+            self.exit()
+
+        if self.action.duration <= 0:
+            self.action = self.next_action
+
+    def update_screen(self):
+        self.content.update(self.action.content)
+        self.summary.update(trip.summary)
+        self.progress.progress = trip.total_seconds - trip.seconds_left
+        time_left = time_str(trip.seconds_left)
+        self.time.update(f"{time_left} remaining")
+        TabTitle.change_tab_status(f"{time_left} remaining in {trip.mine.icon} {trip.mine.name}")
 
     def check_skip(self, interval: float):
         current_time = time.time()
@@ -159,12 +146,6 @@ class MineScreen(Screen[bool]):
     def reset_border(self):
         self.content_container.styles.border = ("round", "dodgerblue")
 
-    def action_abandon(self):
-        if self.abandoning:
-            self.exit()
-        else:
-            self.confirm_abandon()
-
     def confirm_abandon(self):
         self.content.update(
             "Are you sure you want to abandon your trip?\n\n"
@@ -178,3 +159,17 @@ class MineScreen(Screen[bool]):
 
     def exit(self):
         self.dismiss(self.abandoning)
+
+    @property
+    def next_action(self):
+        return self.action.next or self.random_action
+
+    @property
+    def random_action(self):
+        odds = trip.mine.odds.copy()
+        if not player.allies:
+            odds = [o for o in odds if o["action"] != "lose_ally"]
+        actions = [o["action"] for o in odds]
+        chances = [o["chance"] for o in odds]
+        selected_action = random.choices(actions, weights=chances)[0]
+        return ACTIONS[selected_action]()
