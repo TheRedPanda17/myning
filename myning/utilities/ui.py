@@ -36,6 +36,7 @@ class Icons(str, Enum):
     STATS = "📈"
     STORE = "💰"
     SWORD = "⚔️"
+    TELESCOPE = "🔭"
     TIME = "⏳"
     TIME_MACHINE = "⏳"
     UNKNOWN = "❓"

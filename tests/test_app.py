@@ -39,7 +39,7 @@ def test_main_menu(app: MyningApp):
     chapter = app.query_one("ChapterWidget", ChapterWidget)
     assert chapter.border_title == "Main Menu"
     assert chapter.question.message == "Where would you like to go next?"
-    assert chapter.option_table.row_count == 15
+    assert chapter.option_table.row_count == 16
     expected_options = [
         "Mine",
         "Store",
@@ -52,6 +52,7 @@ def test_main_menu(app: MyningApp):
         "Garden",
         "Research Facility",
         "Time Machine",
+        "Telescope",
         "Journal",
         "Stats",
         "Settings",

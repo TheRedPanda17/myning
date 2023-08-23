@@ -58,7 +58,7 @@ class MyningScreen(Screen):
         if sidebar := self.query("SideBar"):
             sidebar.remove()
         else:
-            await self.query_one("Body", Body).mount(SideBar())
+            await self.query_one("Body").mount(SideBar())
             self.query_one("ChapterWidget", ChapterWidget).update_dashboard()
 
     def action_help(self) -> None:

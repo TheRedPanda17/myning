@@ -63,9 +63,6 @@ class ChapterWidget(ScrollableContainer):
         else:
             self.update_dashboard()
             args = main_menu.enter() if tutorial.is_complete() else tutorial.enter()
-            if args.border_title:
-                self.border_title = args.border_title
-                TabTitle.change_tab_status(args.border_title)
             self.pick(args)
 
     def on_click(self):
@@ -110,6 +107,9 @@ class ChapterWidget(ScrollableContainer):
 
     def pick(self, args: PickArgs):
         self.update_dashboard()
+        if title := args.border_title:
+            self.border_title = title
+            TabTitle.change_tab_status(title)
         self.question.message = args.message
         self.question.subtitle = args.subtitle or ""
         labels = [o[0] for o in args.options]
@@ -152,15 +152,11 @@ class ChapterWidget(ScrollableContainer):
         elif isinstance(args, DynamicArgs):
             args.callback(self)
         else:
-            title = None
-            if args.border_title:
-                title = args.border_title
-            elif (module := handler.__module__.rpartition(".")[-1]) not in (
+            if (module := handler.__module__.rpartition(".")[-1]) not in (
                 "functools",
                 "pick",
             ) and "base" not in module:
                 title = module.replace("_", " ").title()
-            if title:
                 self.border_title = title
                 TabTitle.change_tab_status(title)
             self.pick(args)

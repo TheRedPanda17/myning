@@ -1,3 +1,4 @@
 pyyaml
 requests
+rich-pixels
 textual==0.32.0 # Lock to fix mine screen border bug

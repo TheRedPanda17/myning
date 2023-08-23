@@ -23,6 +23,8 @@ mdit-py-plugins==0.4.0
     # via markdown-it-py
 mdurl==0.1.2
     # via markdown-it-py
+pillow==9.5.0
+    # via rich-pixels
 pygments==2.16.1
     # via rich
 pyyaml==6.0.1
@@ -30,7 +32,11 @@ pyyaml==6.0.1
 requests==2.31.0
     # via -r requirements.in
 rich==13.5.2
-    # via textual
+    # via
+    #   rich-pixels
+    #   textual
+rich-pixels==2.1.1
+    # via -r requirements.in
 textual==0.32.0
     # via -r requirements.in
 typing-extensions==4.7.1
