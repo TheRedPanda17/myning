@@ -1,3 +1,4 @@
+import os
 from functools import partial
 from typing import TYPE_CHECKING
 
@@ -90,6 +91,7 @@ def mine_callback(chapter: "ChapterWidget"):
         chapter.border_title = "Main Menu"
         TabTitle.change_tab_status("Done!")
         TabTitle.change_tab_subactivity("")
+        os.system("echo '\a'")
         return chapter.pick(complete_trip(abandoned))
 
     chapter.clear()
