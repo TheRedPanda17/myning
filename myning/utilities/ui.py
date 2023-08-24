@@ -65,6 +65,6 @@ def get_health_bar(health: int, max_health: int, bar_count: int = 11):
     green_count = math.ceil(health_fraction * bar_count)
     health_fraction_str = f"{health}/{max_health}".center(bar_count)
     return "".join(
-        f"[grey0 on green]{char}[/]" if i < green_count else f"[on red]{char}[/]"
+        f"[grey0 on green1]{char}[/]" if i < green_count else f"[on red1]{char}[/]"
         for i, char in enumerate(health_fraction_str)
     )
