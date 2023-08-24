@@ -79,7 +79,7 @@ class MineScreen(Screen[bool]):
         yield Footer()
 
     def on_mount(self):
-        self.tick()
+        self.update_screen()
         self.set_interval(TICK_LENGTH, self.tick)
 
     @throttle(min(MINE_TICK_LENGTH, TICK_LENGTH, VICTORY_TICK_LENGTH))
@@ -91,12 +91,11 @@ class MineScreen(Screen[bool]):
         elif isinstance(self.action, ItemAction):
             if self.check_skip(TICK_LENGTH):
                 trip.seconds_passed(TICK_LENGTH)
-                self.action.tick()
                 self.skip()
         elif isinstance(self.action, VictoryAction):
             if self.check_skip(VICTORY_TICK_LENGTH):
                 trip.seconds_passed(TICK_LENGTH)
-                self.action.tick()
+                self.action.tick()  # Need to tick here because VictoryAction.next returns itself
                 self.skip()
         elif self.check_skip(MINE_TICK_LENGTH):
             trip.seconds_passed(self.action.duration)
@@ -111,13 +110,14 @@ class MineScreen(Screen[bool]):
     def tick(self):
         if self.abandoning:
             return
-        self.update_screen()
-        self.action.tick()
 
         trip.seconds_passed(TICK_LENGTH)
         if self.should_exit:
             self.exit()
+            return
 
+        self.update_screen()
+        self.action.tick()
         if self.action.duration <= 0:
             self.action = self.next_action
 
@@ -160,7 +160,8 @@ class MineScreen(Screen[bool]):
         self.abandoning = True
 
     def exit(self):
-        self.dismiss(self.abandoning)
+        if self.app.screen is self:  # Prevent crash from holding enter
+            self.dismiss(self.abandoning)
 
     @property
     def should_exit(self):

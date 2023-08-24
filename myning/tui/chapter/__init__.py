@@ -55,7 +55,7 @@ class ChapterWidget(ScrollableContainer):
         yield self.option_table
 
     def on_mount(self):
-        if trip.seconds_left != 0:
+        if trip.mine and trip.seconds_left != 0:
             self.app.push_screen(
                 MineScreen(),
                 lambda abandoned: self.pick(mine.complete_trip(abandoned)),
@@ -144,7 +144,7 @@ class ChapterWidget(ScrollableContainer):
         self.handlers = handlers
 
     def select(self, option_index: int):
-        if not self.handlers:
+        if not self.handlers or option_index >= len(self.handlers):
             return
         handler = self.handlers[option_index]
         args = handler()
