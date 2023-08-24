@@ -98,6 +98,7 @@ class ChapterWidget(ScrollableContainer):
             await self.option_table.run_action(binding.action)
 
     def on_data_table_row_selected(self, row: DataTable.RowSelected):
+        self.focus()
         self.select(row.cursor_row)
 
     def update_dashboard(self):

@@ -38,3 +38,7 @@ class Formatter:
     @staticmethod
     def title(t: str):
         return t.replace("_", " ").title()
+
+    @staticmethod
+    def keybind(k: str):
+        return f"[bold dodger_blue1]{k}[/]"

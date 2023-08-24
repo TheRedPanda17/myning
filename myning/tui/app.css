@@ -15,6 +15,23 @@ ScrollableContainer:focus {
   border: round lime;
 }
 
+DataTable {
+  padding: 0;
+}
+
+DataTable > .datatable--header,
+DataTable > .datatable--header-hover {
+  background: 0%;
+}
+
+DataTable > .datatable--cursor {
+  background: $primary-lighten-1;
+}
+
+DataTable > .datatable--hover {
+  background: $boost;
+}
+
 /* MyningScreen */
 
 ChapterWidget {
@@ -26,26 +43,9 @@ ChapterWidget > Question {
   margin-bottom: 1;
 }
 
-ChapterWidget > DataTable {
+ChapterWidget > OptionTable {
   border: none;
   height: 1fr;
-  padding: 0;
-}
-
-ChapterWidget > DataTable > .datatable--header {
-  background: 0%;
-}
-
-ChapterWidget > DataTable > .datatable--header-hover {
-  background: 0%;
-}
-
-ChapterWidget > DataTable > .datatable--cursor {
-  background: $primary-lighten-1;
-}
-
-ChapterWidget > DataTable > .datatable--hover {
-  background: $boost;
 }
 
 ChapterWidget > GardenTable {
@@ -62,10 +62,6 @@ SideBar {
 
 SideBar > DataTable {
   height: 1fr;
-}
-
-SideBar > DataTable > .datatable--header {
-  background: 0%;
 }
 
 /* MineScreen */

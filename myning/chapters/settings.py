@@ -1,26 +1,34 @@
 from myning.chapters import Option, PickArgs, main_menu
 from myning.objects.player import Player
 from myning.objects.settings import Settings
+from myning.utilities.formatter import Formatter
 
 player = Player()
 settings = Settings()
 
 
 def enter():
-    options: list[Option] = []
+    options: list[Option] = [
+        (["Compact Mode", f"({settings.compact_status})"], toggle_compact_mode),
+    ]
+
     if player.has_upgrade("sort_by_value"):
         options.append((["Sort Order", f"({settings.sort_order})"], toggle_sort_order))
-
-    if not options:
-        return PickArgs(
-            message="There are currently no settings available.",
-            options=[("Go Back", main_menu.enter)],
-        )
 
     options.append(("Go Back", main_menu.enter))
     return PickArgs(
         message="What settings would you like to adjust?",
         options=options,
+    )
+
+
+def toggle_compact_mode():
+    settings.toggle_compact_mode()
+    return PickArgs(
+        message=f"Compact Mode is now {settings.compact_status}",
+        options=[("Done.", enter)],
+        subtitle="By the way, you can also toggle compact mode by focusing the Army widget "
+        f"and pressing {Formatter.keybind('c')}.",
     )
 
 

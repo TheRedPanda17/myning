@@ -10,6 +10,7 @@ from myning.objects.army import Army
 from myning.objects.character import Character
 from myning.objects.item import Item
 from myning.objects.player import Player
+from myning.objects.settings import Settings
 from myning.objects.stats import IntegerStatKeys, Stats
 from myning.objects.trip import Trip
 from myning.utilities.file_manager import FileManager
@@ -27,8 +28,9 @@ from myning.utilities.tab_title import TabTitle
 from myning.utilities.ui import Icons
 
 player = Player()
-trip = Trip()
+settings = Settings()
 stats = Stats()
+trip = Trip()
 
 
 class Action(ABC):
@@ -109,15 +111,21 @@ class CombatAction(Action):
 
     @property
     def content(self):
+        player_army = Army(player.army.living_members)
+        enemy_army = Army(self.enemies.living_members)
         content_table = Table.grid()
         content_table.add_row("[orange1]Oh no! You're under attack[/]\n")
         content_table.add_row(f"[bold]Round {self.round}[/]")
         content_table.add_row(f"Fighting... ({self.duration} seconds left)\n")
         content_table.add_row("⚔️   " * (5 - (self.duration - 1) % 5))
         content_table.add_row("\n[bold]Your Army[/]")
-        content_table.add_row(*Army(player.army.living_members).columns)
+        content_table.add_row(
+            player_army.compact_view if settings.compact_mode else player_army.battle_view
+        )
         content_table.add_row("\n[bold]Enemy Army[/]")
-        content_table.add_row(*Army(self.enemies.living_members).columns)
+        content_table.add_row(
+            enemy_army.compact_view if settings.compact_mode else enemy_army.battle_view
+        )
         return content_table
 
     def fight(self):
