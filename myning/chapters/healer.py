@@ -129,7 +129,8 @@ class HealerScreen(Screen[None]):
             self.exit()
 
     def exit(self):
-        self.dismiss(None)  # Needs a result to call the callback
+        if self.app.screen is self:  # Prevent crash from holding enter
+            self.dismiss(None)  # Needs a result to call the callback
 
     def heal(self):
         if need_healing := members_to_heal(player.army):
