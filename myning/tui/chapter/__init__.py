@@ -76,8 +76,9 @@ class ChapterWidget(ScrollableContainer):
         elif key == "shift_tab":
             self.app.action_focus_previous()
         elif key in ("escape", "q"):
-            last_option = self.option_table.get_row_at(self.option_table.row_count - 1)
-            if last_option == [Icons.EXIT, "Exit"]:
+            if not self.option_table.rows or self.option_table.get_row_at(
+                self.option_table.row_count - 1
+            ) == [Icons.EXIT, "Exit"]:
                 return  # Prevent exiting with escape or q in main menu
             self.select(-1)
         elif key in self.hotkeys:
