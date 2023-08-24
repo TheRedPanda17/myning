@@ -67,6 +67,7 @@ class MineScreen(Screen[bool]):
     def compose(self):
         yield Header()
         with self.content_container:
+            assert trip.mine
             self.content_container.border_title = f"{trip.mine.icon} {trip.mine.name}"
             yield self.content
         with Container() as c:
@@ -122,6 +123,8 @@ class MineScreen(Screen[bool]):
             self.action = self.next_action
 
     def update_screen(self):
+        if not trip.mine:
+            return
         self.content.update(self.action.content)
         self.summary.update(trip.summary)
         self.progress.progress = trip.total_seconds - trip.seconds_left
@@ -173,6 +176,7 @@ class MineScreen(Screen[bool]):
 
     @property
     def random_action(self):
+        assert trip.mine
         odds = trip.mine.odds.copy()
         if not player.allies:
             odds = [o for o in odds if o["action"] != "lose_ally"]

@@ -62,6 +62,8 @@ class MineralAction(Action):
 
     @property
     def next(self):
+        if not trip.mine:
+            return None
         mineral = generate_mineral(trip.mine.max_item_level, trip.mine.resource)
         return ItemAction(mineral)
 
@@ -82,6 +84,7 @@ class CombatAction(Action):
         if enemies:
             self.enemies = enemies
         else:
+            assert trip.mine
             if trip.mine.enemies[1] < 0:
                 trip.mine.enemies[1] = len(player.army) + trip.mine.enemies[1]
             self.enemies = generate_enemy_army(
@@ -216,6 +219,7 @@ class RoundAction(Action):
 class VictoryAction(Action):
     def __init__(self, enemy_count: int):
         TabTitle.change_tab_subactivity("")
+        assert trip.mine
         rewards = generate_reward(trip.mine.max_item_level, enemy_count)
         trip.add_items(*rewards)
         FileManager.multi_save(trip, *rewards)
@@ -248,12 +252,14 @@ class ItemAction(Action):
 
 class EquipmentAction(ItemAction):
     def __init__(self):
+        assert trip.mine
         equipment = generate_equipment(trip.mine.max_item_level)
         super().__init__(equipment)
 
 
 class RecruitAction(Action):
     def __init__(self):
+        assert trip.mine
         levels = trip.mine.character_levels
         levels = [max(1, math.ceil(level * 0.75)) for level in levels]
         species = get_recruit_species(trip.mine.companion_rarity)
@@ -279,7 +285,10 @@ class LoseAllyAction(Action):
         ally = random.choice(player.allies)
         reason = generate_death_action()
         if ally.is_ghost:
-            self.message = f"[dodger_blue1]{ally.icon} {ally.name} was almost {reason}.[/]\n\nLuckily, they're a ghost."
+            self.message = (
+                f"[dodger_blue1]{ally.icon} {ally.name} was almost {reason}.[/]\n\n"
+                "Luckily, they're a ghost."
+            )
         else:
             self.message = (
                 f"[red1]Oh no! {ally.icon} {ally.name} has died![/]\n\nCause of death: {reason}."

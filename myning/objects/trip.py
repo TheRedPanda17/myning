@@ -36,7 +36,7 @@ class Trip(Object, metaclass=Singleton):
         self.experience_gained = 0
         self.total_seconds = 0
         self.species_discovered = 0
-        self.mine: Mine = None
+        self.mine: Mine | None = None
 
     def add_item(self, item: Item):
         if item.type == ItemType.MINERAL:
