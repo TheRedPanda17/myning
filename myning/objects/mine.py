@@ -121,7 +121,7 @@ class Mine(Object):
         current = (
             min(self.player_progress.minerals, self.win_criteria.minerals)
             + min(self.player_progress.kills, self.win_criteria.kills)
-            + min(self.player_progress.minerals, self.win_criteria.minutes)
+            + min(self.player_progress.minutes, self.win_criteria.minutes)
         )
         return ProgressBar(total=self.win_criteria.total_items, completed=current, width=20)
 
