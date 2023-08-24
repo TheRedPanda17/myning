@@ -37,7 +37,7 @@ def enter():
 def sync():
     score = macguffin.get_new_standard_boost(get_total_value())
     try:
-        api.player.sync(int(score))
+        api.player.sync(int(score * 100))
     except requests.HTTPError as e:
         return PickArgs(
             message=f"Error contacting the API: {e.response.status_code}",

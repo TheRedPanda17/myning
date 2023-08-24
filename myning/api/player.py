@@ -24,7 +24,7 @@ def sync(score: int):
         "stats": stats.all_stats,
         "icon": player.icon,
         "id": player.id,
-        "score": score * 100,
+        "score": score,
     }
 
     if exists:
