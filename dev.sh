@@ -1,3 +1,5 @@
+#!/usr/bin/env bash
+
 while true; do
   textual run --dev main.py
   STATUS=$?
