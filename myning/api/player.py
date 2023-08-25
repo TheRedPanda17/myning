@@ -28,12 +28,20 @@ def sync(score: int):
         "score": score * 100,
     }
 
+    # Convert object to array needed by the API.
+    mine_stats_payload = [{"name": key, **value} for key, value in player.mine_progressions.items()]
+
     if exists:
         url += f"/{player.id}"
         response = requests.patch(url, json=payload, headers=headers)
+        minestats_response = requests.patch(url + "/mine_stats", json=mine_stats_payload, headers=headers)
     else:
         response = requests.post(url, json=payload, headers=headers)
+        # This is a dependent query, the player has to exist first.
+        # If these calls happen in sequence (i.e., response ^ completes first), then it should be fine.
+        minestats_response = requests.patch(url + "/" + player.id + "/mine_stats", json=mine_stats_payload, headers=headers)
 
+    minestats_response.raise_for_status()
     response.raise_for_status()
 
 
