@@ -10,6 +10,7 @@ from myning.tui.chapter import ChapterWidget
 from myning.tui.currency import CurrencyWidget
 from myning.tui.header import Header
 from myning.tui.inventory import InventoryWidget
+from myning.utilities.formatter import Formatter
 
 
 class SideBar(Static):
@@ -69,8 +70,8 @@ class MyningScreen(Screen):
 class HelpScreen(ModalScreen):
     def compose(self):
         table = Table.grid(padding=(0, 2))
-        table.add_row("[bold dodger_blue1]Keyboard Shortcuts[/]")
-        table.add_row("\n[bold dodger_blue1]Movement[/]")
+        table.add_row(Formatter.keybind("Keyboard Shortcuts"))
+        table.add_row("\n" + Formatter.keybind("Movement"))
         table.add_row("↑ or k", "Up")
         table.add_row("↓ or j", "Down")
         table.add_row("← or h", "Left")
@@ -81,15 +82,15 @@ class HelpScreen(ModalScreen):
         table.add_row("Shift+l          or Ctrl+f", "Scroll right")
         table.add_row("Home      (fn ←) or g", "Go to top")
         table.add_row("End       (fn →) or G", "Go to bottom")
-        table.add_row("\n[bold dodger_blue1]Focus[/]")
+        table.add_row("\n" + Formatter.keybind("Focus"))
         table.add_row("Tab", "Focus next")
         table.add_row("Shift+Tab", "Focus previous")
-        table.add_row("\n[bold dodger_blue1]Selection[/]")
+        table.add_row("\n" + Formatter.keybind("Selection"))
         table.add_row("Enter", "Select highlighted option")
         table.add_row("Escape or q", "Go back (selects last option)")
         table.add_row("Numbers 1-9", "Highlight option #")
         table.add_row("Underlined hotkeys", "Select hotkey option")
-        table.add_row("\n[bold dodger_blue1]Press any key to close[/]")
+        table.add_row("\n" + Formatter.keybind("Press any key to close"))
         yield Static(table)
 
     def on_click(self):

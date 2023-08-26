@@ -6,6 +6,7 @@ from myning.objects.game import Game, GameState
 from myning.objects.item import Item, ItemType
 from myning.objects.player import Player
 from myning.utilities.file_manager import FileManager
+from myning.utilities.formatter import Formatter
 from myning.utilities.pick import story_builder
 
 game = Game()
@@ -20,7 +21,11 @@ def is_complete():
 def narrate(messages: list[str], handler: PickHandler):
     return story_builder(
         [
-            StoryArgs(message=m, response="Press Enter to continue...", border_title="Tutorial")
+            StoryArgs(
+                message=m,
+                response=f"Press {Formatter.keybind('Enter ↩')} to continue...",
+                border_title="Tutorial",
+            )
             for m in messages
         ],
         handler,
@@ -108,7 +113,7 @@ def get_helmet():
 def learn_armory():
     return PickArgs(
         message=f"{jrod.name}: It's time to get your equipment ready. Here's what you're wearing down into the mines.\n",
-        options=[("Press Enter to continue...", armory.pick_member)],
+        options=[(f"Press {Formatter.keybind('Enter ↩')} to continue...", armory.pick_member)],
         subtitle=player.equipment_table,
     )
 
@@ -137,7 +142,7 @@ def learn_healer():
 
 def learn_bindings():
     return PickArgs(
-        message=f"{jrod.name}: Alright! Before I let you go, note that there are key bindings at the bottom of the screen, depending on what you're doing. You can press [dodger_blue1]F1[/] to see more. Also, many of the elements on the screen can be interacted with using the mouse.\n\nYou should have everything you need now. Good luck!",
+        message=f"{jrod.name}: Alright! Before I let you go, note that there are key bindings at the bottom of the screen, depending on what you're doing. You can press {Formatter.keybind('F1')} to see more. Also, many of the elements on the screen can be interacted with using the {Formatter.keybind('mouse')}.\n\nYou should have everything you need now. Good luck!",
         options=[("Thanks!", exit_tutorial)],
     )
 

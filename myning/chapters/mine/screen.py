@@ -20,6 +20,7 @@ from myning.config import MINE_TICK_LENGTH, TICK_LENGTH, VICTORY_TICK_LENGTH
 from myning.objects.player import Player
 from myning.objects.trip import Trip
 from myning.tui.header import Header
+from myning.utilities.formatter import Formatter
 from myning.utilities.pick import throttle
 from myning.utilities.tab_title import TabTitle
 from myning.utilities.ui import Icons
@@ -157,8 +158,8 @@ class MineScreen(Screen[bool]):
             f"[bold red1]{Icons.WARNING}  WARNING {Icons.WARNING}[/]\n\n"
             "You will not receive any items you found or any allies you recruited.\n"
             "In addition, lost allies and damage sustained will not be recovered.\n\n"
-            "Press [bold dodger_blue1]CTRL+Q[/] again to abandon, "
-            "or [bold dodger_blue1]Enter ↩[/] to continue."
+            f"Press {Formatter.keybind('CTRL+Q')} again to abandon, "
+            f"or {Formatter.keybind('Enter ↩')} to continue."
         )
         self.abandoning = True
 

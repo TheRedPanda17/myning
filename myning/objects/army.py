@@ -1,3 +1,4 @@
+import textwrap
 from collections import UserList
 
 from rich.table import Table
@@ -5,7 +6,7 @@ from rich.text import Text
 
 from myning.objects.character import Character
 from myning.utilities.fib import fibonacci
-from myning.utilities.ui import Icons, get_health_bar
+from myning.utilities.ui import Colors, Icons, get_health_bar
 
 
 class Army(UserList[Character]):
@@ -42,27 +43,7 @@ class Army(UserList[Character]):
         return sum(member.stats["armor"] for member in self)
 
     @property
-    def summary_str(self) -> str:
-        return f"{self.icons_str}\n\n{self.stats_summary}"
-
-    @property
-    def stats_summary(self) -> str:
-        return (
-            f"{get_health_bar(self.current_health, self.total_health, 30)}"
-            f" {Icons.DAMAGE} {self.total_damage} {Icons.ARMOR} {self.total_armor}"
-        )
-
-    @property
-    def icons_str(self) -> str:
-        s = ""
-        for i, member in enumerate(self):
-            if i != 0:
-                s += "\n" if i % 15 == 0 else " "
-            s += str(member.icon)
-        return s
-
-    @property
-    def table(self):
+    def healer_view(self):
         table = Table(box=None, padding=(0, 1, 0, 0))
         table.add_column("", width=2, no_wrap=True, overflow="ignore")
         table.add_column(Text("Name", justify="left"))
@@ -86,21 +67,22 @@ class Army(UserList[Character]):
         return table
 
     @property
-    def columns(self):
+    def battle_view(self):
+        table = Table.grid(padding=(0, 1))
         chunk_size = 10
         chunks = [self[i : i + chunk_size] for i in range(0, len(self), chunk_size)]
         columns = []
         for chunk in chunks:
-            table = Table(box=None, padding=(0, 1, 0, 0))
-            table.add_column("", width=2, no_wrap=True, overflow="ignore")
-            table.add_column(Text("Name", justify="left"))
-            table.add_column(Text("Health", justify="center"))
-            table.add_column(Text(Icons.DAMAGE, justify="center"), justify="right")
-            table.add_column(Text(Icons.ARMOR, justify="center"), justify="right")
-            table.add_column(Text(Icons.LEVEL, justify="center"), justify="right")
-            table.add_column(Text(Icons.GRAVEYARD, justify="center"))
+            chunk_table = Table(box=None, padding=(0, 1, 0, 0))
+            chunk_table.add_column("", width=2, no_wrap=True, overflow="ignore")
+            chunk_table.add_column(Text("Name", justify="left"))
+            chunk_table.add_column(Text("Health", justify="center"))
+            chunk_table.add_column(Text(Icons.DAMAGE, justify="center"), justify="right")
+            chunk_table.add_column(Text(Icons.ARMOR, justify="center"), justify="right")
+            chunk_table.add_column(Text(Icons.LEVEL, justify="center"), justify="right")
+            chunk_table.add_column(Text(Icons.GRAVEYARD, justify="center"))
             for member in chunk:
-                table.add_row(
+                chunk_table.add_row(
                     str(member.icon),
                     member.name.split()[0],
                     get_health_bar(member.health, member.max_health),
@@ -109,5 +91,24 @@ class Army(UserList[Character]):
                     f"[cyan1]{member.level}[/]",
                     "🪦" if member.is_ghost else " ",
                 )
-            columns.append(table)
-        return columns
+            columns.append(chunk_table)
+        table.add_row(*columns)
+        return table
+
+    @property
+    def icons(self):
+        return textwrap.fill(" ".join(member.icon for member in self), width=2 * 15)
+
+    @property
+    def health_bar(self):
+        return get_health_bar(self.current_health, self.total_health, 30)
+
+    @property
+    def stats_str(self):
+        damage_str = f"{Icons.DAMAGE} [{Colors.WEAPON}]{self.total_damage}[/]"
+        armor_str = f"{Icons.ARMOR} [{Colors.ARMOR}]{self.total_armor}[/]"
+        return f"{damage_str} {armor_str}"
+
+    @property
+    def compact_view(self):
+        return f"{self.icons}\n\n{self.health_bar} {self.stats_str}"

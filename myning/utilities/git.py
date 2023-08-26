@@ -1,6 +1,9 @@
 import os
+import sys
 
 import yaml
+
+from myning.utilities.formatter import Formatter
 
 
 def check_for_updates():
@@ -36,9 +39,9 @@ def check_for_updates():
     if not changed:
         print("Changelog empty (probably just a patch!)")
 
-    input("Press ↵")
+    input(f"Press {Formatter.keybind('Enter ↩️')}")
     # So we can restart the game with the updated files
-    exit(122)
+    sys.exit(122)
 
 
 def get_changelog() -> list:
