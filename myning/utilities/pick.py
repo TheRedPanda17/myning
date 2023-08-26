@@ -4,7 +4,7 @@ import time
 from functools import partial
 from typing import Callable
 
-from myning.chapters import Handler, PickArgs, PickHandler, StoryArgs
+from myning.chapters import Handler, Option, PickArgs, PickHandler, StoryArgs
 
 
 def throttle(interval: float):
@@ -95,8 +95,8 @@ def confirm(
                 if callable(message)
                 else message.format(*args, **kwargs),
                 options=[
-                    ("Yes", yes_callback),
-                    ("No", no_callback),
+                    Option("Yes", yes_callback, enable_hotkeys=True),
+                    Option("No", no_callback, enable_hotkeys=True),
                 ],
             )
 
@@ -120,7 +120,7 @@ def story_builder(story_args_list: list[StoryArgs], final_handler: PickHandler):
 def _story_to_pick_handler(story: StoryArgs, handler: PickHandler):
     return lambda: PickArgs(
         message=story.message,
-        options=[(story.response, handler)],
+        options=[Option(story.response, handler)],
         subtitle=story.subtitle,
         border_title=story.border_title,
     )

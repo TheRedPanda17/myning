@@ -35,7 +35,18 @@ class ExitArgs:
 PickHandler = Callable[..., PickArgs]
 Handler = Callable[..., PickArgs | DynamicArgs | AsyncArgs | ExitArgs]
 OptionLabel = str | Text | list[str | Text]
-Option = tuple[OptionLabel, Handler]
+
+
+@dataclass
+class Option:
+    label: OptionLabel
+    handler: Handler
+    enable_hotkeys: bool = False
+
+    def label_as_list(self) -> list[str | Text]:
+        if not isinstance(self.label, list):
+            return [self.label]
+        return self.label
 
 
 @dataclass

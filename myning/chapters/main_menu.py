@@ -73,7 +73,7 @@ def enter():
         MenuItem("Settings", settings.enter),
         MenuItem("Exit", ExitArgs),
     ]
-    options: list[Option] = [(chapter.arr, chapter.play) for chapter in chapters]
+    options = [Option(chapter.arr, chapter.play, enable_hotkeys=True) for chapter in chapters]
     return PickArgs(
         message="Where would you like to go next?",
         options=options,
@@ -84,5 +84,5 @@ def enter():
 def mine_required(mine_name: str):
     return PickArgs(
         message=f"You must complete {mine_name} first",
-        options=[("I'll get on it", enter)],
+        options=[Option("I'll get on it", enter)],
     )

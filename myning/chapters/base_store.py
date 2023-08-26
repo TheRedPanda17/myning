@@ -3,7 +3,7 @@ from functools import partial
 
 from rich.text import Text
 
-from myning.chapters import PickArgs, main_menu
+from myning.chapters import Option, OptionLabel, PickArgs, main_menu
 from myning.config import UPGRADES
 from myning.objects.buying_option import BuyingOption
 from myning.objects.equipment import EQUIPMENT_TYPES
@@ -76,7 +76,7 @@ class BaseStore(ABC):
         if self.empty:
             self.generate()
         options = [
-            (
+            Option(
                 [
                     *item.arr,
                     Text.from_markup(f"({Formatter.gold(item.value)})", justify="right"),
@@ -90,7 +90,7 @@ class BaseStore(ABC):
             items = [item for item in self.items if self.buying_option.filter(item)]
             cost = sum(item.value for item in items)
             options.append(
-                (
+                Option(
                     [
                         "",
                         f"Buy {self.buying_option.name}",
@@ -98,13 +98,14 @@ class BaseStore(ABC):
                         Text.from_markup(f"({Formatter.gold(cost)})", justify="right"),
                     ],
                     partial(self.confirm_multi_buy, items),
+                    enable_hotkeys=True,
                 )
             )
         return PickArgs(
             message="What would you like to buy?",
             options=[
                 *options,
-                (["", "Go Back"], self.enter),
+                Option(["", "Go Back"], self.enter),
             ],
         )
 
@@ -112,13 +113,13 @@ class BaseStore(ABC):
         if player.gold < item.value:
             return PickArgs(
                 message="Not enough gold!",
-                options=[("Bummer!", self.pick_buy)],
+                options=[Option("Bummer!", self.pick_buy)],
             )
         return PickArgs(
             message=f"Are you sure you want to buy {item} for {Formatter.gold(item.value)}?",  # pylint: disable=line-too-long
             options=[
-                ("Yes", partial(self.buy, item)),
-                ("No", self.pick_buy),
+                Option("Yes", partial(self.buy, item), enable_hotkeys=True),
+                Option("No", self.pick_buy, enable_hotkeys=True),
             ],
         )
 
@@ -139,13 +140,13 @@ class BaseStore(ABC):
         if player.gold < cost:
             return PickArgs(
                 message="Not enough gold!",
-                options=[("Bummer!", self.pick_buy)],
+                options=[Option("Bummer!", self.pick_buy)],
             )
         return PickArgs(
             message=f"Are you sure you want to buy {self.buying_option.name} for {Formatter.gold(cost)}?",  # pylint: disable=line-too-long
             options=[
-                ("Yes", partial(self.multi_buy, items)),
-                ("No", self.pick_buy),
+                Option("Yes", partial(self.multi_buy, items), enable_hotkeys=True),
+                Option("No", self.pick_buy, enable_hotkeys=True),
             ],
         )
 
@@ -157,14 +158,14 @@ class BaseStore(ABC):
         FileManager.multi_save(player, *items)
         return self.enter()
 
-    def hint_symbol(self, item: Item):
+    def hint_symbol(self, item: Item) -> str:
         if item.type not in EQUIPMENT_TYPES:
-            return None
+            return ""
         if player.has_upgrade("advanced_store_hints") and self.is_best_item(item):
             return "🔥"
         if player.has_upgrade("store_hints") and self.is_useful_item(item):
             return "✨"
-        return None
+        return ""
 
     def is_best_item(self, item: Item):
         best = player.inventory.get_best_in_slot(item.type)

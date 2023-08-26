@@ -29,7 +29,9 @@ def members_to_heal(members: Army):
 def healthy():
     return PickArgs(
         message="Everyone is healthy.",
-        options=[("Okay", main_menu.enter if tutorial.is_complete() else tutorial.learn_bindings)],
+        options=[
+            Option("Okay", main_menu.enter if tutorial.is_complete() else tutorial.learn_bindings)
+        ],
     )
 
 
@@ -41,24 +43,27 @@ def enter():
     if player.has_upgrade("insta_heal"):
         cost = UPGRADES["insta_heal"].player_value * len(player.army)
         options.append(
-            (
+            Option(
                 f"Instant ({Formatter.gold(cost) if cost else 'free'})",
                 partial(insta_heal, cost),
+                enable_hotkeys=True,
             )
         )
         # hide slow option if instant is free
         if cost:
-            options.append(("Slowly (free)", slow_heal))
+            options.append(Option("Slowly (free)", slow_heal, enable_hotkeys=True))
     else:
-        options = [("Yes (free)", slow_heal)]
-    options.append(("No", main_menu.enter if tutorial.is_complete() else tutorial.learn_bindings))
+        options = [Option("Yes (free)", slow_heal, enable_hotkeys=True)]
+    options.append(
+        Option("No", main_menu.enter if tutorial.is_complete() else tutorial.learn_bindings)
+    )
 
     return PickArgs(message="Start Recovery?", options=options)
 
 
 def insta_heal(cost: int):
     if player.gold < cost:
-        return PickArgs(message="You can't afford it.", options=[("Darn!", enter)])
+        return PickArgs(message="You can't afford it.", options=[Option("Darn!", enter)])
     for member in player.army:
         member.health = member.max_health
         FileManager.save(member)

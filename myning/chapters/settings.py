@@ -8,14 +8,18 @@ settings = Settings()
 
 
 def enter():
-    options: list[Option] = [
-        (["Compact Mode", f"({settings.compact_status})"], toggle_compact_mode),
+    options = [
+        Option(["Compact Mode", f"({settings.compact_status})"], toggle_compact_mode),
     ]
 
     if player.has_upgrade("sort_by_value"):
-        options.append((["Sort Order", f"({settings.sort_order})"], toggle_sort_order))
+        options.append(
+            Option(
+                ["Sort Order", f"({settings.sort_order})"], toggle_sort_order, enable_hotkeys=True
+            )
+        )
 
-    options.append(("Go Back", main_menu.enter))
+    options.append(Option("Go Back", main_menu.enter))
     return PickArgs(
         message="What settings would you like to adjust?",
         options=options,
@@ -26,7 +30,7 @@ def toggle_compact_mode():
     settings.toggle_compact_mode()
     return PickArgs(
         message=f"Compact Mode is now {settings.compact_status}",
-        options=[("Done.", enter)],
+        options=[Option("Done.", enter)],
         subtitle="By the way, you can also toggle compact mode by focusing the Army widget "
         f"and pressing {Formatter.keybind('c')}.",
     )
@@ -36,7 +40,7 @@ def toggle_sort_order():
     settings.toggle_sort_order()
     return PickArgs(
         message=f"Sort Order is now {settings.sort_order}",
-        options=[("Done", enter)],
+        options=[Option("Done", enter)],
     )
 
     # option, _ = pick(

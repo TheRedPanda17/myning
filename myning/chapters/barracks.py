@@ -25,19 +25,23 @@ player = Player()
 def enter():
     member_arrs = [member.abbreviated_arr for member in player.army]
     handlers = [partial(add_xp, member) for member in player.army]
-    options: list[Option] = list(zip(member_arrs, handlers))
+    options = [
+        Option(label, handler) for label, handler in zip(member_arrs, handlers)
+    ]
 
     if player.has_upgrade("auto_exp"):
-        options.append((["", "Auto-Add xp"], auto_add_xp))
+        options.append(Option(["", "Auto-Add xp"], auto_add_xp, enable_hotkeys=True))
     if player.has_upgrade("auto_ghost_xp"):
-        options.append((["", "Auto-Add xp to Ghosts Only"], auto_add_ghost_xp))
+        options.append(
+            Option(["", "Auto-Add xp to Ghosts Only"], auto_add_ghost_xp, enable_hotkeys=True)
+        )
 
     options.extend(
         (
-            (["", "Hire Muscle"], pick_hire_muscle),
-            (["", "Fire Muscle"], pick_fire_muscle),
-            (["", "Buy xp"], buy_xp),
-            (["", "Go Back"], main_menu.enter),
+            Option(["", "Hire Muscle"], pick_hire_muscle, enable_hotkeys=True),
+            Option(["", "Fire Muscle"], pick_fire_muscle, enable_hotkeys=True),
+            Option(["", "Buy xp"], buy_xp, enable_hotkeys=True),
+            Option(["", "Go Back"], main_menu.enter),
         )
     )
     return PickArgs(
@@ -55,8 +59,8 @@ def pick_hire_muscle():
     ]
     entities.sort(key=lambda e: e.name)
     cost = [full_cost(len(player.army), entity) for entity in entities]
-    options: list[Option] = [
-        (
+    options = [
+        Option(
             [
                 entity.icon,
                 entity.name,
@@ -70,7 +74,7 @@ def pick_hire_muscle():
         )
         for i, entity in enumerate(entities)
     ]
-    options.append((["", "Go Back"], enter))
+    options.append(Option(["", "Go Back"], enter))
     return PickArgs(
         message="Who would you like to hire?",
         options=options,
@@ -90,14 +94,14 @@ def confirm_hire_muscle(entity: Character, cost: int):
     if player.gold < cost:
         return PickArgs(
             message="Not enough gold.",
-            options=[("Bummer", enter)],
+            options=[Option("Bummer", enter)],
         )
     return PickArgs(
         message=f"Are you sure you want to hire {entity.icon} {entity.name} "
         f"for {Formatter.gold(cost)}?",
         options=[
-            ("Yes", partial(hire_muscle, entity, cost)),
-            ("No", enter),
+            Option("Yes", partial(hire_muscle, entity, cost), enable_hotkeys=True),
+            Option("No", enter, enable_hotkeys=True),
         ],
     )
 
@@ -112,12 +116,14 @@ def pick_fire_muscle():
     if not player.allies:
         return PickArgs(
             message="You ain't got nobody to fire!",
-            options=[("I should have thought of that...", enter)],
+            options=[Option("I should have thought of that...", enter)],
         )
     member_arrs = [member.abbreviated_arr for member in player.allies]
     handlers = [partial(confirm_fire_muscle, member) for member in player.allies]
-    options: list[Option] = list(zip(member_arrs, handlers))
-    options.append((["", "Go Back"], enter))
+    options = [
+        Option(label, handler) for label, handler in zip(member_arrs, handlers)
+    ]
+    options.append(Option(["", "Go Back"], enter))
     return PickArgs(
         message="Which Ally do you want to fire?",
         options=options,
@@ -135,8 +141,8 @@ def confirm_fire_muscle(member: Character):
     return PickArgs(
         message=message,
         options=[
-            ("Yes", partial(fire_muscle, member)),
-            ("No", enter),
+            Option("Yes", partial(fire_muscle, member), enable_hotkeys=True),
+            Option("No", enter, enable_hotkeys=True),
         ],
         subtitle=subtitle,
     )
@@ -151,12 +157,12 @@ def add_xp(member: Character):
     if not player.exp_available:
         return PickArgs(
             message="You have no experience to distribute",
-            options=[("Go Back", enter)],
+            options=[Option("Go Back", enter)],
         )
     if member is not player and member.level >= player.level:
         return PickArgs(
             message=f"You need to level up {player.name} before you can level up {member.name}",
-            options=[("Go Back", enter)],
+            options=[Option("Go Back", enter)],
         )
     if player.has_upgrade("level_up_barracks"):
         xp_for_level = fibonacci(member.level + 1)
@@ -164,12 +170,13 @@ def add_xp(member: Character):
         return PickArgs(
             message="How would you like to add xp?",
             options=[
-                (
+                Option(
                     f"Level {member.name} Up ([{Colors.XP}]{xp_for_level} xp[/] needed)",
                     partial(level_up, member),
+                    enable_hotkeys=True,
                 ),
-                ("Add xp Manually", partial(add_xp_manually, member)),
-                ("Go Back", enter),
+                Option("Add xp Manually", partial(add_xp_manually, member), enable_hotkeys=True),
+                Option("Go Back", enter),
             ],
             subtitle=f"You have {player.exp_available} xp to distribute.",
         )
@@ -182,7 +189,7 @@ def level_up(member: Character):
     if xp_for_level > player.exp_available:
         return PickArgs(
             message=f"You don't have enough xp to level {member.name} up.",
-            options=[("Bummer!", enter)],
+            options=[Option("Bummer!", enter)],
         )
     player.remove_available_xp(xp_for_level)
     member.add_experience(xp_for_level)
@@ -248,7 +255,7 @@ def auto_add_xp():
     if player.exp_available == 0:
         return PickArgs(
             message="You have no experience to distribute",
-            options=[("I should have thought of that...", enter)],
+            options=[Option("I should have thought of that...", enter)],
         )
 
     player.army.reverse()
@@ -271,7 +278,7 @@ def auto_add_ghost_xp():
     if player.exp_available == 0:
         return PickArgs(
             message="You have no experience to distribute",
-            options=[("I should have thought of that...", enter)],
+            options=[Option("I should have thought of that...", enter)],
         )
 
     player.army.reverse()

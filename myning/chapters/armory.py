@@ -23,13 +23,13 @@ def pick_member():
                     break
 
     handlers = [partial(pick_slot, member) for member in player.army]
-    options: list[Option] = list(zip(member_arrs, handlers))
+    options = [Option(label, handler) for label, handler in zip(member_arrs, handlers)]
 
     if player.has_upgrade("auto_equip"):
-        options.append((["", "Auto-equip Best Items"], auto_equip))
+        options.append(Option(["", "Auto-equip Best Items"], auto_equip, enable_hotkeys=True))
 
     options.append(
-        (["", "Go Back"], main_menu.enter if tutorial.is_complete() else tutorial.learn_mine)
+        Option(["", "Go Back"], main_menu.enter if tutorial.is_complete() else tutorial.learn_mine)
     )
     return PickArgs(
         message="Upgrade Your Army Members' Gear",
@@ -45,12 +45,13 @@ def pick_slot(c: Character):
         has_better = player.inventory.has_better_item(slot, equipped)
         inventory_hints = player.has_upgrade("inventory_hints")
         options.append(
-            (
+            Option(
                 [slot.capitalize(), "✨" if has_better and inventory_hints else ""],
                 partial(pick_equipment, c, slot),
+                enable_hotkeys=True,
             )
         )
-    options.append(("Go Back", pick_member))
+    options.append(Option("Go Back", pick_member))
     return PickArgs(
         message="Select slot:\n",
         options=options,
@@ -63,10 +64,10 @@ def pick_equipment(c: Character, slot: ItemType):
     if not items:
         return PickArgs(
             message=f"You have no {slot}.",
-            options=[("Bummer", pick_member)],
+            options=[Option("Bummer", pick_member)],
         )
-    options: list[Option] = [(item.arr, partial(equip, c, item)) for item in items]
-    options.append((["", "Go Back"], partial(pick_slot, c)))
+    options = [Option(item.arr, partial(equip, c, item)) for item in items]
+    options.append(Option(["", "Go Back"], partial(pick_slot, c)))
     return PickArgs(
         message=f"Choose {slot} to equip:\n",
         options=options,

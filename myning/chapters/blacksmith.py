@@ -1,6 +1,6 @@
 import random
 
-from myning.chapters import PickArgs
+from myning.chapters import Option, PickArgs
 from myning.chapters.base_store import BaseStore
 from myning.config import STRINGS, UPGRADES
 from myning.objects.blacksmith_item import BlacksmithItem
@@ -69,14 +69,15 @@ class Blacksmith(BaseStore):
         return PickArgs(
             message="What would you like to do?",
             options=[
-                ("Buy", self.pick_buy),
-                (
+                Option("Buy", self.pick_buy, enable_hotkeys=True),
+                Option(
                     Formatter.locked("Upgrade Smith (maxed)")
                     if self.maxed
                     else f"Upgrade Smith ({Formatter.gold(self.upgrade_cost)})",
                     self.confirm_upgrade,
+                    enable_hotkeys=True,
                 ),
-                ("Go Back", self.exit),
+                Option("Go Back", self.exit),
             ],
         )
 
@@ -94,19 +95,19 @@ class Blacksmith(BaseStore):
         if self.maxed:
             return PickArgs(
                 message=f"Blacksmith cannot build anything more beneficial than {TIERS[-1].name}.",
-                options=[("Go Back", self.enter)],
+                options=[Option("Go Back", self.enter)],
             )
         if player.gold < self.upgrade_cost:
             return PickArgs(
                 message="You don't have enough gold to upgrade your blacksmith.",
-                options=[("Shucks", self.enter)],
+                options=[Option("Shucks", self.enter)],
             )
         return PickArgs(
             message="Are you sure you want to upgrade your blacksmith "
             f"for {Formatter.gold(self.upgrade_cost)}?",
             options=[
-                (f"Upgrade to level {self.level+1}", self.upgrade),
-                ("Maybe Later", self.enter),
+                Option(f"Upgrade to level {self.level+1}", self.upgrade, enable_hotkeys=True),
+                Option("Maybe Later", self.enter),
             ],
         )
 

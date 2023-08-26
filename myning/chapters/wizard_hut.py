@@ -15,8 +15,10 @@ player = Player()
 
 def enter():
     available_upgrades = [upgrade for upgrade in UPGRADES.values() if not upgrade.max_level]
-    options: list[Option] = [(u.arr, partial(confirm_buy, u)) for u in available_upgrades]
-    options.append(("Go Back", main_menu.enter))
+    options = [
+        Option(u.arr, partial(confirm_buy, u), enable_hotkeys=True) for u in available_upgrades
+    ]
+    options.append(Option("Go Back", main_menu.enter))
 
     purchased_upgrades = [upgrade for upgrade in UPGRADES.values() if upgrade.level > 0]
     subtitle = Table.grid(padding=(0, 1, 0, 0))
@@ -37,13 +39,13 @@ def confirm_buy(upgrade: Upgrade):
     if player.gold < upgrade.cost:
         return PickArgs(
             message="You don't have enough gold to buy this upgrade",
-            options=[("Bummer!", enter)],
+            options=[Option("Bummer!", enter)],
         )
     return PickArgs(
         message=f"Are you sure you want to buy {upgrade.name} for {Formatter.gold(upgrade.cost)}?",
         options=[
-            ("Yes", partial(buy, upgrade)),
-            ("No", enter),
+            Option("Yes", partial(buy, upgrade), enable_hotkeys=True),
+            Option("No", enter, enable_hotkeys=True),
         ],
     )
 

@@ -31,9 +31,9 @@ def enter():
     return PickArgs(
         message="Your Stats\n",
         options=[
-            ("Sync Stats", lambda: AsyncArgs(callback=sync)),
-            ("View Highscores", lambda: AsyncArgs(callback=view_players)),
-            ("Go Back", main_menu.enter),
+            Option("Sync Stats", lambda: AsyncArgs(callback=sync)),
+            Option("View Highscores", lambda: AsyncArgs(callback=view_players)),
+            Option("Go Back", main_menu.enter),
         ],
         subtitle=stats.display,
     )
@@ -74,7 +74,7 @@ async def sync(chapter: "ChapterWidget"):
     chapter.pick(
         PickArgs(
             message="Succesfully synced stats!",
-            options=[("Top that, fellow miners!", enter)],
+            options=[Option("Top that, fellow miners!", enter)],
         )
     )
 
@@ -86,8 +86,8 @@ async def view_players(chapter: "ChapterWidget"):
     for p in players:
         if p["icon"] == "👨🏾‍🌾":
             p["icon"] = "🙎"
-    options: list[Option] = [
-        (
+    options = [
+        Option(
             [
                 player["icon"],
                 player["name"],
@@ -98,7 +98,7 @@ async def view_players(chapter: "ChapterWidget"):
         )
         for player in players
     ]
-    options.append((["", "Exit"], enter))
+    options.append(Option(["", "Exit"], enter))
     chapter.pick(
         PickArgs(
             message="Select a player to view stats:",
@@ -141,7 +141,7 @@ def view_player(_player):
         chapter.pick(
             PickArgs(
                 message=f"{p['icon']} {p['name']}\n",
-                options=[("Nice!", enter)],
+                options=[Option("Nice!", enter)],
                 subtitle=table,
             )
         )

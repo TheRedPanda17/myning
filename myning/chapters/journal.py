@@ -13,8 +13,8 @@ player = Player()
 
 def enter():
     species_list = SPECIES.values()
-    options: list[Option] = [
-        (
+    options = [
+        Option(
             [species.icon, species.name]
             if species in player.discovered_species
             else [Icons.LOCKED, f"[{Colors.LOCKED}]{'*'*len(species.name)}[/]"],
@@ -23,7 +23,7 @@ def enter():
         for species in species_list
         if species.name != "Alien"
     ]
-    options.append((["", "Go Back"], main_menu.enter))
+    options.append(Option(["", "Go Back"], main_menu.enter))
     return PickArgs(
         message="Select a Species to learn about them.",
         options=options,
@@ -34,7 +34,7 @@ def show(species: Species):
     if species not in player.discovered_species:
         return PickArgs(
             message="You have not discovered this species yet.",
-            options=[("Go Back", enter)],
+            options=[Option("Go Back", enter)],
         )
     table = Table.grid(padding=(0, 2))
     table.title = f"{species.icon} {species.name}"
@@ -45,6 +45,6 @@ def show(species: Species):
     table.add_row("Alignment", species.alignment)
     return PickArgs(
         message=table,
-        options=[("Go Back", enter)],
+        options=[Option("Go Back", enter)],
         subtitle="\n" + species.description,
     )
