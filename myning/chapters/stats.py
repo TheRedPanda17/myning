@@ -42,13 +42,12 @@ def enter():
 def api_request(loading_message: str):
     def outer(func):
         async def inner(chapter: "ChapterWidget", *args, **kwargs):
+            chapter.clear()
+            chapter.question.message = loading_message
+            progress = ProgressBar(show_percentage=False, show_eta=False)
+            chapter.mount(progress, after=0)
             try:
-                chapter.clear()
-                chapter.question.message = loading_message
-                progress = ProgressBar(show_percentage=False, show_eta=False)
-                chapter.mount(progress, after=0)
                 await func(chapter, *args, **kwargs)
-                progress.remove()
             except aiohttp.ClientError as e:
                 status = getattr(e, "status", "Unknown Error")
                 message = f"Error contacting the API: {status}"
@@ -60,6 +59,8 @@ def api_request(loading_message: str):
                         options=[("Bummer!", enter)],
                     )
                 )
+            finally:
+                progress.remove()
 
         return inner
 
