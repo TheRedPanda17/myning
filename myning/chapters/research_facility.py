@@ -33,9 +33,7 @@ def enter():
 def pick_assign():
     character_arrs = [character.abbreviated_arr for character in player.army[1:]]
     handlers = [partial(assign, character) for character in player.army[1:]]
-    options = [
-        Option(label, handler) for label, handler in zip(character_arrs, handlers)
-    ]
+    options = [Option(label, handler) for label, handler in zip(character_arrs, handlers)]
     options.append(Option(["", "Go Back"], enter))
     return PickArgs(
         message="Choose companion to assign to research",
@@ -66,9 +64,7 @@ def pick_remove():
         )
     character_arrs = [character.abbreviated_arr for character in facility.army]
     handlers = [partial(remove, character) for character in facility.army]
-    options = [
-        Option(label, handler) for label, handler in zip(character_arrs, handlers)
-    ]
+    options = [Option(label, handler) for label, handler in zip(character_arrs, handlers)]
     options.append(Option(["", "Go Back"], enter))
     return PickArgs(
         message="Choose companion to remove from research",
