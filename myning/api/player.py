@@ -3,7 +3,6 @@ import requests
 from myning.api.api import API_CONFIG
 from myning.objects.player import Player
 from myning.objects.stats import Stats
-from myning.utils.file_manager import FileManager
 
 
 def sync(score: int):
@@ -23,9 +22,9 @@ def sync(score: int):
         "name": player.name,
         "level": player.level,
         "stats": stats.all_stats,
-        "icon": player.icon.symbol,
+        "icon": player.icon,
         "id": player.id,
-        "score": score * 100,
+        "score": score,
     }
 
     if exists:

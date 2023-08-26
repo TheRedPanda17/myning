@@ -1,13 +1,12 @@
 from enum import Enum
 
-from blessed import Terminal
+from rich.table import Table
+from rich.text import Text
 
 from myning.objects.object import Object
 from myning.objects.singleton import Singleton
-from myning.utils.file_manager import FileManager
-from myning.utils.ui import columnate, normalize_title
-
-term = Terminal()
+from myning.utilities.file_manager import FileManager
+from myning.utilities.formatter import Formatter
 
 
 class IntegerStatKeys(str, Enum):
@@ -44,9 +43,13 @@ class Stats(Object, metaclass=Singleton):
     def file_name(cls):
         return "stats"
 
-    def __init__(self, integer_stats: dict = {}, float_stats: dict = {}):
-        self.integer_stats = integer_stats
-        self.float_stats = float_stats
+    def __init__(
+        self,
+        integer_stats: dict[str, int] | None = None,
+        float_stats: dict[str, float] | None = None,
+    ):
+        self.integer_stats = integer_stats or {}
+        self.float_stats = float_stats or {}
 
     @classmethod
     def from_dict(cls, data: dict) -> "Stats":
@@ -55,20 +58,24 @@ class Stats(Object, metaclass=Singleton):
         return Stats(data["integer_stats"], data.get("float_stats", {}))
 
     @property
-    def all_stats(self):
+    def all_stats(self) -> dict[str, int | float]:
         return {**self.integer_stats, **self.float_stats}
 
     @property
     def display(self):
-        columns = []
+        table = Table.grid(padding=(0, 2))
+        table.add_column(style="bold")
         for key, value in self.all_stats.items():
-            title = f"  {term.bold(normalize_title(key))}"
-            stat = f"{term.white(f'{value}')}"
-            columns.append([title, stat])
-
-        s = term.bold("Stats\n\n")
-        s += "\n".join(columnate(columns))
-        return s
+            table.add_row(
+                Formatter.title(key),
+                Text.from_markup(
+                    f"{value:,.0f}"
+                    if isinstance(value, int) or value.is_integer()
+                    else f"{value:,.2f}",
+                    justify="right",
+                ),
+            )
+        return table
 
     def to_dict(self) -> dict:
         return {"integer_stats": self.integer_stats, "float_stats": self.float_stats}

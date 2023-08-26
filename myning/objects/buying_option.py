@@ -1,36 +1,27 @@
 from dataclasses import dataclass
-from enum import Enum
+from typing import Callable
 
-
-class StoreType(Enum):
-    """
-    The current specialty types of stores in the game
-    """
-
-    GARDEN = "garden"
-    BLACKSMITH = "blacksmith"
+from myning.objects.item import Item
 
 
 @dataclass
 class BuyingOption:
     """
-    A buying option is a way to buy something unlocked by an upgrade. This Class is used to pass around the
-    players buying options from the garden or blacksmith to the store.
-    Example:
-    buying_options = BuyingOption(
-                    name="all Blademaster items",
-                    store_type=StoreType.BLACKSMITH,
-                    options_string="Buy Full Set",
-                    filter="Blademaster's",
-                )
-    params:
+    A buying option is a convenience option unlocked by an upgrade which can be used to buy a set of
+    items.
+
+    Parameters:
     name: The string to display in the store
-    store_type: The type of store chosen (garden or blacksmith)
-    options_string: The string to use when displaying the items
-    filter: Optional, the filter to use when displaying the items, e.g. A list of all Bladesmith class items
+    filter: The function to use to filter the items
+
+    Example:
+    ```python
+    buying_option = BuyingOption(
+        name="all Blademaster items",
+        filter=lambda item: "Blademaster" in item.name,
+    )
+    ```
     """
 
     name: str
-    store_type: StoreType
-    options_string: str
-    filter: str = None
+    filter: Callable[[Item], bool]

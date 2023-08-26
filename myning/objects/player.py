@@ -1,8 +1,5 @@
 import math
 import random
-from typing import List, Optional
-
-from blessed.terminal import Terminal
 
 from myning.config import MINES, SPECIES, UPGRADES, XP_COST
 from myning.objects.army import Army
@@ -12,27 +9,21 @@ from myning.objects.item import ItemType
 from myning.objects.mine import Mine
 from myning.objects.mine_stats import MineStats
 from myning.objects.singleton import Singleton
-from myning.utils.file_manager import FileManager
-
-term = Terminal()
+from myning.objects.upgrade import Upgrade
+from myning.utilities.file_manager import FileManager
 
 
 class Player(Character, metaclass=Singleton):
     # Remove the required argument from the constructor
     def __init__(self, name=None, *args, **kwargs):
         super().__init__(name, *args, **kwargs)
-        self.dashboard_settings = {
-            "a": False,
-            "e": False,
-            "i": True,
-        }
 
     @classmethod
     def initialize(cls, name=None):
         player = FileManager.load(Player, "player")
         if not player:
-            if not name:
-                name = input("\nEnter your player name: ") or "Player"
+            while not name:
+                name = input("\nEnter your player name: ")
             player = cls(name)
             player._allies = []
             player._fallen_allies = []
@@ -55,11 +46,11 @@ class Player(Character, metaclass=Singleton):
         return Army([self, *self._allies])
 
     @property
-    def allies(self) -> List[Character]:
+    def allies(self) -> list[Character]:
         return self._allies
 
     @property
-    def fired_allies(self) -> List[Character]:
+    def fired_allies(self) -> list[Character]:
         return self._fired_allies
 
     @property
@@ -71,11 +62,11 @@ class Player(Character, metaclass=Singleton):
         item_value = sum(item.value for item in self.inventory.items)
         army_value = sum(member.value for member in self.army)
         exp_value = self.exp_available * XP_COST
-        upgrades_value = sum(sum(cost for cost in u.costs[: u.level]) for u in self.upgrades)
+        upgrades_value = sum(sum(u.costs[: u.level]) for u in self.upgrades)
 
         unlocked_mines = sum(mine.cost for mine in self.mines_available)
-        beaten_mines = sum(
-            mine.win_value * math.pow(mine.cost, 1 / 3) for mine in self.mines_completed
+        beaten_mines = int(
+            sum(mine.win_value * math.pow(mine.cost, 1 / 3) for mine in self.mines_completed)
         )
 
         return (
@@ -100,9 +91,9 @@ class Player(Character, metaclass=Singleton):
         self.gold = 1
         self.exp_available = 0
         self.mines_available: list[Mine] = [MINES["Hole in the ground"]]
-        self.upgrades = []
+        self.upgrades: list[Upgrade] = []
         self.mine_progressions = {}
-        self.mines_completed = []
+        self.mines_completed: list[Mine] = []
         self.blacksmith_level = 1
         self.level = 1
         self.experience = 0
@@ -142,17 +133,17 @@ class Player(Character, metaclass=Singleton):
     def add_available_xp(self, xp: int):
         self.exp_available += xp
 
+    def remove_available_xp(self, xp: int):
+        if xp > 0:
+            self.exp_available -= xp
+
     def add_soul_credits(self, credits):
         if credits > 0:
             self.soul_credits += credits
 
-    def remove_soul_credits(self, credits):
+    def remove_soul_credits(self, credits: int):
         if credits > 0:
             self.soul_credits -= credits
-
-    def remove_available_exp(self, exp):
-        if exp > 0:
-            self.exp_available -= int(exp)
 
     def get_mine_progress(self, progress_name):
         progress = self.mine_progressions.get(progress_name)
@@ -163,45 +154,20 @@ class Player(Character, metaclass=Singleton):
             return self.mine_progressions[progress_name]
 
     def roll_for_species(self):
-        species_list = self.discovered_species
-        if self.species in species_list:
-            species_list.remove(self.species)
-        return random.choice(species_list)
+        return random.choice([s for s in self.discovered_species if s.name != self.species.name])
 
     @property
-    def fallen_allies(self) -> List[Character]:
+    def fallen_allies(self) -> list[Character]:
         return self._fallen_allies
 
     @property
     def ghost_count(self):
-        count = 0
-        for ally in self._allies:
-            if ally.is_ghost:
-                count += 1
-
-        return count
+        return len([ally for ally in self.allies if ally.is_ghost])
 
     @property
     def seeds(self):
-        plants = self.inventory.get_slot(ItemType.PLANT.value)
-        return [plant for plant in plants if plant.is_seed]
-
-    def pay(
-        self,
-        cost: int,
-        failure_msg: Optional[str] = None,
-        failure_option: Optional[str] = None,
-        confirmation_msg: Optional[str] = None,
-    ) -> bool:
-        from myning.utils.io import confirm, pick
-
-        if self.gold >= cost:
-            if confirmation_msg is None or confirm(confirmation_msg):
-                self.gold -= cost
-                return True
-        elif failure_msg is not None and failure_option is not None:
-            pick([failure_option], failure_msg)
-        return False
+        plants = self.inventory.get_slot(ItemType.PLANT)
+        return [p for p in plants if p.is_seed]  # pylint: disable=not-an-iterable
 
     @classmethod
     @property
@@ -264,13 +230,3 @@ class Player(Character, metaclass=Singleton):
         ]
         player.completed_migrations = attrs.get("completed_migrations") or [1]
         return player
-
-    def _update_dashboard_settings(self, key):
-        self.dashboard_settings[key] = not self.dashboard_settings[key]
-
-
-def get_title_string(title: str, toggle_key):
-    s = term.bold(title)
-    if toggle_key:
-        s += f" {term.bright_black(f'({toggle_key} to toggle)')}"
-    return s

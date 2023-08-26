@@ -1,14 +1,10 @@
 from datetime import datetime, timedelta
 
-from blessed import Terminal
-
 from myning.objects.object import Object
 from myning.objects.plant import Plant
 from myning.objects.singleton import Singleton
-from myning.utils import utils
-from myning.utils.file_manager import FileManager, Subfolders
-
-term = Terminal()
+from myning.utilities.fib import fibonacci
+from myning.utilities.file_manager import FileManager, Subfolders
 
 
 class Garden(Object, metaclass=Singleton):
@@ -97,7 +93,7 @@ class Garden(Object, metaclass=Singleton):
         return sum(self.get_upgrade_cost(level) for level in range(1, self.level))
 
     def get_upgrade_cost(self, level: int) -> int:
-        return utils.fibonacci(level + 4) * 100
+        return fibonacci(level + 4) * 100
 
     def collect_water(self):
         if not self.last_collected_water:
@@ -120,7 +116,7 @@ class Garden(Object, metaclass=Singleton):
     def add_plant(self, plant: "Plant", row: int, column: int):
         self.rows[row][column] = plant
 
-    def get_plant(self, row: int, column: int) -> "Plant":
+    def get_plant(self, row: int, column: int):
         return self.rows[row][column]
 
     def check_ready(self, row: int, column: int) -> bool:
@@ -128,7 +124,9 @@ class Garden(Object, metaclass=Singleton):
         return plant and plant.ready
 
     def uproot_plant(self, row: int, column: int):
+        uprooted_plant = self.rows[row][column]
         self.rows[row][column] = None
+        return uprooted_plant
 
     def harvest_plant(self, row: int, column: int):
         plant: Plant = self.rows[row][column]
@@ -143,11 +141,4 @@ class Garden(Object, metaclass=Singleton):
             return
         plant.started = plant.started - timedelta(minutes=1 * self.level)
         self.water -= 1
-
-    def __str__(self):
-        s = "╔" + "════╦" * (self.level - 1) + "════╗\n"
-        for i in range(len(self.rows)):
-            s += f"║{'║'.join([plant.garden_string if plant else ' xx ' for plant in self.rows[i]])}║\n"
-
-        s += "╚" + "════╩" * (self.level - 1) + "════╝"
-        return s
+        return plant

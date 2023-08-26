@@ -1,10 +1,7 @@
-from blessed import Terminal
+from rich.table import Table
 
 from myning.objects.item import Item, ItemType
-from myning.utils.file_manager import FileManager
-from myning.utils.ui import columnate
-
-term = Terminal()
+from myning.utilities.file_manager import FileManager
 
 EQUIPMENT_TYPES = [
     item_type
@@ -72,13 +69,12 @@ class Equipment:
         )
         return equipment
 
-    def change_item(self, slot, item):
-        self._slots[slot] = item
+    def change_item(self, item: Item):
+        self._slots[item.type] = item
 
-    def __str__(self):
-        return "\n".join(
-            columnate(
-                [[key.capitalize(), str(item)] for key, item in self._slots.items()],
-                sep="  ",
-            )
-        )
+    @property
+    def table(self):
+        table = Table.grid(padding=(0, 1))
+        for item_type, item in self._slots.items():
+            table.add_row(f"{item_type.capitalize()}: ", *(item.arr if item else ["  ", "None"]))
+        return table

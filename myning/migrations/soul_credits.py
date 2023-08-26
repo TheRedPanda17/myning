@@ -1,33 +1,31 @@
-from myning.chapters.enter_graveyard import soul_cost
 from myning.objects.player import Player
-from myning.utils.file_manager import FileManager
-from myning.utils.ui import get_soul_string
-from myning.utils.utils import fibonacci
+from myning.utilities.fib import fibonacci
+from myning.utilities.file_manager import FileManager
+from myning.utilities.formatter import Formatter
 
 
 def run():
+    Player.initialize()
     player = Player()
 
-    spent_credits = 0
-    for i in range(0, player.ghost_count):
-        spent_credits += int(fibonacci(i + 1))
+    spent_credits = sum(int(fibonacci(i + 1)) for i in range(player.ghost_count))
+    print(f"\nYou've spent {Formatter.soul_credits(spent_credits)}.")
 
-    print(f"\nYou've spent {get_soul_string(spent_credits)}.")
-
-    new_cost = 0
-    for i in range(0, player.ghost_count):
-        new_cost += int(soul_cost(i + 1))
-
-    print(f"\nNew cost is {get_soul_string(new_cost)}.")
+    new_cost = sum(int((i + 1) * 1.1) for i in range(player.ghost_count))
+    print(f"\nNew cost is {Formatter.soul_credits(new_cost)}.")
 
     returned = spent_credits - new_cost
     if returned > 0:
-        print(f"\nYou've been returned {get_soul_string(returned)}.")
+        print(f"\nYou've been returned {Formatter.soul_credits(returned)}.")
         player.soul_credits += returned
         FileManager.save(player)
     elif returned == 0:
-        print(f"\nYou broke even!")
+        print("\nYou broke even!")
     else:
         print("\nYou actually came out ahead before, so we'll give you a pass.")
 
     print("\nHave fun myning!")
+
+
+if __name__ == "__main__":
+    run()

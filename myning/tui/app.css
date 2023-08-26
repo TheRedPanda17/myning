@@ -1,0 +1,129 @@
+Body {
+  height: 1fr;
+  layout: horizontal;
+}
+
+.container,
+Container,
+ScrollableContainer {
+  border: round dodgerblue;
+  border-subtitle-align: left;
+  padding: 0 0 0 1;
+}
+
+ScrollableContainer:focus {
+  border: round lime;
+}
+
+/* MyningScreen */
+
+ChapterWidget {
+  width: 3fr;
+}
+
+ChapterWidget > Question {
+  max-width: 100;
+  margin-bottom: 1;
+}
+
+ChapterWidget > DataTable {
+  border: none;
+  height: 1fr;
+  padding: 0;
+}
+
+ChapterWidget > DataTable > .datatable--header {
+  background: 0%;
+}
+
+ChapterWidget > DataTable > .datatable--header-hover {
+  background: 0%;
+}
+
+ChapterWidget > DataTable > .datatable--cursor {
+  background: $primary-lighten-1;
+}
+
+ChapterWidget > DataTable > .datatable--hover {
+  background: $boost;
+}
+
+ChapterWidget > GardenTable {
+  border: double saddlebrown;
+  height: auto;
+  width: auto;
+  max-width: 100%;
+}
+
+SideBar {
+  width: 1fr;
+  min-width: 48;
+}
+
+SideBar > DataTable {
+  height: 1fr;
+}
+
+SideBar > DataTable > .datatable--header {
+  background: 0%;
+}
+
+/* MineScreen */
+
+Container {
+  height: auto;
+  layout: horizontal;
+}
+
+Container > Static {
+  width: auto;
+  margin: 0 1 0 0;
+}
+
+ProgressBar {
+  width: 1fr;
+}
+
+Bar {
+  width: 1fr;
+}
+
+/* HelpScreen */
+
+HelpScreen {
+  align: center middle;
+}
+
+HelpScreen > Static {
+  background: $surface;
+  border: round dodgerblue;
+  padding: 0 1;
+  width: 64;
+}
+
+/* IntInputScreen */
+
+IntInputScreen {
+  align: center middle;
+}
+
+IntInputScreen > Vertical {
+  background: $surface;
+  border: round dodgerblue;
+  height: auto;
+  padding: 0 1;
+  width: 64;
+}
+
+IntInputScreen > Vertical > IntInput {
+  background: $surface;
+  border-left: none;
+  border-right: none;
+  border-top: none;
+  margin: 0 0 1 0;
+  padding: 1 0 0 0;
+}
+
+#error {
+  color: $error;
+}

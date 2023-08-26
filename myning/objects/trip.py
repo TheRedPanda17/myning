@@ -1,4 +1,6 @@
-from blessed import Terminal
+from collections import Counter
+
+from rich.table import Table
 
 from myning.config import MINES
 from myning.objects.character import Character
@@ -6,12 +8,10 @@ from myning.objects.item import Item, ItemType
 from myning.objects.mine import Mine
 from myning.objects.object import Object
 from myning.objects.singleton import Singleton
-from myning.utils.file_manager import FileManager, Subfolders
-from myning.utils.ui import columnate
-from myning.utils.ui_consts import Icons
+from myning.utilities.file_manager import FileManager, Subfolders
+from myning.utilities.ui import Colors, Icons
 
 LOST_RATIO = 2
-term = Terminal()
 
 
 class Trip(Object, metaclass=Singleton):
@@ -36,13 +36,17 @@ class Trip(Object, metaclass=Singleton):
         self.experience_gained = 0
         self.total_seconds = 0
         self.species_discovered = 0
-        self.mine: Mine = None
+        self.mine: Mine | None = None
 
     def add_item(self, item: Item):
         if item.type == ItemType.MINERAL:
             self.minerals_mined.append(item)
         else:
             self.items_found.append(item)
+
+    def add_items(self, *items: Item):
+        for item in items:
+            self.add_item(item)
 
     def add_ally(self, ally: Character):
         self.allies_gained.append(ally)
@@ -56,7 +60,7 @@ class Trip(Object, metaclass=Singleton):
         if won:
             self.battles_won += 1
 
-    def tick_passed(self, seconds: int):
+    def seconds_passed(self, seconds: int):
         self.seconds_left -= seconds
 
     def start_trip(self, seconds: int):
@@ -123,69 +127,48 @@ class Trip(Object, metaclass=Singleton):
         summary.total_seconds = dict.get("total_seconds") or 0
         return summary
 
-    def get_minerals_string(self):
-        mineral = Item("", "", type=ItemType.MINERAL)
-
-        levels = {}
-        for item in self.minerals_mined:
-            if item:
-                levels[item.main_affect] = levels.get(item.main_affect, 0) + 1
-
-        return " ".join(
-            [
-                f"{mineral.color}{mineral.icon} {level}{term.normal} ({levels[level]})"
-                for level in sorted(levels)
-            ]
-        )
-
     @property
     def summary(self):
-        mine = f"{term.bold}{self.mine.name}{term.normal}"
-        time_left = f"{int(self.seconds_left / 60) + 1} minutes left"
-        battles = f"{Icons.VICTORY} {self.battles_won}"
-        enemies = f"{Icons.SWORD} {self.enemies_defeated}"
-        minerals = f"{Icons.MINERAL} {len(self.minerals_mined)}"
+        table = Table.grid(padding=(0, 1, 0, 0), expand=True)
+        table.add_column()
+        table.add_column()
+        table.add_column(justify="right")
+        table.add_row(Icons.VICTORY, "Battles won:", str(self.battles_won))
+        table.add_row(Icons.SWORD, "Enemies defeated:", str(self.enemies_defeated))
+        table.add_row(Icons.MINERAL, "Minerals mined:", str(len(self.minerals_mined)))
+        return table
 
-        return f"{mine}: {time_left} {battles} {enemies} {minerals}"
-
-    def __str__(self):
-        title = term.bold("\nYour Mining Trip\n")
-        return title + "\n".join(
-            columnate(
-                [
-                    [
-                        "Minerals",
-                        self.get_minerals_string() if self.minerals_mined else "None",
-                    ],
-                    [
-                        "Items",
-                        " ".join(
-                            f"{item.color}{item.icon} {item.main_affect}{term.normal}"
-                            for item in self.items_found
-                        )
-                        if self.items_found
-                        else "None",
-                    ],
-                    [
-                        "New Allies",
-                        " ".join(f"{ally.name} {ally.level_str}," for ally in self.allies_gained)
-                        if self.allies_gained
-                        else "None",
-                    ],
-                    [
-                        "Lost Allies",
-                        " ".join(f"{ally.name} {ally.level_str}," for ally in self.allies_lost)
-                        if self.allies_lost
-                        else "None",
-                    ],
-                    [
-                        "Battles Won",
-                        f"{term.bold}{self.battles_won}{term.normal}",
-                    ],
-                    [
-                        "Enemies Defeated",
-                        f"{term.bold}{self.enemies_defeated}{term.normal}",
-                    ],
-                ]
-            )
+    @property
+    def table(self):
+        table = Table.grid(padding=(0, 1, 0, 0))
+        mineral_counts = Counter([item.main_affect for item in self.minerals_mined])
+        minerals_str = "\n".join(
+            [
+                f"{Icons.MINERAL} [{Colors.GOLD}]{level}[/] ({mineral_counts[level]})"
+                for level in sorted(mineral_counts)
+            ]
         )
+        table.add_row("Minerals", minerals_str if self.minerals_mined else "None")
+        table.add_row(
+            "Items",
+            "\n".join(
+                f"{item.icon} [{item.color}]{item.main_affect}[/]" for item in self.items_found
+            )
+            if self.items_found
+            else "None",
+        )
+        table.add_row(
+            "New Allies",
+            "\n".join(f"{ally.icon} {ally.name} {ally.level_str}" for ally in self.allies_gained)
+            if self.allies_gained
+            else "None",
+        )
+        table.add_row(
+            "Lost Allies",
+            "\n".join(f"{Icons.DEATH} {ally.name} {ally.level_str}" for ally in self.allies_lost)
+            if self.allies_lost
+            else "None",
+        )
+        table.add_row("Battles Won", f"[bold]{self.battles_won}[/]")
+        table.add_row("Enemies Defeated", f"[bold]{self.enemies_defeated}[/]")
+        return table

@@ -1,26 +1,19 @@
 from enum import Enum
 
-from blessed import Terminal
+from rich.progress_bar import ProgressBar
+from rich.table import Table
+from rich.text import Text
 
 from myning.objects.mine_stats import MineStats
 from myning.objects.object import Object
-from myning.utils.ui import (
-    columnate,
-    get_gold_string,
-    get_level_string,
-    get_locked_str,
-    get_progress_bar,
-)
-from myning.utils.ui_consts import Icons
+from myning.utilities.formatter import Formatter
+from myning.utilities.ui import Colors, Icons
 
 
 class MineType(str, Enum):
     REGULAR = "regular"
     COMBAT = "combat"
     RESOURCE = "resource"
-
-
-term = Terminal()
 
 
 class Mine(Object):
@@ -124,41 +117,32 @@ class Mine(Object):
         )
 
     @property
-    def progress_bar(self) -> str:
+    def progress_bar(self):
         current = (
             min(self.player_progress.minerals, self.win_criteria.minerals)
             + min(self.player_progress.kills, self.win_criteria.kills)
-            + min(self.player_progress.minerals, self.win_criteria.minutes)
+            + min(self.player_progress.minutes, self.win_criteria.minutes)
         )
-        return get_progress_bar(current, self.win_criteria.total_items, bar_count=20)
+        return ProgressBar(total=self.win_criteria.total_items, completed=current, width=20)
 
     @property
     def progress(self):
-        def _remaining_str(current: int, total: int):
-            return f"{int(current)}/{total}" if current < total else "Complete"
-
-        return "\n".join(
-            columnate(
-                [
-                    [
-                        "Progress",
-                        self.progress_bar,
-                    ],
-                    [
-                        "Minerals:",
-                        _remaining_str(self.player_progress.minerals, self.win_criteria.minerals),
-                    ],
-                    [
-                        "Kills:",
-                        _remaining_str(self.player_progress.kills, self.win_criteria.kills),
-                    ],
-                    [
-                        "Minutes Survived:",
-                        _remaining_str(self.player_progress.minutes, self.win_criteria.minutes),
-                    ],
-                ]
+        table = Table.grid(padding=(0, 1, 0, 0))
+        if self.win_criteria:
+            table.add_row("Progress:", self.progress_bar)
+            table.add_row(
+                "Minerals:",
+                remaining_str(self.player_progress.minerals, self.win_criteria.minerals),
             )
-        )
+            table.add_row(
+                "Kills:",
+                remaining_str(self.player_progress.kills, self.win_criteria.kills),
+            )
+            table.add_row(
+                "Minutes Survived:",
+                remaining_str(int(self.player_progress.minutes), int(self.win_criteria.minutes)),
+            )
+        return table
 
     @property
     def has_death_action(self):
@@ -171,47 +155,45 @@ class Mine(Object):
     @property
     def death_chance_str(self):
         odds = self.get_action_odds("lose_ally")
-        str = "💀 {msg}"
-        match odds:
-            case 0:
-                return str.format(msg=term.green("none"))
-            case _ if odds < 0.5:
-                return str.format(msg=term.olivedrab1("low"))
-            case _ if odds < 0.7:
-                return str.format(msg=term.yellow("medium"))
-            case _ if odds < 1:
-                return str.format(msg=term.orange("high"))
-            case _:
-                return str.format(msg=term.red("very high"))
+        chances = {
+            -1: "[green1]none[/]",
+            0: "[green_yellow]low[/]",
+            0.5: "[yellow1]medium[/]",
+            0.7: "[orange1]high[/]",
+            1: "[red1]very high[/]",
+        }
+        closest_key_floor = max(c for c in chances if c < odds)
+        return f"{Icons.DEATH} {chances[closest_key_floor]}"
 
     @property
-    def str_arr(self):
-        arr = [f"{self.icon}", self.name, self.death_chance_str]
+    def arr(self):
+        arr = [self.icon, self.name, self.death_chance_str]
         if self.win_criteria:
-            arr.append("✨ cleared ✨" if self.complete else self.progress_bar)
-        else:
-            arr.append("")
-
+            if self.complete:
+                arr.append("✨ cleared ✨")
+            else:
+                arr.append(self.progress_bar)
         return arr
 
-    def get_unlock_str_arr(self, unlocked: bool):
-        if unlocked:
-            arr = [
-                f"{self.icon}",
-                self.name,
-                get_gold_string(self.cost),
-                get_level_string(self.min_player_level),
-                f"{term.magenta}{int(self.exp_boost * 100):3}% xp" if self.exp_boost else "",
-                self.death_chance_str,
+    def get_unlock_arr(self, player_level: int):
+        if player_level < self.min_player_level:
+            return [
+                self.icon,
+                Formatter.locked(f"{Icons.LOCKED} {self.name} "),
+                Text.from_markup(Formatter.locked(f"{self.cost:,}g"), justify="right"),
+                Formatter.locked(f"{Icons.LEVEL} {self.min_player_level} "),
+                Formatter.locked(f"{int(self.exp_boost * 100):2}% xp") if self.exp_boost else "",
+                Formatter.locked(Text.from_markup(self.death_chance_str).plain),
             ]
-        else:
-            arr = [
-                f"{self.icon}",
-                get_locked_str(f"🔒 {self.name}"),
-                get_locked_str(f"{self.cost}g"),
-                get_locked_str(f"lvl {self.min_player_level}"),
-                get_locked_str(f"{int(self.exp_boost * 100):3}% xp") if self.exp_boost else "",
-                get_locked_str(self.death_chance_str),
-            ]
+        return [
+            self.icon,
+            self.name,
+            Text.from_markup(Formatter.gold(self.cost), justify="right"),
+            f"{Icons.LEVEL} {Formatter.level(self.min_player_level)}",
+            f"[{Colors.XP}]{int(self.exp_boost*100):2}% xp[/]" if self.exp_boost else "",
+            self.death_chance_str,
+        ]
 
-        return arr
+
+def remaining_str(current: int, total: int):
+    return f"{current}/{total}" if current < total else "Complete"

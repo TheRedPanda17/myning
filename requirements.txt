@@ -4,14 +4,46 @@
 #
 #    pip-compile --no-emit-index-url --no-emit-trusted-host requirements.in
 #
-blessed==1.20.0
-    # via -r requirements.in
-grapheme==0.6.0
-    # via -r requirements.in
+certifi==2023.7.22
+    # via requests
+charset-normalizer==3.2.0
+    # via requests
+idna==3.4
+    # via requests
+importlib-metadata==6.8.0
+    # via textual
+linkify-it-py==2.0.2
+    # via markdown-it-py
+markdown-it-py[linkify,plugins]==3.0.0
+    # via
+    #   mdit-py-plugins
+    #   rich
+    #   textual
+mdit-py-plugins==0.4.0
+    # via markdown-it-py
+mdurl==0.1.2
+    # via markdown-it-py
+pillow==9.5.0
+    # via rich-pixels
+pygments==2.16.1
+    # via rich
 pyyaml==6.0.1
     # via -r requirements.in
-six==1.16.0
-    # via blessed
-wcwidth==0.2.6
-    # via blessed
 requests==2.31.0
+    # via -r requirements.in
+rich==13.5.2
+    # via
+    #   rich-pixels
+    #   textual
+rich-pixels==2.1.1
+    # via -r requirements.in
+textual==0.32.0
+    # via -r requirements.in
+typing-extensions==4.7.1
+    # via textual
+uc-micro-py==1.0.2
+    # via linkify-it-py
+urllib3==2.0.4
+    # via requests
+zipp==3.16.2
+    # via importlib-metadata

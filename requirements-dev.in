@@ -1,6 +1,9 @@
 black
 isort
 pdbpp
-pytest
-pytest-cov
 pip-tools
+pytest
+pytest-asyncio
+pytest-cov
+textual-dev
+textual==0.32.0 # Lock to fix mine screen border bug

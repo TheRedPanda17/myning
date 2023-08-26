@@ -21,19 +21,16 @@ exclude = '''
 '''
 
 [tool.isort]
-skip = "scripts/*,main.py"
 profile = "black"
 line_length = 100
-
 
 [tool.pytest.ini_options]
 addopts = "-svx --cov=."
 asyncio_mode = "auto"
-testpaths = [
-    "tests",
-]
+testpaths = ["tests"]
 
 [tool.coverage.run]
 omit = ["tests/*"]
+
 [tool.coverage.report]
 omit = ["tests/*"]

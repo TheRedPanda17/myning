@@ -1,13 +1,10 @@
 from enum import Enum
 
-from blessed import Terminal
+from rich.text import Text
 
 from myning.objects.object import Object
-from myning.utils.output import stat_string
-from myning.utils.ui_consts import Colors, Icons
-from myning.utils.utils import get_random_int
-
-term = Terminal()
+from myning.utilities.rand import get_random_int
+from myning.utilities.ui import Colors, Icons
 
 
 class ItemType(str, Enum):
@@ -38,7 +35,7 @@ class Item(Object):
         self.description = description
         self.type = type
         self.value = value
-        self.affects = {}
+        self.affects: dict[str, int] = {}
         self.id = f"{self.name} - {get_random_int(10000000000000)}"
 
         if main_affect:
@@ -48,7 +45,7 @@ class Item(Object):
         self.affects[stat] = value
 
     def remove_affect(self, stat):
-        self.affects[stat] = None
+        del self.affects[stat]
 
     @property
     def file_name(self):
@@ -56,7 +53,7 @@ class Item(Object):
 
     @property
     def main_affect(self):
-        if self.type == ItemType.MINERAL or self.type == ItemType.PLANT:
+        if self.type in (ItemType.MINERAL, ItemType.PLANT):
             return self.value
         return self.affects[self.main_affect_type]
 
@@ -102,7 +99,7 @@ class Item(Object):
             case ItemType.PLANT:
                 return Colors.PLANT
             case _:
-                return term.normal
+                return ""
 
     @property
     def icon(self):
@@ -123,27 +120,27 @@ class Item(Object):
                 return Icons.UNKNOWN
 
     def __str__(self):
-        return f"{self.icon} {self.name} - {self.color}{self.main_affect}{term.normal}"
-
-    @property
-    def str_arr(self):
-        return [
-            f"{self.icon}",
-            self.name,
-            f"{self.color}{self.main_affect}{term.normal}",
-        ]
-
-    def print_details(self):
-        s = stat_string("Name", self.name)
-        s += stat_string("Description", self.description)
-        s += stat_string("Value", self.value, newline=len(self.affects) != 0)
-
-        i = 0
-        for key, affect in self.affects.items():
-            s += stat_string(key.capitalize(), affect, newline=i != len(self.affects) - 1)
-            i += 1
-
+        s = f"{self.icon} [{self.color}]{self.name}[/]"
+        if self.type not in (ItemType.MINERAL, ItemType.PLANT):
+            s += f" ([{self.color}]{self.main_affect}[/])"
         return s
 
-    def get_new_text(self):
-        return f"New {self.type} added: {term.bold}{self.color}{self.name}{term.normal}"
+    @property
+    def arr(self):
+        return [
+            self.icon,
+            self.name,
+            Text.from_markup(f"[{self.color}]{self.main_affect}[/]", justify="right"),
+        ]
+
+    @property
+    def tutorial_new_str(self):
+        return f"New {self.type} added: [{self.color}]{self.name}[/]"
+
+    @property
+    def battle_new_str(self):
+        return (
+            f"New {self.type} added: "
+            f"{self.icon} [{self.color}]{self.name}[/] "
+            f"([{self.color}]{self.main_affect}[/])"
+        )

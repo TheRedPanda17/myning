@@ -1,17 +1,13 @@
 from datetime import datetime
 
-from blessed import Terminal
-
 from myning.config import RESEARCH
 from myning.objects.army import Army
 from myning.objects.character import Character
 from myning.objects.object import Object
 from myning.objects.singleton import Singleton
 from myning.objects.upgrade import Upgrade
-from myning.utils import utils
-from myning.utils.file_manager import FileManager
-
-term = Terminal()
+from myning.utilities.fib import fibonacci
+from myning.utilities.file_manager import FileManager
 
 
 class ResearchFacility(Object, metaclass=Singleton):
@@ -26,9 +22,9 @@ class ResearchFacility(Object, metaclass=Singleton):
         self,
         level: int = 1,
         points: int = 0,
-        last_research_tick: datetime = None,
-        researchers: list[Character] = None,
-        research: list[Upgrade] = None,
+        last_research_tick: datetime | None = None,
+        researchers: list[Character] | None = None,
+        research: list[Upgrade] | None = None,
     ):
         self.level = level
         self._points = points
@@ -108,7 +104,7 @@ class ResearchFacility(Object, metaclass=Singleton):
         return self.get_upgrade_cost(self.level + 1)
 
     def get_upgrade_cost(self, level):
-        return utils.fibonacci(level) * 5
+        return fibonacci(level) * 5
 
     @property
     def total_value(self):
@@ -143,7 +139,7 @@ class ResearchFacility(Object, metaclass=Singleton):
     def add_researcher(self, researcher: Character):
         self._researchers.append(researcher)
 
-    def remover_researcher(self, researcher: Character):
+    def remove_researcher(self, researcher: Character):
         self._researchers.remove(researcher)
 
     def purchase(self, cost):

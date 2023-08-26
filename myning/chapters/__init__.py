@@ -1,21 +1,41 @@
-from . import (
-    enter_armory,
-    enter_barracks,
-    enter_blacksmith,
-    enter_combat,
-    enter_exit,
-    enter_garden,
-    enter_graveyard,
-    enter_healer,
-    enter_journal,
-    enter_mine,
-    enter_mining,
-    enter_research_facility,
-    enter_settings,
-    enter_stats,
-    enter_store,
-    enter_time_machine,
-    enter_wizard_hut,
-    tutorial,
-    visit_store,
-)
+from dataclasses import dataclass
+from typing import TYPE_CHECKING, Callable, Optional
+
+from rich.console import RenderableType
+from rich.text import Text
+
+if TYPE_CHECKING:
+    from myning.tui.chapter import ChapterWidget
+
+
+@dataclass
+class PickArgs:
+    message: RenderableType
+    options: list["Option"]
+    subtitle: Optional[RenderableType] = None
+    border_title: Optional[str] = None
+    column_titles: Optional[list[str | Text]] = None
+
+
+@dataclass
+class DynamicArgs:
+    callback: Callable[["ChapterWidget"], None]
+
+
+@dataclass
+class ExitArgs:
+    pass
+
+
+PickHandler = Callable[..., PickArgs]
+Handler = Callable[..., PickArgs | DynamicArgs | ExitArgs]
+OptionLabel = str | Text | list[str | Text]
+Option = tuple[OptionLabel, Handler]
+
+
+@dataclass
+class StoryArgs:
+    message: str
+    response: str = "Okay"
+    subtitle: Optional[RenderableType] = None
+    border_title: Optional[str] = None
