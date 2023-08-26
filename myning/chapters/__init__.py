@@ -1,5 +1,5 @@
 from dataclasses import dataclass
-from typing import TYPE_CHECKING, Callable, Optional
+from typing import TYPE_CHECKING, Callable, Coroutine, Optional
 
 from rich.console import RenderableType
 from rich.text import Text
@@ -23,12 +23,17 @@ class DynamicArgs:
 
 
 @dataclass
+class AsyncArgs:
+    callback: Callable[["ChapterWidget"], Coroutine]
+
+
+@dataclass
 class ExitArgs:
     pass
 
 
 PickHandler = Callable[..., PickArgs]
-Handler = Callable[..., PickArgs | DynamicArgs | ExitArgs]
+Handler = Callable[..., PickArgs | DynamicArgs | AsyncArgs | ExitArgs]
 OptionLabel = str | Text | list[str | Text]
 Option = tuple[OptionLabel, Handler]
 
