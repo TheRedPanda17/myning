@@ -6,6 +6,7 @@ from textual.containers import ScrollableContainer
 from textual.widgets import DataTable
 
 from myning.chapters import (
+    AsyncArgs,
     DynamicArgs,
     ExitArgs,
     Handler,
@@ -54,7 +55,7 @@ class ChapterWidget(ScrollableContainer):
         yield self.question
         yield self.option_table
 
-    def on_mount(self):
+    async def on_mount(self):
         if trip.mine and trip.seconds_left != 0:
             self.app.push_screen(
                 MineScreen(),
@@ -80,9 +81,9 @@ class ChapterWidget(ScrollableContainer):
                 self.option_table.row_count - 1
             ) == [Icons.EXIT, "Exit"]:
                 return  # Prevent exiting with escape or q in main menu
-            self.select(-1)
+            await self.select(-1)
         elif key in self.hotkeys:
-            self.select(self.hotkeys[key])
+            await self.select(self.hotkeys[key])
         elif key.isdigit() and key != "0":
             self.option_table.move_cursor(row=int(key) - 1)
         elif key in ("upper_h", "ctrl_b"):
@@ -97,9 +98,9 @@ class ChapterWidget(ScrollableContainer):
         ):
             await self.option_table.run_action(binding.action)
 
-    def on_data_table_row_selected(self, row: DataTable.RowSelected):
+    async def on_data_table_row_selected(self, row: DataTable.RowSelected):
         self.focus()
-        self.select(row.cursor_row)
+        await self.select(row.cursor_row)
 
     def update_dashboard(self):
         if self.app.query("SideBar"):
@@ -144,7 +145,7 @@ class ChapterWidget(ScrollableContainer):
         self.hotkeys = hotkeys
         self.handlers = handlers
 
-    def select(self, option_index: int):
+    async def select(self, option_index: int):
         if not self.handlers or option_index >= len(self.handlers):
             return
         handler = self.handlers[option_index]
@@ -153,6 +154,8 @@ class ChapterWidget(ScrollableContainer):
             self.app.exit()
         elif isinstance(args, DynamicArgs):
             args.callback(self)
+        elif isinstance(args, AsyncArgs):
+            await args.callback(self)
         else:
             if (module := handler.__module__.rpartition(".")[-1]) not in (
                 "functools",
