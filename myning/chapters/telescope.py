@@ -4,7 +4,7 @@ from rich_pixels import Pixels
 from textual.widget import Widget
 from textual.widgets import Static
 
-from myning.chapters import DynamicArgs, PickArgs, main_menu
+from myning.chapters import DynamicArgs, Option, PickArgs, main_menu
 from myning.utilities.ui import Icons
 
 if TYPE_CHECKING:
@@ -15,7 +15,7 @@ def enter():
     return PickArgs(
         # pylint: disable=line-too-long
         message=f"As you arrive at the center of the {Icons.MINERAL} Meteor Crater, you notice a lot of rubble and what appears to be space wreckage in the area.",
-        options=[("Investigate...", investigate)],
+        options=[Option("Investigate...", investigate)],
     )
 
 
@@ -23,7 +23,7 @@ def investigate():
     return PickArgs(
         # pylint: disable=line-too-long
         message=f"You're not sure what to make of the pieces lying around just yet, but you find a {Icons.TELESCOPE} telescope!",
-        options=[("Look Through Telescope...", lambda: DynamicArgs(callback=view))],
+        options=[Option("Look Through Telescope...", lambda: DynamicArgs(callback=view))],
     )
 
 
@@ -32,7 +32,7 @@ def view(chapter: "ChapterWidget"):
     chapter.pick(
         PickArgs(
             message="You look through the telescope and wonder: what could the future hold...?",
-            options=[("Go Back", lambda: DynamicArgs(callback=go_back))],
+            options=[Option("Go Back", lambda: DynamicArgs(callback=go_back))],
         )
     )
 

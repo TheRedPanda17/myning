@@ -2,6 +2,7 @@ from enum import Enum
 
 from rich.text import Text
 
+from myning.chapters import OptionLabel
 from myning.objects.object import Object
 from myning.utilities.rand import get_random_int
 from myning.utilities.ui import Colors, Icons

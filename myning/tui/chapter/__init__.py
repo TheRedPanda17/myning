@@ -10,6 +10,7 @@ from myning.chapters import (
     DynamicArgs,
     ExitArgs,
     Handler,
+    Option,
     OptionLabel,
     PickArgs,
     main_menu,
@@ -115,8 +116,8 @@ class ChapterWidget(ScrollableContainer):
             TabTitle.change_tab_status(title)
         self.question.message = args.message
         self.question.subtitle = args.subtitle or ""
-        labels = [o[0] for o in args.options]
-        handlers = [o[1] for o in args.options]
+        # labels = [o[0] for o in args.options]
+        # handlers = [o[1] for o in args.options]
         if self.query("GardenTable"):
             HOTKEY_ALIASES["h"] = "left"
             HOTKEY_ALIASES["l"] = "right"
@@ -129,7 +130,7 @@ class ChapterWidget(ScrollableContainer):
             if "l" in RESERVED_HOTKEYS:
                 del HOTKEY_ALIASES["l"]
                 RESERVED_HOTKEYS.remove("l")
-        options, hotkeys = get_labels_and_hotkeys(labels)
+        options, hotkeys = get_labels_and_hotkeys(args.options)
         self.option_table.clear(columns=True)
         if options:
             column_count = max(len(option) for option in options)
@@ -143,7 +144,7 @@ class ChapterWidget(ScrollableContainer):
                 self.option_table.add_columns(*(str(i) for i in range(column_count)))
             self.option_table.add_rows(options)
         self.hotkeys = hotkeys
-        self.handlers = handlers
+        self.handlers = [opt.handler for opt in args.options]
 
     async def select(self, option_index: int):
         if not self.handlers or option_index >= len(self.handlers):
@@ -170,21 +171,20 @@ class ChapterWidget(ScrollableContainer):
         self.pick(PickArgs(message="", options=[]))
 
 
-def get_labels_and_hotkeys(options: list[OptionLabel]):
+def get_labels_and_hotkeys(options: list[Option]) -> tuple[list[list[str | Text]], dict[str, int]]:
     hotkeys: dict[str, int] = {}
     labels: list[list[str | Text]] = []
-    options = [option if isinstance(option, list) else [option] for option in options]
     for option_index, option_arr in enumerate(options):
-        if not isinstance(option_arr, list):
-            option_arr = [option_arr]
+        if not isinstance(option_arr.label, list):
+            option_arr.label = [option_arr.label]
 
-        if option_index == len(options) - 1:  # No hotkey for last option
-            labels.append(option_arr)
+        if not option_arr.enable_hotkeys:  # No hotkey for last option
+            labels.append(option_arr.label)
             continue
 
         text_option_index = None
         text_option = None
-        for index, item in enumerate(option_arr):
+        for index, item in enumerate(option_arr.label):
             if isinstance(item, str) and any(c in string.ascii_letters for c in item):
                 text_option = Text.from_markup(item)
                 text_option_index = index
@@ -199,13 +199,13 @@ def get_labels_and_hotkeys(options: list[OptionLabel]):
             if hotkey and hotkey_index is not None:
                 hotkeys[hotkey] = option_index
                 text_option.stylize("underline", hotkey_index, hotkey_index + 1)
-                option_arr[text_option_index] = text_option
+                option_arr.label[text_option_index] = text_option
 
-        labels.append(option_arr)
+        labels.append(option_arr.label)
     return labels, hotkeys
 
 
-def get_hotkey(label: str, hotkeys: dict[str, int]):
+def get_hotkey(label: str, hotkeys: dict[str, int]) -> tuple[str | None, int | None]:
     for hotkey_index, char in enumerate(label):
         hotkey = char.lower()
         if (

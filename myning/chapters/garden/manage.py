@@ -42,12 +42,20 @@ def manage_garden_callback(chapter: "ChapterWidget"):
 
     options = []
     if player.has_upgrade("next_plant_button"):
-        options.append(("Next Plant", partial(exit_manage_garden, next_plant)))
+        options.append(
+            Option("Next Plant", partial(exit_manage_garden, next_plant), enable_hotkeys=True)
+        )
     if player.has_upgrade("harvest_row"):
-        options.append(("Harvest Next Row", partial(exit_manage_garden, harvest_row)))
+        options.append(
+            Option(
+                "Harvest Next Row", partial(exit_manage_garden, harvest_row), enable_hotkeys=True
+            )
+        )
     if player.has_upgrade("plant_row"):
-        options.append(("Plant Next Row", partial(exit_manage_garden, plant_row)))
-    options.append(("Go Back", partial(exit_manage_garden, enter)))
+        options.append(
+            Option("Plant Next Row", partial(exit_manage_garden, plant_row), enable_hotkeys=True)
+        )
+    options.append(Option("Go Back", partial(exit_manage_garden, enter)))
     chapter.option_table.show_cursor = False
     chapter.pick(
         PickArgs(
@@ -63,7 +71,7 @@ def next_plant():
     if row is None and col is None:
         return PickArgs(
             message="There are no more plants ready to harvest",
-            options=[("Go Back", manage_garden)],
+            options=[Option("Go Back", manage_garden)],
         )
     return manage_plant(row, col)  # type: ignore
 
@@ -73,7 +81,7 @@ def harvest_row():
     if row is None:
         return PickArgs(
             message="There are no more plants ready to harvest",
-            options=[("Go Back", manage_garden)],
+            options=[Option("Go Back", manage_garden)],
         )
     for column in range(garden.level):
         plant = garden.get_plant(row, column)
@@ -88,7 +96,7 @@ def plant_row():
     if row is None:
         return PickArgs(
             message="Everything is planted!",
-            options=[("Go Back", manage_garden)],
+            options=[Option("Go Back", manage_garden)],
         )
     for column in range(garden.level):
         plant = garden.get_plant(row, column)
@@ -96,7 +104,7 @@ def plant_row():
         if not seed:
             return PickArgs(
                 message="You have run out of seeds to plant",
-                options=[("Bummer!", manage_garden)],
+                options=[Option("Bummer!", manage_garden)],
             )
         if not plant:
             plant_seed(seed, row, column)
@@ -110,15 +118,15 @@ def manage_plant(row: int, column: int):
     if not plant:
         return pick_seed(row, column)
 
-    options: list[Option]
+    options: list[Option] = []
     if plant.ready:
-        options = [("Harvest", partial(harvest_plant, row, column))]
+        options = [Option("Harvest", partial(harvest_plant, row, column), enable_hotkeys=True)]
     else:
         options = [
-            ("Water", partial(water_plant, row, column)),
-            ("Remove", partial(remove_plant, row, column)),
+            Option("Water", partial(water_plant, row, column), enable_hotkeys=True),
+            Option("Remove", partial(remove_plant, row, column), enable_hotkeys=True),
         ]
-    options.append(("Go Back", manage_garden))
+    options.append(Option("Go Back", manage_garden))
 
     return PickArgs(
         message="What would you like to do with this plant? "
@@ -132,13 +140,14 @@ def pick_seed(row: int, column: int):
     if not player.seeds:
         return PickArgs(
             message="You don't have any seeds to plant",
-            options=[("Bummer!", manage_garden)],
+            options=[Option("Bummer!", manage_garden)],
         )
 
-    options: list[Option] = [
-        (seed.arr, partial(plant_seed, seed, row, column)) for seed in player.seeds
+    options = [
+        Option(seed.arr, partial(plant_seed, seed, row, column), enable_hotkeys=True)
+        for seed in player.seeds
     ]
-    options.append((["", "Go Back"], manage_garden))
+    options.append(Option(["", "Go Back"], manage_garden))
     return PickArgs(
         message="Select a seed to plant",
         options=options,
@@ -165,7 +174,7 @@ def water_plant(row: int, column: int):
     if not garden.water:
         return PickArgs(
             message="You don't have any water to water your plants (you'll get more over time).",
-            options=[("Bummer!", partial(manage_plant, row, column))],
+            options=[Option("Bummer!", partial(manage_plant, row, column))],
         )
     plant = garden.water_plant(row, column)
     FileManager.multi_save(player, garden, plant)

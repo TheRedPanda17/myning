@@ -31,11 +31,11 @@ class Garden(BaseStore):
         return PickArgs(
             message="Select an option:",
             options=[
-                ("Manage Garden", manage_garden),
-                ("Buy Seeds", self.pick_buy),
-                ("Upgrade Garden", self.confirm_upgrade),
-                ("View Harvest", self.view_harvest),
-                ("Go Back", main_menu.enter),
+                Option("Manage Garden", manage_garden, enable_hotkeys=True),
+                Option("Buy Seeds", self.pick_buy, enable_hotkeys=True),
+                Option("Upgrade Garden", self.confirm_upgrade, enable_hotkeys=True),
+                Option("View Harvest", self.view_harvest, enable_hotkeys=True),
+                Option("Go Back", main_menu.enter),
             ],
             border_title="Garden",
         )
@@ -45,14 +45,14 @@ class Garden(BaseStore):
             return PickArgs(
                 message=f"You need {Formatter.gold(garden.upgrade_cost)} to upgrade your garden "
                 f"size to {garden.level + 1}",
-                options=[("Bummer!", self.enter)],
+                options=[Option("Bummer!", self.enter)],
             )
         return PickArgs(
             message=f"Upgrade your garden size to {garden.level + 1} "
             f"for {Formatter.gold(garden.upgrade_cost)}?",
             options=[
-                ("Yes", self.upgrade),
-                ("No", self.enter),
+                Option("Yes", self.upgrade, enable_hotkeys=True),
+                Option("No", self.enter, enable_hotkeys=True),
             ],
         )
 
@@ -63,12 +63,12 @@ class Garden(BaseStore):
         return self.enter()
 
     def view_harvest(self):
-        options: list[Option] = [
-            (plant.fruit_stand_arr, self.view_plant)
+        options = [
+            Option(plant.fruit_stand_arr, self.view_plant)
             for plant in player.inventory.get_slot(ItemType.PLANT)
             if plant.harvested
         ]
-        options.append((["", "Go Back"], self.enter))
+        options.append(Option(["", "Go Back"], self.enter))
         return PickArgs(
             message="View your plants",
             options=options,
@@ -77,5 +77,5 @@ class Garden(BaseStore):
     def view_plant(self):
         return PickArgs(
             message="Eventually, you'll be able to do more than sell your plants. (But not yet)",
-            options=[("Bummer!", self.enter)],
+            options=[Option("Bummer!", self.enter)],
         )

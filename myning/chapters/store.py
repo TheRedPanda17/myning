@@ -37,9 +37,9 @@ class Store(BaseStore):
         return PickArgs(
             message="What would you like to do?",
             options=[
-                ("Buy", self.pick_buy),
-                ("Sell", self.pick_sell),
-                ("Go Back", self.exit),
+                Option("Buy", self.pick_buy, enable_hotkeys=True),
+                Option("Sell", self.pick_sell, enable_hotkeys=True),
+                Option("Go Back", self.exit),
             ],
         )
 
@@ -48,8 +48,8 @@ class Store(BaseStore):
         return (main_menu.enter if tutorial.is_complete() else tutorial.learn_armory)()
 
     def pick_sell(self):
-        options: list[Option] = [
-            (
+        options = [
+            Option(
                 [
                     *item.arr,
                     Text.from_markup(f"({Formatter.gold(sell_price(item))})", justify="right"),
@@ -63,9 +63,10 @@ class Store(BaseStore):
             minerals = player.inventory._items[ItemType.MINERAL].copy()
             tax = UPGRADES["sell_minerals"].player_value / 100
             options.append(
-                (
+                Option(
                     ["", "Sell Minerals"],
                     partial(self.confirm_mass_sell, "of your minerals", minerals, tax),
+                    enable_hotkeys=True,
                 )
             )
 
@@ -77,7 +78,7 @@ class Store(BaseStore):
                 all_but_top_3_items.extend(sorted_type_items[:-3])
             tax = UPGRADES["sell_almost_everything"].player_value / 100
             options.append(
-                (
+                Option(
                     ["", "Sell Almost Everything"],
                     partial(
                         self.confirm_mass_sell,
@@ -85,22 +86,24 @@ class Store(BaseStore):
                         all_but_top_3_items,
                         tax,
                     ),
+                    enable_hotkeys=True,
                 )
             )
         if player.has_upgrade("sell_everything"):
             all_items = player.inventory.items
             tax = UPGRADES["sell_everything"].player_value / 100
             options.append(
-                (
+                Option(
                     ["", "Sell Everything"],
                     partial(self.confirm_mass_sell, "of your items", all_items, tax),
+                    enable_hotkeys=True,
                 )
             )
         return PickArgs(
             message="What would you like to sell?",
             options=[
                 *options,
-                (["", "Go Back"], self.enter),
+                Option(["", "Go Back"], self.enter),
             ],
         )
 
@@ -122,14 +125,14 @@ class Store(BaseStore):
         if not items:
             return PickArgs(
                 message="Nice try. You don't have any items to sell.",
-                options=[("You caught me.", self.pick_sell)],
+                options=[Option("You caught me.", self.pick_sell)],
             )
         total = int(sum(sell_price(item) for item in items) * (1 - tax))
         return PickArgs(
             message=f"Are you sure you want to sell all {description} for {Formatter.gold(total)}?",
             options=[
-                ("Yes", partial(self.mass_sell, items, total)),
-                ("No", self.pick_sell),
+                Option("Yes", partial(self.mass_sell, items, total), enable_hotkeys=True),
+                Option("No", self.pick_sell, enable_hotkeys=True),
             ],
         )
 

@@ -34,9 +34,12 @@ def exit_mine():
 
 
 def pick_mine():
-    options = [(mine.arr, partial(pick_time, mine)) for mine in player.mines_available] + [
-        (["", "Unlock New Mine"], pick_unlock_mine),
-        (["", "Go Back"], exit_mine),
+    options = [
+        Option(mine.arr, partial(pick_time, mine), enable_hotkeys=True)
+        for mine in player.mines_available
+    ] + [
+        Option(["", "Unlock New Mine"], pick_unlock_mine, enable_hotkeys=True),
+        Option(["", "Go Back"], exit_mine),
     ]
     has_death_mine = any(mine.has_death_action for mine in player.mines_available)
     return PickArgs(
@@ -54,8 +57,10 @@ def pick_time(mine: Mine):
         player.level * 4,
         player.level * 8,
     ]
-    options: list[Option] = [(f"{m} minutes", partial(start_mine, mine, m)) for m in minutes]
-    options.append(("Go Back", pick_mine))
+    options = [
+        Option(f"{m} minutes", partial(start_mine, mine, m), enable_hotkeys=True) for m in minutes
+    ]
+    options.append(Option("Go Back", pick_mine))
     subtitle = mine.progress
     subtitle.add_row("Risk of Demise:", mine.death_chance_str)
     if mine.companion_rarity:
@@ -75,9 +80,13 @@ def start_mine(mine: Mine, minutes: int):
             message=f"{'Everyone in your army has' if player.allies else 'You have'} no health.\n"
             "You should probably go visit the healer before heading into the mines.",
             options=[
-                ("Could you repeat that please?", partial(start_mine, mine, minutes)),
-                ("Take me there!", healer.enter),
-                ("Got it, thanks.", exit_mine),
+                Option(
+                    "Could you repeat that please?",
+                    partial(start_mine, mine, minutes),
+                    enable_hotkeys=True,
+                ),
+                Option("Take me there!", healer.enter, enable_hotkeys=True),
+                Option("Got it, thanks.", exit_mine),
             ],
         )
 
@@ -101,9 +110,10 @@ def mine_callback(chapter: "ChapterWidget"):
 def pick_unlock_mine():
     mines: list[Mine] = [mine for mine in MINES.values() if mine not in player.mines_available]
     options = [
-        (mine.get_unlock_arr(player.level), partial(unlock_mine, mine)) for mine in mines
+        Option(mine.get_unlock_arr(player.level), partial(unlock_mine, mine), enable_hotkeys=True)
+        for mine in mines
     ] + [
-        (["", "Go Back"], pick_mine),
+        Option(["", "Go Back"], pick_mine),
     ]
     return PickArgs(
         message="Which mine would you like to unlock?",
@@ -119,19 +129,19 @@ def unlock_mine(mine: Mine):
     if player.level < mine.min_player_level:
         return PickArgs(
             message="You aren't a high enough level for this mine",
-            options=[("Bummer!", pick_unlock_mine)],
+            options=[Option("Bummer!", pick_unlock_mine)],
         )
     if player.gold < mine.cost:
         return PickArgs(
             message="You don't have enough gold to unlock this mine",
-            options=[("Bummer!", pick_unlock_mine)],
+            options=[Option("Bummer!", pick_unlock_mine)],
         )
     player.gold -= mine.cost
     player.mines_available.append(mine)
     FileManager.save(player)
     return PickArgs(
         message=f"You have unlocked {mine.icon} {mine.name}",
-        options=[("Sweet!", pick_mine)],
+        options=[Option("Sweet!", pick_mine)],
     )
 
 

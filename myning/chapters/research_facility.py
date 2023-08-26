@@ -19,11 +19,11 @@ def enter():
     return PickArgs(
         message=f"Level {facility.level} Research Facility",
         options=[
-            ("Assign Researchers", pick_assign),
-            ("Remove Reasearcher", pick_remove),
-            ("Research", pick_research),
-            ("Upgrade Facility", confirm_upgrade),
-            ("Go Back", main_menu.enter),
+            Option("Assign Researchers", pick_assign, enable_hotkeys=True),
+            Option("Remove Reasearcher", pick_remove, enable_hotkeys=True),
+            Option("Research", pick_research, enable_hotkeys=True),
+            Option("Upgrade Facility", confirm_upgrade, enable_hotkeys=True),
+            Option("Go Back", main_menu.enter),
         ],
         subtitle=f"{len(facility.army)}/{facility.level} researchers assigned\n"
         f"{facility.points_per_hour(macguffin.research_boost):.2f} research points / hr",
@@ -33,8 +33,10 @@ def enter():
 def pick_assign():
     character_arrs = [character.abbreviated_arr for character in player.army[1:]]
     handlers = [partial(assign, character) for character in player.army[1:]]
-    options: list[Option] = list(zip(character_arrs, handlers))
-    options.append((["", "Go Back"], enter))
+    options = [
+        Option(label, handler) for label, handler in zip(character_arrs, handlers)
+    ]
+    options.append(Option(["", "Go Back"], enter))
     return PickArgs(
         message="Choose companion to assign to research",
         options=options,
@@ -48,7 +50,7 @@ def assign(character: Character):
     if not facility.has_free_space:
         return PickArgs(
             message="You can't add researchers until you upgrade your lab",
-            options=[("Bummer!", enter)],
+            options=[Option("Bummer!", enter)],
         )
     facility.add_researcher(character)
     player.move_ally_out(character)
@@ -60,12 +62,14 @@ def pick_remove():
     if not facility.army:
         return PickArgs(
             message="You have no companions currently researching",
-            options=[("Go Back", enter)],
+            options=[Option("Go Back", enter)],
         )
     character_arrs = [character.abbreviated_arr for character in facility.army]
     handlers = [partial(remove, character) for character in facility.army]
-    options: list[Option] = list(zip(character_arrs, handlers))
-    options.append((["", "Go Back"], enter))
+    options = [
+        Option(label, handler) for label, handler in zip(character_arrs, handlers)
+    ]
+    options.append(Option(["", "Go Back"], enter))
     return PickArgs(
         message="Choose companion to remove from research",
         options=options,
@@ -85,11 +89,12 @@ def remove(character: Character):
 def pick_research():
     available_research = [research for research in RESEARCH.values() if not research.max_level]
     options = [
-        (research.arr, partial(purchase_research, research)) for research in available_research
+        Option(research.arr, partial(purchase_research, research), enable_hotkeys=True)
+        for research in available_research
     ]
     return PickArgs(
         message="What would you like to research?",
-        options=[*options, ("Go Back", enter)],
+        options=[*options, Option("Go Back", enter)],
     )
 
 
@@ -97,7 +102,7 @@ def purchase_research(research: Upgrade):
     if facility.points < research.cost:
         return PickArgs(
             message="You don't have enough research points!",
-            options=[("Bummer!", pick_research)],
+            options=[Option("Bummer!", pick_research)],
         )
     facility.purchase(research.cost)
     research.level += 1
@@ -112,8 +117,8 @@ def confirm_upgrade():
         message="Are you sure you want to upgrade your research for "
         f"{Formatter.research_points(facility.upgrade_cost)}?",
         options=[
-            (f"Upgrade to level {facility.level + 1}", upgrade),
-            ("Maybe Later", enter),
+            Option(f"Upgrade to level {facility.level + 1}", upgrade, enable_hotkeys=True),
+            Option("Maybe Later", enter),
         ],
     )
 
@@ -122,7 +127,7 @@ def upgrade():
     if facility.points < facility.upgrade_cost:
         return PickArgs(
             message="You don't have enough research points",
-            options=[("Bummer!", enter)],
+            options=[Option("Bummer!", enter)],
         )
     facility.purchase(facility.upgrade_cost)
     facility.level_up()

@@ -2,7 +2,7 @@ import sys
 
 from rich.table import Table
 
-from myning.chapters import PickArgs, main_menu
+from myning.chapters import Option, PickArgs, main_menu
 from myning.objects.garden import Garden
 from myning.objects.macguffin import Macguffin
 from myning.objects.player import Player
@@ -23,10 +23,10 @@ def enter():
     return PickArgs(
         message="What would you like to do?",
         options=[
-            ("View Potential Macguffin", view_potential),
-            ("Go Back in Time", go_back_in_time),
-            ("About", about),
-            ("Go Back", main_menu.enter),
+            Option("View Potential Macguffin", view_potential, enable_hotkeys=True),
+            Option("Go Back in Time", go_back_in_time, enable_hotkeys=True),
+            Option("About", about, enable_hotkeys=True),
+            Option("Go Back", main_menu.enter),
         ],
     )
 
@@ -79,7 +79,7 @@ def view_potential():
     )
     return PickArgs(
         message=table,
-        options=[("Cool cool cool", enter)],
+        options=[Option("Cool cool cool", enter)],
     )
 
 
@@ -141,7 +141,7 @@ def go_back_in_time():
 def about():
     return PickArgs(
         message="About Going Back in Time",
-        options=[("I understand", enter)],
+        options=[Option("I understand", enter)],
         subtitle="When you go back in time, you will gain a macguffin which will provide a mineral "
         "value, xp gain, soul credit, research speed, and plant value boost. Unfortunately, you'll "
         "lose everything else you have (including upgrades). Journal unlocks will not be lost.",

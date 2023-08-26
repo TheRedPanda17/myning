@@ -1,6 +1,16 @@
 # pylint: disable=line-too-long
 
-from myning.chapters import PickArgs, PickHandler, StoryArgs, armory, healer, main_menu, mine, store
+from myning.chapters import (
+    Option,
+    PickArgs,
+    PickHandler,
+    StoryArgs,
+    armory,
+    healer,
+    main_menu,
+    mine,
+    store,
+)
 from myning.objects.character import Character
 from myning.objects.game import Game, GameState
 from myning.objects.item import Item, ItemType
@@ -113,7 +123,7 @@ def get_helmet():
 def learn_armory():
     return PickArgs(
         message=f"{jrod.name}: It's time to get your equipment ready. Here's what you're wearing down into the mines.\n",
-        options=[(f"Press {Formatter.keybind('Enter ↩')} to continue...", armory.pick_member)],
+        options=[Option(f"Press {Formatter.keybind('Enter ↩')} to continue...", armory.pick_member)],
         subtitle=player.equipment_table,
     )
 
@@ -143,7 +153,7 @@ def learn_healer():
 def learn_bindings():
     return PickArgs(
         message=f"{jrod.name}: Alright! Before I let you go, note that there are key bindings at the bottom of the screen, depending on what you're doing. You can press {Formatter.keybind('F1')} to see more. Also, many of the elements on the screen can be interacted with using the {Formatter.keybind('mouse')}.\n\nYou should have everything you need now. Good luck!",
-        options=[("Thanks!", exit_tutorial)],
+        options=[Option("Thanks!", exit_tutorial)],
     )
 
 
