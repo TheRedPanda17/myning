@@ -195,6 +195,7 @@ buy_full_set:
     - Buy a full set of Jedi gear in the blacksmith
     - Buy a full set of Blademaster gear in the blacksmith
     - Buy a full set of Spartan gear in the blacksmith
+    - Buy a full set of Hero gear in the blacksmith
   values:
     - Soldier
     - Commander
@@ -204,15 +205,17 @@ buy_full_set:
     - Jedi
     - Blademaster
     - Spartan
+    - Hero
   costs:
     - 500
-    - 2500
-    - 5000
-    - 10000
-    - 20000
-    - 50000
-    - 100000
-    - 400000
+    - 2_500
+    - 5_000
+    - 10_000
+    - 20_000
+    - 50_000
+    - 100_000
+    - 400_000
+    - 1_200_000
 
 auto_ghost_xp:
   name: Auto Ghost XP

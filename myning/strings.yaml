@@ -4,10 +4,12 @@ modifiers:
   - Pitiful
   - Poor
   - Miserable
+  - Puny
   - Feeble
   - Frail
   - Flimsy
   - Wobbly
+  - Lame
   - Shaky
   - Unsteady
   - Ol'
@@ -28,11 +30,13 @@ modifiers:
   - Stout
   - Robust
   - Hearty
+  - Quality
   - Powerful
   - Mighty
   - Vigorous
   - Stalwart
   - Unbreakable
+  - Legendary
   - Deadly
   - Tremendous
   - Unstoppable

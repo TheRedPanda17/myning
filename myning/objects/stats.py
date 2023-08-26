@@ -19,6 +19,8 @@ class IntegerStatKeys(str, Enum):
     WEAPONS_PURCHASED = "weapons_purchased"
     ARMOR_PURCHASED = "armor_purchased"
     GOLD_EARNED = "gold_earned"
+    FALLEN_SOLDIERS = "fallen_soldiers"
+    DISCOVERED_SPECIES = "discovered_species"
 
     # Need implementation
     GOLD_SPENT_ON_GEAR = "gold_spent_on_gear"
@@ -82,6 +84,9 @@ class Stats(Object, metaclass=Singleton):
 
     def increment_int_stat(self, key: IntegerStatKeys, increment_by: int = 1):
         self.integer_stats[key.value] = int(self.integer_stats.get(key.value, 0) + increment_by)
+
+    def set_int_stat(self, key: IntegerStatKeys, value: int):
+        self.integer_stats[key.value] = value
 
     def increment_float_stat(self, key: FloatStatKeys, increment_by: float):
         self.integer_stats[key.value] = self.integer_stats.get(key.value, 0) + increment_by

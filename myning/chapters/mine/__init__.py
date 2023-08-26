@@ -201,6 +201,9 @@ def complete_trip(abandoned: bool):
                 StoryArgs(message=message, response="Awesome!", subtitle=subtitle)
             )
 
+            stats.set_int_stat(IntegerStatKeys.DISCOVERED_SPECIES, len(player.discovered_species))
+            FileManager.save(stats)
+
     story_args_list.append(
         StoryArgs(
             message=f"Your mining trip in {trip.mine.icon} [dodger_blue1]{trip.mine.name}[/]\n",

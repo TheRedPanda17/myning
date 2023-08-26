@@ -10,6 +10,7 @@ from myning.objects.army import Army
 from myning.objects.character import Character
 from myning.objects.item import Item
 from myning.objects.player import Player
+from myning.objects.stats import IntegerStatKeys, Stats
 from myning.objects.trip import Trip
 from myning.utilities.file_manager import FileManager
 from myning.utilities.formatter import Formatter
@@ -27,6 +28,7 @@ from myning.utilities.ui import Icons
 
 player = Player()
 trip = Trip()
+stats = Stats()
 
 
 class Action(ABC):
@@ -153,6 +155,9 @@ class CombatAction(Action):
 
             if defender.health <= 0:
                 battle_order.remove(defender)
+                if is_friendly:
+                    stats.increment_int_stat(IntegerStatKeys.FALLEN_SOLDIERS)
+                    FileManager.save(stats)
 
     @property
     def next(self):
