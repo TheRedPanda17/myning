@@ -28,6 +28,7 @@ from myning.utilities.ui import Icons
 
 player = Player()
 trip = Trip()
+stats = Stats()
 
 
 class Action(ABC):
@@ -120,7 +121,6 @@ class CombatAction(Action):
         return content_table
 
     def fight(self):
-        stats = Stats()
         battle_order = _get_battle_order(player.army.living_members, self.enemies.living_members)
         # bonus = _mini_game_bonus(static_menu)
         for attacker in battle_order:
