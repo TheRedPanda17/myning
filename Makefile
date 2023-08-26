@@ -16,7 +16,7 @@ venv:
 venv-dev:
 	pyenv install 3.10 --skip-existing
 	pyenv virtualenv -f 3.10 myning-dev
-	pyenv local dev-myning
+	pyenv local myning-dev
 	pip install -r requirements.txt
 	pip install -r requirements-dev.txt
 
