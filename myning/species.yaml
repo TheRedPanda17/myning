@@ -387,10 +387,9 @@ Unicorn:
   dodge_chance: 6
   name: Unicorn
   intro: Why hath thy called upon me?
-  description:
-    Unicorns are wild and magical woodland creatures, symbols of purity and grace,
-    which could be captured only by a virgin.Its horn has the power to render poisoned water potable
-    and to heal sickness.
+  description: Unicorns are wild and magical woodland creatures, symbols
+    of purity and grace. Its horn has the power to render
+    poisoned water potable and to heal sickness.
   alignment: Chaotic Neutral
   size: medium
   rarity_tier: 7

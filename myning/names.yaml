@@ -1173,6 +1173,29 @@ Yuan-Ti Pureblood:
     - Cobra Strike
     - Viper Strike
     - Viper Venom
+Unicorn:
+  first:
+    - Craze
+    - Wynstar
+    - Milky Way
+    - Arion
+    - Monterya
+    - Aeolus
+    - Twinkle
+    - Aeolus
+    - Nestor
+    - Elwyn
+  last:
+    - Wilda
+    - Mona
+    - Matia
+    - Celestia
+    - Robin
+    - Ainsel
+    - Aurora
+    - Daisy
+    - Alize
+    - Sunshine
 Alien:
   first:
     - Jerry

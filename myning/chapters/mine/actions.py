@@ -10,6 +10,7 @@ from myning.objects.army import Army
 from myning.objects.character import Character
 from myning.objects.item import Item
 from myning.objects.player import Player
+from myning.objects.stats import IntegerStatKeys, Stats
 from myning.objects.trip import Trip
 from myning.utilities.file_manager import FileManager
 from myning.utilities.formatter import Formatter
@@ -119,6 +120,7 @@ class CombatAction(Action):
         return content_table
 
     def fight(self):
+        stats = Stats()
         battle_order = _get_battle_order(player.army.living_members, self.enemies.living_members)
         # bonus = _mini_game_bonus(static_menu)
         for attacker in battle_order:
@@ -153,6 +155,9 @@ class CombatAction(Action):
 
             if defender.health <= 0:
                 battle_order.remove(defender)
+                if is_friendly:
+                    stats.increment_int_stat(IntegerStatKeys.FALLEN_SOLDIERS)
+                    FileManager.save(stats)
 
     @property
     def next(self):

@@ -438,7 +438,7 @@ Chasm:
   type: regular
   exp_boost: 0.30
   min_player_level: 23
-  cost: 50000
+  cost: 100000
   enemies:
     - 41
     - 80
@@ -465,3 +465,35 @@ Chasm:
     minutes: 2100
     minerals: 8000
   companion_rarity: 6
+
+Gorge:
+  type: regular
+  exp_boost: 0.35
+  min_player_level: 27
+  cost: 250000
+  enemies:
+    - 61
+    - 101
+  character_levels:
+    - 27
+    - 31
+  max_enemy_items: 6
+  max_item_level: 29
+  max_enemy_item_level: 49
+  enemy_item_scale: 3.0
+  odds:
+    - action: combat
+      chance: 16
+    - action: equipment
+      chance: 8
+    - action: mineral
+      chance: 67
+    - action: recruit
+      chance: 0.8
+    - action: lose_ally
+      chance: 0.9
+  win_criteria:
+    kills: 30000
+    minutes: 2500
+    minerals: 15000
+  companion_rarity: 7
