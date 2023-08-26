@@ -25,9 +25,7 @@ player = Player()
 def enter():
     member_arrs = [member.abbreviated_arr for member in player.army]
     handlers = [partial(add_xp, member) for member in player.army]
-    options = [
-        Option(label, handler) for label, handler in zip(member_arrs, handlers)
-    ]
+    options = [Option(label, handler) for label, handler in zip(member_arrs, handlers)]
 
     if player.has_upgrade("auto_exp"):
         options.append(Option(["", "Auto-Add xp"], auto_add_xp, enable_hotkeys=True))
@@ -120,9 +118,7 @@ def pick_fire_muscle():
         )
     member_arrs = [member.abbreviated_arr for member in player.allies]
     handlers = [partial(confirm_fire_muscle, member) for member in player.allies]
-    options = [
-        Option(label, handler) for label, handler in zip(member_arrs, handlers)
-    ]
+    options = [Option(label, handler) for label, handler in zip(member_arrs, handlers)]
     options.append(Option(["", "Go Back"], enter))
     return PickArgs(
         message="Which Ally do you want to fire?",
