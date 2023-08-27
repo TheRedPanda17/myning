@@ -79,7 +79,7 @@ class MineralAction(Action):
     def next(self):
         if not trip.mine:
             return None
-        if settings.mini_games_disabled:
+        if settings.mini_games_disabled or self.duration == 0:
             return ItemsAction(
                 [generate_mineral(trip.mine.max_item_level, trip.mine.resource)],
                 "You found a mineral!",

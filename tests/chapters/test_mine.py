@@ -18,7 +18,7 @@ def get_content(app: MyningApp):
     # pylint: disable=protected-access
     return "".join(
         str(w._renderable)
-        for w in app.query("MineScreen > ScrollableContainer > Static")
+        for w in app.query("MineScreen ScrollableContainer Static")
         if isinstance(w, Static)
     )
 
