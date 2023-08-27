@@ -1,5 +1,3 @@
-from typing import List
-
 from myning.objects.character import Character
 from myning.objects.object import Object
 from myning.objects.singleton import Singleton
@@ -22,7 +20,7 @@ class Graveyard(Object, metaclass=Singleton):
     def __init__(
         self,
         soul_credits: float = 0,
-        fallen_allies: List[Character] = None,
+        fallen_allies: list[Character] = None,
     ):
         self.soul_credits = soul_credits
         self._fallen_allies = fallen_allies or []
