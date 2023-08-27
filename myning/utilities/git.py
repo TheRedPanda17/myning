@@ -39,7 +39,8 @@ def check_for_updates():
     if not changed:
         print("Changelog empty (probably just a patch!)")
 
-    input(f"Press {Formatter.keybind('Enter ↩️')}")
+    print(f"Press {Formatter.keybind('Enter ↩')} to continue", end="")
+    input()
     # So we can restart the game with the updated files
     sys.exit(122)
 
