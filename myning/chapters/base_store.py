@@ -133,7 +133,7 @@ class BaseStore(ABC):
             stats.increment_int_stat(IntegerStatKeys.WEAPONS_PURCHASED)
         elif item.type in EQUIPMENT_TYPES:
             stats.increment_int_stat(IntegerStatKeys.ARMOR_PURCHASED)
-        FileManager.multi_save(player, item, stats)
+        FileManager.multi_save(player, item, stats, inventory)
         return self.enter()
 
     def confirm_multi_buy(self, items: list[Item]):
@@ -157,7 +157,7 @@ class BaseStore(ABC):
         player.gold -= cost
         inventory.add_items(items)
         self.remove_items(*items)
-        FileManager.multi_save(player, *items)
+        FileManager.multi_save(player, *items, inventory)
         return self.enter()
 
     def hint_symbol(self, item: Item) -> str:

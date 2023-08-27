@@ -84,7 +84,7 @@ def equip(c: Character, equipment: Item):
         inventory.add_item(equipped)
     inventory.remove_item(equipment)
     c.equipment.change_item(equipment)
-    FileManager.multi_save(player, c)
+    FileManager.multi_save(inventory, c)
     return pick_slot(c)
 
 
@@ -99,5 +99,5 @@ def auto_equip():
                     inventory.add_item(equipped)
                 inventory.remove_item(best)
                 character.equipment.change_item(best)
-    FileManager.multi_save(*player.army)
+    FileManager.multi_save(*player.army, inventory)
     return pick_member()

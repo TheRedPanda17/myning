@@ -92,6 +92,7 @@ class Player(Character, metaclass=Singleton):
         self.equipment.clear()
         self.discovered_species = [SPECIES[CharacterSpecies.HUMAN.value]]
         self.completed_migrations = [1]
+        self.species = SPECIES[CharacterSpecies.HUMAN.value]
 
     def add_ally(self, ally: Character):
         self._allies.append(ally)

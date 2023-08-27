@@ -6,7 +6,6 @@ player = Player()
 
 
 def test_roll_for_species():
-    player.species = SPECIES[CharacterSpecies.HUMAN]
     player.discovered_species = [
         SPECIES[CharacterSpecies.HUMAN],
         SPECIES[CharacterSpecies.GOLIATH],

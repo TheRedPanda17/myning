@@ -243,7 +243,7 @@ def complete_trip(abandoned: bool):
             )
 
     trip.clear()
-    FileManager.multi_save(player, stats, trip)
+    FileManager.multi_save(player, stats, trip, inventory)
     return story_builder(story_args_list, exit_mine)
 
 

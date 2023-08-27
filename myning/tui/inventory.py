@@ -28,8 +28,7 @@ class InventoryWidget(DataTable):
         self.hash = inventory_hash
         self.border_title = "Inventory"
         self.border_subtitle = (
-            f"{len(inventory.items)} items "
-            f"({Formatter.gold(sum(item.value for item in inventory.items))})"
+            f"{len(inventory.items)} items " f"({Formatter.gold(inventory.total_value)})"
         )
         self.clear()
         self.add_rows(item.arr for item in inventory.items)

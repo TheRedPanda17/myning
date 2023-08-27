@@ -118,7 +118,7 @@ class Store(BaseStore):
         inventory.remove_item(item)
         self.add_item(item)
         stats.increment_int_stat(IntegerStatKeys.GOLD_EARNED, price)
-        FileManager.multi_save(player, stats)
+        FileManager.multi_save(player, stats, inventory)
         return self.enter()
 
     def confirm_mass_sell(self, description: str, items: list[Item], tax: float):
@@ -141,7 +141,7 @@ class Store(BaseStore):
         inventory.remove_items(*items)
         self.add_items(*items)
         stats.increment_int_stat(IntegerStatKeys.GOLD_EARNED, total)
-        FileManager.multi_save(player, stats)
+        FileManager.multi_save(player, stats, inventory)
         return self.enter()
 
 
