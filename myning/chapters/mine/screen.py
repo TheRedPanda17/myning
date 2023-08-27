@@ -127,7 +127,11 @@ class MineScreen(Screen[bool]):
         if not trip.mine:
             return
         self.content.update(self.action.content)
-        self.summary.update(trip.summary)
+        trip_summary = trip.summary
+        trip_summary.add_row(
+            Icons.HEART, "Army health:", f"{player.army.current_health}/{player.army.total_health}"
+        )
+        self.summary.update(trip_summary)
         self.progress.progress = trip.total_seconds - trip.seconds_left
         time_left = time_str(trip.seconds_left)
         self.time.update(f"{time_left} remaining")
