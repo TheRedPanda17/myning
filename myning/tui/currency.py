@@ -2,6 +2,7 @@ from rich.table import Table
 from textual.widgets import Static
 
 from myning.config import MINES
+from myning.objects.graveyard import Graveyard
 from myning.objects.macguffin import Macguffin
 from myning.objects.player import Player
 from myning.objects.research_facility import ResearchFacility
@@ -11,6 +12,7 @@ from myning.utilities.ui import Colors, Icons
 
 player = Player()
 macguffin = Macguffin()
+graveyard = Graveyard()
 facility = ResearchFacility()
 
 
@@ -26,7 +28,7 @@ class CurrencyWidget(Static):
             table.add_row(
                 "Soul credits",
                 Icons.SOUL_CREDITS,
-                Formatter.soul_credits(player.soul_credits),
+                Formatter.soul_credits(graveyard.soul_credits),
             )
 
         if MINES["Cavern"] in player.mines_completed:

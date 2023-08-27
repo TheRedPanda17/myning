@@ -2,6 +2,7 @@ from functools import partial
 
 from myning.chapters import PickArgs, main_menu
 from myning.objects.character import Character
+from myning.objects.graveyard import Graveyard
 from myning.objects.macguffin import Macguffin
 from myning.objects.player import Player
 from myning.objects.stats import FloatStatKeys, Stats
@@ -11,17 +12,18 @@ from myning.utilities.pick import confirm
 
 player = Player()
 macguffin = Macguffin()
+graveyard = Graveyard()
 stats = Stats()
 
 
 def enter():
-    if not player.fallen_allies:
+    if not graveyard.fallen_allies:
         return PickArgs(
             message="You have no fallen allies to revive.",
             options=[("Bummer", main_menu.enter)],
         )
-    member_arrs = [member.abbreviated_arr[:-1] for member in player.fallen_allies]
-    handlers = [partial(action, member) for member in player.fallen_allies]
+    member_arrs = [member.abbreviated_arr[:-1] for member in graveyard.fallen_allies]
+    handlers = [partial(action, member) for member in graveyard.fallen_allies]
     options = list(zip(member_arrs, handlers))
     return PickArgs(
         message="Select a fallen ally to revive or lay to rest",
@@ -62,7 +64,7 @@ def action(member: Character):
 def validate_revive(member: Character):
     soul_cost = get_soul_cost()
     gold_cost = get_gold_cost(member)
-    if player.soul_credits < soul_cost:
+    if graveyard.soul_credits < soul_cost:
         return PickArgs(
             message="You don't have enough soul credits! Send fallen allies to the afterlife "
             "(where their souls can rest) to earn more.",
@@ -85,11 +87,12 @@ def validate_revive(member: Character):
 def revive(member: Character, /):
     soul_cost = get_soul_cost()
     gold_cost = get_gold_cost(member)
-    player.remove_soul_credits(soul_cost)
+    graveyard.remove_soul_credits(soul_cost)
     player.gold -= gold_cost
     member.is_ghost = True
     player.revive_ally(member)
-    FileManager.multi_save(player, member)
+    graveyard.remove_fallen_ally(member)
+    FileManager.multi_save(player, member, graveyard)
     return enter()
 
 
@@ -99,10 +102,10 @@ def revive(member: Character, /):
     enter,
 )
 def lay_to_rest(member: Character, /):
-    player.add_soul_credits(macguffin.soul_credit_boost)
-    player.remove_fallen_ally(member)
+    graveyard.add_soul_credits(macguffin.soul_credit_boost)
+    graveyard.remove_fallen_ally(member)
     stats.increment_float_stat(FloatStatKeys.SOUL_CREDITS_EARNED, macguffin.soul_credit_boost)
-    FileManager.multi_save(player, stats)
+    FileManager.multi_save(player, stats, graveyard)
     return enter()
 
 

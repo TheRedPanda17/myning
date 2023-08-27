@@ -8,6 +8,7 @@ from rich.table import Table
 
 from myning.objects.army import Army
 from myning.objects.character import Character
+from myning.objects.graveyard import Graveyard
 from myning.objects.item import Item
 from myning.objects.player import Player
 from myning.objects.settings import Settings
@@ -31,6 +32,7 @@ player = Player()
 settings = Settings()
 stats = Stats()
 trip = Trip()
+graveyard = Graveyard()
 
 
 class Action(ABC):
@@ -308,7 +310,8 @@ class LoseAllyAction(Action):
             )
             player.kill_ally(ally)
             trip.remove_ally(ally)
-            FileManager.multi_save(trip, player)
+            graveyard.add_fallen_ally(ally)
+            FileManager.multi_save(trip, player, graveyard)
         super().__init__(5)
 
     @property

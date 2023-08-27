@@ -26,7 +26,6 @@ class Player(Character, metaclass=Singleton):
                 name = input("\nEnter your player name: ")
             player = cls(name)
             player._allies = []
-            player._fallen_allies = []
             player._fired_allies = []
             player.inventory = Inventory()
             player.gold = 1
@@ -36,7 +35,6 @@ class Player(Character, metaclass=Singleton):
             player.mine_progressions = {}
             player.mines_completed = []
             player.blacksmith_level = 1
-            player.soul_credits = 0
             player.discovered_species = [SPECIES[CharacterSpecies.HUMAN.value]]
             player.completed_migrations = [1]
         cls._instance = player
@@ -85,7 +83,6 @@ class Player(Character, metaclass=Singleton):
 
     def reset(self):
         self._allies = []
-        self._fallen_allies = []
         self._fired_allies = []
         self.inventory = Inventory()
         self.gold = 1
@@ -99,7 +96,6 @@ class Player(Character, metaclass=Singleton):
         self.experience = 0
         self.health = self.max_health
         self.equipment.clear()
-        self.soul_credits = 0
         self.discovered_species = [SPECIES[CharacterSpecies.HUMAN.value]]
         self.completed_migrations = [1]
 
@@ -107,7 +103,6 @@ class Player(Character, metaclass=Singleton):
         self._allies.append(ally)
 
     def kill_ally(self, ally: Character):
-        self._fallen_allies.append(ally)
         self.remove_ally(ally)
 
     def fire_ally(self, ally: Character):
@@ -123,11 +118,7 @@ class Player(Character, metaclass=Singleton):
         ally.equipment.clear()
         self._allies.remove(ally)
 
-    def remove_fallen_ally(self, ally: Character):
-        self._fallen_allies.remove(ally)
-
     def revive_ally(self, ally: Character):
-        self.remove_fallen_ally(ally)
         self._allies.append(ally)
 
     def add_available_xp(self, xp: int):
@@ -136,14 +127,6 @@ class Player(Character, metaclass=Singleton):
     def remove_available_xp(self, xp: int):
         if xp > 0:
             self.exp_available -= xp
-
-    def add_soul_credits(self, credits):
-        if credits > 0:
-            self.soul_credits += credits
-
-    def remove_soul_credits(self, credits: int):
-        if credits > 0:
-            self.soul_credits -= credits
 
     def get_mine_progress(self, progress_name):
         progress = self.mine_progressions.get(progress_name)
@@ -155,10 +138,6 @@ class Player(Character, metaclass=Singleton):
 
     def roll_for_species(self):
         return random.choice([s for s in self.discovered_species if s.name != self.species.name])
-
-    @property
-    def fallen_allies(self) -> list[Character]:
-        return self._fallen_allies
 
     @property
     def ghost_count(self):
@@ -179,7 +158,6 @@ class Player(Character, metaclass=Singleton):
         return {
             **character,
             "allies": [ally.to_dict() for ally in self._allies],
-            "fallen_allies": [ally.to_dict() for ally in self._fallen_allies],
             "fired_allies": [ally.to_dict() for ally in self._fired_allies],
             "inventory": self.inventory.to_dict(),
             "gold": self.gold,
@@ -191,7 +169,6 @@ class Player(Character, metaclass=Singleton):
                 name: progress.to_dict() for name, progress in self.mine_progressions.items()
             },
             "blacksmith_level": self.blacksmith_level,
-            "soul_credits": self.soul_credits,
             "discovered_races": [species.name for species in self.discovered_species],
             "completed_migrations": self.completed_migrations,
         }
@@ -200,9 +177,6 @@ class Player(Character, metaclass=Singleton):
     def from_dict(cls, attrs: dict):
         player = super().from_dict(attrs)
         player._allies = [Character.from_dict(ally) for ally in attrs["allies"]]
-        player._fallen_allies = [
-            Character.from_dict(ally) for ally in attrs.get("fallen_allies", [])
-        ]
         player._fired_allies = [Character.from_dict(ally) for ally in attrs.get("fired_allies", [])]
         player.inventory = Inventory.from_dict(attrs["inventory"])
         player.gold = int(attrs["gold"])
@@ -223,7 +197,6 @@ class Player(Character, metaclass=Singleton):
             for name, progress in attrs["mine_progressions"].items()
         }
         player.blacksmith_level = attrs.get("blacksmith_level") or 1
-        player.soul_credits = attrs.get("soul_credits") or 0
         player.discovered_species = [
             SPECIES[species_name]
             for species_name in attrs.get("discovered_races", [CharacterSpecies.HUMAN.value])
