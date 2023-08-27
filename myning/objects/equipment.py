@@ -29,11 +29,13 @@ class Equipment:
     def clear(self):
         self._slots = {category: None for category in EQUIPMENT_TYPES}
 
-    def get_slot_item(self, slot):
+    def get_slot_item(self, slot: ItemType):
         return self._slots[slot]
 
-    def equip(self, slot, item):
-        self._slots[slot] = item
+    def equip(self, item: Item):
+        unequipped = self._slots[item.type]
+        self._slots[item.type] = item
+        return unequipped
 
     @property
     def stats(self):
@@ -71,9 +73,6 @@ class Equipment:
             }
         )
         return equipment
-
-    def change_item(self, item: Item):
-        self._slots[item.type] = item
 
     @property
     def table(self):

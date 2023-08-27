@@ -252,7 +252,7 @@ class VictoryAction(Action):
 
     @property
     def next(self):
-        return self if self.duration else None
+        return self if self.duration > 1 else None
 
 
 class ItemAction(Action):

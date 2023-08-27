@@ -33,7 +33,7 @@ def generate_character(
     if max_items:
         item_level = max_item_level if max_item_level else level
         weapon = generate_equipment(item_level, type=ItemType.WEAPON, scale=item_scale)
-        character.equipment.equip(weapon.type, weapon)
+        character.equipment.equip(weapon)
 
         for _ in range(get_random_int(1, max_items)):
             type = get_random_array_item(
@@ -45,7 +45,7 @@ def generate_character(
                 ]
             )
             armor = generate_equipment(level, type, scale=item_scale)
-            character.equipment.equip(armor.type, armor)
+            character.equipment.equip(armor)
 
     return character
 
