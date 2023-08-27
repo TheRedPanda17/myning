@@ -18,4 +18,4 @@ def run():
 
         FileManager.save(graveyard)
 
-        print("\nJust doing some back-end maintainance.")
+        print("\nJust doing some back-end maintenance.")

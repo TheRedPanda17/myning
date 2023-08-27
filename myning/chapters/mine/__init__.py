@@ -1,10 +1,10 @@
-import os
 from functools import partial
 from typing import TYPE_CHECKING
 
 from myning.chapters import DynamicArgs, Option, PickArgs, StoryArgs, healer, main_menu, tutorial
 from myning.chapters.mine.screen import MineScreen
 from myning.config import MINES, RESEARCH, SPECIES
+from myning.objects.inventory import Inventory
 from myning.objects.macguffin import Macguffin
 from myning.objects.mine import Mine, MineType
 from myning.objects.player import Player
@@ -27,6 +27,7 @@ macguffin = Macguffin()
 facility = ResearchFacility()
 stats = Stats()
 trip = Trip()
+inventory = Inventory()
 
 
 def exit_mine():
@@ -187,7 +188,7 @@ def complete_trip(abandoned: bool):
                 "were donated to the training facility.",
             )
         )
-    player.inventory.add_items(trip.items_found + trip.minerals_mined)
+    inventory.add_items(trip.items_found + trip.minerals_mined)
 
     for ally in trip.allies_gained:
         player.add_ally(ally)

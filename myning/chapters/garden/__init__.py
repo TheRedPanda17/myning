@@ -3,6 +3,7 @@ from myning.chapters.base_store import BaseStore
 from myning.chapters.garden.manage import manage_garden
 from myning.objects.buying_option import BuyingOption
 from myning.objects.garden import Garden as GardenObject
+from myning.objects.inventory import Inventory
 from myning.objects.item import ItemType
 from myning.objects.player import Player
 from myning.utilities.file_manager import FileManager
@@ -11,6 +12,7 @@ from myning.utilities.generators import generate_plant
 
 player = Player()
 garden = GardenObject()
+inventory = Inventory()
 
 
 def enter():
@@ -65,7 +67,7 @@ class Garden(BaseStore):
     def view_harvest(self):
         options = [
             Option(plant.fruit_stand_arr, self.view_plant, enable_hotkeys=False)
-            for plant in player.inventory.get_slot(ItemType.PLANT)
+            for plant in inventory.get_slot(ItemType.PLANT)
             if plant.harvested
         ]
         options.append(Option(["", "Go Back"], self.enter))

@@ -15,4 +15,4 @@ def run():
             facility = ResearchFacility()
         FileManager.save(facility)
 
-        print("\nJust doing some back-end maintainance.")
+        print("\nJust doing some back-end maintenance.")

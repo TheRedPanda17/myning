@@ -7,6 +7,7 @@ from myning.chapters import Option, OptionLabel, PickArgs, main_menu
 from myning.config import UPGRADES
 from myning.objects.buying_option import BuyingOption
 from myning.objects.equipment import EQUIPMENT_TYPES
+from myning.objects.inventory import Inventory
 from myning.objects.item import Item, ItemType
 from myning.objects.player import Player
 from myning.objects.settings import Settings, SortOrder
@@ -17,6 +18,7 @@ from myning.utilities.formatter import Formatter
 player = Player()
 stats = Stats()
 settings = Settings()
+inventory = Inventory()
 
 
 class BaseStore(ABC):
@@ -125,7 +127,7 @@ class BaseStore(ABC):
 
     def buy(self, item: Item):
         player.gold -= item.value
-        player.inventory.add_item(item)
+        inventory.add_item(item)
         self.remove_item(item)
         if item.type == ItemType.WEAPON:
             stats.increment_int_stat(IntegerStatKeys.WEAPONS_PURCHASED)
@@ -153,7 +155,7 @@ class BaseStore(ABC):
     def multi_buy(self, items: list[Item]):
         cost = sum(item.value for item in items)
         player.gold -= cost
-        player.inventory.add_items(items)
+        inventory.add_items(items)
         self.remove_items(*items)
         FileManager.multi_save(player, *items)
         return self.enter()
@@ -168,7 +170,7 @@ class BaseStore(ABC):
         return ""
 
     def is_best_item(self, item: Item):
-        best = player.inventory.get_best_in_slot(item.type)
+        best = inventory.get_best_in_slot(item.type)
         for character in player.army:
             equipped = character.equipment.get_slot_item(item.type)
             if equipped is None:

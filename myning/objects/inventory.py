@@ -1,11 +1,25 @@
 from typing import Literal, overload
 
 from myning.objects.item import Item, ItemType
+from myning.objects.object import Object
 from myning.objects.plant import Plant
+from myning.objects.singleton import Singleton
 from myning.utilities.file_manager import FileManager, Subfolders
 
 
-class Inventory:
+class Inventory(Object, metaclass=Singleton):
+    @classmethod
+    def initialize(cls):
+        graveyard = FileManager.load(Inventory, cls.file_name)
+        if not graveyard:
+            graveyard = cls()
+        cls._instance = graveyard
+
+    @classmethod
+    @property
+    def file_name(cls):
+        return "inventory"
+
     def __init__(self):
         self._items: dict[ItemType, list[Item]] = {}
 
@@ -56,6 +70,15 @@ class Inventory:
     def items(self):
         return [item for type in self._items for item in self._items[type]]
 
+    @property
+    def seeds(self):
+        plants = self.get_slot(ItemType.PLANT)
+        return [p for p in plants if p.is_seed]  # pylint: disable=not-an-iterable
+
+    @property
+    def total_value(self) -> int:
+        return sum(item.value for item in self.items)
+
     def to_dict(self) -> dict:
         dict = {}
         for type_name, type in self._items.items():
@@ -65,13 +88,13 @@ class Inventory:
         return dict
 
     @classmethod
-    def from_dict(cls, dict: dict):
+    def from_dict(cls, data: dict) -> "Inventory":
         inventory = Inventory()
-        for type_name, type in dict.items():
-            inventory._items[type_name] = []
-            for item_id in type:
-                icls = Plant if type_name == ItemType.PLANT.value else Item
+        for item_type, items_ids in data.items():
+            inventory._items[item_type] = []
+            for item_id in items_ids:
+                icls = Plant if item_type == ItemType.PLANT.value else Item
                 fetched = FileManager.load(icls, item_id, Subfolders.ITEMS)
                 if fetched:
-                    inventory._items[type_name].append(fetched)
+                    inventory._items[item_type].append(fetched)
         return inventory

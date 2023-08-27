@@ -5,6 +5,7 @@ from rich.text import Text
 from myning.chapters import Option, PickArgs, main_menu, tutorial
 from myning.chapters.base_store import BaseStore
 from myning.config import MARKDOWN_RATIO, UPGRADES
+from myning.objects.inventory import Inventory
 from myning.objects.item import Item, ItemType
 from myning.objects.macguffin import Macguffin
 from myning.objects.plant import Plant
@@ -18,6 +19,7 @@ from myning.utilities.pick import confirm
 player = Player()
 macguffin = Macguffin()
 stats = Stats()
+inventory = Inventory()
 
 
 def enter():
@@ -57,11 +59,11 @@ class Store(BaseStore):
                 partial(self.sell, item),
                 enable_hotkeys=False,
             )
-            for item in player.inventory.items
+            for item in inventory.items
         ]
         if player.has_upgrade("sell_minerals"):
             # pylint: disable=protected-access
-            minerals = player.inventory._items[ItemType.MINERAL].copy()
+            minerals = inventory._items[ItemType.MINERAL].copy()
             tax = UPGRADES["sell_minerals"].player_value / 100
             options.append(
                 Option(
@@ -73,7 +75,7 @@ class Store(BaseStore):
         if player.has_upgrade("sell_almost_everything"):
             all_but_top_3_items = []
             # pylint: disable=protected-access
-            for type_items in player.inventory._items.values():
+            for type_items in inventory._items.values():
                 sorted_type_items = sorted(type_items, key=lambda i: i.value)
                 all_but_top_3_items.extend(sorted_type_items[:-3])
             tax = UPGRADES["sell_almost_everything"].player_value / 100
@@ -89,7 +91,7 @@ class Store(BaseStore):
                 )
             )
         if player.has_upgrade("sell_everything"):
-            all_items = player.inventory.items
+            all_items = inventory.items
             tax = UPGRADES["sell_everything"].player_value / 100
             options.append(
                 Option(
@@ -113,7 +115,7 @@ class Store(BaseStore):
     def sell(self, item: Item):
         price = sell_price(item)
         player.gold += price
-        player.inventory.remove_item(item)
+        inventory.remove_item(item)
         self.add_item(item)
         stats.increment_int_stat(IntegerStatKeys.GOLD_EARNED, price)
         FileManager.multi_save(player, stats)
@@ -136,7 +138,7 @@ class Store(BaseStore):
 
     def mass_sell(self, items: list[Item], total: int):
         player.gold += total
-        player.inventory.remove_items(*items)
+        inventory.remove_items(*items)
         self.add_items(*items)
         stats.increment_int_stat(IntegerStatKeys.GOLD_EARNED, total)
         FileManager.multi_save(player, stats)

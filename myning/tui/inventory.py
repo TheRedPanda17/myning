@@ -1,9 +1,11 @@
 from textual.widgets import DataTable
 
+from myning.objects.inventory import Inventory
 from myning.objects.player import Player
 from myning.utilities.formatter import Formatter
 
 player = Player()
+inventory = Inventory()
 
 
 class InventoryWidget(DataTable):
@@ -26,8 +28,8 @@ class InventoryWidget(DataTable):
         self.hash = inventory_hash
         self.border_title = "Inventory"
         self.border_subtitle = (
-            f"{len(player.inventory.items)} items "
-            f"({Formatter.gold(sum(item.value for item in player.inventory.items))})"
+            f"{len(inventory.items)} items "
+            f"({Formatter.gold(sum(item.value for item in inventory.items))})"
         )
         self.clear()
-        self.add_rows(item.arr for item in player.inventory.items)
+        self.add_rows(item.arr for item in inventory.items)
