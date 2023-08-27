@@ -5,6 +5,7 @@ import rich
 from myning.migrations.migrate import check_for_migrations
 from myning.objects.game import Game
 from myning.objects.garden import Garden
+from myning.objects.graveyard import Graveyard
 from myning.objects.macguffin import Macguffin
 from myning.objects.player import Player
 from myning.objects.research_facility import ResearchFacility
@@ -28,15 +29,17 @@ def main():
 
     Game.initialize()
     Garden.initialize()
+    Graveyard.initialize()
     Macguffin.initialize()
     ResearchFacility.initialize()
     Settings.initialize()
     Stats.initialize()
     Trip.initialize()
 
-    # This ensures new players have the new migrations. Preferably, we'd loop through the
-    # MIGRATIONS, but we have a circular dependency if we do, so this is the hack right now.
-    Player().completed_migrations = [1, 2, 3, 4, 5, 6, 7, 8]
+    # import MIGRATIONS here to resolve circular dependencies
+    from myning.migrations import MIGRATIONS  # pylint: disable=import-outside-toplevel
+
+    Player().completed_migrations = list(MIGRATIONS.keys())
 
     # Restore builtin print before starting tui
     builtins.print = ogprint
@@ -48,6 +51,7 @@ def main():
     FileManager.multi_save(
         Game(),
         Garden(),
+        Graveyard(),
         Macguffin(),
         Player(),
         ResearchFacility(),
