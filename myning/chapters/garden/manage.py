@@ -148,7 +148,7 @@ def plant_seed(seed: Plant, row: int, column: int):
     seed.sow()
     garden.add_plant(seed, row, column)
     inventory.remove_item(seed)
-    FileManager.multi_save(player, garden, seed, inventory)
+    FileManager.multi_save(garden, seed, inventory)
     return manage_garden()
 
 
