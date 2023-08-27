@@ -19,11 +19,11 @@ class PlantType(str, Enum):
     ORANGE = "orange"
 
 
-PLANT_TYPES = [plant_type for plant_type in PlantType]
+PLANT_TYPES = list(PlantType)
 
 
 class Plant(Item):
-    def __init__(self, *args, plant_type: PlantType = None, **kwargs):
+    def __init__(self, *args, plant_type: PlantType | None = None, **kwargs):
         if "plant" not in args:
             args = [*args, "plant"]
         super().__init__(*args, **kwargs)
@@ -41,14 +41,6 @@ class Plant(Item):
             "harvested": self.harvested.isoformat() if self.harvested else None,
         }
 
-    def sow(self):
-        self.started = datetime.now()
-
-    def grow(self):
-        self.name = self.name.replace("seed", "plant")
-        self.description = self.description.replace("seed", "plant")
-        self.harvested = datetime.now()
-
     @classmethod
     def from_dict(cls, dict: dict):
         if not dict:
@@ -64,19 +56,64 @@ class Plant(Item):
 
         return cls
 
+    def sow(self):
+        self.started = datetime.now()
+
+    def grow(self):
+        self.name = self.name.replace("seed", "plant")
+        self.description = self.description.replace("seed", "plant")
+        self.harvested = datetime.now()
+
+    @property
+    def icon(self):
+        if self.expired:
+            return "🤢"
+
+        match self.plant_type:
+            case PlantType.APPLE:
+                return "🍎"
+            case PlantType.BANANA:
+                return "🍌"
+            case PlantType.CHERRY:
+                return "🍒"
+            case PlantType.STRAWBERRY:
+                return "🍓"
+            case PlantType.COCONUT:
+                return "🥥"
+            case PlantType.ORANGE:
+                return "🍊"
+            case _:
+                return Icons.UNKNOWN.value
+
     @property
     def growth_icon(self):
-        if self.growth >= 1:
-            return self.icon
-        if self.growth >= 0.75:
-            return "🌳"
-        if self.growth >= 0.5:
-            return "🪴"
-        return "🌱"
+        growth_icons = {
+            0: "🌱",
+            0.5: "🪴",
+            0.75: "🌳",
+            1: self.icon,
+        }
+        return growth_icons[max(key for key in growth_icons if self.growth >= key)]
 
     @property
     def end_time(self):
-        return self.started + timedelta(minutes=self.value * 10)
+        return self.started + timedelta(minutes=self.value * 10) if self.started else None
+
+    @property
+    def elapsed_time(self):
+        if not self.started or not self.end_time:
+            return 0
+        return (datetime.now() - self.started).total_seconds()
+
+    @property
+    def total_time(self):
+        if not self.started or not self.end_time:
+            return 0
+        return (self.end_time - self.started).total_seconds()
+
+    @property
+    def growth(self):
+        return min(1, self.elapsed_time / self.total_time)
 
     @property
     def expires_in(self):
@@ -90,28 +127,16 @@ class Plant(Item):
         return self.expires_in <= 0
 
     @property
-    def growth(self):
-        if not self.started:
-            return 0
-        elapsed = (datetime.now() - self.started).total_seconds()
-        total_time = (self.end_time - self.started).total_seconds()
-        return min(1, elapsed / total_time)
-
-    @property
-    def ready(self) -> bool:
-        return self.end_time <= datetime.now()
+    def ready(self):
+        return self.end_time <= datetime.now() if self.end_time else False
 
     @property
     def is_seed(self):
         return "seed" in self.name
 
     @property
-    def garden_string(self):
-        return f"{self.growth_icon}"
-
-    @property
     def time_left(self):
-        return max(0, (self.end_time - datetime.now()).total_seconds())
+        return max(0, (self.end_time - datetime.now()).total_seconds()) if self.end_time else 0
 
     @property
     def details(self):
@@ -135,24 +160,3 @@ class Plant(Item):
             Icons.TIME,
             Text.from_markup(f"{Formatter.level(int(self.expires_in / 60))} mins", justify="right"),
         ]
-
-    @property
-    def icon(self):
-        if self.expired:
-            return "🤢"
-
-        match self.plant_type:
-            case PlantType.APPLE:
-                return "🍎"
-            case PlantType.BANANA:
-                return "🍌"
-            case PlantType.CHERRY:
-                return "🍒"
-            case PlantType.STRAWBERRY:
-                return "🍓"
-            case PlantType.COCONUT:
-                return "🥥"
-            case PlantType.ORANGE:
-                return "🍊"
-            case _:
-                return Icons.UNKNOWN.value

@@ -17,8 +17,6 @@ facility = ResearchFacility()
 
 
 class CurrencyWidget(Static):
-    DEFAULT_CLASSES = "container"
-
     def render(self):
         table = Table.grid(padding=(0, 1, 0, 0))
         table.add_column()
