@@ -65,27 +65,6 @@ class Plant(Item):
         self.harvested = datetime.now()
 
     @property
-    def icon(self):
-        if self.expired:
-            return "🤢"
-
-        match self.plant_type:
-            case PlantType.APPLE:
-                return "🍎"
-            case PlantType.BANANA:
-                return "🍌"
-            case PlantType.CHERRY:
-                return "🍒"
-            case PlantType.STRAWBERRY:
-                return "🍓"
-            case PlantType.COCONUT:
-                return "🥥"
-            case PlantType.ORANGE:
-                return "🍊"
-            case _:
-                return Icons.UNKNOWN.value
-
-    @property
     def growth_icon(self):
         if self.growth >= 1:
             return self.icon
@@ -160,3 +139,24 @@ class Plant(Item):
             Icons.TIME,
             Text.from_markup(f"{Formatter.level(int(self.expires_in / 60))} mins", justify="right"),
         ]
+
+    @property
+    def icon(self):
+        if self.expired:
+            return "🤢"
+
+        match self.plant_type:
+            case PlantType.APPLE:
+                return "🍎"
+            case PlantType.BANANA:
+                return "🍌"
+            case PlantType.CHERRY:
+                return "🍒"
+            case PlantType.STRAWBERRY:
+                return "🍓"
+            case PlantType.COCONUT:
+                return "🥥"
+            case PlantType.ORANGE:
+                return "🍊"
+            case _:
+                return Icons.UNKNOWN.value
