@@ -80,6 +80,16 @@ class Blacksmith(BaseStore):
             ],
         )
 
+    def confirm_multi_buy(self, items: list[Item]):
+        assert self.buying_option
+        if not items:
+            return PickArgs(
+                message=f"Blacksmith does not have {self.buying_option.name.partition(' ')[2]}; "
+                "you need to upgrade the smith first.",
+                options=[("Shucks", self.pick_buy)],
+            )
+        return super().confirm_multi_buy(items)
+
     def confirm_upgrade(self):
         if self.maxed:
             return PickArgs(
