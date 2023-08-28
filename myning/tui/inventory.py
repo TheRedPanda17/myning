@@ -7,6 +7,8 @@ player = Player()
 
 
 class InventoryWidget(DataTable):
+    hash = None
+
     def on_mount(self):
         self.show_cursor = False
         self.show_header = False
@@ -19,6 +21,10 @@ class InventoryWidget(DataTable):
         self.focus()
 
     def update(self):
+        inventory_hash = hash(tuple(player.inventory.items))
+        if self.hash == inventory_hash:
+            return
+        self.hash = inventory_hash
         self.border_title = "Inventory"
         self.border_subtitle = (
             f"{len(player.inventory.items)} items "
