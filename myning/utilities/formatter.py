@@ -41,4 +41,4 @@ class Formatter:
 
     @staticmethod
     def keybind(k: str):
-        return f"[bold dodger_blue1]{k}[/]"
+        return f"[bold dodger_blue1]{k}[/bold]"
