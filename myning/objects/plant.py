@@ -87,13 +87,13 @@ class Plant(Item):
 
     @property
     def growth_icon(self):
-        growth_icons = {
-            0: "🌱",
-            0.5: "🪴",
-            0.75: "🌳",
-            1: self.icon,
-        }
-        return growth_icons[max(key for key in growth_icons if self.growth >= key)]
+        if self.growth >= 1:
+            return self.icon
+        if self.growth >= 0.75:
+            return "🌳"
+        if self.growth >= 0.5:
+            return "🪴"
+        return "🌱"
 
     @property
     def end_time(self):
