@@ -5,6 +5,7 @@ Body {
 
 CurrencyWidget,
 Header,
+HealScreen > Container,
 MineScreen > Container,
 ScrollableContainer {
   border: round dodgerblue;
@@ -75,21 +76,24 @@ SideBar > DataTable {
   height: 1fr;
 }
 
-/* MineScreen */
+/* MineScreen and HealScreen */
 
+HealScreen Container,
 MineScreen Container {
   height: auto;
   layout: horizontal;
 }
 
+HealScreen Bar,
+HealScreen ProgressBar,
+MineScreen Bar,
+MineScreen ProgressBar {
+  width: 1fr;
+}
+
 MineScreen Container > Static {
   width: auto;
   margin: 0 1 0 0;
-}
-
-MineScreen ProgressBar,
-MineScreen Bar {
-  width: 1fr;
 }
 
 /* HelpScreen */

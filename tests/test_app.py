@@ -107,7 +107,7 @@ async def test_healer(app: MyningApp, pilot: Pilot):
     assert chapter.question.message == "Start Recovery?"
 
     await pilot.press("enter")
-    assert app.query("HealerScreen")
+    assert app.query("HealScreen")
 
     await pilot.press("enter")
     assert player.health == player.max_health

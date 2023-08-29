@@ -8,7 +8,7 @@ from textual.screen import Screen
 from textual.widgets import Footer, ProgressBar, Static
 
 from myning.chapters import DynamicArgs, Option, PickArgs, main_menu, tutorial
-from myning.config import UPGRADES
+from myning.config import HEAL_TICK_LENGTH, UPGRADES
 from myning.objects.army import Army
 from myning.objects.player import Player
 from myning.tui.header import Header
@@ -77,10 +77,10 @@ def healer_callback(chapter: "ChapterWidget"):
         return chapter.pick(healthy())
 
     chapter.clear()
-    chapter.app.push_screen(HealerScreen(), screen_callback)
+    chapter.app.push_screen(HealScreen(), screen_callback)
 
 
-class HealerScreen(Screen[None]):
+class HealScreen(Screen[None]):
     BINDINGS = [("enter", "skip", "Heal")]
 
     def __init__(self) -> None:
@@ -111,15 +111,13 @@ class HealerScreen(Screen[None]):
         self.progress.progress = player.army.current_health
 
     def flash_border(self):
-        og_border = self.content_container.styles.border
-
-        def reset_border():
-            self.content_container.styles.border = og_border
-
         self.content_container.styles.border = ("round", "lime")
-        self.set_timer(0.5, reset_border)
+        self.set_timer(0.5, self.reset_border)
 
-    @throttle(0.1)
+    def reset_border(self):
+        self.content_container.styles.border = ("round", "dodgerblue")
+
+    @throttle(HEAL_TICK_LENGTH)
     def action_skip(self):
         if not self.heal():
             self.exit()

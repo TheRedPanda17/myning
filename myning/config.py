@@ -46,6 +46,7 @@ with open("myning/upgrades.yaml", "r") as f:
 MARKDOWN_RATIO = CONFIG["markdown_ratio"]
 XP_COST = CONFIG["xp_cost"]
 
+HEAL_TICK_LENGTH = CONFIG["heal_tick_length"]
 MINE_TICK_LENGTH = CONFIG["mine_tick_length"]
 TICK_LENGTH = CONFIG["tick_length"]
 VICTORY_TICK_LENGTH = CONFIG["victory_tick_length"]
