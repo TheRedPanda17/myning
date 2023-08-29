@@ -173,7 +173,7 @@ def get_labels_and_hotkeys(options: list[Option]) -> tuple[list[list[str | Text]
     hotkeys: dict[str, int] = {}
     labels: list[list[str | Text]] = []
     # The last Option is always assumed to be back or continue, so it defaults to no hotkey
-    if len(options) > 0:
+    if options:
         options[-1].enable_hotkeys = False
     for option_index, option in enumerate(options):
         if not isinstance(option.label, list):
