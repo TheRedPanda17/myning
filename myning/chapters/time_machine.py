@@ -84,7 +84,7 @@ def view_potential():
 
 
 @confirm(
-    "\n".join(
+    lambda: "\n".join(
         [
             "Are you sure you want to erase ALL progress and go back in time?",
             f"[{Colors.LOCKED}]You'll lose all your progress and gain the following boosts:",
