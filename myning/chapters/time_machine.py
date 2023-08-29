@@ -11,6 +11,7 @@ from myning.objects.singleton import Singleton
 from myning.utilities.file_manager import FileManager
 from myning.utilities.formatter import Formatter
 from myning.utilities.pick import confirm
+from myning.utilities.species_rarity import get_time_travel_species
 from myning.utilities.ui import Colors, Icons
 
 facility = ResearchFacility()
@@ -105,7 +106,7 @@ def go_back_in_time():
 
     journal = player.discovered_species
     migrations = player.completed_migrations
-    new_species = player.roll_for_species()
+    new_species = get_time_travel_species()
     player_name = player.name
     player_id = player.id
 
