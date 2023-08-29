@@ -116,8 +116,6 @@ class ChapterWidget(ScrollableContainer):
             TabTitle.change_tab_status(title)
         self.question.message = args.message
         self.question.subtitle = args.subtitle or ""
-        # labels = [o[0] for o in args.options]
-        # handlers = [o[1] for o in args.options]
         if self.query("GardenTable"):
             HOTKEY_ALIASES["h"] = "left"
             HOTKEY_ALIASES["l"] = "right"
