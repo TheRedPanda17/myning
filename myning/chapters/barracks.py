@@ -119,10 +119,7 @@ def pick_fire_muscle():
         )
     member_arrs = [member.abbreviated_arr for member in player.allies]
     handlers = [partial(confirm_fire_muscle, member) for member in player.allies]
-    options = [
-        Option(label, handler)
-        for label, handler in zip(member_arrs, handlers)
-    ]
+    options = [Option(label, handler) for label, handler in zip(member_arrs, handlers)]
     options.append(Option(["", "Go Back"], enter))
     return PickArgs(
         message="Which Ally do you want to fire?",

@@ -24,10 +24,7 @@ def enter():
         )
     member_arrs = [member.abbreviated_arr[:-1] for member in graveyard.fallen_allies]
     handlers = [partial(action, member) for member in graveyard.fallen_allies]
-    options = [
-        Option(label, handler)
-        for label, handler in zip(member_arrs, handlers)
-    ]
+    options = [Option(label, handler) for label, handler in zip(member_arrs, handlers)]
     return PickArgs(
         message="Select a fallen ally to revive or lay to rest",
         options=[
