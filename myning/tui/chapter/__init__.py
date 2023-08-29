@@ -58,14 +58,13 @@ class ChapterWidget(ScrollableContainer):
 
     async def on_mount(self):
         if trip.mine and trip.seconds_left != 0:
+            self.update_dashboard()
             self.app.push_screen(
                 MineScreen(),
                 lambda abandoned: self.pick(mine.complete_trip(abandoned)),
             )
         else:
-            self.update_dashboard()
-            args = main_menu.enter() if tutorial.is_complete() else tutorial.enter()
-            self.pick(args)
+            self.pick(main_menu.enter() if tutorial.is_complete() else tutorial.enter())
 
     def on_click(self):
         self.focus()

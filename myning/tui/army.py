@@ -14,7 +14,6 @@ class ArmyWidget(DataTable):
     def on_mount(self):
         self.border_title = "Army"
         self.show_cursor = False
-        self.update()
 
     def on_click(self):
         self.focus()
