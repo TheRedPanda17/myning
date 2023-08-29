@@ -95,7 +95,6 @@ async def view_players(chapter: "ChapterWidget"):
                 Text.from_markup(f"[bold]{player['score']:,}[/]", justify="right"),
             ],
             partial(view_player, player),
-            enable_hotkeys=False,
         )
         for player in players
     ]
