@@ -56,7 +56,7 @@ def api_request(loading_message: str):
                 chapter.pick(
                     PickArgs(
                         message=message,
-                        options=[("Bummer!", enter)],
+                        options=[Option("Bummer!", enter)],
                     )
                 )
             finally:
@@ -95,6 +95,7 @@ async def view_players(chapter: "ChapterWidget"):
                 Text.from_markup(f"[bold]{player['score']:,}[/]", justify="right"),
             ],
             partial(view_player, player),
+            enable_hotkeys=False,
         )
         for player in players
     ]

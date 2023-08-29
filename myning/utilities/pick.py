@@ -95,8 +95,8 @@ def confirm(
                 if callable(message)
                 else message.format(*args, **kwargs),
                 options=[
-                    Option("Yes", yes_callback, enable_hotkeys=True),
-                    Option("No", no_callback, enable_hotkeys=True),
+                    Option("Yes", yes_callback),
+                    Option("No", no_callback),
                 ],
             )
 

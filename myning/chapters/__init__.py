@@ -41,7 +41,8 @@ OptionLabel = str | Text | list[str | Text]
 class Option:
     label: OptionLabel
     handler: Handler
-    enable_hotkeys: bool = False
+    # Will be overridden to False for the last Option in a list (assumes back button or continue)
+    enable_hotkeys: bool = True
 
     def label_as_list(self) -> list[str | Text]:
         if not isinstance(self.label, list):

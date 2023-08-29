@@ -69,13 +69,12 @@ class Blacksmith(BaseStore):
         return PickArgs(
             message="What would you like to do?",
             options=[
-                Option("Buy", self.pick_buy, enable_hotkeys=True),
+                Option("Buy", self.pick_buy),
                 Option(
                     Formatter.locked("Upgrade Smith (maxed)")
                     if self.maxed
                     else f"Upgrade Smith ({Formatter.gold(self.upgrade_cost)})",
                     self.confirm_upgrade,
-                    enable_hotkeys=True,
                 ),
                 Option("Go Back", self.exit),
             ],
@@ -87,7 +86,7 @@ class Blacksmith(BaseStore):
             return PickArgs(
                 message=f"Blacksmith does not have {self.buying_option.name.partition(' ')[2]}; "
                 "you need to upgrade the smith first.",
-                options=[("Shucks", self.pick_buy)],
+                options=[Option("Shucks", self.pick_buy)],
             )
         return super().confirm_multi_buy(items)
 
@@ -106,7 +105,7 @@ class Blacksmith(BaseStore):
             message="Are you sure you want to upgrade your blacksmith "
             f"for {Formatter.gold(self.upgrade_cost)}?",
             options=[
-                Option(f"Upgrade to level {self.level+1}", self.upgrade, enable_hotkeys=True),
+                Option(f"Upgrade to level {self.level+1}", self.upgrade),
                 Option("Maybe Later", self.enter),
             ],
         )

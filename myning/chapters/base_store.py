@@ -83,6 +83,7 @@ class BaseStore(ABC):
                     self.hint_symbol(item),
                 ],
                 partial(self.confirm_buy, item),
+                enable_hotkeys=False,
             )
             for item in self.items
         ]
@@ -98,7 +99,6 @@ class BaseStore(ABC):
                         Text.from_markup(f"({Formatter.gold(cost)})", justify="right"),
                     ],
                     partial(self.confirm_multi_buy, items),
-                    enable_hotkeys=True,
                 )
             )
         return PickArgs(
@@ -118,8 +118,8 @@ class BaseStore(ABC):
         return PickArgs(
             message=f"Are you sure you want to buy {item} for {Formatter.gold(item.value)}?",  # pylint: disable=line-too-long
             options=[
-                Option("Yes", partial(self.buy, item), enable_hotkeys=True),
-                Option("No", self.pick_buy, enable_hotkeys=True),
+                Option("Yes", partial(self.buy, item)),
+                Option("No", self.pick_buy),
             ],
         )
 
@@ -145,8 +145,8 @@ class BaseStore(ABC):
         return PickArgs(
             message=f"Are you sure you want to buy {self.buying_option.name} for {Formatter.gold(cost)}?",  # pylint: disable=line-too-long
             options=[
-                Option("Yes", partial(self.multi_buy, items), enable_hotkeys=True),
-                Option("No", self.pick_buy, enable_hotkeys=True),
+                Option("Yes", partial(self.multi_buy, items)),
+                Option("No", self.pick_buy),
             ],
         )
 

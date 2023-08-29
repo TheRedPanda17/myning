@@ -24,7 +24,10 @@ def enter():
         )
     member_arrs = [member.abbreviated_arr[:-1] for member in graveyard.fallen_allies]
     handlers = [partial(action, member) for member in graveyard.fallen_allies]
-    options = [Option(label, handler) for label, handler in zip(member_arrs, handlers)]
+    options = [
+        Option(label, handler, enable_hotkeys=False)
+        for label, handler in zip(member_arrs, handlers)
+    ]
     return PickArgs(
         message="Select a fallen ally to revive or lay to rest",
         options=[
@@ -48,7 +51,6 @@ def action(member: Character):
                     Formatter.gold(gold_cost),
                 ],
                 partial(revive, member),
-                enable_hotkeys=True,
             ),
             Option(
                 [
@@ -56,7 +58,6 @@ def action(member: Character):
                     f"[bold green1]+{Formatter.soul_credits(macguffin.soul_credit_boost)}",
                 ],
                 partial(lay_to_rest, member),
-                enable_hotkeys=True,
             ),
             Option("Go Back", enter),
         ],

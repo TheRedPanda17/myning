@@ -23,10 +23,13 @@ def pick_member():
                     break
 
     handlers = [partial(pick_slot, member) for member in player.army]
-    options = [Option(label, handler) for label, handler in zip(member_arrs, handlers)]
+    options = [
+        Option(label, handler, enable_hotkeys=False)
+        for label, handler in zip(member_arrs, handlers)
+    ]
 
     if player.has_upgrade("auto_equip"):
-        options.append(Option(["", "Auto-equip Best Items"], auto_equip, enable_hotkeys=True))
+        options.append(Option(["", "Auto-equip Best Items"], auto_equip))
 
     options.append(
         Option(["", "Go Back"], main_menu.enter if tutorial.is_complete() else tutorial.learn_mine)
@@ -48,7 +51,6 @@ def pick_slot(c: Character):
             Option(
                 [slot.capitalize(), "✨" if has_better and inventory_hints else ""],
                 partial(pick_equipment, c, slot),
-                enable_hotkeys=True,
             )
         )
     options.append(Option("Go Back", pick_member))

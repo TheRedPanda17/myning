@@ -19,10 +19,10 @@ def enter():
     return PickArgs(
         message=f"Level {facility.level} Research Facility",
         options=[
-            Option("Assign Researchers", pick_assign, enable_hotkeys=True),
-            Option("Remove Reasearcher", pick_remove, enable_hotkeys=True),
-            Option("Research", pick_research, enable_hotkeys=True),
-            Option("Upgrade Facility", confirm_upgrade, enable_hotkeys=True),
+            Option("Assign Researchers", pick_assign),
+            Option("Remove Reasearcher", pick_remove),
+            Option("Research", pick_research),
+            Option("Upgrade Facility", confirm_upgrade),
             Option("Go Back", main_menu.enter),
         ],
         subtitle=f"{len(facility.army)}/{facility.level} researchers assigned\n"
@@ -33,7 +33,10 @@ def enter():
 def pick_assign():
     character_arrs = [character.abbreviated_arr for character in player.army[1:]]
     handlers = [partial(assign, character) for character in player.army[1:]]
-    options = [Option(label, handler) for label, handler in zip(character_arrs, handlers)]
+    options = [
+        Option(label, handler, enable_hotkeys=False)
+        for label, handler in zip(character_arrs, handlers)
+    ]
     options.append(Option(["", "Go Back"], enter))
     return PickArgs(
         message="Choose companion to assign to research",
@@ -85,7 +88,7 @@ def remove(character: Character):
 def pick_research():
     available_research = [research for research in RESEARCH.values() if not research.max_level]
     options = [
-        Option(research.arr, partial(purchase_research, research), enable_hotkeys=True)
+        Option(research.arr, partial(purchase_research, research))
         for research in available_research
     ]
     return PickArgs(
@@ -113,7 +116,7 @@ def confirm_upgrade():
         message="Are you sure you want to upgrade your research for "
         f"{Formatter.research_points(facility.upgrade_cost)}?",
         options=[
-            Option(f"Upgrade to level {facility.level + 1}", upgrade, enable_hotkeys=True),
+            Option(f"Upgrade to level {facility.level + 1}", upgrade),
             Option("Maybe Later", enter),
         ],
     )

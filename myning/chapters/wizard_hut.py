@@ -15,9 +15,7 @@ player = Player()
 
 def enter():
     available_upgrades = [upgrade for upgrade in UPGRADES.values() if not upgrade.max_level]
-    options = [
-        Option(u.arr, partial(confirm_buy, u), enable_hotkeys=True) for u in available_upgrades
-    ]
+    options = [Option(u.arr, partial(confirm_buy, u)) for u in available_upgrades]
     options.append(Option("Go Back", main_menu.enter))
 
     purchased_upgrades = [upgrade for upgrade in UPGRADES.values() if upgrade.level > 0]
@@ -44,8 +42,8 @@ def confirm_buy(upgrade: Upgrade):
     return PickArgs(
         message=f"Are you sure you want to buy {upgrade.name} for {Formatter.gold(upgrade.cost)}?",
         options=[
-            Option("Yes", partial(buy, upgrade), enable_hotkeys=True),
-            Option("No", enter, enable_hotkeys=True),
+            Option("Yes", partial(buy, upgrade)),
+            Option("No", enter),
         ],
     )
 

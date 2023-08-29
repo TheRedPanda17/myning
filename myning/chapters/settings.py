@@ -13,11 +13,7 @@ def enter():
     ]
 
     if player.has_upgrade("sort_by_value"):
-        options.append(
-            Option(
-                ["Sort Order", f"({settings.sort_order})"], toggle_sort_order, enable_hotkeys=True
-            )
-        )
+        options.append(Option(["Sort Order", f"({settings.sort_order})"], toggle_sort_order))
 
     options.append(Option("Go Back", main_menu.enter))
     return PickArgs(

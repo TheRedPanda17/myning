@@ -34,11 +34,8 @@ def exit_mine():
 
 
 def pick_mine():
-    options = [
-        Option(mine.arr, partial(pick_time, mine), enable_hotkeys=True)
-        for mine in player.mines_available
-    ] + [
-        Option(["", "Unlock New Mine"], pick_unlock_mine, enable_hotkeys=True),
+    options = [Option(mine.arr, partial(pick_time, mine)) for mine in player.mines_available] + [
+        Option(["", "Unlock New Mine"], pick_unlock_mine),
         Option(["", "Go Back"], exit_mine),
     ]
     has_death_mine = any(mine.has_death_action for mine in player.mines_available)
@@ -58,7 +55,7 @@ def pick_time(mine: Mine):
         player.level * 8,
     ]
     options = [
-        Option(f"{m} minutes", partial(start_mine, mine, m), enable_hotkeys=True) for m in minutes
+        Option(f"{m} minutes", partial(start_mine, mine, m), enable_hotkeys=False) for m in minutes
     ]
     options.append(Option("Go Back", pick_mine))
     subtitle = mine.progress
@@ -80,12 +77,8 @@ def start_mine(mine: Mine, minutes: int):
             message=f"{'Everyone in your army has' if player.allies else 'You have'} no health.\n"
             "You should probably go visit the healer before heading into the mines.",
             options=[
-                Option(
-                    "Could you repeat that please?",
-                    partial(start_mine, mine, minutes),
-                    enable_hotkeys=True,
-                ),
-                Option("Take me there!", healer.enter, enable_hotkeys=True),
+                Option("Could you repeat that please?", partial(start_mine, mine, minutes)),
+                Option("Take me there!", healer.enter),
                 Option("Got it, thanks.", exit_mine),
             ],
         )
@@ -110,8 +103,7 @@ def mine_callback(chapter: "ChapterWidget"):
 def pick_unlock_mine():
     mines: list[Mine] = [mine for mine in MINES.values() if mine not in player.mines_available]
     options = [
-        Option(mine.get_unlock_arr(player.level), partial(unlock_mine, mine), enable_hotkeys=True)
-        for mine in mines
+        Option(mine.get_unlock_arr(player.level), partial(unlock_mine, mine)) for mine in mines
     ] + [
         Option(["", "Go Back"], pick_mine),
     ]

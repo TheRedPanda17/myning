@@ -123,7 +123,9 @@ def get_helmet():
 def learn_armory():
     return PickArgs(
         message=f"{jrod.name}: It's time to get your equipment ready. Here's what you're wearing down into the mines.\n",
-        options=[Option(f"Press {Formatter.keybind('Enter ↩')} to continue...", armory.pick_member)],
+        options=[
+            Option(f"Press {Formatter.keybind('Enter ↩')} to continue...", armory.pick_member)
+        ],
         subtitle=player.equipment_table,
     )
 

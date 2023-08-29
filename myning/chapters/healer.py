@@ -44,16 +44,14 @@ def enter():
         cost = UPGRADES["insta_heal"].player_value * len(player.army)
         options.append(
             Option(
-                f"Instant ({Formatter.gold(cost) if cost else 'free'})",
-                partial(insta_heal, cost),
-                enable_hotkeys=True,
+                f"Instant ({Formatter.gold(cost) if cost else 'free'})", partial(insta_heal, cost)
             )
         )
         # hide slow option if instant is free
         if cost:
-            options.append(Option("Slowly (free)", slow_heal, enable_hotkeys=True))
+            options.append(Option("Slowly (free)", slow_heal))
     else:
-        options = [Option("Yes (free)", slow_heal, enable_hotkeys=True)]
+        options = [Option("Yes (free)", slow_heal)]
     options.append(
         Option("No", main_menu.enter if tutorial.is_complete() else tutorial.learn_bindings)
     )
