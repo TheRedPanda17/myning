@@ -3,8 +3,9 @@ Body {
   layout: horizontal;
 }
 
-.container,
-Container,
+CurrencyWidget,
+Header,
+MineScreen > Container,
 ScrollableContainer {
   border: round dodgerblue;
   border-subtitle-align: left;
@@ -55,6 +56,16 @@ ChapterWidget > GardenTable {
   max-width: 100%;
 }
 
+ChapterWidget > GardenProgress {
+  color: grey;
+  grid-columns: 16 1fr;
+  grid-rows: 1;
+  grid-size: 2;
+  height: auto;
+  layout: grid;
+  margin: 1 0;
+}
+
 SideBar {
   width: 1fr;
   min-width: 48;
@@ -66,21 +77,18 @@ SideBar > DataTable {
 
 /* MineScreen */
 
-Container {
+MineScreen Container {
   height: auto;
   layout: horizontal;
 }
 
-Container > Static {
+MineScreen Container > Static {
   width: auto;
   margin: 0 1 0 0;
 }
 
-ProgressBar {
-  width: 1fr;
-}
-
-Bar {
+MineScreen ProgressBar,
+MineScreen Bar {
   width: 1fr;
 }
 

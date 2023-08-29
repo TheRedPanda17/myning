@@ -2,6 +2,7 @@ from functools import partial
 from typing import TYPE_CHECKING
 
 from myning.chapters import DynamicArgs, Handler, Option, PickArgs
+from myning.chapters.garden.garden_progress import GardenProgress
 from myning.chapters.garden.garden_table import GardenTable
 from myning.objects.garden import Garden
 from myning.objects.plant import Plant
@@ -27,10 +28,14 @@ def manage_garden():
 def manage_garden_callback(chapter: "ChapterWidget"):
     from myning.chapters.garden import enter  # pylint: disable=import-outside-toplevel
 
+    garden_progress = GardenProgress()
     garden_table = GardenTable()
     chapter.mount(garden_table, after=0)
+    if any(plant for row in garden.rows for plant in row):
+        chapter.mount(garden_progress, after=0)
 
     def exit_manage_garden(callback: Handler):
+        garden_progress.remove()
         garden_table.remove()
         chapter.option_table.show_cursor = True
         return callback()
@@ -117,7 +122,7 @@ def manage_plant(row: int, column: int):
 
     return PickArgs(
         message="What would you like to do with this plant? "
-        f"({Formatter.water(garden.water)} available)",
+        f"({Formatter.water(garden.water)} available)\n",
         options=options,
         subtitle=plant.details,
     )
