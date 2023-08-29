@@ -174,17 +174,20 @@ class ChapterWidget(ScrollableContainer):
 def get_labels_and_hotkeys(options: list[Option]) -> tuple[list[list[str | Text]], dict[str, int]]:
     hotkeys: dict[str, int] = {}
     labels: list[list[str | Text]] = []
-    for option_index, option_arr in enumerate(options):
-        if not isinstance(option_arr.label, list):
-            option_arr.label = [option_arr.label]
+    # The last Option is always assumed to be back or continue, so it defaults to no hotkey
+    if len(options) > 0:
+        options[-1].enable_hotkeys = False
+    for option_index, option in enumerate(options):
+        if not isinstance(option.label, list):
+            option.label = [option.label]
 
-        if not option_arr.enable_hotkeys:  # No hotkey for last option
-            labels.append(option_arr.label)
+        if not option.enable_hotkeys:
+            labels.append(option.label)
             continue
 
         text_option_index = None
         text_option = None
-        for index, item in enumerate(option_arr.label):
+        for index, item in enumerate(option.label):
             if isinstance(item, str) and any(c in string.ascii_letters for c in item):
                 text_option = Text.from_markup(item)
                 text_option_index = index
@@ -199,19 +202,15 @@ def get_labels_and_hotkeys(options: list[Option]) -> tuple[list[list[str | Text]
             if hotkey and hotkey_index is not None:
                 hotkeys[hotkey] = option_index
                 text_option.stylize("underline", hotkey_index, hotkey_index + 1)
-                option_arr.label[text_option_index] = text_option
+                option.label[text_option_index] = text_option
 
-        labels.append(option_arr.label)
+        labels.append(option.label)
     return labels, hotkeys
 
 
-def get_hotkey(label: str, hotkeys: dict[str, int]) -> tuple[str | None, int | None]:
+def get_hotkey(label: str, hotkeys: dict[str, int]) -> tuple[None, None] | tuple[str, int]:
     for hotkey_index, char in enumerate(label):
         hotkey = char.lower()
-        if (
-            "minutes" not in label
-            and hotkey in string.ascii_lowercase
-            and hotkey not in RESERVED_HOTKEYS | set(hotkeys)
-        ):
+        if hotkey in string.ascii_lowercase and hotkey not in RESERVED_HOTKEYS | set(hotkeys):
             return hotkey, hotkey_index
     return None, None

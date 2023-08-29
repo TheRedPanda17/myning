@@ -73,7 +73,7 @@ def enter():
         MenuItem("Settings", settings.enter),
         MenuItem("Exit", ExitArgs),
     ]
-    options = [Option(chapter.arr, chapter.play, enable_hotkeys=True) for chapter in chapters]
+    options = [Option(chapter.arr, chapter.play) for chapter in chapters]
     return PickArgs(
         message="Where would you like to go next?",
         options=options,

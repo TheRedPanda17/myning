@@ -37,8 +37,8 @@ class Store(BaseStore):
         return PickArgs(
             message="What would you like to do?",
             options=[
-                Option("Buy", self.pick_buy, enable_hotkeys=True),
-                Option("Sell", self.pick_sell, enable_hotkeys=True),
+                Option("Buy", self.pick_buy),
+                Option("Sell", self.pick_sell),
                 Option("Go Back", self.exit),
             ],
         )
@@ -55,6 +55,7 @@ class Store(BaseStore):
                     Text.from_markup(f"({Formatter.gold(sell_price(item))})", justify="right"),
                 ],
                 partial(self.sell, item),
+                enable_hotkeys=False,
             )
             for item in player.inventory.items
         ]
@@ -66,7 +67,6 @@ class Store(BaseStore):
                 Option(
                     ["", "Sell Minerals"],
                     partial(self.confirm_mass_sell, "of your minerals", minerals, tax),
-                    enable_hotkeys=True,
                 )
             )
 
@@ -86,7 +86,6 @@ class Store(BaseStore):
                         all_but_top_3_items,
                         tax,
                     ),
-                    enable_hotkeys=True,
                 )
             )
         if player.has_upgrade("sell_everything"):
@@ -96,7 +95,6 @@ class Store(BaseStore):
                 Option(
                     ["", "Sell Everything"],
                     partial(self.confirm_mass_sell, "of your items", all_items, tax),
-                    enable_hotkeys=True,
                 )
             )
         return PickArgs(
@@ -131,8 +129,8 @@ class Store(BaseStore):
         return PickArgs(
             message=f"Are you sure you want to sell all {description} for {Formatter.gold(total)}?",
             options=[
-                Option("Yes", partial(self.mass_sell, items, total), enable_hotkeys=True),
-                Option("No", self.pick_sell, enable_hotkeys=True),
+                Option("Yes", partial(self.mass_sell, items, total)),
+                Option("No", self.pick_sell),
             ],
         )
 

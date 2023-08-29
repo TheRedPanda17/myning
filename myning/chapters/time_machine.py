@@ -23,9 +23,9 @@ def enter():
     return PickArgs(
         message="What would you like to do?",
         options=[
-            Option("View Potential Macguffin", view_potential, enable_hotkeys=True),
-            Option("Go Back in Time", go_back_in_time, enable_hotkeys=True),
-            Option("About", about, enable_hotkeys=True),
+            Option("View Potential Macguffin", view_potential),
+            Option("Go Back in Time", go_back_in_time),
+            Option("About", about),
             Option("Go Back", main_menu.enter),
         ],
     )

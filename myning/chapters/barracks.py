@@ -28,17 +28,15 @@ def enter():
     options = [Option(label, handler) for label, handler in zip(member_arrs, handlers)]
 
     if player.has_upgrade("auto_exp"):
-        options.append(Option(["", "Auto-Add xp"], auto_add_xp, enable_hotkeys=True))
+        options.append(Option(["", "Auto-Add xp"], auto_add_xp))
     if player.has_upgrade("auto_ghost_xp"):
-        options.append(
-            Option(["", "Auto-Add xp to Ghosts Only"], auto_add_ghost_xp, enable_hotkeys=True)
-        )
+        options.append(Option(["", "Auto-Add xp to Ghosts Only"], auto_add_ghost_xp))
 
     options.extend(
         (
-            Option(["", "Hire Muscle"], pick_hire_muscle, enable_hotkeys=True),
-            Option(["", "Fire Muscle"], pick_fire_muscle, enable_hotkeys=True),
-            Option(["", "Buy xp"], buy_xp, enable_hotkeys=True),
+            Option(["", "Hire Muscle"], pick_hire_muscle),
+            Option(["", "Fire Muscle"], pick_fire_muscle),
+            Option(["", "Buy xp"], buy_xp),
             Option(["", "Go Back"], main_menu.enter),
         )
     )
@@ -98,8 +96,8 @@ def confirm_hire_muscle(entity: Character, cost: int):
         message=f"Are you sure you want to hire {entity.icon} {entity.name} "
         f"for {Formatter.gold(cost)}?",
         options=[
-            Option("Yes", partial(hire_muscle, entity, cost), enable_hotkeys=True),
-            Option("No", enter, enable_hotkeys=True),
+            Option("Yes", partial(hire_muscle, entity, cost)),
+            Option("No", enter),
         ],
     )
 
@@ -118,7 +116,10 @@ def pick_fire_muscle():
         )
     member_arrs = [member.abbreviated_arr for member in player.allies]
     handlers = [partial(confirm_fire_muscle, member) for member in player.allies]
-    options = [Option(label, handler) for label, handler in zip(member_arrs, handlers)]
+    options = [
+        Option(label, handler, enable_hotkeys=False)
+        for label, handler in zip(member_arrs, handlers)
+    ]
     options.append(Option(["", "Go Back"], enter))
     return PickArgs(
         message="Which Ally do you want to fire?",
@@ -137,8 +138,8 @@ def confirm_fire_muscle(member: Character):
     return PickArgs(
         message=message,
         options=[
-            Option("Yes", partial(fire_muscle, member), enable_hotkeys=True),
-            Option("No", enter, enable_hotkeys=True),
+            Option("Yes", partial(fire_muscle, member)),
+            Option("No", enter),
         ],
         subtitle=subtitle,
     )
@@ -169,9 +170,8 @@ def add_xp(member: Character):
                 Option(
                     f"Level {member.name} Up ([{Colors.XP}]{xp_for_level} xp[/] needed)",
                     partial(level_up, member),
-                    enable_hotkeys=True,
                 ),
-                Option("Add xp Manually", partial(add_xp_manually, member), enable_hotkeys=True),
+                Option("Add xp Manually", partial(add_xp_manually, member)),
                 Option("Go Back", enter),
             ],
             subtitle=f"You have {player.exp_available} xp to distribute.",

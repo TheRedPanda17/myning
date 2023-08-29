@@ -31,10 +31,10 @@ class Garden(BaseStore):
         return PickArgs(
             message="Select an option:",
             options=[
-                Option("Manage Garden", manage_garden, enable_hotkeys=True),
-                Option("Buy Seeds", self.pick_buy, enable_hotkeys=True),
-                Option("Upgrade Garden", self.confirm_upgrade, enable_hotkeys=True),
-                Option("View Harvest", self.view_harvest, enable_hotkeys=True),
+                Option("Manage Garden", manage_garden),
+                Option("Buy Seeds", self.pick_buy),
+                Option("Upgrade Garden", self.confirm_upgrade),
+                Option("View Harvest", self.view_harvest),
                 Option("Go Back", main_menu.enter),
             ],
             border_title="Garden",
@@ -51,8 +51,8 @@ class Garden(BaseStore):
             message=f"Upgrade your garden size to {garden.level + 1} "
             f"for {Formatter.gold(garden.upgrade_cost)}?",
             options=[
-                Option("Yes", self.upgrade, enable_hotkeys=True),
-                Option("No", self.enter, enable_hotkeys=True),
+                Option("Yes", self.upgrade),
+                Option("No", self.enter),
             ],
         )
 
@@ -64,7 +64,7 @@ class Garden(BaseStore):
 
     def view_harvest(self):
         options = [
-            Option(plant.fruit_stand_arr, self.view_plant)
+            Option(plant.fruit_stand_arr, self.view_plant, enable_hotkeys=False)
             for plant in player.inventory.get_slot(ItemType.PLANT)
             if plant.harvested
         ]

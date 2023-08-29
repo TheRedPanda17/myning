@@ -42,19 +42,11 @@ def manage_garden_callback(chapter: "ChapterWidget"):
 
     options = []
     if player.has_upgrade("next_plant_button"):
-        options.append(
-            Option("Next Plant", partial(exit_manage_garden, next_plant), enable_hotkeys=True)
-        )
+        options.append(Option("Next Plant", partial(exit_manage_garden, next_plant)))
     if player.has_upgrade("harvest_row"):
-        options.append(
-            Option(
-                "Harvest Next Row", partial(exit_manage_garden, harvest_row), enable_hotkeys=True
-            )
-        )
+        options.append(Option("Harvest Next Row", partial(exit_manage_garden, harvest_row)))
     if player.has_upgrade("plant_row"):
-        options.append(
-            Option("Plant Next Row", partial(exit_manage_garden, plant_row), enable_hotkeys=True)
-        )
+        options.append(Option("Plant Next Row", partial(exit_manage_garden, plant_row)))
     options.append(Option("Go Back", partial(exit_manage_garden, enter)))
     chapter.option_table.show_cursor = False
     chapter.pick(
@@ -118,13 +110,12 @@ def manage_plant(row: int, column: int):
     if not plant:
         return pick_seed(row, column)
 
-    options: list[Option] = []
     if plant.ready:
-        options = [Option("Harvest", partial(harvest_plant, row, column), enable_hotkeys=True)]
+        options = [Option("Harvest", partial(harvest_plant, row, column))]
     else:
         options = [
-            Option("Water", partial(water_plant, row, column), enable_hotkeys=True),
-            Option("Remove", partial(remove_plant, row, column), enable_hotkeys=True),
+            Option("Water", partial(water_plant, row, column)),
+            Option("Remove", partial(remove_plant, row, column)),
         ]
     options.append(Option("Go Back", manage_garden))
 
@@ -143,10 +134,7 @@ def pick_seed(row: int, column: int):
             options=[Option("Bummer!", manage_garden)],
         )
 
-    options = [
-        Option(seed.arr, partial(plant_seed, seed, row, column), enable_hotkeys=True)
-        for seed in player.seeds
-    ]
+    options = [Option(seed.arr, partial(plant_seed, seed, row, column)) for seed in player.seeds]
     options.append(Option(["", "Go Back"], manage_garden))
     return PickArgs(
         message="Select a seed to plant",
