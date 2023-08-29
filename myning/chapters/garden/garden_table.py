@@ -46,6 +46,8 @@ class GardenTable(OptionTable):  # pylint: disable=too-many-ancestors
 
         self.parent.option_table.show_cursor = True
         self.parent.pick(manage_plant(event.coordinate.row, event.coordinate.column))
+        if progress := self.parent.query("GardenProgress"):
+            progress.remove()
         self.remove()
 
     def update(self):

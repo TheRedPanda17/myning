@@ -23,7 +23,7 @@ from myning.tui.header import Header
 from myning.utilities.formatter import Formatter
 from myning.utilities.pick import throttle
 from myning.utilities.tab_title import TabTitle
-from myning.utilities.ui import Icons
+from myning.utilities.ui import Icons, get_time_str
 
 player = Player()
 trip = Trip()
@@ -34,18 +34,6 @@ ACTIONS: dict[str, Type[Action]] = {
     "recruit": RecruitAction,
     "lose_ally": LoseAllyAction,
 }
-
-
-def time_str(seconds: int):  # sourcery skip: assign-if-exp, reintroduce-else
-    if seconds <= 0:
-        return "0s"
-    minutes, seconds = divmod(seconds, 60)
-    hours, minutes = divmod(minutes, 60)
-    if hours > 0:
-        return f"{hours}h {minutes}m {seconds}s"
-    if minutes > 0:
-        return f"{minutes}m {seconds}s"
-    return f"{seconds}s"
 
 
 class MineScreen(Screen[bool]):
@@ -133,7 +121,7 @@ class MineScreen(Screen[bool]):
         )
         self.summary.update(trip_summary)
         self.progress.progress = trip.total_seconds - trip.seconds_left
-        time_left = time_str(trip.seconds_left)
+        time_left = get_time_str(trip.seconds_left)
         self.time.update(f"{time_left} remaining")
         TabTitle.change_tab_status(f"{time_left} remaining in {trip.mine.icon} {trip.mine.name}")
 

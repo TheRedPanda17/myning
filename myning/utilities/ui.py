@@ -68,3 +68,17 @@ def get_health_bar(health: int, max_health: int, bar_count: int = 11):
         f"[grey0 on green1]{char}[/]" if i < green_count else f"[on red1]{char}[/]"
         for i, char in enumerate(health_fraction_str)
     )
+
+
+def get_time_str(seconds: int):
+    if seconds <= 0:
+        return "0s"
+    minutes, seconds = divmod(seconds, 60)
+    hours, minutes = divmod(minutes, 60)
+    return (
+        f"{hours}h {minutes}m {seconds}s"
+        if hours > 0
+        else f"{minutes}m {seconds}s"
+        if minutes > 0
+        else f"{seconds}s"
+    )

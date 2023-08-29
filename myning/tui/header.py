@@ -12,8 +12,6 @@ class HeaderClock(Static):
 
 
 class Header(Static):
-    DEFAULT_CLASSES = "container"
-
     def compose(self):
         yield Static("💎", id="header-icon")
         yield Static("Myning", id="header-title", classes="text-title")
