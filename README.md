@@ -7,6 +7,8 @@ Mine for ore, battle enemies, manage your garden, upgrade your gear, and so much
 
 ## Prerequisites
 
+### MacOS Setup
+
 Install Homebrew:
 
 ```bash
@@ -60,4 +62,41 @@ make play
 
 ## Contributing
 
-Feel free to. I think you can probably figure out how
+### Textual User Interface (TUI)
+
+When developing a full-screen terminal application, the python debugger will not work. Instead, use
+the textual debug console by running `textual console -x SYSTEM -x EVENT -x DEBUG -x INFO` in a
+separate terminal and use `make dev` to run the app. You can then use `print` statements in the
+code, and they will be displayed in the console window.
+
+- [Textual documentation](https://textual.textualize.io) (TUI framework)
+- [Textual devtools documentation](https://textual.textualize.io/guide/devtools/#console)
+- [Rich documentation](https://rich.readthedocs.io/en/stable/) (library for styling and displaying rich text)
+
+### Formatting and organizing imports
+
+Format the code:
+
+```bash
+black .
+```
+
+Organize imports:
+
+```bash
+isort .
+```
+
+### Tests
+
+Run tests:
+
+```bash
+make test
+```
+
+View test coverage:
+
+```bash
+open htmlcov/index.html
+```
