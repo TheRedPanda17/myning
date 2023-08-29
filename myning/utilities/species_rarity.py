@@ -4,6 +4,7 @@ from myning.config import RESEARCH, SPECIES
 from myning.objects.character import CharacterSpecies
 from myning.objects.player import Player
 from myning.objects.research_facility import ResearchFacility
+from myning.objects.species import Species
 from myning.utilities.rand import boosted_random_choice
 
 SPECIES_TIERS = [
@@ -71,3 +72,26 @@ def get_recruit_species(highest_rarity: int):
 
     tier = SPECIES_TIERS[rarity - 1]
     return _recruit_in_tier(tier)
+
+
+def get_time_travel_species(lowest_tier: int = 0) -> Species:
+    player = Player()
+    non_me_species = [species for species in player.discovered_species if species != player.species]
+
+    tiers = get_available_tiers(non_me_species)
+    if lowest_tier > tiers[-1]:
+        lowest_tier = tiers[-1]
+
+    available_species = [s for s in non_me_species if s.rarity_tier >= lowest_tier]
+    return random.choice(available_species)
+
+
+def get_available_tiers(discovered_species: list[Species]) -> list[int]:
+    if not discovered_species or len(discovered_species) <= 1:
+        return [1]
+
+    available_tiers = set()
+    for species in discovered_species:
+        available_tiers.add(species.rarity_tier)
+
+    return list(sorted(available_tiers))
