@@ -109,7 +109,7 @@ def pick_unlock_mine():
     ]
     return PickArgs(
         message="Which mine would you like to unlock?",
-        options=options,  # type:ignore
+        options=options,
         subtitle=f"""{Icons.MINERAL}: Normal Mine
 {Icons.RESOURCE}: Resource Mine
 {Icons.DAMAGE}: Combat Zone
