@@ -21,6 +21,7 @@ def enter():
             partial(show, species),
         )
         for species in species_list
+        if species.name != "Alien"
     ]
     options.append((["", "Go Back"], main_menu.enter))
     return PickArgs(
