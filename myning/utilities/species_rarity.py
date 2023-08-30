@@ -74,7 +74,7 @@ def get_recruit_species(highest_rarity: int):
     return _recruit_in_tier(tier)
 
 
-def get_time_travel_species(lowest_tier: int = 0) -> Species:
+def get_time_travel_species(lowest_tier: int) -> Species:
     player = Player()
     non_me_species = [species for species in player.discovered_species if species != player.species]
 
