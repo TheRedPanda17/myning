@@ -8,9 +8,11 @@ from rich.text import Text
 from myning.chapters import DynamicArgs, Option, PickArgs, main_menu
 from myning.config import XP_COST
 from myning.objects.character import Character
+from myning.objects.inventory import Inventory
 from myning.objects.player import Player
 from myning.tui.input import IntInputScreen
 from myning.utilities.fib import fibonacci
+from myning.utilities.file_manager import FileManager
 from myning.utilities.formatter import Formatter
 from myning.utilities.generators import generate_character
 from myning.utilities.pick import confirm
@@ -20,6 +22,7 @@ if TYPE_CHECKING:
     from myning.tui.chapter import ChapterWidget
 
 player = Player()
+inventory = Inventory()
 
 
 def enter():
@@ -147,6 +150,11 @@ def confirm_fire_muscle(member: Character):
 
 def fire_muscle(member: Character):
     player.fire_ally(member)
+    for item in member.equipment.all_items:
+        inventory.add_item(item)
+        member.equipment.clear()
+
+    FileManager.multi_save(player, inventory)
     return enter()
 
 

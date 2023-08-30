@@ -97,9 +97,6 @@ class Player(Character, metaclass=Singleton):
     def add_ally(self, ally: Character):
         self._allies.append(ally)
 
-    def kill_ally(self, ally: Character):
-        self.remove_ally(ally)
-
     def fire_ally(self, ally: Character):
         self._fired_allies.append(ally)
         self.remove_ally(ally)
@@ -108,9 +105,6 @@ class Player(Character, metaclass=Singleton):
         self._allies.remove(ally)
 
     def remove_ally(self, ally: Character):
-        for item in ally.equipment.all_items:
-            self.inventory.add_item(item)
-        ally.equipment.clear()
         self._allies.remove(ally)
 
     def revive_ally(self, ally: Character):
