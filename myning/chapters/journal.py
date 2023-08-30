@@ -21,7 +21,6 @@ def enter():
             if species in player.discovered_species
             else [Icons.LOCKED, f"[{Colors.LOCKED}]{'*'*len(species.name)}[/]"],
             partial(show, species),
-            enable_hotkeys=False,
         )
         for species in species_list
         if species.name != "Alien"

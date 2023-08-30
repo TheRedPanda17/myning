@@ -33,10 +33,7 @@ def enter():
 def pick_assign():
     character_arrs = [character.abbreviated_arr for character in player.army[1:]]
     handlers = [partial(assign, character) for character in player.army[1:]]
-    options = [
-        Option(label, handler, enable_hotkeys=False)
-        for label, handler in zip(character_arrs, handlers)
-    ]
+    options = [Option(label, handler) for label, handler in zip(character_arrs, handlers)]
     options.append(Option(["", "Go Back"], enter))
     return PickArgs(
         message="Choose companion to assign to research",
