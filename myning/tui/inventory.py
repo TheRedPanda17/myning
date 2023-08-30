@@ -22,7 +22,7 @@ class InventoryWidget(DataTable):
         self.focus()
 
     def update(self):
-        inventory_hash = hash(tuple(player.inventory.items))
+        inventory_hash = hash(tuple(inventory.items))
         if self.hash == inventory_hash:
             return
         self.hash = inventory_hash
