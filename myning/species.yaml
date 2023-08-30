@@ -287,7 +287,7 @@ Firbolg:
   description: Firbolgs are a reclusive species of giant-kin who
     preferred to avoid contact with other sentient species.
     They are both the most intelligent and the most
-    powerful of the giant-kin."""
+    powerful of the giant-kin.
   size: small
   alignment: True Neutral
   rarity_tier: 5

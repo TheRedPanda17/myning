@@ -33,6 +33,7 @@ species_discovery:
     - 200
     - 325
     - 500
+
 species_rarity:
   name: Increase Companion Rarity
   descriptions:
@@ -69,6 +70,33 @@ species_rarity:
     - 500
     - 850
     - 1200
+
+show_species_stats:
+  name: Show Exact Species Stats
+  descriptions:
+    - Show the exact stats of Very Common Species
+    - Show the exact stats of Common Species
+    - Show the exact stats of Uncommon Species
+    - Show the exact stats of Rare Species
+    - Show the exact stats of Very Rare Species
+    - Show the exact stats of Extraordinary Species
+    - Show the exact stats of Mythical Species
+  values:
+    - 1
+    - 2
+    - 3
+    - 4
+    - 5
+    - 6
+    - 7
+  costs:
+    - 100 # Humans
+    - 5_000 # Dwarves, etc.
+    - 7_500 # Hobgoblins, etc.
+    - 12_000 # Dragonborn, etc.
+    - 15_000 # Firebolg, etc.
+    - 18_000 # Tabaxi, etc.
+    - 20_000 # Aasimir, etc.
 
 speed_up_time:
   name: Speed up Time
