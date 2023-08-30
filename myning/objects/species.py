@@ -18,12 +18,12 @@ SKILL_COLORS = [
     "[purple]{msg}[/]",
 ]
 ADJECTIVES = [
-    SKILL_COLORS[0].format(msg="Very Low"),
-    SKILL_COLORS[1].format(msg="Low"),
-    SKILL_COLORS[2].format(msg="Average"),
-    SKILL_COLORS[3].format(msg="High"),
-    SKILL_COLORS[4].format(msg="Very High"),
-    SKILL_COLORS[5].format(msg="Unbeatable"),
+    "Very Low",
+    "Low",
+    "Average",
+    "High",
+    "Very High",
+    "Unbeatable",
 ]
 RARITIES = [
     "[grey70]Very Common[/]",
@@ -81,7 +81,11 @@ class Species(Object):
                 index = i
                 break
 
-        return SKILL_COLORS[index].format(msg=f"{level}") if exact else ADJECTIVES[index]
+        msg = ADJECTIVES[index]
+        if exact:
+            msg = f"{level} - {msg}"
+
+        return SKILL_COLORS[index].format(msg=msg)
 
     def get_stats(self, exact: bool):
         table = Table.grid(padding=(0, 1))
