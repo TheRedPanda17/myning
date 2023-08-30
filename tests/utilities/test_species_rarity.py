@@ -102,7 +102,7 @@ def test_get_random_species_edge_cases():
     ]
     player.species = SPECIES[CharacterSpecies.HUMAN.value]
 
-    species = get_time_travel_species()
+    species = get_time_travel_species(1)
     assert species.name == SPECIES[CharacterSpecies.GOLIATH.value].name
 
     # Ignore low tiers

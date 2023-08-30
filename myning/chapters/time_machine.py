@@ -3,6 +3,7 @@ import sys
 from rich.table import Table
 
 from myning.chapters import Option, PickArgs, main_menu
+from myning.config import RESEARCH
 from myning.objects.garden import Garden
 from myning.objects.macguffin import Macguffin
 from myning.objects.player import Player
@@ -106,7 +107,12 @@ def go_back_in_time():
 
     journal = player.discovered_species
     migrations = player.completed_migrations
-    new_species = get_time_travel_species()
+
+    lowest_tier = 1
+    if facility.has_research("time_travel_species"):
+        lowest_tier = RESEARCH["time_travel_species"].player_value
+    new_species = get_time_travel_species(lowest_tier)
+
     player_name = player.name
     player_id = player.id
 

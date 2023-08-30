@@ -109,12 +109,12 @@ speed_up_time:
 time_travel_species:
   name: Time Travel Species
   descriptions:
-    - Increase the minumum tier of species you become when you go back in time (2).
-    - Increase the minumum tier of species you become when you go back in time (3).
-    - Increase the minumum tier of species you become when you go back in time (4).
-    - Increase the minumum tier of species you become when you go back in time (5).
-    - Increase the minumum tier of species you become when you go back in time (6).
-    - Increase the minumum tier of species you become when you go back in time (7).
+    - Increase the minumum tier of species you become when you go back in time (Common).
+    - Increase the minumum tier of species you become when you go back in time (Uncommon).
+    - Increase the minumum tier of species you become when you go back in time (Rare).
+    - Increase the minumum tier of species you become when you go back in time (Very Rare).
+    - Increase the minumum tier of species you become when you go back in time (Extraordinary).
+    - Increase the minumum tier of species you become when you go back in time (Mythical).
   values:
     - 2
     - 3
