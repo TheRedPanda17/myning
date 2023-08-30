@@ -9,6 +9,7 @@ from rich.table import Table
 from myning.objects.army import Army
 from myning.objects.character import Character
 from myning.objects.graveyard import Graveyard
+from myning.objects.inventory import Inventory
 from myning.objects.item import Item
 from myning.objects.player import Player
 from myning.objects.settings import Settings
@@ -33,6 +34,7 @@ settings = Settings()
 stats = Stats()
 trip = Trip()
 graveyard = Graveyard()
+inventory = Inventory()
 
 
 class Action(ABC):
@@ -308,10 +310,14 @@ class LoseAllyAction(Action):
             self.message = (
                 f"[red1]Oh no! {ally.icon} {ally.name} has died![/]\n\nCause of death: {reason}."
             )
-            player.kill_ally(ally)
+            player.remove_ally(ally)
+            for item in ally.equipment.all_items:
+                inventory.add_item(item)
+                ally.equipment.clear()
+
             trip.remove_ally(ally)
             graveyard.add_fallen_ally(ally)
-            FileManager.multi_save(trip, player, graveyard)
+            FileManager.multi_save(trip, player, graveyard, inventory)
         super().__init__(5)
 
     @property

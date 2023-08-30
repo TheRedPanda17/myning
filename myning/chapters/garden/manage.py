@@ -94,7 +94,7 @@ def plant_row():
         )
     for column in range(garden.level):
         plant = garden.get_plant(row, column)
-        seed = next(iter(player.seeds), None)
+        seed = next(iter(inventory.seeds), None)
         if not seed:
             return PickArgs(
                 message="You have run out of seeds to plant",
@@ -102,7 +102,7 @@ def plant_row():
             )
         if not plant:
             plant_seed(seed, row, column)
-    FileManager.multi_save(player, garden)
+    FileManager.multi_save(garden, inventory)
     return manage_garden()
 
 
@@ -130,13 +130,13 @@ def manage_plant(row: int, column: int):
 
 
 def pick_seed(row: int, column: int):
-    if not player.seeds:
+    if not inventory.seeds:
         return PickArgs(
             message="You don't have any seeds to plant",
             options=[Option("Bummer!", manage_garden)],
         )
 
-    options = [Option(seed.arr, partial(plant_seed, seed, row, column)) for seed in player.seeds]
+    options = [Option(seed.arr, partial(plant_seed, seed, row, column)) for seed in inventory.seeds]
     options.append(Option(["", "Go Back"], manage_garden))
     return PickArgs(
         message="Select a seed to plant",
