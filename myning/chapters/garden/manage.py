@@ -5,6 +5,7 @@ from myning.chapters import DynamicArgs, Handler, Option, PickArgs
 from myning.chapters.garden.garden_progress import GardenProgress
 from myning.chapters.garden.garden_table import GardenTable
 from myning.objects.garden import Garden
+from myning.objects.inventory import Inventory
 from myning.objects.plant import Plant
 from myning.objects.player import Player
 from myning.objects.stats import IntegerStatKeys, Stats
@@ -18,6 +19,7 @@ if TYPE_CHECKING:
 player = Player()
 garden = Garden()
 stats = Stats()
+inventory = Inventory()
 
 
 def manage_garden():
@@ -145,16 +147,16 @@ def pick_seed(row: int, column: int):
 def plant_seed(seed: Plant, row: int, column: int):
     seed.sow()
     garden.add_plant(seed, row, column)
-    player.inventory.remove_item(seed)
-    FileManager.multi_save(player, garden, seed)
+    inventory.remove_item(seed)
+    FileManager.multi_save(garden, seed, inventory)
     return manage_garden()
 
 
 def harvest_plant(row: int, column: int):
     plant = garden.harvest_plant(row, column)
-    player.inventory.add_item(plant)
+    inventory.add_item(plant)
     stats.increment_int_stat(IntegerStatKeys.PLANTS_HARVESTED)
-    FileManager.multi_save(player, garden, plant, stats)
+    FileManager.multi_save(garden, plant, stats, inventory)
     return manage_garden()
 
 

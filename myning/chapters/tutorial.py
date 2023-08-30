@@ -13,6 +13,7 @@ from myning.chapters import (
 )
 from myning.objects.character import Character
 from myning.objects.game import Game, GameState
+from myning.objects.inventory import Inventory
 from myning.objects.item import Item, ItemType
 from myning.objects.player import Player
 from myning.utilities.file_manager import FileManager
@@ -21,6 +22,7 @@ from myning.utilities.pick import story_builder
 
 game = Game()
 player = Player()
+inventory = Inventory()
 jrod = Character("J-Rod", "a friendly minor miner")
 
 
@@ -63,7 +65,7 @@ def get_mineral():
         value=1,
         type=ItemType.MINERAL,
     )
-    player.inventory.add_item(nugget)
+    inventory.add_item(nugget)
     return narrate(
         [
             nugget.tutorial_new_str,
@@ -85,7 +87,7 @@ def get_pickaxe():
         main_affect=2,
     )
     pickaxe.add_affect("mining", 1)
-    player.inventory.add_item(pickaxe)
+    inventory.add_item(pickaxe)
     return narrate(
         [
             pickaxe.tutorial_new_str,
@@ -107,7 +109,7 @@ def get_helmet():
         main_affect=1,
     )
     helmet.add_affect("light", 1)
-    player.inventory.add_item(helmet)
+    inventory.add_item(helmet)
     return narrate(
         [
             helmet.tutorial_new_str,
@@ -161,5 +163,5 @@ def learn_bindings():
 
 def exit_tutorial():
     game._state = GameState.READY  # pylint: disable=protected-access
-    FileManager.multi_save(game, player, *player.inventory.items)
+    FileManager.multi_save(game, player, inventory, *inventory.items)
     return main_menu.enter()

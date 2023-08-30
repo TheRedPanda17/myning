@@ -10,6 +10,7 @@ from textual.widgets import ProgressBar
 from myning import api
 from myning.chapters import AsyncArgs, Option, PickArgs, main_menu
 from myning.objects.garden import Garden
+from myning.objects.inventory import Inventory
 from myning.objects.macguffin import Macguffin
 from myning.objects.player import Player
 from myning.objects.research_facility import ResearchFacility
@@ -25,6 +26,7 @@ garden = Garden()
 macguffin = Macguffin()
 player = Player()
 stats = Stats()
+inventory = Inventory()
 
 
 def enter():
@@ -152,4 +154,4 @@ def view_player(_player):
 # This is the same function as in the time machine. I haven't figured out a great place where they
 # can share this function and I don't want to cross import
 def get_total_value() -> int:
-    return player.total_value + facility.total_value + garden.total_value
+    return player.total_value + facility.total_value + garden.total_value + inventory.total_value

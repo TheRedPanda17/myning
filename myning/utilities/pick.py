@@ -42,7 +42,7 @@ def confirm(
     ```python
     @confirm(f"Are you sure you want to buy {{0.name}}?", choose_action)
     def buy(item):
-        player.inventory.add_item(item, /)
+        inventory.add_item(item, /)
         return choose_action()
     ```
     """

@@ -4,8 +4,6 @@ import random
 from myning.config import MINES, SPECIES, UPGRADES, XP_COST
 from myning.objects.army import Army
 from myning.objects.character import Character, CharacterSpecies
-from myning.objects.inventory import Inventory
-from myning.objects.item import ItemType
 from myning.objects.mine import Mine
 from myning.objects.mine_stats import MineStats
 from myning.objects.singleton import Singleton
@@ -27,7 +25,6 @@ class Player(Character, metaclass=Singleton):
             player = cls(name)
             player._allies = []
             player._fired_allies = []
-            player.inventory = Inventory()
             player.gold = 1
             player.exp_available = 0
             player.mines_available = [MINES["Hole in the ground"]]
@@ -57,7 +54,6 @@ class Player(Character, metaclass=Singleton):
 
     @property
     def total_value(self) -> int:
-        item_value = sum(item.value for item in self.inventory.items)
         army_value = sum(member.value for member in self.army)
         exp_value = self.exp_available * XP_COST
         upgrades_value = sum(sum(u.costs[: u.level]) for u in self.upgrades)
@@ -68,8 +64,7 @@ class Player(Character, metaclass=Singleton):
         )
 
         return (
-            item_value
-            + army_value
+            army_value
             + exp_value
             + upgrades_value
             + unlocked_mines
@@ -84,7 +79,6 @@ class Player(Character, metaclass=Singleton):
     def reset(self):
         self._allies = []
         self._fired_allies = []
-        self.inventory = Inventory()
         self.gold = 1
         self.exp_available = 0
         self.mines_available: list[Mine] = [MINES["Hole in the ground"]]
@@ -98,6 +92,7 @@ class Player(Character, metaclass=Singleton):
         self.equipment.clear()
         self.discovered_species = [SPECIES[CharacterSpecies.HUMAN.value]]
         self.completed_migrations = [1]
+        self.species = SPECIES[CharacterSpecies.HUMAN.value]
 
     def add_ally(self, ally: Character):
         self._allies.append(ally)
@@ -143,11 +138,6 @@ class Player(Character, metaclass=Singleton):
     def ghost_count(self):
         return len([ally for ally in self.allies if ally.is_ghost])
 
-    @property
-    def seeds(self):
-        plants = self.inventory.get_slot(ItemType.PLANT)
-        return [p for p in plants if p.is_seed]  # pylint: disable=not-an-iterable
-
     @classmethod
     @property
     def file_name(cls):
@@ -159,7 +149,6 @@ class Player(Character, metaclass=Singleton):
             **character,
             "allies": [ally.to_dict() for ally in self._allies],
             "fired_allies": [ally.to_dict() for ally in self._fired_allies],
-            "inventory": self.inventory.to_dict(),
             "gold": self.gold,
             "exp_available": self.exp_available,
             "mines_available": [mine.name for mine in self.mines_available],
@@ -178,7 +167,6 @@ class Player(Character, metaclass=Singleton):
         player = super().from_dict(attrs)
         player._allies = [Character.from_dict(ally) for ally in attrs["allies"]]
         player._fired_allies = [Character.from_dict(ally) for ally in attrs.get("fired_allies", [])]
-        player.inventory = Inventory.from_dict(attrs["inventory"])
         player.gold = int(attrs["gold"])
         player.exp_available = int(attrs["exp_available"])
         player.mines_available = [MINES[mine_name] for mine_name in attrs["mines_available"]]

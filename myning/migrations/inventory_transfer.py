@@ -1,16 +1,17 @@
 import json
 
-from myning.objects.garden import Garden
+from myning.objects.inventory import Inventory
 from myning.utilities.file_manager import FileManager
 
 
 def run():
     with open(".data/player.json") as f:
         data = json.load(f)
-        if "garden" in data:
-            garden = Garden.from_dict(data["garden"])
+        if "inventory" in data:
+            inventory = Inventory.from_dict(data["inventory"])
         else:
-            garden = Garden(1)
-        FileManager.save(garden)
+            inventory = Inventory()
+
+        FileManager.save(inventory)
 
         print("\nJust doing some back-end maintenance.")

@@ -5,6 +5,7 @@ from rich.table import Table
 from myning.chapters import Option, PickArgs, main_menu
 from myning.config import RESEARCH
 from myning.objects.garden import Garden
+from myning.objects.inventory import Inventory
 from myning.objects.macguffin import Macguffin
 from myning.objects.player import Player
 from myning.objects.research_facility import ResearchFacility
@@ -19,6 +20,7 @@ facility = ResearchFacility()
 garden = Garden()
 macguffin = Macguffin()
 player = Player()
+inventory = Inventory()
 
 
 def enter():
@@ -36,7 +38,7 @@ def enter():
 # This is the same function as in the stats page. I haven't figured out a great place where they can
 # share this function and I don't want to cross import
 def get_total_value():
-    return player.total_value + facility.total_value + garden.total_value
+    return player.total_value + facility.total_value + garden.total_value + inventory.total_value
 
 
 def get_potential_standard_boost():

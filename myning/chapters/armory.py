@@ -3,11 +3,13 @@ from functools import partial
 from myning.chapters import Option, PickArgs, main_menu, tutorial
 from myning.objects.character import Character
 from myning.objects.equipment import EQUIPMENT_TYPES
+from myning.objects.inventory import Inventory
 from myning.objects.item import Item, ItemType
 from myning.objects.player import Player
 from myning.utilities.file_manager import FileManager
 
 player = Player()
+inventory = Inventory()
 
 
 def pick_member():
@@ -18,7 +20,7 @@ def pick_member():
             member = player.army[i]
             for slot in EQUIPMENT_TYPES:
                 equipped = member.equipment.get_slot_item(slot)
-                if player.inventory.has_better_item(slot, equipped):
+                if inventory.has_better_item(slot, equipped):
                     member_arr.append("✨")
                     break
 
@@ -45,7 +47,7 @@ def pick_slot(c: Character):
     options = []
     for slot in EQUIPMENT_TYPES:
         equipped = c.equipment.get_slot_item(slot)
-        has_better = player.inventory.has_better_item(slot, equipped)
+        has_better = inventory.has_better_item(slot, equipped)
         inventory_hints = player.has_upgrade("inventory_hints")
         options.append(
             Option(
@@ -62,7 +64,7 @@ def pick_slot(c: Character):
 
 
 def pick_equipment(c: Character, slot: ItemType):
-    items = player.inventory.get_slot(slot)
+    items = inventory.get_slot(slot)
     if not items:
         return PickArgs(
             message=f"You have no {slot}.",
@@ -79,10 +81,10 @@ def pick_equipment(c: Character, slot: ItemType):
 
 def equip(c: Character, equipment: Item):
     if equipped := c.equipment.get_slot_item(equipment.type):
-        player.inventory.add_item(equipped)
-    player.inventory.remove_item(equipment)
+        inventory.add_item(equipped)
+    inventory.remove_item(equipment)
     c.equipment.change_item(equipment)
-    FileManager.multi_save(player, c)
+    FileManager.multi_save(inventory, c)
     return pick_slot(c)
 
 
@@ -90,12 +92,12 @@ def auto_equip():
     for character in player.army:
         for slot in EQUIPMENT_TYPES:
             equipped = character.equipment.get_slot_item(slot)
-            if player.inventory.has_better_item(slot, equipped) and (
-                best := player.inventory.get_best_in_slot(slot)
+            if inventory.has_better_item(slot, equipped) and (
+                best := inventory.get_best_in_slot(slot)
             ):
                 if equipped:
-                    player.inventory.add_item(equipped)
-                player.inventory.remove_item(best)
+                    inventory.add_item(equipped)
+                inventory.remove_item(best)
                 character.equipment.change_item(best)
-    FileManager.multi_save(*player.army)
+    FileManager.multi_save(*player.army, inventory)
     return pick_member()

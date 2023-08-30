@@ -22,4 +22,4 @@ def run():
             macguffin = Macguffin()
         FileManager.save(macguffin)
 
-        print("\nJust doing some back-end maintainance.")
+        print("\nJust doing some back-end maintenance.")
