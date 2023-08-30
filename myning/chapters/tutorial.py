@@ -163,5 +163,5 @@ def learn_bindings():
 
 def exit_tutorial():
     game._state = GameState.READY  # pylint: disable=protected-access
-    FileManager.multi_save(game, player, *inventory.items)
+    FileManager.multi_save(game, player, inventory, *inventory.items)
     return main_menu.enter()

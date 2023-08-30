@@ -10,10 +10,10 @@ from myning.utilities.file_manager import FileManager, Subfolders
 class Inventory(Object, metaclass=Singleton):
     @classmethod
     def initialize(cls):
-        graveyard = FileManager.load(Inventory, cls.file_name)
-        if not graveyard:
-            graveyard = cls()
-        cls._instance = graveyard
+        inventory = FileManager.load(Inventory, cls.file_name)
+        if not inventory:
+            inventory = cls()
+        cls._instance = inventory
 
     @classmethod
     @property
