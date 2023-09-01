@@ -122,8 +122,8 @@ class Army(UserList[Character]):
 
     @property
     def stats_str(self):
-        damage_str = f"{Icons.DAMAGE} [{Colors.WEAPON}]{self.total_damage}[/]"
-        armor_str = f"{Icons.ARMOR} [{Colors.ARMOR}]{self.total_armor}[/]"
+        damage_str = f"{Icons.DAMAGE} {Colors.WEAPON(self.total_damage)}"
+        armor_str = f"{Icons.ARMOR} {Colors.ARMOR(self.total_armor)}"
         return f"{damage_str} {armor_str}"
 
     @property

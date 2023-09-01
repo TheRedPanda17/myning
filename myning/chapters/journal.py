@@ -19,7 +19,7 @@ def enter():
         Option(
             [species.icon, species.name]
             if species in player.discovered_species
-            else [Icons.LOCKED, f"[{Colors.LOCKED}]{'*'*len(species.name)}[/]"],
+            else [Icons.LOCKED, Colors.LOCKED("*" * len(species.name))],
             partial(show, species),
         )
         for species in species_list

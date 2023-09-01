@@ -17,7 +17,7 @@ class Question(Static):
 
         if self.subtitle:
             if isinstance(self.subtitle, str):
-                self.subtitle = f"[{Colors.LOCKED}]{self.subtitle}[/]"
+                self.subtitle = Colors.LOCKED(self.subtitle)
             table.add_row(self.subtitle)
 
         return table

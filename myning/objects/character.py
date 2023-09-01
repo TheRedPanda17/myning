@@ -226,19 +226,19 @@ class Character(Object):
 
     @property
     def damage_str(self):
-        return f"{Icons.DAMAGE} [{Colors.WEAPON}]{self.stats['damage']}[/]"
+        return f"{Icons.DAMAGE} {Colors.WEAPON(self.stats['damage'])}"
 
     @property
     def armor_str(self):
-        return f"{Icons.ARMOR} [{Colors.ARMOR}]{self.stats['armor']}[/]"
+        return f"{Icons.ARMOR} {Colors.ARMOR(self.stats['armor'])}"
 
     @property
     def level_str(self):
-        return f"{Icons.LEVEL} [{Colors.LEVEL}]{self.level}[/]"
+        return f"{Icons.LEVEL} {Colors.LEVEL(self.level)}"
 
     @property
     def exp_str(self):
-        return f"[{Colors.XP}]{self.experience}/{fibonacci(self.level + 1)}[/] xp"
+        return f"{Colors.XP(f'{self.experience}/{fibonacci(self.level + 1)}')} xp"
 
     @property
     def ghost_str(self):

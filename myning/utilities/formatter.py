@@ -4,31 +4,31 @@ from myning.utilities.ui import Colors
 class Formatter:
     @staticmethod
     def gold(g: int):
-        return f"[{Colors.GOLD}]{g:,}g[/]"
+        return Colors.GOLD(f"{g:,}g")
 
     @staticmethod
     def xp(x: int):
-        return f"[{Colors.XP}]{x} xp[/]"
+        return Colors.XP(f"{x} xp")
 
     @staticmethod
     def soul_credits(sc: float):
-        return f"[{Colors.SOUL_CREDITS}]{sc:.2f} soul credits[/]"
+        return Colors.SOUL_CREDITS(f"{sc:.2f} soul credits")
 
     @staticmethod
     def research_points(rp: float):
-        return f"[{Colors.RESEARCH_POINTS}]{rp:.2f} research points[/]"
+        return Colors.RESEARCH_POINTS(f"{rp:.2f} research points")
 
     @staticmethod
     def level(lvl: int):
-        return f"[{Colors.LEVEL}]{lvl}[/]"
+        return Colors.LEVEL(lvl)
 
     @staticmethod
     def locked(s: str):
-        return f"[{Colors.LOCKED}]{s}[/]"
+        return Colors.LOCKED(s)
 
     @staticmethod
     def water(w: int):
-        return f"[sky_blue1]{w} water[/]"
+        return Colors.WATER(f"{w} water")
 
     @staticmethod
     def percentage(p: float):

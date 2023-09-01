@@ -59,27 +59,27 @@ def view_potential():
     table.add_row(
         "Mineral value:",
         Icons.GOLD,
-        f"[{Colors.GOLD}]{Formatter.percentage(standard)}[/]",
+        Colors.GOLD(Formatter.percentage(standard)),
     )
     table.add_row(
         "XP gain:",
         Icons.XP,
-        f"[{Colors.XP}]{Formatter.percentage(standard)}[/]",
+        Colors.XP(Formatter.percentage(standard)),
     )
     table.add_row(
         "Soul credits:",
         Icons.GRAVEYARD,
-        f"[{Colors.SOUL_CREDITS}]{Formatter.percentage(smaller)}[/]",
+        Colors.SOUL_CREDITS(Formatter.percentage(smaller)),
     )
     table.add_row(
         "Research speed:",
         Icons.RESEARCH_FACILITY,
-        f"[{Colors.RESEARCH_POINTS}]{Formatter.percentage(smaller)}[/]",
+        Colors.RESEARCH_POINTS(Formatter.percentage(smaller)),
     )
     table.add_row(
         "Plant value:",
         Icons.PLANT,
-        f"[{Colors.PLANT}]{Formatter.percentage(smaller)}[/]",
+        Colors.PLANT(Formatter.percentage(smaller)),
     )
     return PickArgs(
         message=table,
