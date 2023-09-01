@@ -2,10 +2,13 @@ import math
 import random
 from abc import ABC, abstractmethod
 from dataclasses import dataclass
+from functools import lru_cache
 
 from rich.console import RenderableType
 from rich.table import Table
+from textual.widget import Widget
 
+from myning.chapters.mine.mining_minigame import MiningMinigame, MiningScore
 from myning.objects.army import Army
 from myning.objects.character import Character
 from myning.objects.graveyard import Graveyard
@@ -46,7 +49,7 @@ class Action(ABC):
 
     @property
     @abstractmethod
-    def content(self) -> RenderableType:
+    def content(self) -> RenderableType | Widget:
         pass
 
     @property
@@ -57,23 +60,41 @@ class Action(ABC):
 class MineralAction(Action):
     def __init__(self):
         duration = random.randint(5, trip.seconds_left // 60 + 30)
+        self.game = MiningMinigame(duration)
         super().__init__(duration)
 
     @property
     def content(self):
-        return "\n".join(
-            [
-                f"Mining... ({self.duration} seconds left)\n",
-                "💎  " * (5 - (self.duration - 1) % 5),
-            ]
-        )
+        return self.game
 
     @property
+    @lru_cache(maxsize=1)
     def next(self):
         if not trip.mine:
             return None
-        mineral = generate_mineral(trip.mine.max_item_level, trip.mine.resource)
-        return ItemAction(mineral)
+        minerals = []
+        match self.game.score:
+            case MiningScore.GREEN:
+                minerals.extend(
+                    generate_mineral(trip.mine.max_item_level, trip.mine.resource) for _ in range(2)
+                )
+                return ItemsAction(minerals)
+            case MiningScore.YELLOW:
+                minerals.append(generate_mineral(trip.mine.max_item_level, trip.mine.resource))
+                return ItemsAction(minerals)
+            case MiningScore.ORANGE:
+                return MessageAction(
+                    "[bold orange1]Drat![/]\n\n"
+                    "You've encountered an unexpected pocket of mineral-free rock while mining.\n\n"
+                    "Try a little harder for better prospects!"
+                )
+            case MiningScore.RED:
+                return MessageAction(
+                    "[bold red1]Ouch![/]\n\n"
+                    "You've struck a rocky vein while mining, and take some damage as a result.\n"
+                    "Your progress has been delayed by 10 seconds.\n\n"
+                    "Be more careful with your swings!"
+                )
 
 
 @dataclass
@@ -172,6 +193,7 @@ class CombatAction(Action):
                     FileManager.save(stats)
 
     @property
+    @lru_cache(maxsize=1)
     def next(self):
         self.fight()
         if player.army.defeated:
@@ -255,23 +277,33 @@ class VictoryAction(Action):
         return self if self.duration > 1 else None
 
 
-class ItemAction(Action):
-    def __init__(self, item: Item):
-        self.item = item
-        trip.add_item(item)
-        FileManager.multi_save(item, trip)
+class MessageAction(Action):
+    def __init__(self, message: str):
+        self.message = message
+        super().__init__(5)
+
+    @property
+    def content(self):
+        return self.message
+
+
+class ItemsAction(Action):
+    def __init__(self, items: list[Item]):
+        self.items = items
+        trip.add_items(*items)
+        FileManager.multi_save(*items, trip)
         super().__init__(2)
 
     @property
     def content(self):
-        return self.item.battle_new_str
+        return "\n".join(item.battle_new_str for item in self.items)
 
 
-class EquipmentAction(ItemAction):
+class EquipmentAction(ItemsAction):
     def __init__(self):
         assert trip.mine
         equipment = generate_equipment(trip.mine.max_item_level)
-        super().__init__(equipment)
+        super().__init__([equipment])
 
 
 class RecruitAction(Action):
