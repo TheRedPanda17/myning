@@ -33,7 +33,7 @@ def manage_garden_callback(chapter: "ChapterWidget"):
     garden_progress = GardenProgress()
     garden_table = GardenTable()
     chapter.mount(garden_table, after=0)
-    if any(plant for row in garden.rows for plant in row):
+    if not garden.empty:
         chapter.mount(garden_progress, after=0)
 
     def exit_manage_garden(callback: Handler):

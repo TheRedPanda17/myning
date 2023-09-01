@@ -27,6 +27,8 @@ class GardenProgress(Container):
         self.set_interval(1, self.tick)
 
     def tick(self):
+        if garden.empty:
+            return
         self.progress_bar.progress = sum(
             min(plant.elapsed_time, plant.total_time)
             for row in garden.rows
