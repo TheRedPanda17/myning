@@ -10,6 +10,7 @@ settings = Settings()
 
 class ArmyWidget(DataTable):
     BINDINGS = [("c", "compact", "Toggle Compact Mode")]
+    hash = None
 
     def on_mount(self):
         self.border_title = "Army"
@@ -23,6 +24,10 @@ class ArmyWidget(DataTable):
         self.update()
 
     def update(self):
+        army_hash = hash((player.army, settings.compact_mode))
+        if self.hash == army_hash:
+            return
+        self.hash = army_hash
         self.clear(columns=True)
         if settings.compact_mode:
             self.compact()

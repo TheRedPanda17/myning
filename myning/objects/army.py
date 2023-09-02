@@ -14,6 +14,23 @@ class Army(UserList[Character]):
         super().__init__(*args, **kwargs)
         self.sort(key=lambda c: (c.__class__.__name__ != "Player", -c.level))
 
+    def __hash__(self):
+        return hash(
+            tuple(
+                (
+                    c.id,
+                    c.icon,
+                    c.name,
+                    c.health,
+                    c.equipment,
+                    c.level,
+                    c.experience,
+                    c.is_ghost,
+                )
+                for c in self
+            )
+        )
+
     def append(self, __object: Character) -> None:
         super().append(__object)
         self.sort(key=lambda c: (c.__class__.__name__ != "Player", -c.level))
