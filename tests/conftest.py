@@ -4,23 +4,42 @@ from unittest.mock import patch
 
 import pytest
 
-from myning.objects.game import Game
+from myning.objects.game import Game, GameState
+from myning.objects.inventory import Inventory
 from myning.objects.player import Player
 from myning.objects.trip import Trip
 
-# Initialize objects before app tests
+# pylint: disable=redefined-outer-name
+
+# Initialize objects and set up values before app tests
 Player.initialize("MockPlayer")
-Game.initialize()
-Trip.initialize()
-
-# Set up values for tests
 player = Player()
-game = Game()
-trip = Trip()
-
 player.reset()
-game._state = 2
+
+Game.initialize()
+game = Game()
+game._state = GameState.READY  # pylint: disable=protected-access
+
+Inventory.initialize()
+inventory = Inventory()
+inventory._items = {}
+
+Trip.initialize()
+trip = Trip()
 trip.clear()
+
+# Import tui modules after objects
+# pylint: disable=wrong-import-position
+from myning.tui.app import MyningApp
+from myning.tui.chapter import ChapterWidget
+
+
+def pytest_addoption(parser):
+    parser.addoption(
+        "--headed",
+        action="store_true",
+        help="Run tests in headed mode",
+    )
 
 
 @pytest.fixture(autouse=True)
@@ -36,15 +55,15 @@ def mock_save():
 @pytest.fixture(autouse=True)
 def reset_objects():
     player.reset()
+    inventory._items = {}
     trip.clear()
 
 
 @pytest.fixture
-async def app_and_pilot():
-    from myning.tui.app import MyningApp
-
+async def app_and_pilot(request):
     app = MyningApp()
-    async with app.run_test() as pilot:
+    headed = request.config.getoption("--headed")
+    async with app.run_test(headless=not headed) as pilot:
         yield app, pilot
 
 
@@ -58,3 +77,8 @@ def app(app_and_pilot):
 def pilot(app_and_pilot):
     _, pilot = app_and_pilot
     yield pilot
+
+
+@pytest.fixture
+def chapter(app: MyningApp):
+    yield app.query_one("ChapterWidget", ChapterWidget)

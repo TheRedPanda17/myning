@@ -68,7 +68,7 @@ def pick_equipment(c: Character, slot: ItemType):
     if not items:
         return PickArgs(
             message=f"You have no {slot}.",
-            options=[Option("Bummer", pick_member)],
+            options=[Option("Bummer", partial(pick_slot, c))],
         )
     options = [Option(item.arr, partial(equip, c, item)) for item in items]
     options.append(Option(["", "Go Back"], partial(pick_slot, c)))
@@ -83,8 +83,8 @@ def equip(c: Character, equipment: Item):
     if equipped := c.equipment.get_slot_item(equipment.type):
         inventory.add_item(equipped)
     inventory.remove_item(equipment)
-    c.equipment.change_item(equipment)
-    FileManager.multi_save(inventory, c)
+    c.equipment.equip(equipment)
+    FileManager.multi_save(player, inventory, c)
     return pick_slot(c)
 
 
@@ -98,6 +98,6 @@ def auto_equip():
                 if equipped:
                     inventory.add_item(equipped)
                 inventory.remove_item(best)
-                character.equipment.change_item(best)
+                character.equipment.equip(best)
     FileManager.multi_save(*player.army, inventory)
     return pick_member()
