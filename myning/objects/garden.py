@@ -59,6 +59,10 @@ class Garden(Object, metaclass=Singleton):
         )
 
     @property
+    def empty(self):
+        return not any(plant for row in self.rows for plant in row)
+
+    @property
     def next_empty_row(self):
         return self.next_empty_coords[0]
 
