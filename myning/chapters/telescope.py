@@ -1,6 +1,8 @@
 from typing import TYPE_CHECKING
 
-from rich_pixels import Pixels
+from chafa import Canvas, CanvasConfig, PixelType
+from PIL import Image
+from rich.text import Text
 from textual.widget import Widget
 from textual.widgets import Static
 
@@ -23,7 +25,7 @@ def investigate():
     return PickArgs(
         # pylint: disable=line-too-long
         message=f"You're not sure what to make of the pieces lying around just yet, but you find a {Icons.TELESCOPE} telescope!",
-        options=[Option("Look Through Telescope...", lambda: DynamicArgs(callback=view))],
+        options=[Option("Look through Telescope...", lambda: DynamicArgs(callback=view))],
     )
 
 
@@ -46,11 +48,20 @@ class Telescope(Static):
     def render(self):
         if not isinstance(self.parent, Widget):
             return None
-        aspect_ratio = 300 / 168
-        max_width = self.parent.container_size.width // 2  # each pixel is 2 characters wide
-        max_height = self.parent.container_size.height - 4  # leave room for question and option
-        if (width := int(max_height * aspect_ratio)) < max_width:
-            height = max_height
-        else:
-            width, height = max_width, int(max_width / aspect_ratio)
-        return Pixels.from_image_path("images/space.jpeg", resize=(width, height))
+        config = CanvasConfig()
+        image = Image.open("./images/space.jpeg")
+        config.width = self.parent.container_size.width - 1
+        config.height = self.parent.container_size.height - 4
+        config.calc_canvas_geometry(image.width, image.height, 11 / 24)
+        bands = len(image.getbands())
+        pixels = image.tobytes()
+        canvas = Canvas(config)
+        canvas.draw_all_pixels(
+            PixelType.CHAFA_PIXEL_RGB8,
+            pixels,  # type: ignore
+            image.width,
+            image.height,
+            image.width * bands,
+        )
+        output = canvas.print()
+        return Text.from_ansi(output.decode())
