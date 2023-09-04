@@ -256,7 +256,7 @@ class Character(Object):
 
     @classmethod
     @property
-    def column_titles(cls):
+    def army_column_titles(cls):
         return [
             "",
             "Name",
@@ -269,9 +269,9 @@ class Character(Object):
         ]
 
     @property
-    def arr(self):
+    def army_arr(self):
         return [
-            str(self.icon),
+            self.icon,
             self.name.split()[0],
             get_health_bar(self.health, self.max_health),
             Text.from_markup(f"[red1]{self.stats['damage']}[/]", justify="right"),
@@ -286,12 +286,31 @@ class Character(Object):
 
     @classmethod
     @property
-    def abbreviated_column_titles(cls):
-        return [x for i, x in enumerate(cls.column_titles) if i != 2]
+    def pick_column_titles(cls):
+        return [
+            "",
+            "Name",
+            Text(Icons.DAMAGE, justify="center"),
+            Text(Icons.ARMOR, justify="center"),
+            Text(Icons.LEVEL, justify="center"),
+            Text(Icons.XP, justify="center"),
+            Text(Icons.GRAVEYARD, justify="center"),
+        ]
 
     @property
-    def abbreviated_arr(self):
-        return [x for i, x in enumerate(self.arr) if i != 2]
+    def pick_arr(self):
+        return [
+            self.icon,
+            self.name,
+            Text.from_markup(f"[red1]{self.stats['damage']}[/]", justify="right"),
+            Text.from_markup(f"[dodger_blue1]{self.stats['armor']}[/]", justify="right"),
+            Text.from_markup(f"[cyan1]{self.level}[/]", justify="right"),
+            Text.from_markup(
+                f"[magenta1]{self.experience}/{fibonacci(self.level + 1)}[/]",
+                justify="right",
+            ),
+            "🪦" if self.is_ghost else " ",
+        ]
 
     @property
     def equipment_table(self):

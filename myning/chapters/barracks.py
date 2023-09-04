@@ -26,7 +26,7 @@ inventory = Inventory()
 
 
 def enter():
-    member_arrs = [member.abbreviated_arr for member in player.army]
+    member_arrs = [member.pick_arr for member in player.army]
     handlers = [partial(add_xp, member) for member in player.army]
     options = [
         Option(label, handler, enable_hotkeys=False)
@@ -50,7 +50,7 @@ def enter():
         message="Upgrade Your Allies or Hire More Warriors",
         options=options,
         subtitle=f"You have {player.exp_available} xp to distribute." if player.allies else None,
-        column_titles=player.abbreviated_column_titles,
+        column_titles=player.pick_column_titles,
     )
 
 
@@ -120,14 +120,14 @@ def pick_fire_muscle():
             message="You ain't got nobody to fire!",
             options=[Option("I should have thought of that...", enter)],
         )
-    member_arrs = [member.abbreviated_arr for member in player.allies]
+    member_arrs = [member.pick_arr for member in player.allies]
     handlers = [partial(confirm_fire_muscle, member) for member in player.allies]
     options = [Option(label, handler) for label, handler in zip(member_arrs, handlers)]
     options.append(Option(["", "Go Back"], enter))
     return PickArgs(
         message="Which Ally do you want to fire?",
         options=options,
-        column_titles=player.abbreviated_column_titles,
+        column_titles=player.pick_column_titles,
     )
 
 

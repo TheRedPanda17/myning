@@ -51,5 +51,5 @@ class ArmyWidget(DataTable):
             f"{Icons.DAMAGE} [{Colors.WEAPON}]{player.army.total_damage}[/] "
             f"{Icons.ARMOR} [{Colors.ARMOR}]{player.army.total_armor}[/]"
         )
-        self.add_columns(*player.column_titles)
-        self.add_rows(member.arr for member in player.army)
+        self.add_columns(*player.army_column_titles)
+        self.add_rows(member.army_arr for member in player.army)

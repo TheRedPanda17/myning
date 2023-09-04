@@ -13,7 +13,7 @@ inventory = Inventory()
 
 
 def pick_member():
-    member_arrs = [member.abbreviated_arr for member in player.army]
+    member_arrs = [member.pick_arr for member in player.army]
 
     if player.has_upgrade("armory_hints"):
         for i, member_arr in enumerate(member_arrs):
@@ -39,7 +39,7 @@ def pick_member():
     return PickArgs(
         message="Upgrade Your Army Members' Gear",
         options=options,
-        column_titles=player.abbreviated_column_titles,
+        column_titles=player.pick_column_titles,
     )
 
 

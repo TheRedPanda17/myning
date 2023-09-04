@@ -22,7 +22,7 @@ def enter():
             message="You have no fallen allies to revive.",
             options=[Option("Bummer", main_menu.enter)],
         )
-    member_arrs = [member.abbreviated_arr[:-1] for member in graveyard.fallen_allies]
+    member_arrs = [member.pick_arr[:-1] for member in graveyard.fallen_allies]
     handlers = [partial(action, member) for member in graveyard.fallen_allies]
     options = [Option(label, handler) for label, handler in zip(member_arrs, handlers)]
     return PickArgs(
@@ -31,7 +31,7 @@ def enter():
             *options,
             Option(["", "Go Back"], main_menu.enter),
         ],
-        column_titles=player.abbreviated_column_titles[:-1],
+        column_titles=player.pick_column_titles[:-1],
     )
 
 
