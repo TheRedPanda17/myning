@@ -19,6 +19,9 @@ class Equipment:
         else:
             self._slots = slots
 
+    def __hash__(self):
+        return hash(tuple(self._slots.values()))
+
     @property
     def all_items(self):
         return [item for item in self._slots.values() if item]
