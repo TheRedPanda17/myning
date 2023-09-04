@@ -110,9 +110,10 @@ async def test_victory(app: MyningApp, pilot: Pilot, chapter: ChapterWidget):
 
     # increase player stats
     player.level = 30
-    # skip until the trip is over
+    # wait for trip to be over
+    trip.seconds_left = 10
     while app.query("MineScreen"):
-        await pilot.press("enter")
+        await pilot.pause(1)
 
     assert "Your mining trip" in chapter.question.message
 
@@ -125,9 +126,10 @@ async def test_defeat(app: MyningApp, pilot: Pilot, chapter: ChapterWidget):
     # pick and start mine
     await pilot.press("enter", "enter", "enter")
 
-    # skip until the trip is over
+    # wait for trip to be over
+    trip.seconds_left = 10
     while app.query("MineScreen"):
-        await pilot.press("enter")
+        await pilot.pause(1)
 
     # chasm is impossible for a level one player
     assert "You lost the battle" in chapter.question.message

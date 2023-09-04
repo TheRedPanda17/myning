@@ -78,9 +78,14 @@ SideBar > DataTable {
 
 HealScreen Container,
 MineScreen Container {
-  border: round dodgerblue;
   height: auto;
   layout: horizontal;
+}
+
+HealScreen #progress_container,
+MineScreen #progress_container,
+MineScreen #summary_container {
+  border: round dodgerblue;
   padding: 0 0 0 1;
 }
 
@@ -107,6 +112,21 @@ MineScreen Vertical ArmyWidget {
 MineScreen Container > Static {
   width: auto;
   margin: 0 1 0 0;
+}
+
+CombatMinigame Container Vertical {
+  height: auto;
+  margin: 4 0 0 8;
+}
+
+CombatMinigame Minigame {
+  border: double dodgerblue;
+  width: auto;
+  height: auto;
+}
+
+CombatMinigame ProgressBar {
+  width: 22;
 }
 
 /* HelpScreen */
