@@ -65,6 +65,8 @@ def insta_heal(cost: int):
     for member in player.army:
         member.health = member.max_health
         FileManager.save(member)
+    player.gold -= cost
+    FileManager.save(player)
     return healthy()
 
 
