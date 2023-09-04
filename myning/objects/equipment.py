@@ -33,9 +33,7 @@ class Equipment:
         return self._slots[slot]
 
     def equip(self, item: Item):
-        unequipped = self._slots[item.type]
         self._slots[item.type] = item
-        return unequipped
 
     @property
     def stats(self):

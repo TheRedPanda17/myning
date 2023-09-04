@@ -95,6 +95,12 @@ Run tests:
 make test
 ```
 
+It may be helpful to visually debug TUI tests by running pytests with the `--headed` option:
+
+```bash
+pytest --headed
+```
+
 View test coverage:
 
 ```bash
