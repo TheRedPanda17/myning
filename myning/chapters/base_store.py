@@ -3,7 +3,7 @@ from functools import partial
 
 from rich.text import Text
 
-from myning.chapters import Option, OptionLabel, PickArgs, main_menu
+from myning.chapters import Option, PickArgs, main_menu
 from myning.config import UPGRADES
 from myning.objects.buying_option import BuyingOption
 from myning.objects.equipment import EQUIPMENT_TYPES

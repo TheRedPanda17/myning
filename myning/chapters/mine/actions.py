@@ -65,6 +65,13 @@ class MineralAction(Action):
 
     @property
     def content(self):
+        if settings.mini_games_disabled:
+            return "\n".join(
+                [
+                    f"Mining... ({self.duration} seconds left)\n",
+                    "💎  " * (5 - (self.duration - 1) % 5),
+                ]
+            )
         return self.game
 
     @property
@@ -72,28 +79,47 @@ class MineralAction(Action):
     def next(self):
         if not trip.mine:
             return None
+        if settings.mini_games_disabled:
+            return ItemsAction(
+                [generate_mineral(trip.mine.max_item_level, trip.mine.resource)],
+                "You found a mineral!",
+            )
         minerals = []
         match self.game.score:
             case MiningScore.GREEN:
                 minerals.extend(
                     generate_mineral(trip.mine.max_item_level, trip.mine.resource) for _ in range(2)
                 )
-                return ItemsAction(minerals)
+                return ItemsAction(
+                    minerals,
+                    "[bold green1]Fantastic![/]\n\n"
+                    "You've struck a rich mineral layer while mining and find twice the amount of "
+                    "minerals!\n"
+                    f"Your progress has been advanced by [bold]{self.duration}[/] seconds.\n\n"
+                    "Keep up the good work, miner!",
+                )
             case MiningScore.YELLOW:
                 minerals.append(generate_mineral(trip.mine.max_item_level, trip.mine.resource))
-                return ItemsAction(minerals)
+                return ItemsAction(
+                    minerals,
+                    "[bold yellow1]Alright![/]\n\n"
+                    "You succesfully mine a mineral, and your progress has been advanced by "
+                    f"[bold]{self.duration}[/] seconds.",
+                )
             case MiningScore.ORANGE:
-                return MessageAction(
+                return ItemsAction(
+                    [],
                     "[bold orange1]Drat![/]\n\n"
                     "You've encountered an unexpected pocket of mineral-free rock while mining.\n\n"
-                    "Try a little harder for better prospects!"
+                    "Try a little harder for better prospects!",
                 )
             case MiningScore.RED:
-                return MessageAction(
+                return ItemsAction(
+                    [],
                     "[bold red1]Ouch![/]\n\n"
                     "You've struck a rocky vein while mining, and take some damage as a result.\n"
-                    "Your progress has been delayed by 10 seconds.\n\n"
-                    "Be more careful with your swings!"
+                    "Your progress has been delayed by [bold]10[/] seconds.\n\n"
+                    "Be more careful with your swings!",
                 )
 
 
@@ -277,9 +303,12 @@ class VictoryAction(Action):
         return self if self.duration > 1 else None
 
 
-class MessageAction(Action):
-    def __init__(self, message: str):
-        self.message = message
+class ItemsAction(Action):
+    def __init__(self, items: list[Item], message: str):
+        self.items = items
+        trip.add_items(*items)
+        FileManager.multi_save(*items, trip)
+        self.message = message + "\n\n" + "\n".join(item.battle_new_str for item in self.items)
         super().__init__(5)
 
     @property
@@ -287,23 +316,11 @@ class MessageAction(Action):
         return self.message
 
 
-class ItemsAction(Action):
-    def __init__(self, items: list[Item]):
-        self.items = items
-        trip.add_items(*items)
-        FileManager.multi_save(*items, trip)
-        super().__init__(2)
-
-    @property
-    def content(self):
-        return "\n".join(item.battle_new_str for item in self.items)
-
-
 class EquipmentAction(ItemsAction):
     def __init__(self):
         assert trip.mine
         equipment = generate_equipment(trip.mine.max_item_level)
-        super().__init__([equipment])
+        super().__init__([equipment], "You've found a piece of equipment!")
 
 
 class RecruitAction(Action):

@@ -51,7 +51,7 @@ async def test_mining(app: MyningApp, pilot: Pilot, chapter: ChapterWidget):
     assert mineral.name in get_content(app)
 
     # tick after getting mineral goes back to mining
-    await pilot.pause(1)
+    await pilot.pause(4)
     assert "Mining..." in get_content(app)
 
     # complete trip

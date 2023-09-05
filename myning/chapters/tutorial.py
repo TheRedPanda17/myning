@@ -136,7 +136,11 @@ def learn_mine():
     return narrate(
         [
             f"{jrod.name}: Now we can go mining!",
-            # f"{jrod.name}: There will be some minigames to help you mine or battle better, but you can ignore them without penalty if you want to be AFK. Or you can disable them entirely in the settings after you finish up this here tutorial",
+            f"{jrod.name}: There will be some minigames to help you mine or battle better, and "
+            "your skill will determine the quality of the outcome! Optionally, you can disable "
+            "them entirely in the settings after you finish up this here tutorial, but you would "
+            "not be able to benefit from the bonuses they provide or skip time when there would "
+            "normally be a mini-game",
         ],
         mine.pick_mine,
     )

@@ -25,7 +25,8 @@ class MiningMinigame(Static):
         self.segment_width = random.choice([2, 4, 6])
         self.segment_widths = [int(width * self.segment_width) for width in WIDTHS]
         self.width = sum(self.segment_widths)
-        self.cursor = random.randint(0, self.width - 1)
+        # start short of edges so direction can flip on next tick if needed
+        self.cursor = random.randint(1, self.width - 2)
         self.direction = random.choice([-1, 1])
         self.paused = False
 

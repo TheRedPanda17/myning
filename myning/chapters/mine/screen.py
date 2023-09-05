@@ -20,6 +20,7 @@ from myning.chapters.mine.actions import (
 from myning.chapters.mine.mining_minigame import MiningScore
 from myning.config import MINE_TICK_LENGTH, TICK_LENGTH, VICTORY_TICK_LENGTH
 from myning.objects.player import Player
+from myning.objects.settings import Settings
 from myning.objects.trip import Trip
 from myning.tui.header import Header
 from myning.utilities.file_manager import FileManager
@@ -29,7 +30,9 @@ from myning.utilities.tab_title import TabTitle
 from myning.utilities.ui import Icons, get_time_str
 
 player = Player()
+settings = Settings()
 trip = Trip()
+
 ACTIONS: dict[str, Type[Action]] = {
     "combat": CombatAction,
     "mineral": MineralAction,
@@ -85,6 +88,14 @@ class MineScreen(Screen[bool]):
         elif self.should_exit:
             self.exit()
         elif isinstance(self.action, MineralAction):
+            if settings.mini_games_disabled:
+                content = str(self.content._renderable)  # pylint: disable=protected-access
+                if "disabled" not in content:
+                    self.content.update(
+                        content
+                        + "\n\nMinigames have been disabled; you can enable them in the settings."
+                    )
+                return
             match self.action.game.score:
                 case MiningScore.GREEN:
                     color = "lime"
