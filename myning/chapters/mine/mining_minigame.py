@@ -33,7 +33,8 @@ class MiningMinigame(Static):
     def on_mount(self):
         self.tick()
         self.tick_duration()
-        self.set_interval(1 / 30, self.tick)
+        speed = self.width * 8 / random.randint(3, 7)
+        self.set_interval(1 / speed, self.tick)
         self.set_interval(1, self.tick_duration)
 
     def tick(self):
