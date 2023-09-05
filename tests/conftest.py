@@ -22,7 +22,7 @@ game._state = GameState.READY  # pylint: disable=protected-access
 
 Inventory.initialize()
 inventory = Inventory()
-inventory._items = {}
+inventory._items = {}  # pylint: disable=protected-access
 
 Trip.initialize()
 trip = Trip()
@@ -55,7 +55,7 @@ def mock_save():
 @pytest.fixture(autouse=True)
 def reset_objects():
     player.reset()
-    inventory._items = {}
+    inventory._items = {}  # pylint: disable=protected-access
     trip.clear()
 
 

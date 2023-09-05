@@ -2,6 +2,7 @@ from textual.widgets import DataTable
 
 from myning.objects.player import Player
 from myning.objects.settings import Settings
+from myning.utilities.file_manager import FileManager
 from myning.utilities.ui import Colors, Icons
 
 player = Player()
@@ -21,6 +22,7 @@ class ArmyWidget(DataTable):
 
     def action_compact(self):
         settings.toggle_compact_mode()
+        FileManager.save(settings)
         self.update()
 
     def update(self):

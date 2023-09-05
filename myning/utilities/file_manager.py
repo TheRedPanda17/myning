@@ -28,7 +28,7 @@ class FileManager:
             os.mkdir(".data/entities")
 
     @classmethod
-    def multi_save(cls, *items):
+    def multi_save(cls, *items: Object):
         for item in items:
             cls.save(item)
 

@@ -1,3 +1,5 @@
+from unittest.mock import patch
+
 from textual.pilot import Pilot
 from textual.widgets import Static
 
@@ -14,9 +16,14 @@ player = Player()
 
 def get_content(app: MyningApp):
     # pylint: disable=protected-access
-    return str(app.query_one("MineScreen > ScrollableContainer > Static", Static)._renderable)
+    return "".join(
+        str(w._renderable)
+        for w in app.query("MineScreen > ScrollableContainer > Static")
+        if isinstance(w, Static)
+    )
 
 
+@patch("myning.chapters.mine.mining_minigame.COLORS", ["yellow1"] * 7)
 async def test_mining(app: MyningApp, pilot: Pilot, chapter: ChapterWidget):
     # patch action to always be mineral
     hole_in_the_ground = MINES["Hole in the ground"]
@@ -44,7 +51,7 @@ async def test_mining(app: MyningApp, pilot: Pilot, chapter: ChapterWidget):
     assert mineral.name in get_content(app)
 
     # tick after getting mineral goes back to mining
-    await pilot.pause(1)
+    await pilot.pause(4)
     assert "Mining..." in get_content(app)
 
     # complete trip

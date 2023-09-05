@@ -1,7 +1,9 @@
 from myning.chapters import Option, PickArgs, main_menu
 from myning.objects.player import Player
 from myning.objects.settings import Settings
+from myning.utilities.file_manager import FileManager
 from myning.utilities.formatter import Formatter
+from myning.utilities.pick import confirm
 
 player = Player()
 settings = Settings()
@@ -9,6 +11,7 @@ settings = Settings()
 
 def enter():
     options = [
+        Option(["Minigames", f"({settings.mini_games_status})"], toggle_minigames),
         Option(["Compact Mode", f"({settings.compact_status})"], toggle_compact_mode),
     ]
 
@@ -22,8 +25,29 @@ def enter():
     )
 
 
+@confirm(
+    lambda: f"Are you sure you want to {'enable' if settings.mini_games_disabled else 'disable'} "
+    "Minigames?\n"
+    + Formatter.locked(
+        "Minigames allow you to speed up progress, earn more minerals, and have greater "
+        "success in the mines. If you disable them, you will not be able to benefit from the "
+        "bonuses they provide or skip time when there normally would be a mini-game. You can "
+        "always enable and disable them in the settings."
+    ),
+    enter,
+)
+def toggle_minigames():
+    settings.toggle_mini_games()
+    FileManager.save(settings)
+    return PickArgs(
+        message=f"Minigames are now {settings.mini_games_status}",
+        options=[Option("Done.", enter)],
+    )
+
+
 def toggle_compact_mode():
     settings.toggle_compact_mode()
+    FileManager.save(settings)
     return PickArgs(
         message=f"Compact Mode is now {settings.compact_status}",
         options=[Option("Done.", enter)],
@@ -34,45 +58,8 @@ def toggle_compact_mode():
 
 def toggle_sort_order():
     settings.toggle_sort_order()
+    FileManager.save(settings)
     return PickArgs(
         message=f"Sort Order is now {settings.sort_order}",
         options=[Option("Done", enter)],
     )
-
-    # option, _ = pick(
-    #     [
-    #         "Adjust Army Column Height",
-    #         f"Enable/Disable Mini-Games ({settings.mini_games_status})",
-    #         f"Combat Mode ({settings.hard_combat_status})",
-    #         f"Compact Mode ({settings.compact_status})",
-    #         "Exit",
-    #     ],
-    #     "What settings would you like to adjust?",
-    # )
-
-    # if option == "Exit":
-    #     return
-
-    # if "Column Height" in option:
-    #     value = get_int_input(
-    #         "What would you like to change the army column height to?",
-    #         f"Current: {settings.army_columns}",
-    #         5,
-    #         25,
-    #     )
-    #     if value:
-    #         settings.set_army_columns(value)
-
-    # if "Disable Mini-Games" in option:
-    #     settings.toggle_mini_games()
-    #     pick(["Got it"], f"Mini-Games are now {settings.mini_games_status}")
-
-    # if "Combat Mode" in option:
-    #     settings.toggle_hard_combat()
-    #     pick(["Done."], f"Combat Mode is now set to difficulty: {settings.hard_combat_status}")
-
-    # if "Compact Mode" in option:
-    #     settings.toggle_compact_mode()
-    #     pick(["Done."], f"Compact Mode is now {settings.compact_status}")
-
-    # FileManager.save(settings)
