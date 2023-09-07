@@ -117,6 +117,8 @@ class BaseStore(ABC):
                 message="Not enough gold!",
                 options=[Option("Bummer!", self.pick_buy)],
             )
+        if player.has_upgrade("purchase_confirmation") and settings.purchase_confirmation_disabled:
+            return self.buy(item)
         return PickArgs(
             message=f"Are you sure you want to buy {item} for {Formatter.gold(item.value)}?",  # pylint: disable=line-too-long
             options=[
@@ -144,6 +146,8 @@ class BaseStore(ABC):
                 message="Not enough gold!",
                 options=[Option("Bummer!", self.pick_buy)],
             )
+        if player.has_upgrade("purchase_confirmation") and settings.purchase_confirmation_disabled:
+            return self.multi_buy(items)
         return PickArgs(
             message=f"Are you sure you want to buy {self.buying_option.name} for {Formatter.gold(cost)}?",  # pylint: disable=line-too-long
             options=[
