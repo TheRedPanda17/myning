@@ -37,16 +37,16 @@ species_discovery:
 species_rarity:
   name: Increase Companion Rarity
   descriptions:
-    - Increase the likelihood of recruiting more rare species
-    - Increase the likelihood of recruiting more rare species
-    - Increase the likelihood of recruiting more rare species
-    - Increase the likelihood of recruiting more rare species
-    - Increase the likelihood of recruiting more rare species
-    - Increase the likelihood of recruiting more rare species
-    - Increase the likelihood of recruiting more rare species
-    - Increase the likelihood of recruiting more rare species
-    - Increase the likelihood of recruiting more rare species
-    - Increase the likelihood of recruiting more rare species
+    - Increase the likelihood of recruiting more rare species (+10 species weight)
+    - Increase the likelihood of recruiting more rare species (+20 species weight)
+    - Increase the likelihood of recruiting more rare species (+30 species weight)
+    - Increase the likelihood of recruiting more rare species (+40 species weight)
+    - Increase the likelihood of recruiting more rare species (+50 species weight)
+    - Increase the likelihood of recruiting more rare species (+60 species weight)
+    - Increase the likelihood of recruiting more rare species (+70 species weight)
+    - Increase the likelihood of recruiting more rare species (+80 species weight)
+    - Increase the likelihood of recruiting more rare species (+90 species weight)
+    - Increase the likelihood of recruiting more rare species (+100 species weight)
   values:
     - 10
     - 20
