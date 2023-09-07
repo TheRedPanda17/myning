@@ -2,7 +2,7 @@ import random
 import time
 from typing import Type
 
-from textual.containers import Container, ScrollableContainer
+from textual.containers import Container, Horizontal, ScrollableContainer, Vertical
 from textual.screen import Screen
 from textual.widget import Widget
 from textual.widgets import Footer, ProgressBar, Static
@@ -22,6 +22,7 @@ from myning.config import MINE_TICK_LENGTH, TICK_LENGTH, VICTORY_TICK_LENGTH
 from myning.objects.player import Player
 from myning.objects.settings import Settings
 from myning.objects.trip import Trip
+from myning.tui.army import ArmyWidget
 from myning.tui.header import Header
 from myning.utilities.file_manager import FileManager
 from myning.utilities.formatter import Formatter
@@ -46,11 +47,15 @@ class MineScreen(Screen[bool]):
     BINDINGS = [
         ("ctrl+q", "abandon", "Abandon Mine"),
         ("enter", "skip", "Mine/Fight"),
+        ("c", "compact", "Toggle Compact Mode"),
     ]
 
     def __init__(self) -> None:
         self.content_container = ScrollableContainer()
         self.content = Static()
+        self.sidebar = Vertical()
+        self.army = ArmyWidget()
+        self.army.can_focus = False
         self.summary = Static()
         self.progress = ProgressBar(total=trip.total_seconds, show_eta=False)
         self.time = Static()
@@ -61,10 +66,13 @@ class MineScreen(Screen[bool]):
 
     def compose(self):
         yield Header()
-        with self.content_container:
-            assert trip.mine
-            self.content_container.border_title = f"{trip.mine.icon} {trip.mine.name}"
-            yield self.content
+        with Horizontal():
+            with self.content_container:
+                assert trip.mine
+                self.content_container.border_title = f"{trip.mine.icon} {trip.mine.name}"
+                yield self.content
+            with self.sidebar:
+                yield self.army
         with Container() as c:
             c.border_title = "Trip Summary"
             yield self.summary
@@ -77,6 +85,10 @@ class MineScreen(Screen[bool]):
     def on_mount(self):
         self.update_screen()
         self.set_interval(TICK_LENGTH, self.tick)
+
+    def action_compact(self):
+        self.army.action_compact()
+        self.update_screen()
 
     @throttle(min(MINE_TICK_LENGTH, TICK_LENGTH, VICTORY_TICK_LENGTH))
     def action_skip(self):
@@ -153,11 +165,12 @@ class MineScreen(Screen[bool]):
             self.content.update("")
         else:
             self.content.update(self.action.content)
-        trip_summary = trip.summary
-        trip_summary.add_row(
-            Icons.HEART, "Army health:", f"{player.army.current_health}/{player.army.total_health}"
-        )
-        self.summary.update(trip_summary)
+        if isinstance(self.action, CombatAction):
+            self.sidebar.display = False
+        else:
+            self.sidebar.display = True
+            self.army.update()
+        self.summary.update(trip.summary)
         self.progress.progress = trip.total_seconds - trip.seconds_left
         time_left = get_time_str(trip.seconds_left)
         self.time.update(f"{time_left} remaining")
