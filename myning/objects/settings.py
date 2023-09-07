@@ -25,12 +25,14 @@ class Settings(Object, metaclass=Singleton):
         hard_combat_disabled=True,
         compact_mode=False,
         sort_order=SortOrder.TYPE,
+        purchase_confirmation_disabled=False,
     ) -> None:
         self.army_columns = army_columns
         self.mini_games_disabled = mini_games_disabled
         self.hard_combat_disabled = hard_combat_disabled
         self.compact_mode = compact_mode
         self.sort_order: SortOrder = sort_order
+        self.purchase_confirmation_disabled = purchase_confirmation_disabled
 
     @classmethod
     def from_dict(cls, attrs: dict):
@@ -43,6 +45,7 @@ class Settings(Object, metaclass=Singleton):
             "hard_combat_disabled": self.hard_combat_disabled,
             "compact_mode": self.compact_mode,
             "sort_order": self.sort_order,
+            "purchase_confirmation_disabled": self.purchase_confirmation_disabled,
         }
 
     @classmethod
@@ -66,6 +69,9 @@ class Settings(Object, metaclass=Singleton):
     def toggle_sort_order(self):
         self.sort_order = SortOrder.TYPE if self.sort_order == SortOrder.VALUE else SortOrder.VALUE
 
+    def toggle_purchase_confirmation(self):
+        self.purchase_confirmation_disabled = not self.purchase_confirmation_disabled
+
     @property
     def mini_games_status(self) -> str:
         return "disabled" if self.mini_games_disabled else "enabled"
@@ -77,3 +83,7 @@ class Settings(Object, metaclass=Singleton):
     @property
     def compact_status(self) -> str:
         return "enabled" if self.compact_mode else "disabled"
+
+    @property
+    def purchase_confirmation_status(self) -> str:
+        return "disabled" if self.purchase_confirmation_disabled else "enabled"
