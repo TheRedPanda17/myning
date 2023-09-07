@@ -18,6 +18,11 @@ def enter():
     if player.has_upgrade("sort_by_value"):
         options.append(Option(["Sort Order", f"({settings.sort_order})"], toggle_sort_order))
 
+    if player.has_upgrade("purchase_confirmation"):
+        options.append(
+            Option(["Purchase Confirmation", f"{settings.purchase_confirmation_status}"])
+        )
+
     options.append(Option("Go Back", main_menu.enter))
     return PickArgs(
         message="What settings would you like to adjust?",
@@ -61,5 +66,22 @@ def toggle_sort_order():
     FileManager.save(settings)
     return PickArgs(
         message=f"Sort Order is now {settings.sort_order}",
+        options=[Option("Done", enter)],
+    )
+
+
+@confirm(
+    lambda: f"Are you sure you want to {'enable' if settings.purchase_confirmation_disabled else 'disable'} "
+    "purchase confirmation?\n"
+    + Formatter.locked(
+        "If disabled, you will not be prompted to confirm before purchasing items from a store."
+    ),
+    enter,
+)
+def toggle_purchase_confirmation():
+    settings.toggle_purchase_confirmation()
+    FileManager.save(settings)
+    return PickArgs(
+        message=f"Purchase confirmation is now {settings.purchase_confirmation_status}",
         options=[Option("Done", enter)],
     )
