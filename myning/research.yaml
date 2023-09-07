@@ -1,16 +1,16 @@
 species_discovery:
   name: Discover Species
   descriptions:
-    - Increase the likelihood of discovering a new species (10%)
-    - Increase the likelihood of discovering a new species (20%)
-    - Increase the likelihood of discovering a new species (30%)
-    - Increase the likelihood of discovering a new species (40%)
-    - Increase the likelihood of discovering a new species (50%)
-    - Increase the likelihood of discovering a new species (60%)
-    - Increase the likelihood of discovering a new species (70%)
-    - Increase the likelihood of discovering a new species (80%)
-    - Increase the likelihood of discovering a new species (90%)
-    - Increase the likelihood of discovering a new species (100%)
+    - Increase the likelihood of discovering a new species by 10%
+    - Increase the likelihood of discovering a new species by 20%
+    - Increase the likelihood of discovering a new species by 30%
+    - Increase the likelihood of discovering a new species by 40%
+    - Increase the likelihood of discovering a new species by 50%
+    - Increase the likelihood of discovering a new species by 60%
+    - Increase the likelihood of discovering a new species by 70%
+    - Increase the likelihood of discovering a new species by 80%
+    - Increase the likelihood of discovering a new species by 90%
+    - Increase the likelihood of discovering a new species by 100%
   values:
     - 10
     - 20
@@ -37,17 +37,16 @@ species_discovery:
 species_rarity:
   name: Increase Companion Rarity
   descriptions:
-    - Increase the likelihood of recruiting more rare species
-    - Increase the likelihood of recruiting more rare species
-    - Increase the likelihood of recruiting more rare species
-    - Increase the likelihood of recruiting more rare species
-    - Increase the likelihood of recruiting more rare species
-    - Increase the likelihood of recruiting more rare species
-    - Increase the likelihood of recruiting more rare species
-    - Increase the likelihood of recruiting more rare species
-    - Increase the likelihood of recruiting more rare species
-    - Increase the likelihood of recruiting more rare species
-    - Increase the likelihood of recruiting more rare species
+    - Increase the likelihood of recruiting more rare species by 10%
+    - Increase the likelihood of recruiting more rare species by 20%
+    - Increase the likelihood of recruiting more rare species by 30%
+    - Increase the likelihood of recruiting more rare species by 40%
+    - Increase the likelihood of recruiting more rare species by 50%
+    - Increase the likelihood of recruiting more rare species by 60%
+    - Increase the likelihood of recruiting more rare species by 70%
+    - Increase the likelihood of recruiting more rare species by 80%
+    - Increase the likelihood of recruiting more rare species by 90%
+    - Increase the likelihood of recruiting more rare species by 100%
   values:
     - 10
     - 20
@@ -101,16 +100,16 @@ show_species_stats:
 speed_up_time:
   name: Speed up Time
   descriptions:
-    - Increase how quickly time passes in a mine (10%)
-    - Increase how quickly time passes in a mine (20%)
-    - Increase how quickly time passes in a mine (30%)
-    - Increase how quickly time passes in a mine (40%)
-    - Increase how quickly time passes in a mine (50%)
-    - Increase how quickly time passes in a mine (60%)
-    - Increase how quickly time passes in a mine (70%)
-    - Increase how quickly time passes in a mine (80%)
-    - Increase how quickly time passes in a mine (90%)
-    - Increase how quickly time passes in a mine (100%)
+    - Increase how quickly time passes in a mine by 10%
+    - Increase how quickly time passes in a mine by 20%
+    - Increase how quickly time passes in a mine by 30%
+    - Increase how quickly time passes in a mine by 40%
+    - Increase how quickly time passes in a mine by 50%
+    - Increase how quickly time passes in a mine by 60%
+    - Increase how quickly time passes in a mine by 70%
+    - Increase how quickly time passes in a mine by 80%
+    - Increase how quickly time passes in a mine by 90%
+    - Increase how quickly time passes in a mine by 100%
   values:
     - 10
     - 20
