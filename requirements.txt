@@ -5,25 +5,55 @@
 #    pip-compile --no-emit-index-url --no-emit-trusted-host requirements.in
 #
 aiohttp==3.8.5
-    # via -r requirements.in
+    # via
+    #   -r requirements.in
+    #   aiohttp-jinja2
+    #   textual-web
+aiohttp-jinja2==1.5.1
+    # via textual-web
 aiosignal==1.3.1
     # via aiohttp
+annotated-types==0.5.0
+    # via pydantic
+anyio==4.0.0
+    # via httpcore
 async-timeout==4.0.3
     # via aiohttp
 attrs==23.1.0
     # via aiohttp
+certifi==2023.7.22
+    # via
+    #   httpcore
+    #   httpx
 chafa-py==1.1.2
     # via -r requirements.in
 charset-normalizer==3.2.0
     # via aiohttp
+click==8.1.7
+    # via textual-web
+exceptiongroup==1.1.3
+    # via anyio
 frozenlist==1.4.0
     # via
     #   aiohttp
     #   aiosignal
+h11==0.14.0
+    # via httpcore
+httpcore==0.17.3
+    # via httpx
+httpx==0.24.1
+    # via textual-web
 idna==3.4
-    # via yarl
+    # via
+    #   anyio
+    #   httpx
+    #   yarl
 importlib-metadata==6.8.0
-    # via textual
+    # via
+    #   textual
+    #   textual-web
+jinja2==3.1.2
+    # via aiohttp-jinja2
 linkify-it-py==2.0.2
     # via markdown-it-py
 markdown-it-py[linkify,plugins]==3.0.0
@@ -31,28 +61,52 @@ markdown-it-py[linkify,plugins]==3.0.0
     #   mdit-py-plugins
     #   rich
     #   textual
+markupsafe==2.1.3
+    # via jinja2
 mdit-py-plugins==0.4.0
     # via markdown-it-py
 mdurl==0.1.2
     # via markdown-it-py
+msgpack==1.0.5
+    # via textual-web
 multidict==6.0.4
     # via
     #   aiohttp
     #   yarl
 pillow==10.0.0
     # via -r requirements.in
+pydantic==2.3.0
+    # via textual-web
+pydantic-core==2.6.3
+    # via pydantic
 pygments==2.16.1
     # via rich
 pyyaml==6.0.1
     # via -r requirements.in
 rich==13.5.2
     # via textual
-textual==0.32.0
+sniffio==1.3.0
+    # via
+    #   anyio
+    #   httpcore
+    #   httpx
+textual[dev]==0.32.0
+    # via
+    #   -r requirements.in
+    #   textual-web
+textual-web==0.4.2
     # via -r requirements.in
+tomli==2.0.1
+    # via textual-web
 typing-extensions==4.7.1
-    # via textual
+    # via
+    #   pydantic
+    #   pydantic-core
+    #   textual
 uc-micro-py==1.0.2
     # via linkify-it-py
+xdg==6.0.0
+    # via textual-web
 yarl==1.9.2
     # via aiohttp
 zipp==3.16.2

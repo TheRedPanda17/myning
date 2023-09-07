@@ -20,6 +20,8 @@ class TabTitle:
 
     @classmethod
     def _update_tab_title(cls):
+        # TODO restore after https://github.com/Textualize/textual-web/issues/10
+        return
         title = f"{cls._root_tab_name} ({cls._tab_status})"
         if cls._tab_subactivity:
             title += f" - {cls._tab_subactivity}"
@@ -30,4 +32,6 @@ class TabTitle:
 
     @classmethod
     def beep(cls):
+        # TODO restore after https://github.com/Textualize/textual-web/issues/10
+        return
         os.system("printf '\a'")
