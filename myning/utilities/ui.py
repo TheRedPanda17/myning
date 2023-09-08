@@ -56,8 +56,12 @@ class Colors(str, Enum):
     PLANT = "green1"
     RESEARCH_POINTS = "deep_pink3"
     SOUL_CREDITS = "light_slate_blue"
+    WATER = "sky_blue1"
     WEAPON = "red1"
     XP = "magenta1"
+
+    def __call__(self, s):
+        return f"[{self.value}]{s}[/]"
 
 
 def get_health_bar(health: int, max_health: int, bar_count: int = 11):

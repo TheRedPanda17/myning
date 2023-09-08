@@ -144,7 +144,7 @@ class Trip(Object, metaclass=Singleton):
         mineral_counts = Counter([item.main_affect for item in self.minerals_mined])
         minerals_str = "\n".join(
             [
-                f"{Icons.MINERAL} [{Colors.GOLD}]{level}[/] ({mineral_counts[level]})"
+                f"{Icons.MINERAL} {Colors.GOLD(level)} ({mineral_counts[level]})"
                 for level in sorted(mineral_counts)
             ]
         )

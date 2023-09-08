@@ -40,12 +40,12 @@ class CurrencyWidget(Static):
             table.add_row(
                 "Macguffin",
                 Icons.MINERAL,
-                f"[{Colors.GOLD}]{Formatter.percentage(macguffin.mineral_boost)}[/] mineral value",
+                f"{Colors.GOLD(Formatter.percentage(macguffin.mineral_boost))} mineral value",
             )
             table.add_row(
                 "",
                 Icons.XP,
-                f"[{Colors.XP}]{Formatter.percentage(macguffin.xp_boost)}[/] xp gain",
+                f"{Colors.XP(Formatter.percentage(macguffin.xp_boost))} xp gain",
             )
 
         # pylint: disable=line-too-long
@@ -53,17 +53,17 @@ class CurrencyWidget(Static):
             table.add_row(
                 "",
                 Icons.GRAVEYARD,
-                f"[{Colors.SOUL_CREDITS}]{Formatter.percentage(macguffin.soul_credit_boost)}[/] soul credits",
+                f"{Colors.SOUL_CREDITS(Formatter.percentage(macguffin.soul_credit_boost))} soul credits",
             )
             table.add_row(
                 "",
                 Icons.RESEARCH_FACILITY,
-                f"[{Colors.RESEARCH_POINTS}]{Formatter.percentage(macguffin.research_boost)}[/] research speed",
+                f"{Colors.RESEARCH_POINTS(Formatter.percentage(macguffin.research_boost))} research speed",
             )
             table.add_row(
                 "",
                 Icons.PLANT,
-                f"[{Colors.PLANT}]{Formatter.percentage(macguffin.plant_boost)}[/] plant value",
+                f"{Colors.PLANT(Formatter.percentage(macguffin.plant_boost))} plant value",
             )
 
         return table

@@ -190,7 +190,7 @@ class Mine(Object):
             self.name,
             Text.from_markup(Formatter.gold(self.cost), justify="right"),
             f"{Icons.LEVEL} {Formatter.level(self.min_player_level)}",
-            f"[{Colors.XP}]{int(self.exp_boost*100):2}% xp[/]" if self.exp_boost else "",
+            f"{Colors.XP(f'{int(self.exp_boost*100):2}% xp')}" if self.exp_boost else "",
             self.death_chance_str,
         ]
 

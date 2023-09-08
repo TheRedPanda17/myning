@@ -176,7 +176,7 @@ def add_xp(member: Character):
             message="How would you like to add xp?",
             options=[
                 Option(
-                    f"Level {member.name} Up ([{Colors.XP}]{xp_for_level} xp[/] needed)",
+                    f"Level {member.name} Up ({Formatter.xp(xp_for_level)}) needed)",
                     partial(level_up, member),
                 ),
                 Option("Add xp Manually", partial(add_xp_manually, member)),
