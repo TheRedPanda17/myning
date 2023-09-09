@@ -117,7 +117,7 @@ class BaseStore(ABC):
                 message="Not enough gold!",
                 options=[Option("Bummer!", self.pick_buy)],
             )
-        if player.has_upgrade("purchase_confirmation") and settings.purchase_confirmation_disabled:
+        if not settings.purchase_confirmation:
             return self.buy(item)
         return PickArgs(
             message=f"Are you sure you want to buy {item} for {Formatter.gold(item.value)}?",  # pylint: disable=line-too-long
@@ -128,6 +128,7 @@ class BaseStore(ABC):
         )
 
     def buy(self, item: Item):
+        # index = self._items.index(item)
         player.gold -= item.value
         inventory.add_item(item)
         self.remove_item(item)
@@ -136,7 +137,12 @@ class BaseStore(ABC):
         elif item.type in EQUIPMENT_TYPES:
             stats.increment_int_stat(IntegerStatKeys.ARMOR_PURCHASED)
         FileManager.multi_save(player, item, stats, inventory)
-        return self.enter()
+
+        if settings.purchase_confirmation:
+            return self.enter()
+
+        return self.pick_buy()
+        # return self.select_adjacent_item(index)
 
     def confirm_multi_buy(self, items: list[Item]):
         assert self.buying_option
@@ -146,7 +152,7 @@ class BaseStore(ABC):
                 message="Not enough gold!",
                 options=[Option("Bummer!", self.pick_buy)],
             )
-        if player.has_upgrade("purchase_confirmation") and settings.purchase_confirmation_disabled:
+        if not settings.purchase_confirmation:
             return self.multi_buy(items)
         return PickArgs(
             message=f"Are you sure you want to buy {self.buying_option.name} for {Formatter.gold(cost)}?",  # pylint: disable=line-too-long
@@ -157,12 +163,16 @@ class BaseStore(ABC):
         )
 
     def multi_buy(self, items: list[Item]):
+        # last_item_index = self._items.index(items[items.__len__ - 1])
         cost = sum(item.value for item in items)
         player.gold -= cost
         inventory.add_items(items)
         self.remove_items(*items)
         FileManager.multi_save(player, *items, inventory)
-        return self.enter()
+        if settings.purchase_confirmation:
+            return self.enter()
+        return self.pick_buy()
+        # return self.select_adjacent_item(last_item_index)
 
     def hint_symbol(self, item: Item) -> str:
         if item.type not in EQUIPMENT_TYPES:
@@ -189,3 +199,13 @@ class BaseStore(ABC):
             if equipped is None or item.main_affect > equipped.main_affect:
                 return True
         return False
+
+    # def select_adjacent_item(self, index):
+    #     def callback(widget: ChapterWidget):
+    #         # Select previous item if last item
+    #         if index == self._items.len - 1:
+    #           return widget.select(index - 1)
+    #         # Else, select the new item in the index
+    #         return widget.select(index)
+
+    #     return lambda: DynamicArgs(callback)

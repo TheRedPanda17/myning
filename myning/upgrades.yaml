@@ -225,12 +225,3 @@ auto_ghost_xp:
     - 1
   costs:
     - 200000
-
-purchase_confirmation:
-  name: Disable Purchase Confirmation Screen
-  descriptions:
-    - Get the option to disable the purchase confirmation screen for stores.
-  values:
-    - 1
-  costs:
-    - 100_000
