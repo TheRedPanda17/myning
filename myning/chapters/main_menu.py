@@ -17,7 +17,7 @@ from myning.chapters import (
     settings,
     stats,
     store,
-    telescope,
+    # telescope,
     time_machine,
     wizard_hut,
 )
@@ -67,7 +67,7 @@ def enter():
         MenuItem("Garden", garden.enter, MINES["Cave"]),
         MenuItem("Research Facility", research_facility.enter, MINES["Cavern"]),
         MenuItem("Time Machine", time_machine.enter, MINES["Cave System"]),
-        MenuItem("Telescope", telescope.enter, MINES["Meteor Crater"]),
+        # MenuItem("Telescope", telescope.enter, MINES["Meteor Crater"]),
         MenuItem("Journal", journal.enter),
         MenuItem("Stats", stats.enter),
         MenuItem("Settings", settings.enter),
