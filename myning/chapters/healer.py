@@ -96,7 +96,7 @@ class HealScreen(Screen[None]):
         with self.content_container:
             self.content_container.border_title = "Healer"
             yield self.content
-        with Container() as c:
+        with Container(id="progress_container") as c:
             c.border_title = "Estimated Time Remaining"
             yield self.progress
         yield Footer()

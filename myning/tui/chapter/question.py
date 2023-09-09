@@ -1,14 +1,14 @@
 from rich.console import RenderableType
 from rich.table import Table
-from textual.reactive import Reactive
+from textual.reactive import reactive
 from textual.widgets import Static
 
 from myning.utilities.ui import Colors
 
 
 class Question(Static):
-    message: Reactive[RenderableType] = Reactive("", layout=True)  # type:ignore
-    subtitle: Reactive[RenderableType] = Reactive("", layout=True)  # type: ignore
+    message: reactive[RenderableType] = reactive("", layout=True)  # type:ignore
+    subtitle: reactive[RenderableType] = reactive("", layout=True)  # type: ignore
 
     def render(self):
         table = Table.grid()

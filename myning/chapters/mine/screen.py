@@ -2,6 +2,7 @@ import random
 import time
 from typing import Type
 
+from rich.table import Table
 from textual.containers import Container, Horizontal, ScrollableContainer, Vertical
 from textual.screen import Screen
 from textual.widget import Widget
@@ -73,10 +74,10 @@ class MineScreen(Screen[bool]):
                 yield self.content
             with self.sidebar:
                 yield self.army
-        with Container() as c:
+        with Container(id="summary_container") as c:
             c.border_title = "Trip Summary"
             yield self.summary
-        with Container() as c:
+        with Container(id="progress_container") as c:
             c.border_title = "Trip Progress"
             yield self.time
             yield self.progress
@@ -94,7 +95,7 @@ class MineScreen(Screen[bool]):
     def action_skip(self):
         if self.abandoning:
             self.abandoning = False
-            if isinstance(self.action, MineralAction):
+            if isinstance(self.action, (MineralAction, CombatAction)):
                 self.action.game.toggle_paused()
                 self.update_screen()
         elif self.should_exit:
@@ -124,6 +125,15 @@ class MineScreen(Screen[bool]):
                         member.health -= 1
                     FileManager.multi_save(*player.army)
             self.skip(color)
+        elif isinstance(self.action, CombatAction):
+            if settings.mini_games_disabled:
+                # pylint: disable=protected-access
+                table: Table = self.content._renderable  # type: ignore
+                if "disabled" not in str(table.columns[0]._cells[-1]):
+                    table.add_row(
+                        "\nMinigames have been disabled; you can enable them in the settings."
+                    )
+                    self.content.update(table)
         elif isinstance(self.action, ItemsAction):
             if self.check_skip(TICK_LENGTH):
                 trip.seconds_passed(TICK_LENGTH)
@@ -152,10 +162,11 @@ class MineScreen(Screen[bool]):
             self.exit()
             return
 
-        self.update_screen()
         self.action.tick()
         if self.action.duration <= 0:
             self.action = self.next_action
+
+        self.update_screen()
 
     def update_screen(self):
         if not trip.mine:
@@ -196,7 +207,7 @@ class MineScreen(Screen[bool]):
         self.content_container.styles.border = ("round", "dodgerblue")
 
     def confirm_abandon(self):
-        if isinstance(self.action, MineralAction):
+        if isinstance(self.action, (MineralAction, CombatAction)):
             self.action.game.toggle_paused()
         self.content.update(
             "Are you sure you want to abandon your trip?\n\n"
