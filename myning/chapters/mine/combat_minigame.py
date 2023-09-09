@@ -49,6 +49,7 @@ class CombatMinigame(Container):
             bonus = score - BONUS_THRESHOLD
         else:
             bonus = (score - BONUS_THRESHOLD) * 3
+        bonus *= self.minigame.total / self.minigame.potential
         return 1 + bonus
 
 
@@ -86,10 +87,11 @@ class Minigame(Static):
         super().__init__()
         self.paused = False
 
+        self.width = random.randint(3, 4)
         self.lines = [""] * 12
         self.solutions: list[int | None] = [None] * 12
         for _ in range(duration * TICKS_PER_SECOND):
-            position = random.randint(0, 3)
+            position = random.randint(0, self.width - 1)
             length = random.randint(4, 6)
             shafts = ["|"] * (length - 2)
             lines = [f"  {' ' * position * 5}{char}" for char in ["▼", *shafts, "v"]]
@@ -101,6 +103,7 @@ class Minigame(Static):
         self.lines.reverse()
         self.solutions.reverse()
 
+        self.potential = 0
         self.total = 0
         self.total_correct = 0
 
@@ -108,12 +111,12 @@ class Minigame(Static):
         table = Table.grid()
         for line in self.visible_lines:
             table.add_row(line)
-        table.add_row(f"[{self.color}]════════════════════[/]")
+        table.add_row(f"[{self.color}]{'═' * self.width * 5}[/]")
         keys = "".join(
             f"[bold on dodger_blue1]  {key.upper()}  [/]"
             if key == self.active_key
             else f"[bold]  {key.upper()}  [/]"
-            for key in KEYS
+            for key in KEYS[: self.width]
         )
         table.add_row(keys)
         return table
@@ -142,13 +145,15 @@ class Minigame(Static):
         self.solutions.pop()
         self.visible_lines = self.lines[-15:]
 
-        if self.active_key and self.solution is not None:
-            self.total += 1
-            if self.correct:
-                self.total_correct += 1
-                self.color = "green1"
-            else:
-                self.color = "red1"
+        if self.solution is not None:
+            self.potential += 1
+            if self.active_key:
+                self.total += 1
+                if self.correct:
+                    self.total_correct += 1
+                    self.color = "green1"
+                else:
+                    self.color = "red1"
 
         if query := self.app.query("CombatMinigame ProgressBar"):
             progress = query.first(ProgressBar)

@@ -48,7 +48,7 @@ class CombatAction(Action):
             f"⚔️ Battling ({player.species.icon}{len(player.army.living_members)} "
             f"v 👽{len(self.enemies.living_members)})"
         )
-        self.duration = random.randint(5, 9)
+        self.duration = 9
         self.game = CombatMinigame(self)
         super().__init__(self.duration)
 
@@ -71,7 +71,6 @@ class CombatAction(Action):
 
     def fight(self, bonus: float):
         battle_order = _get_battle_order(player.army.living_members, self.enemies.living_members)
-        # bonus = _mini_game_bonus(static_menu)
         for attacker in battle_order:
             if player.army.defeated or self.enemies.defeated:
                 break
