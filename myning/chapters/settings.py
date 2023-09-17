@@ -13,6 +13,10 @@ def enter():
     options = [
         Option(["Minigames", f"({settings.mini_games_status})"], toggle_minigames),
         Option(["Compact Mode", f"({settings.compact_status})"], toggle_compact_mode),
+        Option(
+            ["Purchase Confirmation", f"({settings.purchase_confirmation_status})"],
+            toggle_purchase_confirmation,
+        ),
     ]
 
     if player.has_upgrade("sort_by_value"):
@@ -61,5 +65,22 @@ def toggle_sort_order():
     FileManager.save(settings)
     return PickArgs(
         message=f"Sort Order is now {settings.sort_order}",
+        options=[Option("Done", enter)],
+    )
+
+
+@confirm(
+    lambda: f"Are you sure you want to {'disable' if settings.purchase_confirmation else 'enable'} "
+    "purchase confirmation?\n"
+    + Formatter.locked(
+        "If disabled, you will not be prompted to confirm before purchasing items from a store and will stay on the items screen."
+    ),
+    enter,
+)
+def toggle_purchase_confirmation():
+    settings.toggle_purchase_confirmation()
+    FileManager.save(settings)
+    return PickArgs(
+        message=f"Purchase confirmation is now {settings.purchase_confirmation_status}",
         options=[Option("Done", enter)],
     )

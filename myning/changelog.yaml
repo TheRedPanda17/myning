@@ -1,3 +1,7 @@
+- name: Disable Purchase Confirmation
+  description: Add option to disable purchase confirmation screen.
+  date: 09-08-2023
+
 - name: Research Species Stats
   description: Ever wanted to know the EXACT stats of a species? It's possible now thanks to research!
   date: 08-30-23
