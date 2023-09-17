@@ -133,7 +133,6 @@ class BaseStore(ABC):
         )
 
     def buy(self, item: Item):
-        # index = self._items.index(item)
         player.gold -= item.value
         inventory.add_item(item)
         self.remove_item(item)
@@ -147,7 +146,6 @@ class BaseStore(ABC):
             return self.enter()
 
         return self.pick_buy()
-        # return self.select_adjacent_item(index)
 
     def confirm_multi_buy(self, items: list[Item]):
         assert self.buying_option
@@ -169,7 +167,6 @@ class BaseStore(ABC):
         )
 
     def multi_buy(self, items: list[Item]):
-        # last_item_index = self._items.index(items[items.__len__ - 1])
         cost = sum(item.value for item in items)
         player.gold -= cost
         inventory.add_items(items)
@@ -178,7 +175,6 @@ class BaseStore(ABC):
         if settings.purchase_confirmation:
             return self.enter()
         return self.pick_buy()
-        # return self.select_adjacent_item(last_item_index)
 
     def hint_symbol(self, item: Item) -> str:
         if item.type not in EQUIPMENT_TYPES:
