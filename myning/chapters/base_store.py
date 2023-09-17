@@ -1,9 +1,10 @@
 from abc import ABC, abstractmethod
 from functools import partial
+from typing import TYPE_CHECKING
 
 from rich.text import Text
 
-from myning.chapters import Option, PickArgs, main_menu
+from myning.chapters import DynamicArgs, Option, PickArgs, main_menu
 from myning.config import UPGRADES
 from myning.objects.buying_option import BuyingOption
 from myning.objects.equipment import EQUIPMENT_TYPES
@@ -14,6 +15,9 @@ from myning.objects.settings import Settings, SortOrder
 from myning.objects.stats import IntegerStatKeys, Stats
 from myning.utilities.file_manager import FileManager
 from myning.utilities.formatter import Formatter
+
+if TYPE_CHECKING:
+    from myning.tui.chapter import ChapterWidget
 
 player = Player()
 stats = Stats()
@@ -118,7 +122,8 @@ class BaseStore(ABC):
                 options=[Option("Bummer!", self.pick_buy)],
             )
         if not settings.purchase_confirmation:
-            return self.buy(item)
+            self.buy(item)
+            return self.pick_preserve_cursor(self.pick_buy())
         return PickArgs(
             message=f"Are you sure you want to buy {item} for {Formatter.gold(item.value)}?",  # pylint: disable=line-too-long
             options=[
@@ -153,7 +158,8 @@ class BaseStore(ABC):
                 options=[Option("Bummer!", self.pick_buy)],
             )
         if not settings.purchase_confirmation:
-            return self.multi_buy(items)
+            self.multi_buy(items)
+            return self.pick_preserve_cursor(self.pick_buy())
         return PickArgs(
             message=f"Are you sure you want to buy {self.buying_option.name} for {Formatter.gold(cost)}?",  # pylint: disable=line-too-long
             options=[
@@ -200,12 +206,14 @@ class BaseStore(ABC):
                 return True
         return False
 
-    # def select_adjacent_item(self, index):
-    #     def callback(widget: ChapterWidget):
-    #         # Select previous item if last item
-    #         if index == self._items.len - 1:
-    #           return widget.select(index - 1)
-    #         # Else, select the new item in the index
-    #         return widget.select(index)
+    def pick_preserve_cursor(self, args: PickArgs):
+        def callback(chapter: "ChapterWidget"):
+            highlighted_index = chapter.option_table.cursor_row
+            chapter.pick(args)
+            last_index = len(chapter.option_table.rows) - 1
+            if highlighted_index >= last_index:
+                chapter.option_table.move_cursor(row=last_index - 1)
+            else:
+                chapter.option_table.move_cursor(row=highlighted_index)
 
-    #     return lambda: DynamicArgs(callback)
+        return DynamicArgs(callback)
