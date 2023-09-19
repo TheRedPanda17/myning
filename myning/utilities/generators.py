@@ -1,18 +1,21 @@
 import math
 import random
 
-from myning.config import SPECIES, STRINGS
+from myning.config import RESEARCH, SPECIES, STRINGS
 from myning.objects.army import Army
 from myning.objects.character import Character, CharacterSpecies
 from myning.objects.equipment import EQUIPMENT_TYPES
 from myning.objects.item import Item, ItemType
 from myning.objects.plant import PLANT_TYPES, Plant
+from myning.objects.research_facility import ResearchFacility
 from myning.utilities import string_generation
 from myning.utilities.rand import (
     get_random_array_item,
     get_random_array_item_and_index,
     get_random_int,
 )
+
+facility = ResearchFacility()
 
 
 def generate_character(
@@ -122,7 +125,10 @@ def generate_reward(max_item_level, entities_killed):
 
 def generate_plant(garden_level: int):
     type = get_random_array_item(PLANT_TYPES)
-    level = get_random_int(1, garden_level + 1)
+    base_level = 1
+    if facility.has_research("seed_quality"):
+        base_level = base_level + math.floor(garden_level * RESEARCH["seed_quality"].player_value)
+    level = get_random_int(base_level, garden_level + 1)
     value = 10 * level
     adjective = STRINGS["sizes"][level]
     name = f"{adjective} {type.value} seed"
