@@ -156,3 +156,39 @@ time_travel_species:
     - 4500
     - 7500
     - 12500
+
+seed_quality:
+  name: Seed Quality
+  descriptions:
+    - Increase base seed level (10% of garden level)
+    - Increase base seed level (20% of garden level)
+    - Increase base seed level (30% of garden level)
+    - Increase base seed level (40% of garden level)
+    - Increase base seed level (50% of garden level)
+    - Increase base seed level (60% of garden level)
+    - Increase base seed level (70% of garden level)
+    - Increase base seed level (80% of garden level)
+    - Increase base seed level (90% of garden level)
+    - Increase base seed level (100% of garden level)
+  values:
+    - .1
+    - .2
+    - .3
+    - .4
+    - .5
+    - .6
+    - .7
+    - .8
+    - .9
+    - 1
+  costs:
+    - 10
+    - 25
+    - 50
+    - 80
+    - 150
+    - 200
+    - 325
+    - 500
+    - 850
+    - 1200
