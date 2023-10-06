@@ -1,8 +1,10 @@
 from dataclasses import dataclass
 from typing import TYPE_CHECKING, Callable, Coroutine, Optional
+import aiohttp
 
 from rich.console import RenderableType
 from rich.text import Text
+from textual.widgets import ProgressBar
 
 if TYPE_CHECKING:
     from myning.tui.chapter import ChapterWidget
@@ -53,3 +55,31 @@ class StoryArgs:
     response: str = "Okay"
     subtitle: Optional[RenderableType] = None
     border_title: Optional[str] = None
+
+
+def api_request(loading_message: str, callback):
+    def outer(func):
+        async def inner(chapter: "ChapterWidget", *args, **kwargs):
+            chapter.clear()
+            chapter.question.message = loading_message
+            progress = ProgressBar(show_percentage=False, show_eta=False)
+            chapter.mount(progress, after=0)
+            try:
+                await func(chapter, *args, **kwargs)
+            except aiohttp.ClientError as e:
+                status = getattr(e, "status", "Unknown Error")
+                message = f"Error contacting the API: {status}"
+                if status == 401:
+                    message += " you've been logged out, or your password has changed"
+                chapter.pick(
+                    PickArgs(
+                        message=message,
+                        options=[Option("Bummer!", callback)],
+                    )
+                )
+            finally:
+                progress.remove()
+
+        return inner
+
+    return outer

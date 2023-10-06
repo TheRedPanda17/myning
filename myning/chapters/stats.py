@@ -2,13 +2,11 @@ from datetime import datetime
 from functools import partial
 from typing import TYPE_CHECKING
 
-import aiohttp
 from rich.table import Table
 from rich.text import Text
-from textual.widgets import ProgressBar
 
 from myning import api
-from myning.chapters import AsyncArgs, Option, PickArgs, main_menu
+from myning.chapters import AsyncArgs, Option, PickArgs, api_request, main_menu
 from myning.objects.garden import Garden
 from myning.objects.inventory import Inventory
 from myning.objects.macguffin import Macguffin
@@ -41,35 +39,7 @@ def enter():
     )
 
 
-def api_request(loading_message: str):
-    def outer(func):
-        async def inner(chapter: "ChapterWidget", *args, **kwargs):
-            chapter.clear()
-            chapter.question.message = loading_message
-            progress = ProgressBar(show_percentage=False, show_eta=False)
-            chapter.mount(progress, after=0)
-            try:
-                await func(chapter, *args, **kwargs)
-            except aiohttp.ClientError as e:
-                status = getattr(e, "status", "Unknown Error")
-                message = f"Error contacting the API: {status}"
-                if status == 401:
-                    message += " (missing or invalid API_KEY)"
-                chapter.pick(
-                    PickArgs(
-                        message=message,
-                        options=[Option("Bummer!", enter)],
-                    )
-                )
-            finally:
-                progress.remove()
-
-        return inner
-
-    return outer
-
-
-@api_request("Syncing Stats...")
+@api_request("Syncing Stats...", callback=enter)
 async def sync(chapter: "ChapterWidget"):
     score = macguffin.get_new_standard_boost(get_total_value())
     await api.players.sync(int(score * 100))
@@ -81,7 +51,7 @@ async def sync(chapter: "ChapterWidget"):
     )
 
 
-@api_request("Fetching Highscores...")
+@api_request("Fetching Highscores...", callback=enter)
 async def view_players(chapter: "ChapterWidget"):
     players = await api.players.get_players()
     # TODO remove next 3 lines when everyone has migrated to tui single-point species emojis
@@ -116,7 +86,7 @@ async def view_players(chapter: "ChapterWidget"):
 
 
 def view_player(_player):
-    @api_request(f"Fetching Stats for {_player['icon']} {_player['name']}...")
+    @api_request(f"Fetching Stats for {_player['icon']} {_player['name']}...", callback=enter)
     async def callback(chapter: "ChapterWidget"):
         p = await api.players.get_player(_player["id"])
         # TODO remove next 2 lines when everyone has migrated to tui single-point species emojis

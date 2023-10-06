@@ -5,18 +5,7 @@ from textual import events
 from textual.containers import ScrollableContainer
 from textual.widgets import DataTable
 
-from myning.chapters import (
-    AsyncArgs,
-    DynamicArgs,
-    ExitArgs,
-    Handler,
-    Option,
-    OptionLabel,
-    PickArgs,
-    main_menu,
-    mine,
-    tutorial,
-)
+from myning.chapters import AsyncArgs, DynamicArgs, ExitArgs, Handler, Option, PickArgs, login, mine
 from myning.chapters.garden.garden_table import GardenTable
 from myning.chapters.mine.screen import MineScreen
 from myning.objects.player import Player
@@ -64,7 +53,7 @@ class ChapterWidget(ScrollableContainer):
                 lambda abandoned: self.pick(mine.complete_trip(abandoned)),
             )
         else:
-            self.pick(main_menu.enter() if tutorial.is_complete() else tutorial.enter())
+            self.pick(login.enter())
 
     def on_click(self):
         self.focus()

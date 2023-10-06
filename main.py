@@ -2,6 +2,7 @@ import builtins
 
 import rich
 
+from myning.api_v2 import MyningClient
 from myning.migrations.migrate import check_for_migrations
 from myning.objects.game import Game
 from myning.objects.garden import Garden
@@ -37,6 +38,7 @@ def main():
     Settings.initialize()
     Stats.initialize()
     Trip.initialize()
+    MyningClient.initialize()
 
     # import MIGRATIONS here to resolve circular dependencies
     from myning.migrations import MIGRATIONS  # pylint: disable=import-outside-toplevel
@@ -61,6 +63,7 @@ def main():
         Settings(),
         Stats(),
         Trip(),
+        MyningClient(),
     )
     print("Game saved. Thank you for playing Myning!")
 
