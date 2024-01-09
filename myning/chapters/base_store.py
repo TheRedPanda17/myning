@@ -1,9 +1,10 @@
 from abc import ABC, abstractmethod
 from functools import partial
+from typing import TYPE_CHECKING
 
 from rich.text import Text
 
-from myning.chapters import Option, PickArgs, main_menu
+from myning.chapters import DynamicArgs, Option, PickArgs, main_menu
 from myning.config import UPGRADES
 from myning.objects.buying_option import BuyingOption
 from myning.objects.equipment import EQUIPMENT_TYPES
@@ -14,6 +15,9 @@ from myning.objects.settings import Settings, SortOrder
 from myning.objects.stats import IntegerStatKeys, Stats
 from myning.utilities.file_manager import FileManager
 from myning.utilities.formatter import Formatter
+
+if TYPE_CHECKING:
+    from myning.tui.chapter import ChapterWidget
 
 player = Player()
 stats = Stats()
@@ -117,6 +121,9 @@ class BaseStore(ABC):
                 message="Not enough gold!",
                 options=[Option("Bummer!", self.pick_buy)],
             )
+        if not settings.purchase_confirmation:
+            self.buy(item)
+            return self.pick_preserve_cursor(self.pick_buy())
         return PickArgs(
             message=f"Are you sure you want to buy {item} for {Formatter.gold(item.value)}?",  # pylint: disable=line-too-long
             options=[
@@ -134,7 +141,11 @@ class BaseStore(ABC):
         elif item.type in EQUIPMENT_TYPES:
             stats.increment_int_stat(IntegerStatKeys.ARMOR_PURCHASED)
         FileManager.multi_save(player, item, stats, inventory)
-        return self.enter()
+
+        if settings.purchase_confirmation:
+            return self.enter()
+
+        return self.pick_buy()
 
     def confirm_multi_buy(self, items: list[Item]):
         assert self.buying_option
@@ -144,6 +155,9 @@ class BaseStore(ABC):
                 message="Not enough gold!",
                 options=[Option("Bummer!", self.pick_buy)],
             )
+        if not settings.purchase_confirmation:
+            self.multi_buy(items)
+            return self.pick_preserve_cursor(self.pick_buy())
         return PickArgs(
             message=f"Are you sure you want to buy {self.buying_option.name} for {Formatter.gold(cost)}?",  # pylint: disable=line-too-long
             options=[
@@ -158,7 +172,9 @@ class BaseStore(ABC):
         inventory.add_items(items)
         self.remove_items(*items)
         FileManager.multi_save(player, *items, inventory)
-        return self.enter()
+        if settings.purchase_confirmation:
+            return self.enter()
+        return self.pick_buy()
 
     def hint_symbol(self, item: Item) -> str:
         if item.type not in EQUIPMENT_TYPES:
@@ -185,3 +201,15 @@ class BaseStore(ABC):
             if equipped is None or item.main_affect > equipped.main_affect:
                 return True
         return False
+
+    def pick_preserve_cursor(self, args: PickArgs):
+        def callback(chapter: "ChapterWidget"):
+            highlighted_index = chapter.option_table.cursor_row
+            chapter.pick(args)
+            last_index = len(chapter.option_table.rows) - 1
+            if highlighted_index >= last_index:
+                chapter.option_table.move_cursor(row=last_index - 1)
+            else:
+                chapter.option_table.move_cursor(row=highlighted_index)
+
+        return DynamicArgs(callback)
